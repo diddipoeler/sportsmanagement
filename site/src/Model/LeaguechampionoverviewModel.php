@@ -24,6 +24,10 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
     protected array $_criteria = [];
     public bool $debug_info = false;
 
+    /**
+     * Resolve the selected league from the frontend request or derive it from the active nontrashed project when no explicit league is supplied.
+     * @return int League identifier or zero when no context exists.
+     */
     public function getLeagueId(): int
     {
         $input = $this->siteApplication()->getInput();
@@ -50,6 +54,11 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Load nontrashed projects in the selected league with season, league and routing metadata. Optionally restrict the query by the league-champion setting and order the projects by descending season and identifier.
+     * @param mixed $use_leaguechampion Optional champion-overview filter; zero disables it.
+     * @return array<int,object> Project records.
+     */
     public function getAllProjectNames($use_leaguechampion = 0): array
     {
         $leagueId = $this->getLeagueId();
@@ -89,6 +98,11 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Extract positive project identifiers from the league project list and update the legacy ranking progress message with the number of projects to process.
+     * @param mixed $use_leaguechampion Optional champion-overview filter.
+     * @return array<int,int> Project identifiers.
+     */
     public function getAllProject($use_leaguechampion = 0): array
     {
         $ids = [];
@@ -106,6 +120,11 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $ids;
     }
 
+    /**
+     * Read the teams explicitly marked as champions for the requested project, returning an empty list when no valid project identifier is supplied.
+     * @param mixed $project_id Project identifier.
+     * @return array<int,object> Explicit champion records.
+     */
     public function getProjectWinner($project_id = 0): array
     {
         $projectId = max(0, (int) $project_id);
@@ -116,6 +135,14 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $this->loadProjectTeams($projectId, true);
     }
 
+    /**
+     * Count distinct matches in the requested project or across projects belonging to a specified league and season when aggregate counting is enabled.
+     * @param mixed $project_id Project identifier.
+     * @param bool $alloverleagueid Whether to count across the league and season.
+     * @param mixed $league_id League identifier for aggregate counting.
+     * @param mixed $season_id Season identifier for aggregate counting.
+     * @return int Number of matches, or zero without a valid scope.
+     */
     public function getProjectCountMatches($project_id = 0, $alloverleagueid = false, $league_id = 0, $season_id = 0): int
     {
         $projectId = max(0, (int) $project_id);
@@ -147,6 +174,10 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Resolve the project providing context for the champion overview, preferring the active project and otherwise the first project enabled for the overview.
+     * @return object|null Context project or null.
+     */
     public function getOverviewContextProject(): ?object
     {
         $project = $this->getProject();
@@ -159,6 +190,10 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $projects[0] ?? null;
     }
 
+    /**
+     * Assemble league champion records by season and project, count titles for each winning team and create placeholders for projects without a resolved winner. Prepare the aggregated team totals for the overview.
+     * @return array Champion overview data and team title totals.
+     */
     public function getOverviewData(): array
     {
         $projects = $this->getAllProjectNames(1);
@@ -239,6 +274,10 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Return the configured ranking criteria, initialising the legacy points comparator when no criteria have been set.
+     * @return array Ranking comparator identifiers.
+     */
     public function _getRankingCriteria(): array
     {
         if (!$this->_criteria) {
@@ -248,6 +287,13 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $this->_criteria;
     }
 
+    /**
+     * Sort the supplied ranking by a recognised statistical or name column in the requested direction, preserving keys. Reassign sequential ranks on object rows unless the existing rank order was requested.
+     * @param mixed $ranking Ranking rows passed by reference.
+     * @param string $order Ranking column selector.
+     * @param string $order_dir ASC or DESC sorting direction.
+     * @return mixed Sorted ranking or unchanged input.
+     */
     public function _sortRanking(&$ranking, $order = 'points', $order_dir = 'DESC')
     {
         if (!is_array($ranking) || !$ranking || $order === 'rank') {
@@ -297,6 +343,12 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $ranking;
     }
 
+    /**
+     * Sort array or object rows by multiple columns in priority order, comparing numeric values numerically and other values case-insensitively while preserving array keys.
+     * @param mixed $array Rows to sort.
+     * @param mixed $cols Column names mapped to sort directions.
+     * @return array Sorted rows or an empty array for invalid input.
+     */
     public function array_msort($array, $cols): array
     {
         if (!is_array($array) || !$array || !is_array($cols) || !$cols) {
@@ -322,6 +374,11 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $array;
     }
 
+    /**
+     * Resolve a project champion using the explicit champion marker first, then final table rank and available cached or stored final standings. Return null when no winner can be resolved.
+     * @param int $projectId Project identifier.
+     * @return object|null Resolved champion team or null.
+     */
     private function resolveProjectWinner(int $projectId): ?object
     {
         $champions = $this->loadProjectTeams($projectId, true);
@@ -368,6 +425,12 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return null;
     }
 
+    /**
+     * Load project-team records with final ranking statistics, team routing information and club logos through the season-team relation. Optionally restrict the result to explicitly marked champions.
+     * @param int $projectId Project identifier.
+     * @param bool $championsOnly Whether to return only champion teams.
+     * @return array<int,object> Project-team records.
+     */
     private function loadProjectTeams(int $projectId, bool $championsOnly): array
     {
         $db = $this->getDatabase();
@@ -418,6 +481,12 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Convert a winning team and its project into the champion overview record, including team and club identifiers, logo, routing metadata and the project's match count.
+     * @param object $project Project metadata.
+     * @param object $winner Resolved champion team.
+     * @return object Champion overview record.
+     */
     private function buildChampionObject(object $project, object $winner): object
     {
         $object = new \stdClass();
@@ -435,6 +504,11 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         return $object;
     }
 
+    /**
+     * Build an overview record for a project without a resolved champion, using the project information as the display label and counting matches in the associated league and season.
+     * @param object $project Project metadata.
+     * @return object Placeholder overview record.
+     */
     private function buildPlaceholderObject(object $project): object
     {
         $object = new \stdClass();
