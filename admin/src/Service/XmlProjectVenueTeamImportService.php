@@ -33,6 +33,11 @@ final class XmlProjectVenueTeamImportService
     /** @var array<int, int> */
     private array $clubIdMap = [];
 
+    /**
+     * Initialise the XML venue and team importer with the target database and an optional geocoder. Create the default playground geocoder when none is supplied.
+     * @param DatabaseInterface $database Target database connection.
+     * @param PlaygroundGeocoder|null $geocoder Optional playground geocoder.
+     */
     public function __construct(
         private readonly DatabaseInterface $database,
         ?PlaygroundGeocoder $geocoder = null
@@ -41,10 +46,11 @@ final class XmlProjectVenueTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Execute the venue, club, venue-club mapping and team preparation stages reached by the supplied import step, carrying the updated selection data forward.
+     * @param array<string,mixed> $post Current import form selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param string $step Current import step.
+     * @return array<string,mixed> Updated form selections.
      */
     public function prepare(array $post, array $parsedData, string $step): array
     {
@@ -68,10 +74,10 @@ final class XmlProjectVenueTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Validate selected existing playgrounds or prepare new ones from XML records. Reuse matching names, apply the configured picture fallback and record the target identifiers without retaining foreign club references.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated playground selections.
      */
     private function preparePlaygrounds(array $post, array $parsedData): array
     {
@@ -156,10 +162,10 @@ final class XmlProjectVenueTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Resolve selected or newly imported clubs for the XML teams. Reuse existing club mappings and matching names and countries, and use prepared playground mappings when importing club data.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated club selections.
      */
     private function prepareClubs(array $post, array $parsedData): array
     {
@@ -269,10 +275,11 @@ final class XmlProjectVenueTeamImportService
     }
 
     /**
-     * Native equivalent of the legacy project step 11.
-     *
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Translate source playground and club identifiers to target database identifiers and update the prepared playground's club relation when it differs.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return void
+     * @throws RuntimeException If updating a prepared playground fails.
      */
     private function convertPlaygroundClubIds(array $post, array $parsedData): void
     {
@@ -314,10 +321,10 @@ final class XmlProjectVenueTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Validate selected existing teams or reuse matching team identities. Prepare new teams with resolved club and playground references and update the import selections.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated team selections.
      */
     private function prepareTeams(array $post, array $parsedData): array
     {
@@ -404,7 +411,12 @@ final class XmlProjectVenueTeamImportService
         return $post;
     }
 
-    /** @return array<int, int> */
+    /**
+     * Build a source-to-target playground identifier map using positive identifiers from parsed XML records and the corresponding import form selections.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<int,int> Source playground IDs mapped to target IDs.
+     */
     private function buildPlaygroundIdMap(array $post, array $parsedData): array
     {
         $map = [];
@@ -425,7 +437,12 @@ final class XmlProjectVenueTeamImportService
         return $map;
     }
 
-    /** @return array<int, int> */
+    /**
+     * Build the source-to-target club identifier map from XML team records and submitted club selections. Later selections replace earlier mappings for duplicate source clubs.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<int,int> Source club IDs mapped to target IDs.
+     */
     private function buildClubIdMap(array $post, array $parsedData): array
     {
         $map = [];
@@ -448,6 +465,12 @@ final class XmlProjectVenueTeamImportService
         return $map;
     }
 
+    /**
+     * Find the XML club record matching a positive source identifier.
+     * @param int $oldClubId Source club identifier.
+     * @param array $parsedData Parsed XML records.
+     * @return object|null Source club or null.
+     */
     private function findSourceClub(int $oldClubId, array $parsedData): ?object
     {
         if ($oldClubId <= 0) {
@@ -463,6 +486,14 @@ final class XmlProjectVenueTeamImportService
         return null;
     }
 
+    /**
+     * Read the selected target record's identifier and name using a bound identifier. Reject a selection that does not exist.
+     * @param string $table Target table name.
+     * @param int $id Selected record identifier.
+     * @param string $label Record type used in the error message.
+     * @return object Selected record.
+     * @throws RuntimeException If the record is absent.
+     */
     private function requireById(string $table, int $id, string $label): object
     {
         $query = $this->database->createQuery()
@@ -483,6 +514,12 @@ final class XmlProjectVenueTeamImportService
         return $row;
     }
 
+    /**
+     * Load a prepared playground with its current club reference for relationship conversion.
+     * @param int $id Target playground identifier.
+     * @return object Prepared playground.
+     * @throws RuntimeException If the playground is absent.
+     */
     private function requirePlaygroundById(int $id): object
     {
         $query = $this->database->createQuery()
@@ -504,6 +541,11 @@ final class XmlProjectVenueTeamImportService
         return $row;
     }
 
+    /**
+     * Look up an existing playground by its exact name using a bound query parameter.
+     * @param string $name Playground name.
+     * @return object|null Matching playground or null.
+     */
     private function findPlaygroundByName(string $name): ?object
     {
         $query = $this->database->createQuery()
@@ -519,6 +561,12 @@ final class XmlProjectVenueTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Look up an existing club by its exact name and country code using bound parameters.
+     * @param string $name Club name.
+     * @param string $country Country code.
+     * @return object|null Matching club or null.
+     */
     private function findClubByNameAndCountry(string $name, string $country): ?object
     {
         $query = $this->database->createQuery()
@@ -536,6 +584,13 @@ final class XmlProjectVenueTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Look up an existing team by its name, middle name and information field to avoid creating duplicate import records.
+     * @param string $name Team name.
+     * @param string $middleName Intermediate team name.
+     * @param string $info Team information.
+     * @return object|null Matching team or null.
+     */
     private function findTeamByIdentity(string $name, string $middleName, string $info): ?object
     {
         $query = $this->database->createQuery()
@@ -555,6 +610,12 @@ final class XmlProjectVenueTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Copy XML source properties that exist in the target schema, excluding the foreign primary key. Convert scalar source values to strings before preparing the insert record.
+     * @param object $source XML record.
+     * @param string $table Target table name.
+     * @return object Filtered insert record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -573,6 +634,12 @@ final class XmlProjectVenueTeamImportService
         return $row;
     }
 
+    /**
+     * Retain only properties supported by the target database schema, preserving their original values.
+     * @param object $source Proposed record.
+     * @param string $table Target table name.
+     * @return object Schema-compatible record.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -587,6 +654,11 @@ final class XmlProjectVenueTeamImportService
         return $row;
     }
 
+    /**
+     * Trim the imported country value and translate numeric legacy country identifiers using the historical country-code mapping. Preserve nonnumeric or unmapped values.
+     * @param string $country Source country value.
+     * @return string Country code or unchanged unmapped value.
+     */
     private function normaliseCountry(string $country): string
     {
         $country = trim($country);
