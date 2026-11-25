@@ -46,6 +46,11 @@ final class RankingProjectFacade
     public static $roundslug = '';
     public static $layout = '';
 
+    /**
+     * Install the native project model and synchronise the public legacy ranking state with its current project.
+     * @param SportsManagementProjectModel $model Native project model.
+     * @return void
+     */
     public static function setModel(SportsManagementProjectModel $model): void
     {
         self::$model = $model;
@@ -53,6 +58,12 @@ final class RankingProjectFacade
         self::synchroniseLegacyState(self::$projectid);
     }
 
+    /**
+     * Select a legacy ranking project, reset cached project and round state and refresh the context for the requested database selector.
+     * @param mixed $id Project identifier.
+     * @param mixed $databaseSelector Legacy database choice.
+     * @return void
+     */
     public static function setProjectID($id, $databaseSelector = 0): void
     {
         self::$projectid = max(0, (int) $id);
@@ -62,6 +73,13 @@ final class RankingProjectFacade
         self::synchroniseLegacyState(self::$projectid);
     }
 
+    /**
+     * Return the ranking template configuration through the native model for its current project or load the requested project's own configuration and defaults.
+     * @param mixed $template Template name.
+     * @param mixed $databaseSelector Legacy database choice.
+     * @param mixed $context Retained compatibility argument, unused.
+     * @return array Effective template options.
+     */
     public static function getTemplateConfig($template, $databaseSelector = 0, $context = ''): array
     {
         self::$cfg_which_database = (int) $databaseSelector;
@@ -74,6 +92,12 @@ final class RankingProjectFacade
         return self::loadTemplateConfigForProject((string) $template, $projectId);
     }
 
+    /**
+     * Refresh and return the selected project metadata while retaining the legacy database selection.
+     * @param mixed $databaseSelector Legacy database choice.
+     * @param mixed $context Retained compatibility argument, unused.
+     * @return object|null Current project or null.
+     */
     public static function getProject($databaseSelector = 0, $context = ''): ?object
     {
         self::$cfg_which_database = (int) $databaseSelector;
@@ -83,6 +107,11 @@ final class RankingProjectFacade
         return self::$_project;
     }
 
+    /**
+     * Refresh public legacy project, season, round, division and layout properties from the native model, alternate project lookup and active request.
+     * @param int $projectId Project identifier, or zero to use the model context.
+     * @return void
+     */
     private static function synchroniseLegacyState(int $projectId): void
     {
         $model = self::model();
@@ -106,6 +135,11 @@ final class RankingProjectFacade
         }
     }
 
+    /**
+     * Query project metadata and related sport, league, season and round records. Construct legacy route slugs and override the league image with the season-specific logo if available.
+     * @param int $projectId Positive project identifier.
+     * @return object|null Project metadata or null.
+     */
     private static function loadProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -165,6 +199,12 @@ final class RankingProjectFacade
         return $project;
     }
 
+    /**
+     * Merge XML template defaults with persisted project parameters, using the master project's configuration when no local override exists. Retain defaults if registry parsing fails.
+     * @param string $template Template name.
+     * @param int $projectId Project identifier.
+     * @return array Effective configuration.
+     */
     private static function loadTemplateConfigForProject(string $template, int $projectId): array
     {
         $defaults = self::loadDefaultTemplateConfig($template);
@@ -194,6 +234,12 @@ final class RankingProjectFacade
         }
     }
 
+    /**
+     * Read the stored parameter string for a project and template from the resolved database.
+     * @param string $template Template name.
+     * @param int $projectId Project identifier.
+     * @return string|null Stored parameters or null.
+     */
     private static function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = self::database();
@@ -208,6 +254,11 @@ final class RankingProjectFacade
         return $value === null ? null : (string) $value;
     }
 
+    /**
+     * Read default field values from the named template XML file, returning an empty array for missing or unreadable definitions.
+     * @param string $template Template name.
+     * @return array Field names mapped to their defaults.
+     */
     private static function loadDefaultTemplateConfig(string $template): array
     {
         $file = JPATH_SITE . '/components/com_sportsmanagement/settings/default/' . basename($template) . '.xml';
@@ -235,6 +286,10 @@ final class RankingProjectFacade
         return $defaults;
     }
 
+    /**
+     * Resolve the Joomla database service using the legacy ranking database selector.
+     * @return DatabaseInterface Effective database connection.
+     */
     private static function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
@@ -246,6 +301,11 @@ final class RankingProjectFacade
         );
     }
 
+    /**
+     * Return the installed native project model required by legacy ranking calls.
+     * @return SportsManagementProjectModel Active model.
+     * @throws \RuntimeException If no native model was installed.
+     */
     private static function model(): SportsManagementProjectModel
     {
         if (!self::$model instanceof SportsManagementProjectModel) {

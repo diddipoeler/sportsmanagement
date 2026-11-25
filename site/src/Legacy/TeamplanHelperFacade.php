@@ -30,6 +30,16 @@ final class TeamplanHelperFacade
     /** @var array<int, object|null> */
     private static array $favoriteSettingsCache = [];
 
+    /**
+     * Render the configured short, medium or full team name with favourite styling and optional expandable navigation icons. Wrap the result in the supplied link when present.
+     * @param object $team Team metadata.
+     * @param mixed $containerPrefix Prefix for the expandable menu identifier.
+     * @param array $config Team display options.
+     * @param mixed $isFav Favourite-team flag.
+     * @param mixed $link Optional outer link.
+     * @param mixed $databaseSelector Route database choice.
+     * @return string Team name markup.
+     */
     public static function formatTeamName($team, $containerPrefix, &$config, $isFav = 0, $link = null, $databaseSelector = 0): string
     {
         $output = '';
@@ -102,6 +112,14 @@ final class TeamplanHelperFacade
         return $link !== null ? HTMLHelper::link($link, $output) : $output;
     }
 
+    /**
+     * Build the enabled roster, schedule, club, statistics and other team navigation icons using project and team route slugs.
+     * @param object $team Team metadata.
+     * @param array $config Enabled navigation options.
+     * @param mixed $databaseSelector Route database choice.
+     * @param mixed $seasonId Route season identifier.
+     * @return string Navigation list markup or empty string.
+     */
     public static function showTeamIcons(&$team, &$config, $databaseSelector = 0, $seasonId = 0): string
     {
         if (!isset($team->projectteamid)) {
@@ -161,6 +179,11 @@ final class TeamplanHelperFacade
         return $output . '</ul>';
     }
 
+    /**
+     * Read and cache project favourite-team identifiers and text/background styling for the duration of the request.
+     * @param int $projectId Project identifier.
+     * @return object|null Favourite settings or null.
+     */
     public static function getProjectFavTeams(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -209,6 +232,15 @@ final class TeamplanHelperFacade
         );
     }
 
+    /**
+     * Render an image at the requested dimensions, selecting the configured placeholder when the original is unavailable. Optionally wrap it in a Highslide link.
+     * @param mixed $picture Image path or URL.
+     * @param mixed $altText Alternative text and tooltip.
+     * @param mixed $width Image width.
+     * @param mixed $height Image height.
+     * @param mixed $type Placeholder category.
+     * @return string Image markup or empty string.
+     */
     public static function getPictureThumb($picture, $altText, $width = 40, $height = 40, $type = 0): string
     {
         $picture = (string) $picture;
@@ -252,6 +284,11 @@ final class TeamplanHelperFacade
         return $useHighslide ? '<a href="' . $src . '" class="highslide">' . $image . '</a>' : $image;
     }
 
+    /**
+     * Map historical image categories to the corresponding component placeholder configuration.
+     * @param mixed $type Legacy image category.
+     * @return string Configured placeholder path.
+     */
     public static function getDefaultPlaceholder($type = 'player'): string
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -273,6 +310,12 @@ final class TeamplanHelperFacade
         };
     }
 
+    /**
+     * Check whether a nonempty image path refers to an existing local file or an HTTP(S) URL. Remote URLs are recognised without checking network availability.
+     * @param mixed $picture Image path or URL.
+     * @param mixed $standard Retained compatibility argument, unused.
+     * @return bool Whether the image is recognised.
+     */
     public static function existPicture($picture = '', $standard = ''): bool
     {
         $picture = (string) $picture;
@@ -290,11 +333,26 @@ final class TeamplanHelperFacade
         return is_file($path);
     }
 
+    /**
+     * Delegate the match outcome calculation for the selected project team to the native result helper.
+     * @param mixed $game Match record.
+     * @param mixed $projectTeamId Project-team identifier.
+     * @return mixed Outcome returned by the native helper.
+     */
     public static function getTeamMatchResult($game, $projectTeamId)
     {
         return MatchResultHelper::outcome($game, (int) $projectTeamId);
     }
 
+    /**
+     * Assemble the name prefix, given name, nickname, surname and initials according to the historical numbered teamplan formatting rules.
+     * @param mixed $prefix Optional name prefix.
+     * @param mixed $firstName Given name.
+     * @param mixed $nickName Nickname.
+     * @param mixed $lastName Surname.
+     * @param mixed $format Legacy formatting identifier.
+     * @return string Formatted name.
+     */
     public static function formatName($prefix, $firstName, $nickName, $lastName, $format): string
     {
         $name = [];
@@ -391,6 +449,12 @@ final class TeamplanHelperFacade
         return implode(' ', $name);
     }
 
+    /**
+     * Append a nonempty name fragment to the ordered formatting buffer.
+     * @param array $parts Name fragments, updated by reference.
+     * @param string $value Candidate fragment.
+     * @return void
+     */
     private static function append(array &$parts, string $value): void
     {
         if ($value !== '') {
@@ -398,6 +462,11 @@ final class TeamplanHelperFacade
         }
     }
 
+    /**
+     * Keep an HTTP(S) image URL unchanged or convert a local image path into a site-relative URL using the Joomla installation root.
+     * @param string $picture Image path or URL.
+     * @return string Image URL.
+     */
     private static function pictureUrl(string $picture): string
     {
         if (preg_match('#^https?://#i', $picture)) {
@@ -410,6 +479,10 @@ final class TeamplanHelperFacade
         return rtrim(Uri::root(true), '/') . '/' . ltrim(str_replace('\\', '/', $relative), '/');
     }
 
+    /**
+     * Return the primary Joomla database service used by the teamplan compatibility helper.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function database(): DatabaseInterface
     {
         return Factory::getContainer()->get(DatabaseInterface::class);

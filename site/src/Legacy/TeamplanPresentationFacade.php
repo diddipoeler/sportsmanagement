@@ -38,6 +38,16 @@ final class TeamplanPresentationFacade
     /** @var array<int, object|null> */
     private static array $playgroundCache = [];
 
+    /**
+     * Delegate match events and substitutions to the native presentation helper when a match object is available.
+     * @param mixed $matchInfo Match record.
+     * @param mixed $projectevents Project event definitions.
+     * @param mixed $matchevents Recorded match events.
+     * @param mixed $substitutions Match substitutions.
+     * @param mixed $config Display settings.
+     * @param mixed $project Retained compatibility argument, unused.
+     * @return string Event markup.
+     */
     public static function showEventsContainerInResults(
         $matchInfo = [],
         $projectevents = [],
@@ -59,6 +69,20 @@ final class TeamplanPresentationFacade
         );
     }
 
+    /**
+     * Delegate the historical modal-image call to the native renderer, normalising the thumbnail height to at least one pixel.
+     * @param mixed $target Modal target identifier.
+     * @param mixed $picture Image path.
+     * @param mixed $text Image label.
+     * @param mixed $pictureheight Thumbnail height.
+     * @param mixed $url Optional image link.
+     * @param mixed $width Modal width.
+     * @param mixed $height Modal height.
+     * @param mixed $useJqueryModal Modal mode.
+     * @param mixed $schemaorg Structured-data attribute.
+     * @param mixed $schemaorgvalue Structured-data value.
+     * @return string Modal image markup.
+     */
     public static function getBootstrapModalImage(
         $target = '',
         $picture = '',
@@ -85,6 +109,14 @@ final class TeamplanPresentationFacade
         );
     }
 
+    /**
+     * Delegate formatting of the match time to the native time helper with the template, overall and project settings.
+     * @param mixed $game Match data.
+     * @param mixed $config Template options.
+     * @param mixed $overallconfig Overall options.
+     * @param mixed $project Project context.
+     * @return string Formatted match time.
+     */
     public static function showMatchTime(&$game, &$config, &$overallconfig, &$project): string
     {
         return MatchTimeHelper::format(
@@ -95,6 +127,13 @@ final class TeamplanPresentationFacade
         );
     }
 
+    /**
+     * Render the native outcome icon for a selected project team when a match record is available.
+     * @param mixed $game Match data.
+     * @param mixed $projectteamId Project-team identifier.
+     * @param mixed $attributes Retained compatibility argument, unused.
+     * @return string Outcome icon markup.
+     */
     public static function getThumbUpDownImg($game, $projectteamId, $attributes = null): string
     {
         if (!is_object($game)) {
@@ -104,6 +143,14 @@ final class TeamplanPresentationFacade
         return MatchResultHelper::renderOutcomeIcon($game, (int) $projectteamId);
     }
 
+    /**
+     * Render the home and away division labels with optional ranking links. Applies reversed home/away display and updates the supplied team objects when an explicit division is resolved.
+     * @param mixed $hometeam Home team.
+     * @param mixed $guestteam Away team.
+     * @param mixed $config Division presentation options.
+     * @param mixed $divisionId Optional division ID or slug.
+     * @return string Division markup or nonbreaking space.
+     */
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $divisionId = 0): string
     {
         if (!is_object($hometeam) || !is_object($guestteam)) {
@@ -144,6 +191,12 @@ final class TeamplanPresentationFacade
         return $output !== '' ? $output : '&nbsp;';
     }
 
+    /**
+     * Resolve the match venue from the match, home team or club default. Echo the venue link, alternative-venue warning or dash according to the display settings.
+     * @param mixed $game Match data.
+     * @param mixed $config Venue presentation settings.
+     * @return string Empty string; markup is emitted directly.
+     */
     public static function showMatchPlayground(&$game, $config = []): string
     {
         if (!is_object($game) || (empty($config['show_playground']) && empty($config['show_playground_alert']))) {
@@ -218,6 +271,13 @@ final class TeamplanPresentationFacade
         return '';
     }
 
+    /**
+     * Escape a division label and optionally link it to the project ranking using the shared route context.
+     * @param object $team Team with division metadata.
+     * @param string $property Preferred label field.
+     * @param array $config Division display options.
+     * @return string Division label markup.
+     */
     private static function divisionLabel(object $team, string $property, array $config): string
     {
         $label = (string) ($team->{$property} ?? $team->division_name ?? '');
@@ -245,6 +305,11 @@ final class TeamplanPresentationFacade
         return HTMLHelper::link($link, $label);
     }
 
+    /**
+     * Fetch the identifier, alias and display names for the requested division.
+     * @param int $divisionId Division identifier.
+     * @return object|null Division record or null.
+     */
     private static function loadDivision(int $divisionId): ?object
     {
         $db = self::database();
@@ -262,6 +327,11 @@ final class TeamplanPresentationFacade
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Read the default venue identifier assigned to the club.
+     * @param int $clubId Club identifier.
+     * @return int Venue identifier or zero.
+     */
     private static function loadClubStandardPlayground(int $clubId): int
     {
         $db = self::database();
@@ -274,6 +344,11 @@ final class TeamplanPresentationFacade
         return (int) $db->loadResult();
     }
 
+    /**
+     * Load and cache venue metadata by identifier for subsequent teamplan rows.
+     * @param int $playgroundId Venue identifier.
+     * @return object|null Venue record or null.
+     */
     private static function loadPlayground(int $playgroundId): ?object
     {
         if (array_key_exists($playgroundId, self::$playgroundCache)) {
@@ -291,6 +366,11 @@ final class TeamplanPresentationFacade
         return self::$playgroundCache[$playgroundId];
     }
 
+    /**
+     * Extract the numeric prefix from a legacy ID:alias slug and clamp negative integer conversions to zero.
+     * @param mixed $value Legacy identifier or slug.
+     * @return int Nonnegative converted identifier.
+     */
     private static function normaliseId(mixed $value): int
     {
         if (is_string($value) && str_contains($value, ':')) {
@@ -300,6 +380,10 @@ final class TeamplanPresentationFacade
         return max(0, (int) $value);
     }
 
+    /**
+     * Return the primary Joomla database service for compatibility venue and division queries.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function database(): DatabaseInterface
     {
         return Factory::getContainer()->get(DatabaseInterface::class);

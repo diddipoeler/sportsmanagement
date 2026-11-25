@@ -42,6 +42,10 @@ final class TeamplanCommentsFacade
     private bool $separateComments = false;
     private bool $jcommentsAvailable = false;
 
+    /**
+     * Select the installed comment integration for the team plan. Prefers Kunena when configured, otherwise initialises JComments or logs the absence of a supported component.
+     * @param array $config Project comment display settings.
+     */
     private function __construct(array $config)
     {
         if (!empty($config['show_project_kunena_link']) && ComponentHelper::isEnabled('com_kunena')) {
@@ -59,11 +63,20 @@ final class TeamplanCommentsFacade
         Log::add(Text::_('Es ist keine Kommentarkomponente installiert'));
     }
 
+    /**
+     * Create a comment facade through the historical template factory interface. Converts the supplied configuration to an array before selecting the integration.
+     * @param mixed $config Legacy project configuration passed by reference.
+     * @return self Configured comment facade.
+     */
     public static function CreateInstance(&$config): self
     {
         return new self((array) $config);
     }
 
+    /**
+     * Determine whether the selected comment integration is available. Kunena is enabled by selection; JComments additionally requires its model to load.
+     * @return bool Whether comments can be displayed.
+     */
     public function isEnabled(): bool
     {
         return match ($this->mode) {
@@ -73,6 +86,15 @@ final class TeamplanCommentsFacade
         };
     }
 
+    /**
+     * Dispatch match comment rendering to the active integration or unavailable fallback.
+     * @param object $match Match record.
+     * @param object $hometeam Home team record.
+     * @param object $guestteam Away team record.
+     * @param array $config Comment display options.
+     * @param object $project Project routing and forum settings.
+     * @return string Comment link markup.
+     */
     public function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project): string
     {
         return match ($this->mode) {
@@ -82,6 +104,15 @@ final class TeamplanCommentsFacade
         };
     }
 
+    /**
+     * Look up the forum topic matching the home and away team names in the project category. Link to the existing topic or its creation form and show the recorded post count.
+     * @param object $match Match record.
+     * @param object $hometeam Home team.
+     * @param object $guestteam Away team.
+     * @param array $config Comment display options.
+     * @param object $project Project forum category.
+     * @return string Forum link markup.
+     */
     private function showKunenaCommentIcon(object $match, object $hometeam, object $guestteam, array $config, object $project): string
     {
         $matchHome = preg_replace('|<[^>]*>|', '', (string) ($hometeam->name ?? '')) ?? '';
@@ -115,6 +146,13 @@ final class TeamplanCommentsFacade
         return HTMLHelper::link($link, $hrefText);
     }
 
+    /**
+     * Count published comments for the match using the configured shared or separate object group. Falls back to the unavailable icon if the JComments model cannot be used.
+     * @param object $match Match record.
+     * @param array $config Comment display options.
+     * @param object $project Project route context.
+     * @return string Match comment link markup.
+     */
     private function showJCommentsIcon(object $match, array $config, object $project): string
     {
         if (!$this->jcommentsAvailable || !class_exists('JCommentsModel')) {
@@ -141,6 +179,13 @@ final class TeamplanCommentsFacade
         );
     }
 
+    /**
+     * Render the zero-count label or inactive discussion image linking to the match when no comment integration is available.
+     * @param object $match Match record.
+     * @param array $config Comment display options.
+     * @param object $project Project route context.
+     * @return string Fallback link markup.
+     */
     private function showUnavailableIcon(object $match, array $config, object $project): string
     {
         $title = 'Comments not available';
@@ -155,6 +200,12 @@ final class TeamplanCommentsFacade
         return HTMLHelper::link($this->getSportsManagementMatchLink($match, $project), $hrefText);
     }
 
+    /**
+     * Build the component match report or next-match route according to whether a result exists, preserving request database and season context.
+     * @param object $match Match record.
+     * @param object $project Project containing the route slug.
+     * @return string Routed match URL.
+     */
     private function getSportsManagementMatchLink(object $match, object $project): string
     {
         $input = Factory::getApplication()->getInput();
@@ -168,6 +219,12 @@ final class TeamplanCommentsFacade
         return SiteRouteHelper::view(isset($match->team1_result) ? 'matchreport' : 'nextmatch', $parameters);
     }
 
+    /**
+     * Build a translated singular, plural or no-comment tooltip and render either a count or discussion icon according to the template setting.
+     * @param int $count Number of published comments or forum posts.
+     * @param array $config Comment count display settings.
+     * @return string Count or image markup.
+     */
     private function getHrefText(int $count, array $config): string
     {
         if ($count === 1) {
@@ -191,6 +248,10 @@ final class TeamplanCommentsFacade
         );
     }
 
+    /**
+     * Find the first menu entry whose link targets the Kunena home view on the Joomla database.
+     * @return int Menu identifier or zero if absent.
+     */
     private function findKunenaItemId(): int
     {
         $db = Factory::getContainer()->get(DatabaseInterface::class);
@@ -203,6 +264,10 @@ final class TeamplanCommentsFacade
         return (int) $db->loadResult();
     }
 
+    /**
+     * Load the optional JComments configuration and model files when present, then read the SportsManagement content plugin setting for separate match comment groups.
+     * @return void
+     */
     private function initialiseJComments(): void
     {
         $configFile = JPATH_ROOT . '/components/com_jcomments/classes/config.php';
