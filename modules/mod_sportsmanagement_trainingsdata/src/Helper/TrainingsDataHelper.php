@@ -89,6 +89,8 @@ final class TrainingsDataHelper
      * Joomla module layout. Accept only days 1 through 7 and seconds 0
      * through 86399 so invalid persisted values cannot become unrealistic
      * training times. Normalise decimal strings before template rendering.
+     * Reject malformed UTF-8 and embedded NUL bytes in location and notes
+     * while preserving valid multiline training descriptions.
      *
      * @param mixed $raw Database result returned by loadObjectList().
      * @return array<int,object> Validated object rows for the module template.
@@ -111,7 +113,8 @@ final class TrainingsDataHelper
 
                 if ((!is_string($value) && !is_int($value) && !is_float($value))
                     || (is_float($value) && !is_finite($value))
-                    || (is_string($value) && strlen($value) > 65536)) {
+                    || (is_string($value) && (strlen($value) > 65536
+                        || preg_match('//u', $value) !== 1 || str_contains($value, "\0")))) {
                     $value = '';
                 }
 
