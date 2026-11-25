@@ -199,6 +199,15 @@ class JSMsimpleGMapGeocoder
 				}
 				$row->address_string = implode(', ', $address_parts);
 				$row->type           = 'bar';
+
+				// Without an address there is nothing to geocode; skip the two external HTTP calls per member.
+				if ($row->address_string === '')
+				{
+					$row->lat = '';
+					$row->lng = '';
+					continue;
+				}
+
 				$coords              = $this->JLgetGeoCoords($row->address_string);
 				if ($coords["status"] == 'OK')
 				{
