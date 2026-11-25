@@ -151,7 +151,9 @@ namespace {
     }
 
     if (count(\Joomla\CMS\Log\Log::$entries) !== 2
-        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=secret')
+        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=secret')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'SQLSTATE')
         || \Joomla\CMS\Log\Log::$entries[0][2] !== 'com_sportsmanagement') {
         throw new \RuntimeException('Country query failures were not logged server-side.');
     }

@@ -6,12 +6,14 @@ on:
     paths:
       - 'site/src/Helper/CountryPresentationHelper.php'
       - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_country_database_failure_recovery.php'
       - '.github/workflows/joomla56-site-country-flag-hardening.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/src/Helper/CountryPresentationHelper.php'
       - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_country_database_failure_recovery.php'
       - '.github/workflows/joomla56-site-country-flag-hardening.yml'
   workflow_dispatch:
 
@@ -35,6 +37,7 @@ jobs:
         run: |
           php -l site/src/Helper/CountryPresentationHelper.php
           php -l .github/tests/joomla56_country_flag_safe_rendering.php
+          php -l .github/tests/joomla56_country_database_failure_recovery.php
       - name: Validate named function PHPDoc
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Helper/CountryPresentationHelper.php
@@ -43,3 +46,4 @@ jobs:
         run: |
           php .github/tests/joomla56_country_flag_safe_rendering.php
           php -n .github/tests/joomla56_country_flag_safe_rendering.php
+          php .github/tests/joomla56_country_database_failure_recovery.php

@@ -208,6 +208,7 @@ namespace {
 
     $db = new class implements \Joomla\Database\DatabaseInterface {
         public int $queries = 0;
+        public bool $failQuery = false;
         public ?object $last = null;
         /**
          * Build a chainable query fixture that records prepared bindings.
@@ -215,6 +216,10 @@ namespace {
          */
         public function createQuery(): object
         {
+            if ($this->failQuery) {
+                throw new \RuntimeException('SQLSTATE password=private');
+            }
+
             return new class {
                 public array $binds = [];
                 /**
@@ -336,6 +341,15 @@ namespace {
         ]), $db) !== [] || $db->queries !== $before + 1) {
             throw new \RuntimeException('Empty optional RandomPlayer team filter no longer permits all teams.');
         }
+    }
+
+    $db->failQuery = true;
+    \Joomla\CMS\Log\Log::$messages = [];
+    if ($module->getData(new \Joomla\Registry\Registry(['p' => ['7'], 's' => 12]), $db) !== []
+        || count(\Joomla\CMS\Log\Log::$messages) !== 1
+        || !str_contains(\Joomla\CMS\Log\Log::$messages[0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$messages[0], 'password=private')) {
+        throw new \RuntimeException('RandomPlayer database failures must return a safe empty result.');
     }
 
     echo "Joomla 5/6 person form, admin IDs and RandomPlayer selectors OK\n";

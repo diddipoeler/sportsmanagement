@@ -18,6 +18,20 @@ namespace Joomla\CMS\Application {
         public bool $deleteAllowed = false;
         public string $tmpPath = '';
 
+        /**
+         * Identify the fixture as Joomla's administrator application.
+         * @param string $client Requested Joomla application client.
+         * @return bool True for the backend client.
+         */
+        public function isClient(string $client): bool
+        {
+            return $client === 'administrator';
+        }
+
+        /**
+         * Return the configured administrator identity for ACL checks.
+         * @return object Identity fixture.
+         */
         public function getIdentity(): object
         {
             return new class($this) {
@@ -244,6 +258,12 @@ namespace {
     require_once $root . '/site/src/Controller/ImagehandlerController.php';
     require_once $root . '/modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php';
 
+    /**
+     * Assert an isolated security regression condition.
+     * @param bool $condition Expected invariant.
+     * @param string $message Diagnostic when the invariant fails.
+     * @return void
+     */
     function check(bool $condition, string $message): void
     {
         if (!$condition) {
@@ -257,11 +277,23 @@ namespace {
     $model = new class {
         public int $downloads = 0;
         public int $installs = 0;
-        public function CopyGithubLink(string $url): array
+        public mixed $response = [];
+
+        /**
+         * Record an update download and return the selected status fixture.
+         * @param string $url Configured archive URL.
+         * @return mixed Download response.
+         */
+        public function CopyGithubLink(string $url): mixed
         {
             ++$this->downloads;
-            return [];
+            return $this->response;
         }
+
+        /**
+         * Count handoffs to the Joomla installer without installing anything.
+         * @return void
+         */
         public function installfolder(): void
         {
             ++$this->installs;
@@ -292,9 +324,22 @@ namespace {
         'Invalid CSRF requests must never download or install packages.');
 
     $controller->tokenValid = true;
+    foreach ([false, [], [''], ['   '], [true], [['nested']], ['success', false]] as $failedResponse) {
+        $model->response = $failedResponse;
+        $before = $model->downloads;
+        $controller->CopyGithubLink();
+        check($model->downloads === $before + 1 && $model->installs === 0
+            && ($controller->redirect['type'] ?? '') === 'error' && $app->messages === [],
+            'Unconfirmed GitHub downloads must not trigger installation or success messages.');
+    }
+
+    $model->response = ['Komponente:' => 'Archive ready', 'Module:' => ''];
+    $before = $model->downloads;
     $controller->CopyGithubLink();
-    check($model->downloads === 1 && $model->installs === 1,
-        'Authorized GitHub update requests must preserve the installation workflow.');
+    check($model->downloads === $before + 1 && $model->installs === 1
+        && $app->messages === [['Archive ready', 'notice']],
+        'Authorized successful GitHub updates must preserve the installation workflow.');
+    $app->messages = [];
 
     // An older sportsmanagement-* directory must not be mistaken for
     // an archive just downloaded in the current request.
@@ -307,7 +352,7 @@ namespace {
     try {
         $githubModel = new GithubinstallModel();
         $app->userState['com_sportsmanagement.github_update_dir'] = $staleDirectory;
-        check($githubModel->CopyGithubLink('https://github.com/example/repo/archive.zip') === false,
+        check($githubModel->CopyGithubLink('https://github.com/diddipoeler/sportsmanagement/archive/refs/heads/joomla5-6.zip') === false,
             'An update without a matching extracted folder must reject stale directories.');
         check(array_key_exists('com_sportsmanagement.github_update_dir', $app->userState)
             && $app->userState['com_sportsmanagement.github_update_dir'] === null,

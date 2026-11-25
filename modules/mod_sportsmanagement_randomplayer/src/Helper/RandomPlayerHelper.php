@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -25,6 +26,9 @@ final class RandomPlayerHelper
      * Select a random eligible player for the Joomla module.
      *
      * Validates the season, project and database selectors, refuses malformed explicit team filters, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing or non-string optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
+     *
+     * Optional database failures return an empty result and log only the
+     * exception type so the surrounding frontend page remains available.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -51,35 +55,41 @@ final class RandomPlayerHelper
             return [];
         }
 
-        $db = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            $databaseSelector
-        );
-        $projectTeams = $this->getEligibleProjectTeams($db, $projectIds, $teamIds, $seasonId);
-
-        if (!$projectTeams) {
-            return [];
-        }
-
-        // A selected project team can have no eligible players. Try the
-        // remaining teams before displaying an empty module.
-        shuffle($projectTeams);
-        $players = [];
-
-        foreach ($projectTeams as $projectTeam) {
-            $players = $this->getPlayersForProjectTeam(
-                $db,
-                (int) $projectTeam->projectteam_id,
-                (int) $projectTeam->project_id,
-                $seasonId
+        try {
+            $db = SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                $databaseSelector
             );
+            $projectTeams = $this->getEligibleProjectTeams($db, $projectIds, $teamIds, $seasonId);
 
-            if ($players) {
-                break;
+            if (!$projectTeams) {
+                return [];
             }
-        }
 
-        if (!$players) {
+            // A selected project team can have no eligible players. Try the
+            // remaining teams before displaying an empty module.
+            shuffle($projectTeams);
+            $players = [];
+
+            foreach ($projectTeams as $projectTeam) {
+                $players = $this->getPlayersForProjectTeam(
+                    $db,
+                    (int) $projectTeam->projectteam_id,
+                    (int) $projectTeam->project_id,
+                    $seasonId
+                );
+
+                if ($players) {
+                    break;
+                }
+            }
+
+            if (!$players) {
+                return [];
+            }
+        } catch (\Throwable $e) {
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+
             return [];
         }
 

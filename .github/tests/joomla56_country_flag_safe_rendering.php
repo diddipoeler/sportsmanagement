@@ -284,7 +284,8 @@ namespace {
         }
 
         if (count(\Joomla\CMS\Log\Log::$messages) !== 1
-            || !str_contains(\Joomla\CMS\Log\Log::$messages[0][0], 'broken country row iterator')
+            || !str_contains(\Joomla\CMS\Log\Log::$messages[0][0], 'RuntimeException')
+            || str_contains(\Joomla\CMS\Log\Log::$messages[0][0], 'broken country row iterator')
             || \Joomla\CMS\Log\Log::$messages[0][2] !== 'com_sportsmanagement') {
             throw new \RuntimeException('Broken country iterator was not logged privately.');
         }

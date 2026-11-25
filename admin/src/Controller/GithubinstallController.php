@@ -28,9 +28,9 @@ final class GithubinstallController extends BaseController
      * Missing identities, guests and malformed URL configuration never
      * trigger an archive download or package installation. The Joomla MVC
      * model must expose both installation actions and return a list of
-     * scalar messages before the installation is attempted. Empty model
-     * responses are treated as failures rather than triggering an install
-     * with no confirmed downloaded archive.
+     * text messages before the installation is attempted. Empty responses,
+     * responses containing non-text entries and lists without a nonempty
+     * status message are treated as failures.
      * @return void
      * @throws \RuntimeException If the current identity lacks admin rights.
      */
@@ -63,7 +63,7 @@ final class GithubinstallController extends BaseController
         // An empty or malformed model response is not evidence that the
         // archive was downloaded and extracted. Never run the installer just
         // because a third-party model happened to return an empty array.
-        if (!is_array($messages) || $messages === []) {
+        if (!self::hasDownloadStatus($messages)) {
             $this->setRedirect(
                 Route::_('index.php?option=com_sportsmanagement&view=githubinstall', false),
                 '',
@@ -74,12 +74,44 @@ final class GithubinstallController extends BaseController
         }
 
         foreach ($messages as $message) {
-            if (is_scalar($message) && (string) $message !== '') {
-                $this->app->enqueueMessage((string) $message, 'notice');
+            if (trim($message) !== '') {
+                $this->app->enqueueMessage($message, 'notice');
             }
         }
 
         $model->installfolder();
+    }
+
+    /**
+     * Check the download model's status response before handing off installation.
+     *
+     * Successful native downloads return an array of text messages. Empty
+     * placeholders may accompany real status messages, but false, nested
+     * values and lists containing only blank entries cannot confirm a
+     * successful archive preparation. No messages are displayed until the
+     * entire response is validated.
+     *
+     * @param mixed $messages Raw model response.
+     * @return bool Whether at least one nonempty text message is present.
+     */
+    private static function hasDownloadStatus(mixed $messages): bool
+    {
+        if (!is_array($messages) || $messages === []) {
+            return false;
+        }
+
+        $hasStatus = false;
+        foreach ($messages as $message) {
+            if (!is_string($message)) {
+                return false;
+            }
+
+            if (trim($message) !== '') {
+                $hasStatus = true;
+            }
+        }
+
+        return $hasStatus;
     }
 
     /**

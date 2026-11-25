@@ -247,6 +247,7 @@ final class CountryPresentationHelper
      * Validate three-letter codes and disregard malformed database rows
      * or non-iterable query results, and deduplicate ISO country codes.
      * Catch iterator and sorting failures to keep optional selectors safe.
+     * Log only the exception type, never driver messages or credentials.
      * @param DatabaseInterface $db Selected Joomla database.
      * @return array<int,object> Sorted country option objects.
      */
@@ -308,6 +309,12 @@ final class CountryPresentationHelper
 
             usort(
                 $options,
+                /**
+                 * Compare two validated options by their translated labels.
+                 * @param object $a First country option.
+                 * @param object $b Second country option.
+                 * @return int Natural case-insensitive ordering result.
+                 */
                 static fn (object $a, object $b): int => strnatcasecmp(
                     (string) ($a->text ?? ''),
                     (string) ($b->text ?? '')
@@ -318,7 +325,7 @@ final class CountryPresentationHelper
         } catch (\Throwable $e) {
             // Invalid iterators and malformed option objects should not
             // prevent the rest of the frontend view from rendering.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return [];
         }
@@ -372,7 +379,8 @@ final class CountryPresentationHelper
 
     /**
      * Load and cache a country record for the active frontend database.
-     * Log database failures privately and cache missing country records.
+     * Log database failure types without SQL or credential details and
+     * cache missing country records for the current request.
      * Reject malformed country codes and non-object database results before
      * using or caching them in Joomla's country presentation layer.
      * @param string $countryCode Country or FIFA lookup identifier.
@@ -421,7 +429,7 @@ final class CountryPresentationHelper
         } catch (\Throwable $e) {
             // Country labels and flags are optional presentation data. Do not
             // break the whole player/club page or expose SQL errors in HTML.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             if ($cacheKey !== null) {
                 self::$countries[$cacheKey] = null;
