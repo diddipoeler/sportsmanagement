@@ -25,12 +25,22 @@ final class MatchreportDataModel extends SportsManagementProjectModel
 {
     private int $matchId = 0;
 
+    /**
+     * Initialise the native match-report reader and retain the nonnegative match identifier supplied in the current request.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
         $this->matchId = max(0, $this->siteApplication()->getInput()->getInt('mid', 0));
     }
 
+    /**
+     * Load individual match records for the selected match, enrich each with the first participant's seasonal person type and mark doubles with person type two.
+     * @param int|null $matchId Optional match identifier overriding the request context.
+     * @return array Individual match records.
+     */
     public function getMatchSingleData(?int $matchId = null): array
     {
         $matchId ??= $this->matchId;
@@ -76,6 +86,11 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         return $rows;
     }
 
+    /**
+     * Load the assigned referees through their project and seasonal person relationships, excluding unpublished persons and adding person route slugs in position and assignment order.
+     * @param int|null $matchId Optional match identifier overriding the request context.
+     * @return array Referee records or an empty array on failure.
+     */
     public function getMatchReferees(?int $matchId = null): array
     {
         $matchId ??= $this->matchId;
@@ -126,6 +141,11 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load commentary records for the selected match in ascending event-time order.
+     * @param int|null $matchId Optional match identifier overriding the request context.
+     * @return array Commentary records or an empty array on failure.
+     */
     public function getMatchCommentary(?int $matchId = null): array
     {
         $matchId ??= $this->matchId;
@@ -151,6 +171,11 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load incoming and outgoing player details, positions and team information for recorded substitutions in the selected match and project context. Add the legacy person and team route slug fields.
+     * @param int|null $matchId Optional match identifier overriding the request context.
+     * @return array Substitution records or an empty array on failure.
+     */
     public function getMatchSubstitutions(?int $matchId = null): array
     {
         $matchId ??= $this->matchId;
@@ -247,6 +272,13 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load match events with team and player details, retaining events without an assigned person and excluding unpublished assigned persons. Optionally select event notes, append commentary records and sort the combined list by numeric event time.
+     * @param int|null $matchId Optional match identifier overriding the request context.
+     * @param bool $showComments Whether to select notes from match-event records; standalone commentary is appended independently.
+     * @param bool $sortDescending Whether to sort event times in descending order.
+     * @return array Combined event and commentary records.
+     */
     public function getMatchEvents(?int $matchId = null, bool $showComments = true, bool $sortDescending = false): array
     {
         $matchId ??= $this->matchId;
@@ -366,6 +398,11 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         return $events;
     }
 
+    /**
+     * Retrieve a venue record by its positive identifier using a bound query parameter.
+     * @param int $playgroundId Venue identifier.
+     * @return object|null Venue record or null if absent.
+     */
     public function getPlayground(int $playgroundId): ?object
     {
         if ($playgroundId <= 0) {
@@ -383,6 +420,11 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Enqueue the translated frontend database failure message with the exception code and message.
+     * @param Throwable $e Database exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(

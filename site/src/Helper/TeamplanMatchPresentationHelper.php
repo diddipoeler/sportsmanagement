@@ -19,6 +19,16 @@ use Joomla\CMS\Language\Text;
  */
 final class TeamplanMatchPresentationHelper
 {
+    /**
+     * Render distinct division labels for the participating teams in the configured home-away order. Optionally link each label to its ranking and use the configured separator.
+     * @param object $homeTeam Home team record.
+     * @param object|null $awayTeam Optional away team record.
+     * @param array $config Division display options.
+     * @param int $databaseSelector Database selector carried into links.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string Division labels or a nonbreaking space.
+     */
     public static function renderDivision(
         object $homeTeam,
         ?object $awayTeam,
@@ -74,6 +84,16 @@ final class TeamplanMatchPresentationHelper
             : '&nbsp;';
     }
 
+    /**
+     * Render the match venue or the home team's default venue when no explicit venue is assigned. Apply the configured alternative-venue warning and link to the venue details.
+     * @param object $match Match display record.
+     * @param object $homeTeam Home team record.
+     * @param array $config Venue presentation options.
+     * @param int $databaseSelector Database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string Venue link, placeholder or empty string.
+     */
     public static function renderPlayground(
         object $match,
         object $homeTeam,
@@ -139,6 +159,15 @@ final class TeamplanMatchPresentationHelper
         );
     }
 
+    /**
+     * Render a cancelled-match reason or the score in the configured team order, including overtime, shootout and partial-result details. Apply an alternative awarded result when present and link to the report or preview.
+     * @param object $match Match display record.
+     * @param array $config Score display options.
+     * @param int $databaseSelector Database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string Escaped score or cancellation markup.
+     */
     public static function renderScore(
         object $match,
         array $config,
@@ -202,6 +231,16 @@ final class TeamplanMatchPresentationHelper
         return HTMLHelper::link($link, $result);
     }
 
+    /**
+     * Sort the assigned referees by position and match ordering. Format team or person names, optionally link individual referees and present the assignments as a list or icon tooltip.
+     * @param array $referees Referee assignment records.
+     * @param array $config Referee display options.
+     * @param bool $teamsAsReferees Whether assignments represent teams.
+     * @param int $databaseSelector Database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string Referee markup or a dash.
+     */
     public static function renderReferees(
         array $referees,
         array $config,
@@ -278,6 +317,14 @@ final class TeamplanMatchPresentationHelper
         return implode('<br>', $labels);
     }
 
+    /**
+     * Build the match preview route with the current database, season and project context and render the history icon as its link label.
+     * @param object $match Match display record.
+     * @param int $databaseSelector Database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string History link markup.
+     */
     public static function renderHistoryLink(
         object $match,
         int $databaseSelector,
@@ -301,6 +348,15 @@ final class TeamplanMatchPresentationHelper
         );
     }
 
+    /**
+     * Select the report or preview destination according to the presence of a home result, then render the configured image or translated text label.
+     * @param object $match Match display record.
+     * @param array $config Report link options.
+     * @param int $databaseSelector Database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional project routing context.
+     * @return string Report or preview link markup.
+     */
     public static function renderMatchReportLink(
         object $match,
         array $config,
@@ -331,7 +387,13 @@ final class TeamplanMatchPresentationHelper
         );
     }
 
-    /** @return array<int, string> */
+    /**
+     * Pair semicolon-separated home and away partial scores by index in the requested team order, then append available overtime and shootout scores with translated labels.
+     * @param object $match Match display record.
+     * @param bool $switch Whether to reverse team order.
+     * @param string $separator Score separator.
+     * @return array<int,string> Formatted partial-result labels.
+     */
     private static function partResults(object $match, bool $switch, string $separator): array
     {
         $home = preg_split('/;/', (string) ($match->team1_result_split ?? ''), -1, PREG_SPLIT_NO_EMPTY) ?: [];
@@ -368,11 +430,21 @@ final class TeamplanMatchPresentationHelper
         return $details;
     }
 
+    /**
+     * Convert a stored score to display text, substituting a dash only for null or an empty string so zero remains visible.
+     * @param mixed $value Stored result value.
+     * @return string Score display value.
+     */
     private static function resultValue(mixed $value): string
     {
         return $value === null || $value === '' ? '-' : (string) $value;
     }
 
+    /**
+     * Escape a display string for HTML text and attributes using UTF-8 and both quote types.
+     * @param string $value Raw display value.
+     * @return string HTML-escaped value.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
