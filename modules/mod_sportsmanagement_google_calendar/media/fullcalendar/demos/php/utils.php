@@ -43,7 +43,7 @@ class Event
             if (($dateField === 'start' || array_key_exists($dateField, $array))
                 && (!is_string($value) || $value === '' || strlen($value) > 128
                     || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1)) {
-                throw new \\InvalidArgumentException('Invalid FullCalendar event date.');
+                throw new \InvalidArgumentException('Invalid FullCalendar event date.');
             }
         }
 

@@ -93,8 +93,10 @@ jobs:
           grep -q "set('layout', 'native')" "$dispatcher"
           grep -q 'getData(' "$dispatcher"
           grep -q 'canCreateArticles(' "$dispatcher"
-          grep -q 'registerAndUseStyle' "$dispatcher"
-          grep -q 'registerAndUseScript' "$dispatcher"
+          grep -q -- '->registerStyle(' "$dispatcher"
+          grep -q -- '->useStyle(' "$dispatcher"
+          grep -q -- '->registerScript(' "$dispatcher"
+          grep -q -- '->useScript(' "$dispatcher"
           grep -Fq "['version' => 'auto']" "$dispatcher"
           grep -q '#__sportsmanagement_project' /tmp/new-project-read.php
           grep -q '#__sportsmanagement_round' /tmp/new-project-read.php
@@ -134,7 +136,8 @@ jobs:
 
           grep -q 'option=com_ajax&module=sportsmanagement_new_project&method=createArticles&format=json' "$template"
           grep -q "form.token" "$template"
-          grep -q 'registerAndUseScript' "$dispatcher"
+          grep -q -- '->registerScript(' "$dispatcher"
+          grep -q -- '->useScript(' "$dispatcher"
           grep -q 'js/native.js' "$dispatcher"
           grep -q "addEventListener('click'" "$javascript"
           grep -q 'new FormData(form)' "$javascript"

@@ -54,14 +54,15 @@ $try = strpos($source, '        try {');
 $resolver = strpos($source, '$db = $this->database(');
 $teamIds = strpos($source, '$teamIds = $this->resolveTeamIds(');
 $query = strpos($source, '$query = $db->createQuery()');
-$fetch = strpos($source, '$rows = $db->loadObjectList()');
+$fetch = strpos($source, '$rawRows = $db->loadObjectList()');
+$normalise = strpos($source, '$rows = is_array($rawRows) ? $rawRows : [];');
 $catch = strpos($source, 'catch (\\Throwable $e)');
 
 if ($source === false
     || $try === false || $resolver === false || $teamIds === false
-    || $query === false || $fetch === false || $catch === false
+    || $query === false || $fetch === false || $normalise === false || $catch === false
     || !($try < $resolver && $resolver < $teamIds && $teamIds < $query
-        && $query < $fetch && $fetch < $catch)
+        && $query < $fetch && $fetch < $normalise && $normalise < $catch)
     || !str_contains(substr($source, $catch), '$rows = [];')
 ) {
     throw new RuntimeException('Birthday database resolution, query and fetch must share the failure handler.');

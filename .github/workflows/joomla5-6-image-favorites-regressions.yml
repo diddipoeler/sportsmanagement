@@ -49,7 +49,11 @@ jobs:
             admin/src/Service/GoogleCalendarMatchSynchronizer.php \
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
           php .github/tests/joomla5-6-image-favorites.php
-          grep -Fq -- "Log::add('SportsManagement Birthday query failed:" \
+          grep -Fq -- "Log::add('SportsManagement Birthday query failed (" \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          grep -Fq -- 'get_class($e)' \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          ! grep -Fq -- '$e->getMessage()' \
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
           ! grep -Fq -- '$app->enqueueMessage($e->getMessage()' \
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
