@@ -72,6 +72,11 @@ final class HtmlView extends BaseHtmlView
     public $selectType;
     public $recordID;
 
+    /**
+     * Normalise historical layout suffixes, register the shared footer template path and initialise the selected XML import screen before rendering it with the appropriate administrator toolbar title.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $layout = preg_replace('/_(?:3|4|5)$/', '', (string) $this->getLayout()) ?: 'default';
@@ -87,6 +92,11 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Prepare the administrator import screen using the current request, language and component settings. Load available import projects, templates and selection options through native models and initialise the selected layout.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     private function init($tpl = null): void
     {
         $app = self::administratorApplication();
@@ -167,6 +177,10 @@ final class HtmlView extends BaseHtmlView
         };
     }
 
+    /**
+     * Read the submitted XML import data and restore upload context from administrator user state. Load reference data and selection lists for mapping imported project entities to existing records.
+     * @return void
+     */
     private function displayForm(): void
     {
         $this->starttime = microtime(true);
@@ -268,6 +282,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Load parsed XML data and existing project update information, configure the update screen styling and provide navigation back to the control panel.
+     * @return void
+     */
     private function displayUpdate(): void
     {
         $app = self::administratorApplication();
@@ -286,6 +304,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
     }
 
+    /**
+     * Pass the posted import selections to the import model and expose its report, submitted data and start time for the result view.
+     * @return void
+     */
     private function displayInfo(): void
     {
         $input = self::administratorApplication()->getInput();
@@ -301,6 +323,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
     }
 
+    /**
+     * Build the entity selection popup for the record type and identifier retained in administrator user state. Populate the appropriate reference list and selection callback for the import form.
+     * @return void
+     */
     private function displaySelectpage(): void
     {
         $app = self::administratorApplication();
@@ -410,6 +436,14 @@ final class HtmlView extends BaseHtmlView
         $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE'));
     }
 
+    /**
+     * Prepend a translated selection prompt to the available reference records and render the Joomla select list with the supplied name and attributes.
+     * @param mixed $items Available selection options.
+     * @param string $label Translation key for the prompt.
+     * @param string $name Form field name.
+     * @param string $attributes Select element attributes.
+     * @return string Rendered selection list.
+     */
     private function selectionList($items, string $label, string $name, string $attributes): string
     {
         $options = [HTMLHelper::_('select.option', 0, Text::_($label))];
@@ -426,6 +460,12 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Read a state value from the assigned model when it supports state access, otherwise return the supplied fallback.
+     * @param string $key Model state key.
+     * @param mixed $default Fallback value.
+     * @return mixed Model state or fallback.
+     */
     private function defaultStateValue(string $key, mixed $default = null): mixed
     {
         $model = $this->getModel();
@@ -437,6 +477,13 @@ final class HtmlView extends BaseHtmlView
         return $default;
     }
 
+    /**
+     * Boot the SportsManagement component and create an administrator model using its MVC factory with the requested configuration.
+     * @param string $name Model name.
+     * @param array $config Model configuration.
+     * @return object Created model.
+     * @throws RuntimeException If the model cannot be created.
+     */
     private function createAdminModel(string $name, array $config = []): object
     {
         $model = self::administratorApplication()
@@ -450,6 +497,11 @@ final class HtmlView extends BaseHtmlView
 
         return $model;
     }
+    /**
+     * Resolve the administrator application from Joomla's dependency injection container and ensure that it belongs to the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the resolved application is not the administrator client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */

@@ -23,18 +23,24 @@ use RuntimeException;
  */
 final class XmlProjectMatchImportService
 {
+    /**
+     * Initialise the XML match importer with the target database connection used to insert match records and inspect the installed schema.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $roundMap
-     * @param array<int, int> $projectTeamMap
-     * @param array<int, int> $playgroundMap
-     * @param array<int, int> $divisionMap
-     *
-     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>}
+     * Import match records from parsed XML, remap round, project-team, playground and division identifiers and skip records with unresolved required mappings. Normalise dates, translate legacy result fields and return the source-to-target match mapping and import report.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $roundMap Source round identifiers mapped to target identifiers.
+     * @param array<int,int> $projectTeamMap Source project-team identifiers mapped to target identifiers.
+     * @param array<int,int> $playgroundMap Source playground identifiers mapped to target identifiers.
+     * @param array<int,int> $divisionMap Source division identifiers mapped to target identifiers.
+     * @param string $importVersion Source import format version.
+     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>} Match mappings and status messages.
+     * @throws RuntimeException If a required match insertion fails.
      */
     public function import(
         array $parsedData,
@@ -116,6 +122,13 @@ final class XmlProjectMatchImportService
         ];
     }
 
+    /**
+     * Extract a nonnegative source team identifier, preferring the legacy matchpart field when present and otherwise using the current project-team field.
+     * @param object $source Imported match record.
+     * @param string $currentField Current project-team field name.
+     * @param string $legacyField Historical matchpart field name.
+     * @return int Source project-team identifier.
+     */
     private function sourceProjectTeamId(object $source, string $currentField, string $legacyField): int
     {
         if (property_exists($source, $legacyField)) {
@@ -125,6 +138,12 @@ final class XmlProjectMatchImportService
         return max(0, (int) ($source->{$currentField} ?? 0));
     }
 
+    /**
+     * Copy present historical matchpart result, bonus, leg, split, overtime and decision fields into their corresponding current match properties.
+     * @param object $row Target match record to update.
+     * @param object $source Imported match record.
+     * @return void
+     */
     private function applyLegacyMatchPartFields(object $row, object $source): void
     {
         $fields = [
@@ -149,6 +168,11 @@ final class XmlProjectMatchImportService
         }
     }
 
+    /**
+     * Convert an empty source date to the historical zero-date value and append seconds to dates containing only hours and minutes. Preserve other nonempty date strings.
+     * @param string $value Source match date.
+     * @return string Date string for storage.
+     */
     private function normaliseMatchDate(string $value): string
     {
         if ($value === '') {
@@ -162,6 +186,11 @@ final class XmlProjectMatchImportService
         return $value;
     }
 
+    /**
+     * Convert a source match date to a Unix timestamp using PHP date parsing, returning zero for empty, zero-date or unparseable values.
+     * @param string $value Source match date.
+     * @return int Unix timestamp or zero.
+     */
     private function timestamp(string $value): int
     {
         if ($value === '' || str_starts_with($value, '0000-00-00')) {
@@ -173,6 +202,11 @@ final class XmlProjectMatchImportService
         return $timestamp === false ? 0 : $timestamp;
     }
 
+    /**
+     * Copy source match properties supported by the installed match table schema, excluding the source primary key so a new target record can be inserted.
+     * @param object $source Imported match record.
+     * @return object Schema-compatible match record.
+     */
     private function filterSourceFields(object $source): object
     {
         $columns = $this->database->getTableColumns('#__sportsmanagement_match');
@@ -191,6 +225,17 @@ final class XmlProjectMatchImportService
         return $row;
     }
 
+    /**
+     * Format an escaped HTML report entry showing the source and target match identifiers, mapped round and team identifiers, date and source format.
+     * @param int $oldId Source match identifier.
+     * @param int $databaseId Inserted match identifier.
+     * @param int $roundId Target round identifier.
+     * @param int $homeId Target home project-team identifier.
+     * @param int $awayId Target away project-team identifier.
+     * @param string $matchDate Stored match date.
+     * @param string $importVersion Source format version.
+     * @return string HTML success report entry.
+     */
     private function createdMessage(
         int $oldId,
         int $databaseId,
@@ -217,6 +262,14 @@ final class XmlProjectMatchImportService
             . '</strong><br />';
     }
 
+    /**
+     * Format an escaped HTML warning identifying a match skipped because its source round or team identifiers could not be resolved.
+     * @param int $oldId Source match identifier.
+     * @param int $roundId Source round identifier.
+     * @param int $homeId Source home project-team identifier.
+     * @param int $awayId Source away project-team identifier.
+     * @return string HTML warning entry.
+     */
     private function skippedMessage(int $oldId, int $roundId, int $homeId, int $awayId): string
     {
         return '<span style="color:red">Skipping match ID <strong>'
