@@ -19,14 +19,21 @@ use RuntimeException;
 /** Native writer for project XML import steps 23 and 24. */
 final class XmlProjectScheduleImportService
 {
+    /**
+     * Initialise the XML schedule importer with the target database used for training and round records.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $projectTeamMap
-     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>}
+     * Execute the training import from stage 23 and the round import from stage 24. Collect the source-to-target round identifiers and the corresponding import reports.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param array<int,int> $projectTeamMap Source project-team IDs mapped to target IDs.
+     * @param string $step Current import stage.
+     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>} Round mappings and import reports.
      */
     public function import(
         array $parsedData,
@@ -55,8 +62,12 @@ final class XmlProjectScheduleImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $projectTeamMap
+     * Import training sessions for mapped project teams after resolving their underlying team identifiers. Skip unresolved teams and reuse an existing session when its project, team, weekday and time range match.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param array<int,int> $projectTeamMap Source project-team IDs mapped to target IDs.
+     * @return string HTML training import report.
+     * @throws RuntimeException If a training record cannot be inserted.
      */
     private function importTraining(array $parsedData, int $projectId, array $projectTeamMap): string
     {
@@ -113,8 +124,11 @@ final class XmlProjectScheduleImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @return array{map:array<int,int>,message:string}
+     * Insert the imported rounds for the target project using schema-compatible fields, a generated URL alias and the historical matchcode when present. Record the newly assigned identifiers for subsequent match imports.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @return array{map:array<int,int>,message:string} Round mapping and HTML report.
+     * @throws RuntimeException If a round insertion fails.
      */
     private function importRounds(array $parsedData, int $projectId): array
     {
@@ -152,6 +166,11 @@ final class XmlProjectScheduleImportService
         return ['map' => $map, 'message' => $message];
     }
 
+    /**
+     * Resolve the underlying team identifier through the project-team and season-team relationship.
+     * @param int $projectTeamId Target project-team identifier.
+     * @return int Team identifier or zero.
+     */
     private function findRawTeamId(int $projectTeamId): int
     {
         $query = $this->database->createQuery()
@@ -169,6 +188,16 @@ final class XmlProjectScheduleImportService
         return (int) ($this->database->loadResult() ?? 0);
     }
 
+    /**
+     * Check for an existing training session with the same project, underlying team, project team, weekday and start and end times.
+     * @param int $projectId Project identifier.
+     * @param int $teamId Underlying team identifier.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $dayOfWeek Stored weekday value.
+     * @param int $timeStart Stored start time.
+     * @param int $timeEnd Stored end time.
+     * @return bool Whether a matching session exists.
+     */
     private function trainingExists(
         int $projectId,
         int $teamId,
@@ -197,6 +226,12 @@ final class XmlProjectScheduleImportService
         return $this->database->loadResult() !== null;
     }
 
+    /**
+     * Copy supported source record fields into a new object, excluding the foreign primary key so the database can assign a new identifier.
+     * @param object $source Imported XML record.
+     * @param string $table Target table name.
+     * @return object Filtered record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -215,24 +250,47 @@ final class XmlProjectScheduleImportService
         return $row;
     }
 
+    /**
+     * Render a success report entry for newly inserted data, escaping the supplied display value.
+     * @param string $label Internal record-type label.
+     * @param string $value Record name or identifier.
+     * @return string HTML report entry.
+     */
     private function createdMessage(string $label, string $value): string
     {
         return '<span style="color:green">Created new ' . $label . ' data: </span><strong>'
             . $this->escape($value) . '</strong><br />';
     }
 
+    /**
+     * Render an informational report entry for a reused existing record, escaping the supplied display value.
+     * @param string $label Internal record-type label.
+     * @param string $value Record name or identifier.
+     * @return string HTML report entry.
+     */
     private function existingMessage(string $label, string $value): string
     {
         return '<span style="color:orange">Using existing ' . $label . ' data: </span><strong>'
             . $this->escape($value) . '</strong><br />';
     }
 
+    /**
+     * Render a warning report entry identifying the source record skipped during import.
+     * @param string $label Internal record-type label.
+     * @param int $oldId Source record identifier.
+     * @return string HTML warning entry.
+     */
     private function skippedMessage(string $label, int $oldId): string
     {
         return '<span style="color:red">Skipping ' . $label . ' source ID: </span><strong>'
             . $oldId . '</strong><br />';
     }
 
+    /**
+     * Escape a display value for HTML import reports, including both single and double quotes using UTF-8.
+     * @param string $value Display value.
+     * @return string HTML-escaped value.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

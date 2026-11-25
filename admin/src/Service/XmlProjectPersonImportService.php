@@ -23,6 +23,11 @@ final class XmlProjectPersonImportService
 {
     private readonly PlaygroundGeocoder $geocoder;
 
+    /**
+     * Initialise the XML person importer with the target database and an optional geocoder, creating the default geocoder when none is supplied.
+     * @param DatabaseInterface $database Target database connection.
+     * @param PlaygroundGeocoder|null $geocoder Optional geocoder.
+     */
     public function __construct(
         private readonly DatabaseInterface $database,
         ?PlaygroundGeocoder $geocoder = null
@@ -31,10 +36,10 @@ final class XmlProjectPersonImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Prepare imported person records for the selected season. Validate explicit existing-person selections, match new candidates by identity, resolve position mappings and ensure seasonal person assignments. Return the updated import form selections.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated person selections.
      */
     public function prepare(array $post, array $parsedData): array
     {
@@ -179,7 +184,12 @@ final class XmlProjectPersonImportService
         return $post;
     }
 
-    /** @return array<int, int> */
+    /**
+     * Collect positive source-to-target position identifiers from the parent-position and position import selections, allowing later mappings to replace earlier ones.
+     * @param array<string,mixed> $post Current import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<int,int> Source position IDs mapped to target IDs.
+     */
     private function buildPositionIdMap(array $post, array $parsedData): array
     {
         $map = [];
@@ -213,6 +223,14 @@ final class XmlProjectPersonImportService
         return $map;
     }
 
+    /**
+     * Update the existing person's information and age-group assignment only when those columns are supported by the installed schema. Skip the update if neither field exists.
+     * @param int $personId Target person identifier.
+     * @param object $source Imported person record.
+     * @param int $ageGroupId Selected age-group identifier.
+     * @return void
+     * @throws RuntimeException If the update fails.
+     */
     private function updateExistingPerson(int $personId, object $source, int $ageGroupId): void
     {
         $columns = $this->database->getTableColumns('#__sportsmanagement_person');
@@ -235,6 +253,13 @@ final class XmlProjectPersonImportService
         }
     }
 
+    /**
+     * Ensure that a positive person and season have a seasonal assignment of player type with team identifier zero. Reuse an existing relation and insert one only when none exists.
+     * @param int $personId Person identifier.
+     * @param int $seasonId Season identifier.
+     * @return void
+     * @throws RuntimeException If insertion fails.
+     */
     private function ensureSeasonPerson(int $personId, int $seasonId): void
     {
         if ($personId <= 0 || $seasonId <= 0) {
@@ -272,6 +297,11 @@ final class XmlProjectPersonImportService
         }
     }
 
+    /**
+     * Look up the target person identifier using a bound primary-key parameter to verify that a selected person exists.
+     * @param int $id Target person identifier.
+     * @return object|null Matching record or null.
+     */
     private function findById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -284,6 +314,14 @@ final class XmlProjectPersonImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find a person matching the exact last name, first name, nickname and birthday to avoid creating duplicate person records during import.
+     * @param string $lastname Last name.
+     * @param string $firstname First name.
+     * @param string $nickname Nickname.
+     * @param string $birthday Birthday string.
+     * @return object|null Matching person or null.
+     */
     private function findByIdentity(
         string $lastname,
         string $firstname,
@@ -306,6 +344,12 @@ final class XmlProjectPersonImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Copy source properties supported by the target table, excluding the source primary key and converting scalar values to strings.
+     * @param object $source Imported record.
+     * @param string $table Target table name.
+     * @return object Filtered insert record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -324,6 +368,12 @@ final class XmlProjectPersonImportService
         return $row;
     }
 
+    /**
+     * Retain only properties present in the installed target table schema while preserving their supplied values.
+     * @param object $source Proposed record.
+     * @param string $table Target table name.
+     * @return object Schema-compatible record.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -338,6 +388,11 @@ final class XmlProjectPersonImportService
         return $row;
     }
 
+    /**
+     * Trim the imported country value and convert numeric legacy country identifiers using the historical country-code table. Preserve nonnumeric and unmapped values.
+     * @param string $country Source country value.
+     * @return string Country code or unmapped value.
+     */
     private function normaliseCountry(string $country): string
     {
         $country = trim($country);
