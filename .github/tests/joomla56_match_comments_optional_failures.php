@@ -14,18 +14,79 @@ namespace Joomla\Database {
     interface DatabaseInterface {}
 }
 
+namespace Joomla\Event {
+    final class Event
+    {
+        /**
+         * Hold the ordered arguments passed to a native event listener.
+         * @param string $name Event name.
+         * @param array $arguments Positional arguments and result values.
+         */
+        public function __construct(public string $name, private array $arguments) {}
+
+        /**
+         * Read a mutated event argument or its fallback.
+         * @param int|string $key Event argument key.
+         * @param mixed $default Value when absent.
+         * @return mixed Stored argument.
+         */
+        public function getArgument(int|string $key, mixed $default = null): mixed
+        {
+            return $this->arguments[$key] ?? $default;
+        }
+
+        /**
+         * Store the subscriber's output in the event.
+         * @param int|string $key Event argument key.
+         * @param mixed $value Listener output.
+         * @return void
+         */
+        public function setArgument(int|string $key, mixed $value): void
+        {
+            $this->arguments[$key] = $value;
+        }
+    }
+}
+
 namespace Joomla\CMS\Application {
     class SiteApplication
     {
         public static bool $failComments = false;
 
-        public function triggerEvent(string $eventName, array $arguments): array
-        {
-            if (self::$failComments) {
-                throw new \RuntimeException('JComments plugin private path /srv/passwords');
-            }
+        public static string $lastEvent = '';
 
-            return ['comment rendered'];
+        /**
+         * Provide a native dispatcher instead of the legacy application API.
+         * @return object Dispatcher fixture that simulates a Joomla subscriber.
+         */
+        public function getDispatcher(): object
+        {
+            return new class {
+                /**
+                 * Mutate the HTML argument and return the dispatched event.
+                 * @param string $eventName Custom SportsManagement event name.
+                 * @param \Joomla\Event\Event $event Native event fixture.
+                 * @return \Joomla\Event\Event Event containing the plugin output.
+                 */
+                public function dispatch(string $eventName, \Joomla\Event\Event $event): \Joomla\Event\Event
+                {
+                    if (SiteApplication::$failComments) {
+                        throw new \RuntimeException('JComments plugin private path /srv/passwords');
+                    }
+
+                    if (!is_object($event->getArgument(0))
+                        || $event->getArgument(1) !== 'Team - Team'
+                        || $event->getArgument(2) !== '') {
+                        throw new \RuntimeException('Unexpected native event arguments.');
+                    }
+
+                    SiteApplication::$lastEvent = $eventName;
+                    $event->setArgument(2, '<div>comment rendered</div>');
+                    $event->setArgument('result', [true, '<div>comment rendered</div>', 'additional comment']);
+
+                    return $event;
+                }
+            };
         }
     }
 }
@@ -199,6 +260,17 @@ namespace {
             || !str_contains(\Joomla\CMS\Log\Log::$errors[2][0], 'RuntimeException')
             || str_contains(\Joomla\CMS\Log\Log::$errors[2][0], '/srv/passwords')) {
             throw new \RuntimeException('JComments failure was exposed to match visitors.');
+        }
+        \Joomla\CMS\Application\SiteApplication::$failComments = false;
+        if ($helper::render($match, $team, $team, [], $project) !== '<div>comment rendered</div>additional comment'
+            || \Joomla\CMS\Application\SiteApplication::$lastEvent !== 'onMatchComments') {
+            throw new \RuntimeException('Native event output or duplicate result handling regressed.');
+        }
+
+        (new \ReflectionProperty($helper, 'separateComments'))->setValue(null, true);
+        if ($helper::render($match, $team, $team, [], $project) !== '<div>comment rendered</div>additional comment'
+            || \Joomla\CMS\Application\SiteApplication::$lastEvent !== 'onMatchReportComments') {
+            throw new \RuntimeException('Separate match report comment event regressed.');
         }
     } finally {
         @unlink($pluginRoot . '/jcomments.class.php');

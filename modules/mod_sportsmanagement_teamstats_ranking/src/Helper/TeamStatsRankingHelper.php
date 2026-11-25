@@ -77,28 +77,26 @@ final class TeamStatsRankingHelper
     /**
      * Parse the optional SportsManagement database choice without coercion.
      *
-     * Accepts a nonnegative integer or a zero-padded decimal string while
-     * rejecting booleans, arrays, partially numeric values and overflow.
+     * Accepts only zero and one, including bounded zero-padded decimal
+     * strings. Rejects unsupported modes, booleans, arrays and overflow.
      * An invalid selection returns null so it cannot select the default
      * database and display statistics from an unintended connection.
      *
      * @param mixed $value Raw database selection from Joomla module settings.
-     * @return int|null Valid selector or null for invalid input.
+     * @return int|null Supported mode (0/1), or null for invalid input.
      */
     private static function databaseSelector(mixed $value): ?int
     {
-        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
             return null;
         }
 
-        if (is_string($value)) {
-            $digits = ltrim($value, '0');
-            $value = $digits === '' ? '0' : $digits;
-        }
-
-        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-        return $number === false ? null : $number;
+        return (int) $matches[1];
     }
 
     /**

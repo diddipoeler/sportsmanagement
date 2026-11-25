@@ -1,0 +1,31 @@
+name: Joomla 5/6 project panel counts
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/ProjectPanelService.php'
+      - '.github/tests/joomla56_project_panel_counts.php'
+      - '.github/workflows/joomla56-project-panel-counts.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  panel:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: |
+          php -l admin/src/Service/ProjectPanelService.php
+          php -l .github/tests/joomla56_project_panel_counts.php
+          php .github/scripts/check-php-function-docs.php admin/src/Service/ProjectPanelService.php
+          php .github/tests/joomla56_project_panel_counts.php

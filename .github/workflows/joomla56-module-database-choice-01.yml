@@ -7,6 +7,8 @@ on:
       - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
       - '.github/tests/joomla56_randomplayer_media_database.php'
       - '.github/tests/joomla56_module_database_choice_01.php'
       - '.github/workflows/joomla56-module-database-choice-01.yml'
@@ -16,6 +18,8 @@ on:
       - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
       - '.github/tests/joomla56_randomplayer_media_database.php'
       - '.github/tests/joomla56_module_database_choice_01.php'
       - '.github/workflows/joomla56-module-database-choice-01.yml'
@@ -35,7 +39,7 @@ jobs:
           coverage: none
       - name: PHP syntax and metadata
         run: |
-          for file in modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php .github/tests/joomla56_module_database_choice_01.php .github/tests/joomla56_randomplayer_media_database.php; do
+          for file in modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php .github/tests/joomla56_module_database_choice_01.php .github/tests/joomla56_randomplayer_media_database.php; do
             php -l "$file"
             for tag in @version @author @copyright @license; do
               grep -Fq "$tag" "$file"

@@ -24,6 +24,8 @@ $modules = [
      \Diddipoeler\Module\SportsManagementRanking\Site\Helper\RankingHelper::class],
     [$root . '/modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php',
      \Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper::class],
+    [$root . '/modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php',
+     \Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper::class],
 ];
 $cases = [
     [0, 0], [1, 1], ['0', 0], ['1', 1], ['0000', 0], ['0001', 1],

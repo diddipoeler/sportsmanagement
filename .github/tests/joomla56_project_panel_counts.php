@@ -1,0 +1,128 @@
+<?php
+/**
+ * Joomla 5/6 project panel bound-query and standard-position regression.
+ *
+ * @version    5.6.0
+ * @author     SportsManagement contributors
+ * @copyright  Copyright (C) 2026 SportsManagement contributors
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+declare(strict_types=1);
+
+namespace Joomla\Database {
+    interface DatabaseInterface {}
+    final class ParameterType
+    {
+        public const INTEGER = 'integer';
+    }
+}
+
+namespace {
+    define('_JEXEC', 1);
+    require dirname(__DIR__, 2) . '/admin/src/Service/ProjectPanelService.php';
+
+    final class PanelQuery
+    {
+        public array $bindings = [];
+
+        /** Accept selected columns for the fake query. @param mixed $columns Selected columns. @return self Query fixture. */
+        public function select(mixed $columns): self { return $this; }
+
+        /** Accept the source table. @param string $table SQL table. @return self Query fixture. */
+        public function from(string $table): self { return $this; }
+
+        /** Accept a SQL predicate. @param string $condition Predicate text. @return self Query fixture. */
+        public function where(string $condition): self { return $this; }
+
+        /**
+         * Verify and record typed parameters without connecting to a database.
+         * @param string $name Placeholder name.
+         * @param mixed $value Bound value.
+         * @param string $type Joomla parameter type.
+         * @return self Query fixture.
+         */
+        public function bind(string $name, mixed $value, string $type): self
+        {
+            if (!is_int($value) || $type !== 'integer') {
+                throw new \RuntimeException('Panel did not bind an integer parameter.');
+            }
+            $this->bindings[$name] = $value;
+            return $this;
+        }
+    }
+
+    final class PanelDatabase implements \Joomla\Database\DatabaseInterface
+    {
+        public array $counts = [];
+        public mixed $positions = [];
+        public array $queries = [];
+        public array $inserted = [];
+
+        /** Create a query double. @return PanelQuery New query fixture. */
+        public function createQuery(): PanelQuery { return new PanelQuery(); }
+
+        /** Preserve a trusted SQL name. @param string $name Table or column name. @return string Same name. */
+        public function quoteName(string $name): string { return $name; }
+
+        /**
+         * Record each prepared query for binding assertions.
+         * @param PanelQuery $query Prepared query.
+         * @return void
+         */
+        public function setQuery(PanelQuery $query): void { $this->queries[] = $query; }
+
+        /** Return the next simulated COUNT result. @return mixed Raw count. */
+        public function loadResult(): mixed { return array_shift($this->counts); }
+
+        /** Return simulated sport position IDs. @return mixed Raw position list. */
+        public function loadColumn(): mixed { return $this->positions; }
+
+        /**
+         * Record a standard-position insertion rather than writing to a database.
+         * @param string $table Target table.
+         * @param object $row Project-position association.
+         * @return bool Successful simulated insertion.
+         */
+        public function insertObject(string $table, object $row): bool
+        {
+            $this->inserted[] = [$table, $row->project_id, $row->position_id];
+            return true;
+        }
+    }
+
+    $db = new PanelDatabase();
+    $panel = new \Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectPanelService($db);
+    $project = (object) ['id' => '0005', 'sports_type_id' => 2, 'project_art_id' => 1];
+
+    foreach ([null, false, [], '2junk', -1, PHP_INT_MAX . '0'] as $badCount) {
+        $db->counts = [$badCount];
+        try {
+            $panel->getCounts($project);
+            throw new \RuntimeException('Malformed panel count was accepted.');
+        } catch (\UnexpectedValueException) {
+            if ($db->inserted !== []) {
+                throw new \RuntimeException('Malformed count triggered a standard position insertion.');
+            }
+        }
+    }
+
+    $db->queries = [];
+    $invalidProject = clone $project;
+    $invalidProject->id = ['5'];
+    if (array_sum($panel->getCounts($invalidProject)) !== 0 || $db->queries !== []) {
+        throw new \RuntimeException('Malformed project ID reached SQL.');
+    }
+
+    $db->positions = ['0007', 7, '8junk', ['9'], 8, false, 0];
+    $db->counts = ['0', '0', 1, 2, 0, 0, 3, 4];
+    $counts = $panel->getCounts($project);
+    if ($counts !== ['divisions' => 0, 'positions' => 2, 'referees' => 0, 'teams' => 3, 'rounds' => 4]
+        || $db->inserted !== [['#__sportsmanagement_project_position', 5, 7]]
+        || $db->queries[0]->bindings !== [':panelId' => 5]
+        || $db->queries[1]->bindings !== [':panelSport' => 2]
+        || $db->queries[2]->bindings !== [':panelProject' => 5, ':panelPosition' => 7]) {
+        throw new \RuntimeException('Standard position initialization or native query bindings regressed.');
+    }
+
+    echo "Joomla 5/6 project panel count and position checks passed.\n";
+}

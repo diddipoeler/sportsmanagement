@@ -22,6 +22,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 
 /**
@@ -166,7 +167,11 @@ final class MatchCommentsHelper
     }
 
     /**
-     * Run the JComments plugin event for a match if it is available.
+     * Dispatch the JComments event through Joomla's native event dispatcher.
+     * Retains the three positional arguments expected by existing listeners,
+     * using a string for the mutable HTML argument and collecting both the
+     * updated argument and returned event results. This supports the native
+     * subscriber plugin without the deprecated application triggerEvent API.
      * @param object $match Current match.
      * @param object $homeTeam Home team record.
      * @param object $awayTeam Away team record.
@@ -179,13 +184,18 @@ final class MatchCommentsHelper
         }
 
         $eventName = self::$separateComments ? 'onMatchReportComments' : 'onMatchComments';
-        $comments = [];
-        $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
+        $comments = '';
+        $homeName = is_string($homeTeam->name ?? null) ? $homeTeam->name : '';
+        $awayName = is_string($awayTeam->name ?? null) ? $awayTeam->name : '';
+        $title = trim($homeName . ' - ' . $awayName);
         $app = self::siteApplication();
-        $results = $app->triggerEvent($eventName, [$match, $title, &$comments]);
+        $event = new Event($eventName, [$match, $title, &$comments]);
+        $event = $app->getDispatcher()->dispatch($eventName, $event);
+        $rendered = $event->getArgument(2, $comments);
+        $results = $event->getArgument('result', []);
 
         $output = [];
-        foreach (array_merge((array) $comments, (array) $results) as $value) {
+        foreach (array_merge((array) $rendered, (array) $results) as $value) {
             if (is_string($value) && trim($value) !== '') {
                 $output[] = $value;
             }

@@ -8,9 +8,10 @@ on:
       - '.github/tests/joomla56_match_comments_optional_failures.php'
       - '.github/workflows/joomla5-6-site-match-comments.yml'
   pull_request:
-    branches: [master]
+    branches: [master, joomla5-6]
     paths:
       - 'site/src/Helper/MatchCommentsHelper.php'
+      - '.github/tests/joomla56_match_comments_optional_failures.php'
       - '.github/workflows/joomla5-6-site-match-comments.yml'
 
 jobs:
@@ -40,7 +41,9 @@ jobs:
               "ComponentHelper::isEnabled('com_jcomments')",
               'Factory::getContainer()->get(DatabaseInterface::class)',
               "PluginHelper::importPlugin('content', 'sportsmanagement_comments')",
-              'triggerEvent($eventName',
+              'new Event($eventName',
+              'getDispatcher()->dispatch($eventName, $event)',
+              "getArgument('result', [])",
           )
           for needle in expected:
               if needle not in text:
@@ -48,6 +51,7 @@ jobs:
 
           forbidden = (
               '$app->getContainer()',
+              '->triggerEvent(',
               'Factory::getDbo()',
               'Factory::getDBO()',
               'BaseDatabaseModel::getInstance(',
