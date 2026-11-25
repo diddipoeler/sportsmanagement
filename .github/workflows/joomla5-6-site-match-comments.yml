@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Helper/MatchCommentsHelper.php'
+      - '.github/tests/joomla56_match_comments_optional_failures.php'
       - '.github/workflows/joomla5-6-site-match-comments.yml'
   pull_request:
     branches: [master]
@@ -21,6 +22,9 @@ jobs:
 
       - name: Lint match comments helper
         run: php -l site/src/Helper/MatchCommentsHelper.php
+
+      - name: Optional comment failure regression
+        run: php .github/tests/joomla56_match_comments_optional_failures.php
 
       - name: Validate Joomla 5/6 comment adapter contracts
         shell: bash

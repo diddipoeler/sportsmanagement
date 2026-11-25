@@ -183,6 +183,18 @@ namespace {
         }
     }
 
+    // Invalid targets must not become a reached zero or execute SQL.
+    foreach ([-1, '12bad', ['12'], true, 1.5, str_repeat('9', 65)] as $target) {
+        $rows = $helper->getData(new \Joomla\Registry\Registry([
+            'jsm_stat_spielpaarungen' => 1,
+            'jsm_stat_paarungen' => $target,
+        ]), $module, $db);
+
+        if ($rows !== [] || $db->queries !== 0) {
+            throw new \RuntimeException('Malformed target executed SQL or rendered a false achievement.');
+        }
+    }
+
     $rows = $helper->getData(new \Joomla\Registry\Registry([
         'jsm_stat_spielpaarungen' => '1',
         'jsm_stat_paarungen' => '00100',

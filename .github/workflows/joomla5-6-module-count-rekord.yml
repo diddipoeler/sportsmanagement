@@ -9,6 +9,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
       - '.github/tests/joomla56_count_rekord.php'
+      - '.github/tests/joomla56_count_rekord_config_guards.php'
   pull_request:
     branches:
       - master
@@ -17,6 +18,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
       - '.github/tests/joomla56_count_rekord.php'
+      - '.github/tests/joomla56_count_rekord_config_guards.php'
 
 jobs:
   count-record-module:
@@ -57,6 +59,8 @@ jobs:
         run: |
           php -l .github/tests/joomla56_count_rekord.php
           php .github/tests/joomla56_count_rekord.php
+          php -l .github/tests/joomla56_count_rekord_config_guards.php
+          php .github/tests/joomla56_count_rekord_config_guards.php
 
       - name: Validate module manifest and update metadata
         shell: bash

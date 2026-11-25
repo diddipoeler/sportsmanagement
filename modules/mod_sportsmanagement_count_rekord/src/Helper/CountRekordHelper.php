@@ -28,7 +28,9 @@ final class CountRekordHelper
      * and represented as an empty collection to keep the site responsive.
      * False, null and malformed COUNT(*) results must not be mistaken for
      * zero fixtures. Malformed database selectors fail closed instead of silently falling
-     * back to an unrelated primary connection.
+     * back to an unrelated primary connection. Rejects malformed configured
+     * targets before querying rather than presenting them as a reached zero
+     * target; an explicit numeric zero remains valid.
      *
      * @param Registry $params Validated Joomla module parameters.
      * @param object $module Current Joomla module record, retained for compatibility.
@@ -45,7 +47,9 @@ final class CountRekordHelper
 
         $selector = self::databaseSelector($params->get('cfg_which_database', 0));
 
-        if ($selector === null) {
+        $target = self::recordCount($params->get('jsm_stat_paarungen', 0));
+
+        if ($selector === null || $target === null) {
             return [];
         }
 
@@ -70,7 +74,6 @@ final class CountRekordHelper
             return [];
         }
 
-        $target = self::nonNegativeInt($params->get('jsm_stat_paarungen', 0));
         $difference = max(0, $target - $count);
         $reached = $count >= $target;
 
@@ -88,15 +91,17 @@ final class CountRekordHelper
     }
 
     /**
-     * Interpret the database COUNT(*) result without hiding query failures.
+     * Interpret a database COUNT(*) result or configured numeric target.
+     * Invalid values remain distinct from an intentional zero so neither a
+     * failed query nor a malformed target can report a false achievement.
      *
      * Accepts nonnegative PHP integers and complete decimal strings, including
      * the genuine count zero. Rejects null/false, negative and fractional
      * numbers, partial strings, arrays, objects and integer overflow. This
      * prevents failed queries from appearing as a successful zero-match count.
      *
-     * @param mixed $raw Database driver's raw aggregate result.
-     * @return int|null Verified count or null for an invalid driver result.
+     * @param mixed $raw Database aggregate result or raw configured target.
+     * @return int|null Verified nonnegative number or null for invalid input.
      */
     private static function recordCount(mixed $raw): ?int
     {
@@ -132,7 +137,7 @@ final class CountRekordHelper
      */
     private static function nonNegativeInt(mixed $raw): int
     {
-        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+        if (!is_int($raw) && (!is_string($raw) || strlen($raw) > 64 || !preg_match('/^[0-9]+$/D', $raw))) {
             return 0;
         }
 

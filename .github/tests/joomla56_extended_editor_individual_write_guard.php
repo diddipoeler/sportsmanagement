@@ -48,6 +48,16 @@ namespace Joomla\CMS\Application {
                     return (string) ($this->app->post[$key] ?? '');
                 }
                 public function getInt(string $key, int $default = 0): int { return $default; }
+                /**
+                 * Return raw selector input for the native database bridge.
+                 * @param string $key Request option name.
+                 * @param mixed $default Default when the option is absent.
+                 * @param string $filter Requested Joomla input filter.
+                 * @return mixed Raw fixture request value.
+                 */
+                public function get(string $key, mixed $default = null, string $filter = ''): mixed {
+                    return $this->app->post[$key] ?? $default;
+                }
             };
         }
         public function getIdentity(): object { return $this->identity; }
@@ -127,10 +137,56 @@ namespace Joomla\Database {
 }
 namespace Joomla\CMS {
     class Factory {
+        public static \Joomla\Database\DatabaseInterface $db;
+        /**
+         * Supply the default database to the actual native bridge.
+         * @return object Minimal Joomla dependency container fixture.
+         */
+        public static function getContainer(): object {
+            return new class {
+                /**
+                 * Resolve the database service for this test.
+                 * @param string $key Requested service interface.
+                 * @return object Configured test database.
+                 */
+                public function get(string $key): object { return Factory::$db; }
+            };
+        }
         public static function getDate(): object {
             return new class {
                 public function toSql(): string { return '2026-10-16 08:00:00'; }
             };
+        }
+    }
+}
+namespace Joomla\CMS\Log {
+    final class Log {
+        public const ERROR = 1;
+        public static array $messages = [];
+        /**
+         * Capture redacted controller diagnostics without filesystem writes.
+         * @param string $message Logged message.
+         * @param int $level Joomla log severity.
+         * @param string $category Log category.
+         * @return void
+         */
+        public static function add(string $message, int $level, string $category): void {
+            self::$messages[] = $message;
+        }
+    }
+}
+namespace Diddipoeler\Component\SportsManagement\Administrator\Helper {
+    final class SportsManagementDatabaseResolver {
+        public static array $selectors = [];
+        /**
+         * Record validated database selection and return the fixture driver.
+         * @param mixed $selector Validated component database choice.
+         * @param \Joomla\Database\DatabaseInterface $fallback Default database.
+         * @return \Joomla\Database\DatabaseInterface Selected test driver.
+         */
+        public function resolve(mixed $selector, \Joomla\Database\DatabaseInterface $fallback): \Joomla\Database\DatabaseInterface {
+            self::$selectors[] = $selector;
+            return $fallback;
         }
     }
 }
@@ -194,6 +250,7 @@ namespace {
     @symlink($extended . '/config.xml', $extended . '/link.php');
 
     $root = dirname(__DIR__, 2);
+    require_once $root . '/admin/src/Helper/LegacyModelDatabaseHelper.php';
     require_once $root . '/admin/src/Controller/SportsManagementAdminController.php';
     require_once $root . '/admin/src/Controller/JlextindividualsportController.php';
     require_once $root . '/admin/src/Controller/JlextindividualsportesController.php';
@@ -270,13 +327,7 @@ namespace {
     }
 
     $db = new class implements \Joomla\Database\DatabaseInterface {};
-    class sportsmanagementHelper {
-        public static \Joomla\Database\DatabaseInterface $db;
-        public static function getDBConnection(bool $external, int $selector): \Joomla\Database\DatabaseInterface {
-            return self::$db;
-        }
-    }
-    sportsmanagementHelper::$db = $db;
+    \Joomla\CMS\Factory::$db = $db;
     $individual = new \Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextindividualsportController();
     $list = new \Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextindividualsportesController();
     $individual->setTestApp($app);
@@ -315,6 +366,15 @@ namespace {
         }
     }
     \Joomla\CMS\Session\Session::$valid = true;
+    $app->post['cfg_which_database'] = '1bad';
+    $individual->addmatch();
+    $list->generatematchsingles();
+    if (\Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchAdminService::$events !== $writes
+        || \Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::$selectors !== []
+        || $individual->redirect['type'] !== 'error' || $list->redirect['type'] !== 'error') {
+        throw new \RuntimeException('Malformed database selector reached an individual-match write.');
+    }
+    $app->post['cfg_which_database'] = '0001';
     $individual->addmatch();
     $list->generatematchsingles();
     $list->saveshort();
@@ -329,6 +389,9 @@ namespace {
         || $events[3] !== ['publish', [12, 14], 0]
         || $events[4] !== ['delete', [12, 14]]) {
         throw new \RuntimeException('Authorized individual-match operation or canonical IDs failed.');
+    }
+    if (\Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::$selectors !== array_fill(0, 6, 1)) {
+        throw new \RuntimeException('Individual-match controllers did not share the validated database selector.');
     }
     $app->post['cid'] = array_fill(0, 501, '12');
     try {

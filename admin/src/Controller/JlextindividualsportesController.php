@@ -11,10 +11,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchAdminService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 /** Joomla 5/6 administrator controller for the individual-match list/editor. */
@@ -40,7 +42,9 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
             $message = 'Wir haben ' . $inserted . ' Spiele eingefügt!<br />'
                 . 'Wir konnten ' . $failed . ' Spiele nicht einfügen!';
         } catch (\Throwable $e) {
-            $message = $e->getMessage();
+            $message = $this->writeFailure($e);
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $message, 'error');
+            return;
         }
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $message);
@@ -100,7 +104,7 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
                 : Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
             $type = $saved ? 'message' : 'error';
         } catch (\Throwable $e) {
-            $message = $e->getMessage();
+            $message = $this->writeFailure($e);
             $type = 'error';
         }
 
@@ -129,7 +133,7 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
             $message = $saved ? '' : Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
             $type = $saved ? 'message' : 'error';
         } catch (\Throwable $e) {
-            $message = $e->getMessage();
+            $message = $this->writeFailure($e);
             $type = 'error';
         }
 
@@ -162,7 +166,7 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
                 : Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
             $type = $saved ? 'message' : 'error';
         } catch (\Throwable $e) {
-            $message = $e->getMessage();
+            $message = $this->writeFailure($e);
             $type = 'error';
         }
 
@@ -259,29 +263,36 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
     }
 
     /**
-     * Resolve the administrator's configured SportsManagement database through the compatibility helper, loading it if necessary. Fall back to Joomla's primary database service when the optional connection cannot be obtained.
+     * Resolve the administrator's configured SportsManagement database.
+     *
+     * Shares the native Joomla 5/6 database bridge with the singular
+     * individual-match controller. Rejects malformed request or session
+     * selectors before connection resolution and preserves the central
+     * external database entitlement and fallback contract.
+     *
      * @return DatabaseInterface Effective database connection.
+     * @throws \InvalidArgumentException For malformed database selectors.
+     * @throws \RuntimeException When a required Joomla service is unavailable.
      */
     private function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
+        return LegacyModelDatabaseHelper::resolve();
+    }
 
-        $app = $this->app;
-        $selector = $app->getInput()->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
+    /**
+     * Report a failed individual-match write without disclosing internals.
+     *
+     * Logs the exception type to Joomla's component log and returns a
+     * translated generic error for the administrator redirect. Raw driver
+     * messages can contain SQL, filesystem paths or database credentials.
+     *
+     * @param \Throwable $error Failure raised by the database or write service.
+     * @return string Translated generic failure message.
+     */
+    private function writeFailure(\Throwable $error): string
+    {
+        Log::add(__METHOD__ . ': individual match write failed (' . get_class($error) . ').', Log::ERROR, 'com_sportsmanagement');
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        return Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
     }
 }

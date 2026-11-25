@@ -73,6 +73,8 @@ final class MatchCommentsHelper
     /**
      * Render enabled Kunena or JComments content for a match.
      * Falls back to JComments when the optional Kunena integration fails.
+     * Optional extension errors are logged by exception class only, so SQL,
+     * credentials and local paths cannot leak into shared Joomla diagnostics.
      * @param object $match Current match record.
      * @param object $homeTeam Home team record.
      * @param object $awayTeam Away team record.
@@ -95,7 +97,7 @@ final class MatchCommentsHelper
             } catch (\Throwable $e) {
                 // Kunena is optional. A missing table or incompatible plugin
                 // must not break the match page; try JComments if available.
-                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+                Log::add(__METHOD__ . ': Kunena integration failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
             }
         }
 
@@ -104,7 +106,7 @@ final class MatchCommentsHelper
             try {
                 return self::renderJComments($match, $homeTeam, $awayTeam);
             } catch (\Throwable $e) {
-                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+                Log::add(__METHOD__ . ': JComments integration failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
             }
         }
 
@@ -190,6 +192,9 @@ final class MatchCommentsHelper
 
     /**
      * Resolve and cache the Kunena Joomla menu item identifier.
+     * Cache the lookup only after a successful database read, including a
+     * genuine missing menu item; a transient failure must not poison later
+     * match comment rendering in the same request.
      * @param DatabaseInterface $db Joomla database connection.
      * @return int Kunena menu item ID or zero when unavailable.
      */
@@ -199,7 +204,6 @@ final class MatchCommentsHelper
             return self::$kunenaItemId;
         }
 
-        self::$kunenaItemResolved = true;
         $menuLink = 'index.php?option=com_kunena&view=home%';
         $menuQuery = $db->createQuery()
             ->select($db->quoteName('id'))
@@ -209,12 +213,20 @@ final class MatchCommentsHelper
             ->bind(':menuLink', $menuLink, ParameterType::STRING);
         $db->setQuery($menuQuery, 0, 1);
         self::$kunenaItemId = (int) $db->loadResult();
+        self::$kunenaItemResolved = true;
 
         return self::$kunenaItemId;
     }
 
     /**
-     * Load the optional SportsManagement JComments content plugin.
+     * Prepare the optional SportsManagement JComments content plugin once.
+     *
+     * Checks that the installed JComments component supplies its expected
+     * entry file, imports the content plugin through Joomla and reads the
+     * separate-comments option to select the appropriate match event.
+     * Reuses the preparation result during subsequent match renders in the
+     * same request rather than importing the extension repeatedly.
+     *
      * @return bool Whether the comments integration can be used.
      */
     private static function prepareJComments(): bool

@@ -142,13 +142,18 @@ namespace {
     if ($output !== 'Comments not available'
         || $db->queries !== 1
         || count(\Joomla\CMS\Log\Log::$errors) !== 1
-        || !str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'password')
+        || !str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'password')
         || str_contains($output, 'password')) {
         throw new \RuntimeException('Kunena database exception broke the match page.');
     }
 
+    if ((new \ReflectionProperty($helper, 'kunenaItemResolved'))->getValue(null) !== false) {
+        throw new \RuntimeException('Failed Kunena menu lookup poisoned the request cache.');
+    }
+
     // Joomla should still render other pages when the optional JComments
-    // event dispatcher/plugin throws; only the server log gets its details.
+    // event dispatcher/plugin throws; logs retain only its exception class.
     $pluginRoot = $root . '/components/com_jcomments';
     if (!@mkdir($pluginRoot, 0700, true)) {
         throw new \RuntimeException('Unable to create local optional-plugin fixture.');
@@ -167,7 +172,8 @@ namespace {
 
         if ($output !== 'Comments not available'
             || count(\Joomla\CMS\Log\Log::$errors) !== 2
-            || !str_contains(\Joomla\CMS\Log\Log::$errors[1][0], '/srv/passwords')) {
+            || !str_contains(\Joomla\CMS\Log\Log::$errors[1][0], 'RuntimeException')
+            || str_contains(\Joomla\CMS\Log\Log::$errors[1][0], '/srv/passwords')) {
             throw new \RuntimeException('JComments failure was exposed to match visitors.');
         }
     } finally {

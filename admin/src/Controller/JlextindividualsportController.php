@@ -11,7 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchAdminService;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
@@ -24,7 +26,8 @@ final class JlextindividualsportController extends SportsManagementAdminControll
      * Requires a valid Joomla form token and component create permission,
      * obtains the selected project and round from Joomla user state and
      * sends the form values to the match service. Reports the result and
-     * returns to the individual match editing popup.
+     * returns to the individual match editing popup. Service failures use a
+     * translated error message and log only the exception class.
      *
      * @return void
      */
@@ -47,7 +50,8 @@ final class JlextindividualsportController extends SportsManagementAdminControll
                 : 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH');
             $type = $saved ? 'message' : 'error';
         } catch (\Throwable $e) {
-            $message = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': individual match creation failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+            $message = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH');
             $type = 'error';
         }
 
@@ -88,40 +92,17 @@ final class JlextindividualsportController extends SportsManagementAdminControll
     /**
      * Resolve the SportsManagement database for administrator match tasks.
      *
-     * Loads the compatibility database resolver if necessary, reads the
-     * integer-filtered database selector and attempts the legacy connection.
-     * Falls back to Joomla's database container only when it provides a
-     * valid DatabaseInterface implementation.
+     * Uses the shared namespaced Joomla 5/6 database bridge to validate the
+     * raw request or session selector before opening a connection. Retains
+     * the central resolver's external-storage entitlement checks without
+     * loading the obsolete global SportsManagement helper.
      *
      * @return DatabaseInterface Effective Joomla database connection.
-     * @throws \RuntimeException If the database service is unavailable.
+     * @throws \InvalidArgumentException If the database selector is malformed.
+     * @throws \RuntimeException If the required Joomla services are unavailable.
      */
     private function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
-        $app = $this->app;
-        $selector = $app->getInput()->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
-
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$database instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement individual match database is unavailable.', 500);
-        }
-
-        return $database;
+        return LegacyModelDatabaseHelper::resolve();
     }
 }
