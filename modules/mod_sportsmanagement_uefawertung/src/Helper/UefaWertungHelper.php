@@ -91,6 +91,8 @@ final class UefaWertungHelper
     /**
      * Parse the configured UEFA ranking season identifier without lossy PHP casting.
      * Supports a complete decimal season ID or ID:alias slug while rejecting booleans, partial strings, zero and integer overflow.
+     * Rejects oversized selectors and surrounding whitespace or control bytes
+     * before parsing, rather than silently normalising malformed input.
      *
      * @param mixed $value Raw Joomla season selector.
      * @return int Positive season record ID, or zero if invalid.
@@ -101,7 +103,11 @@ final class UefaWertungHelper
             return 0;
         }
 
-        $raw = trim((string) $value);
+        $raw = (string) $value;
+
+        if (strlen($raw) > 128 || trim($raw) !== $raw) {
+            return 0;
+        }
 
         if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $parts)) {
             return 0;

@@ -49,7 +49,13 @@ abstract class SportsManagementAdminModel extends AdminModel
         parent::__construct($config, $factory, $formFactory);
     }
 
-    /** Resolve the active Joomla administrator application through the shared runtime resolver. */
+    /**
+     * Resolve the active Joomla administrator application for form models.
+     * Delegates to the shared runtime service so form data, identity and
+     * database preferences are read from the correct Joomla client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the application cannot be resolved.
+     */
     protected function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -164,6 +170,7 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     /**
      * Persist a SportsManagement administrator record with audit fields.
+     * Rejects non-array submissions before preparing persistence metadata.
      * Requires an authenticated administrator identity, supports copying
      * an existing record and invokes preparation and post-save hooks.
      * @param array $data Submitted form model values.
@@ -171,6 +178,12 @@ abstract class SportsManagementAdminModel extends AdminModel
      */
     public function save($data)
     {
+        if (!is_array($data)) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+
+            return false;
+        }
+
         $app = $this->administratorApplication();
         $input = $app->getInput();
         $user = $app->getIdentity();

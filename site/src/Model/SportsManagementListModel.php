@@ -27,7 +27,13 @@ abstract class SportsManagementListModel extends ListModel
     private bool $stateReadInProgress = false;
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application through the component service. */
+    /**
+     * Resolve the active Joomla frontend application for list models.
+     * Delegates to the shared site runtime resolver so request and session
+     * state originate from the active Joomla frontend client.
+     * @return SiteApplication Active site application.
+     * @throws \RuntimeException If the application cannot be resolved.
+     */
     protected function siteApplication(): SiteApplication
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -59,6 +65,7 @@ abstract class SportsManagementListModel extends ListModel
     /**
      * Public access to the already resolved SportsManagement database for view
      * helpers without exposing Joomla's protected BaseDatabaseModel API.
+     * @return DatabaseInterface Currently assigned model database.
      */
     public function getSportsManagementDatabase(): DatabaseInterface
     {
@@ -99,15 +106,33 @@ abstract class SportsManagementListModel extends ListModel
 
     /**
      * Bind the list model to the selected SportsManagement database.
-     * Uses a configured override or the active frontend request selector.
+     * Uses a configured override or validates the raw frontend request selector
+     * without coercing malformed values into an external database request.
      * @param DatabaseInterface $db Primary Joomla database connection.
      * @return void
      */
     public function setDatabase(DatabaseInterface $db): void
     {
-        $selector = $this->databaseSelectorOverride
-            ?? ($this->siteApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
+        $selector = $this->databaseSelectorOverride;
+
+        if ($selector === null) {
+            $raw = $this->siteApplication()->getInput()->get('cfg_which_database', 0, 'raw');
+            $selector = self::requestDatabaseSelector($raw);
+        }
 
         parent::setDatabase(SportsManagementDatabaseResolver::resolve($db, $selector));
+    }
+
+    /**
+     * Interpret the raw frontend list database preference.
+     * Accepts explicit one and bounded zero-padded decimal representations
+     * of one; malformed values leave component-wide defaults in effect.
+     * @param mixed $value Raw Joomla input parameter.
+     * @return int Supported selector zero or one.
+     */
+    private static function requestDatabaseSelector(mixed $value): int
+    {
+        return $value === 1 || (is_string($value) && strlen($value) <= 64
+            && preg_match('/^0*1$/D', $value) === 1) ? 1 : 0;
     }
 }

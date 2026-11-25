@@ -71,6 +71,7 @@ class DivisionsController extends SportsManagementAdminController
     public function getModel($name = 'Division', $prefix = 'Administrator', $config = [])
     {
         // Preserve custom MVC options while disabling request-dependent model state.
+        $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);
@@ -118,7 +119,12 @@ class DivisionsController extends SportsManagementAdminController
         );
     }
 
-    /** Abort administrator list writes when Joomla cannot load the model. */
+    /**
+     * Resolve the division model before executing an administrator write.
+     * Stops the current action if the MVC factory cannot supply an object.
+     * @return object Native division model.
+     * @throws \RuntimeException When the required model is unavailable.
+     */
     private function requireDivisionModel(): object
     {
         $model = $this->getModel();
