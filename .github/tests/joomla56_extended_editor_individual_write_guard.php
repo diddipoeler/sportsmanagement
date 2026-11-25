@@ -76,6 +76,16 @@ namespace Joomla\CMS\MVC\Controller {
         protected function setRedirect(string $url, string $message = '', string $type = 'message'): void {
             $this->redirect = ['url' => $url, 'message' => $message, 'type' => $type];
         }
+        /**
+         * Simulate the native controller POST token guard with the shared test session.
+         * @return void
+         * @throws \RuntimeException When the test session rejects the token.
+         */
+        protected function checkToken(): void {
+            if (!\Joomla\CMS\Session\Session::checkToken('post')) {
+                throw new \RuntimeException('CSRF token rejected.', 403);
+            }
+        }
         public function saveorder() { return true; }
     }
     class FormController {

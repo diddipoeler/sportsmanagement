@@ -20,11 +20,21 @@ use RuntimeException;
  */
 final class XmlProjectFinalizerService
 {
+    /**
+     * Initialise the XML project finalizer with the database containing imported project and staging records.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
-    /** @return array{messages:array<string,string>} */
+    /**
+     * Convert staged project members and referees to seasonal assignments, remap match references, remove processed team staging rows and recalculate round dates for the supplied project.
+     * @param int $projectId Imported project identifier.
+     * @param int $seasonId Associated season identifier.
+     * @return array{messages:array<string,string>} Finalization report.
+     * @throws RuntimeException If the scope is missing or a required write fails.
+     */
     public function finalize(int $projectId, int $seasonId): array
     {
         if ($projectId <= 0 || $seasonId <= 0) {
@@ -80,7 +90,11 @@ final class XmlProjectFinalizerService
         return ['messages' => ['Finalizing project member data:' => $message]];
     }
 
-    /** @return list<int> */
+    /**
+     * Read the match identifiers belonging to rounds of the specified project to scope subsequent reference updates.
+     * @param int $projectId Project identifier.
+     * @return list<int> Match identifiers.
+     */
     private function loadProjectMatchIds(int $projectId): array
     {
         $query = $this->database->createQuery()
@@ -98,7 +112,11 @@ final class XmlProjectFinalizerService
         return array_values(array_map('intval', $this->database->loadColumn() ?: []));
     }
 
-    /** @return list<object> */
+    /**
+     * Read the project-team identifiers and their seasonal team references for the supplied project.
+     * @param int $projectId Project identifier.
+     * @return list<object> Project-team records.
+     */
     private function loadProjectTeams(int $projectId): array
     {
         $query = $this->database->createQuery()
@@ -114,6 +132,13 @@ final class XmlProjectFinalizerService
         return $this->database->loadObjectList() ?: [];
     }
 
+    /**
+     * Resolve each imported project referee to a season-person assignment of referee type and update the referee's person reference.
+     * @param int $projectId Project identifier.
+     * @param int $seasonId Season identifier.
+     * @return string HTML report of prepared assignments.
+     * @throws RuntimeException If a referee update fails.
+     */
     private function finalizeReferees(int $projectId, int $seasonId): string
     {
         $query = $this->database->createQuery()
@@ -158,6 +183,12 @@ final class XmlProjectFinalizerService
         return $message;
     }
 
+    /**
+     * Find the underlying team identifier for a season-team assignment, requiring the assignment to belong to the supplied season.
+     * @param int $seasonTeamId Season-team assignment identifier.
+     * @param int $seasonId Required season identifier.
+     * @return int Team identifier or zero.
+     */
     private function resolveTeamId(int $seasonTeamId, int $seasonId): int
     {
         $query = $this->database->createQuery()
@@ -172,6 +203,17 @@ final class XmlProjectFinalizerService
         return (int) ($this->database->loadResult() ?? 0);
     }
 
+    /**
+     * Convert staged players or staff for one project team to seasonal person and team assignments, ensure project-position membership and remap dependent match references within the selected project.
+     * @param string $stagingTable Player or staff staging table.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $projectId Project identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $teamId Underlying team identifier.
+     * @param int $personType Player or staff role identifier.
+     * @param array $matchIds Match identifiers restricting reference updates.
+     * @return string HTML report of prepared members.
+     */
     private function finalizeMembers(
         string $stagingTable,
         int $projectTeamId,
@@ -271,6 +313,16 @@ final class XmlProjectFinalizerService
         return $message;
     }
 
+    /**
+     * Reuse a seasonal person assignment matching the requested role or the generic role zero. Insert a filtered record with picture and position when none exists.
+     * @param int $personId Person identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $personType Person role identifier.
+     * @param string $picture Imported picture path.
+     * @param int $positionId Position identifier.
+     * @return int Seasonal person assignment identifier.
+     * @throws RuntimeException If insertion fails.
+     */
     private function resolveSeasonPerson(
         int $personId,
         int $seasonId,
@@ -311,6 +363,18 @@ final class XmlProjectFinalizerService
         return (int) $this->database->insertid();
     }
 
+    /**
+     * Reuse or create a seasonal team-person assignment for the specified person, season, team and role. Preserve imported position, picture and player jersey number when supported by the schema.
+     * @param object $member Imported staging record.
+     * @param int $personId Person identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $teamId Team identifier.
+     * @param int $personType Person role identifier.
+     * @param int $positionId Position identifier.
+     * @param int $projectPositionId Project-position identifier.
+     * @return int Seasonal team-person assignment identifier.
+     * @throws RuntimeException If insertion fails.
+     */
     private function resolveSeasonTeamPerson(
         object $member,
         int $personId,
@@ -361,6 +425,15 @@ final class XmlProjectFinalizerService
         return (int) $this->database->insertid();
     }
 
+    /**
+     * Create the person's project-position assignment when a positive project-position identifier is supplied and no matching generic or role-specific assignment exists.
+     * @param int $personId Person identifier.
+     * @param int $projectId Project identifier.
+     * @param int $projectPositionId Project-position identifier.
+     * @param int $personType Person role identifier.
+     * @return void
+     * @throws RuntimeException If insertion fails.
+     */
     private function ensureProjectPosition(
         int $personId,
         int $projectId,
@@ -402,7 +475,15 @@ final class XmlProjectFinalizerService
         }
     }
 
-    /** @param list<int> $matchIds */
+    /**
+     * Replace a staging member identifier in the specified match relation, restricting updates to the supplied match identifiers. Skip the query when the match list is empty.
+     * @param string $table Target relation table.
+     * @param string $field Reference column.
+     * @param int $oldId Staging identifier.
+     * @param int $newId Seasonal assignment identifier.
+     * @param list<int> $matchIds Match identifiers.
+     * @return void
+     */
     private function updateMemberReferences(
         string $table,
         string $field,
@@ -426,7 +507,12 @@ final class XmlProjectFinalizerService
         $this->database->execute();
     }
 
-    /** @param list<int> $projectTeamIds */
+    /**
+     * Remove staging records belonging to the processed project teams only. Do not execute a deletion when the team list is empty.
+     * @param string $table Target staging table.
+     * @param list<int> $projectTeamIds Processed project-team identifiers.
+     * @return void
+     */
     private function deleteProjectStagingRows(string $table, array $projectTeamIds): void
     {
         if ($projectTeamIds === []) {
@@ -441,6 +527,12 @@ final class XmlProjectFinalizerService
         $this->database->execute();
     }
 
+    /**
+     * Recalculate each round's first and last match dates and update the project's current round using the descending round-code traversal and unfinished-match checks. Use the last traversed round if none is unfinished.
+     * @param int $projectId Project identifier.
+     * @return void
+     * @throws RuntimeException If a round or project update fails.
+     */
     private function updateRoundDates(int $projectId): void
     {
         $query = $this->database->createQuery()
@@ -517,6 +609,12 @@ final class XmlProjectFinalizerService
         }
     }
 
+    /**
+     * Copy only source properties that exist as columns in the target table so imported records remain compatible with the installed database schema.
+     * @param object $source Proposed record.
+     * @param string $table Target table name.
+     * @return object Filtered record.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -531,12 +629,24 @@ final class XmlProjectFinalizerService
         return $row;
     }
 
+    /**
+     * Render an escaped HTML status entry identifying a prepared seasonal assignment.
+     * @param string $label Assignment description.
+     * @param int $id Assignment identifier.
+     * @return string HTML report entry.
+     */
     private function createdMessage(string $label, int $id): string
     {
         return '<span style="color:green">Prepared ' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
             . ': </span><strong>' . htmlspecialchars((string) $id, ENT_QUOTES, 'UTF-8') . '</strong><br />';
     }
 
+    /**
+     * Render an escaped HTML warning identifying a record skipped because its season/team mapping is unavailable.
+     * @param string $label Operation description.
+     * @param int $id Skipped record identifier.
+     * @return string HTML report entry.
+     */
     private function skippedMessage(string $label, int $id): string
     {
         return '<span style="color:red">Skipping ' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
