@@ -19,21 +19,26 @@ use RuntimeException;
  */
 final class XmlProjectMatchDetailImportService
 {
+    /**
+     * Initialise the native match detail writer with the target database connection.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $matchMap
-     * @param array<int, int> $teamPlayerMap
-     * @param array<int, int> $teamStaffMap
-     * @param array<int, int> $projectRefereeMap
-     * @param array<int, int> $projectPositionMap
-     * @param array<int, int> $projectTeamMap
-     * @param array<int, int> $eventMap
-     *
-     * @return array{messages:array<string,string>}
+     * Execute the requested cumulative XML import stages 26 through 29 for match players, staff, referees and events using resolved source-to-target relation maps. Collect an HTML report for each executed stage.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $matchMap Match identifier map.
+     * @param array<int,int> $teamPlayerMap Team-player identifier map.
+     * @param array<int,int> $teamStaffMap Team-staff identifier map.
+     * @param array<int,int> $projectRefereeMap Project-referee identifier map.
+     * @param array<int,int> $projectPositionMap Project-position identifier map.
+     * @param array<int,int> $projectTeamMap Project-team identifier map.
+     * @param array<int,int> $eventMap Event-type identifier map.
+     * @param string $step Last import stage to execute.
+     * @return array{messages:array<string,string>} Import reports.
      */
     public function import(
         array $parsedData,
@@ -89,10 +94,12 @@ final class XmlProjectMatchDetailImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $matchMap
-     * @param array<int, int> $teamPlayerMap
-     * @param array<int, int> $projectPositionMap
+     * Insert imported match-player records after resolving the required match and player references. Translate optional position and substitution references and report records with unresolved required relations.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $matchMap Match identifier map.
+     * @param array<int,int> $teamPlayerMap Team-player identifier map.
+     * @param array<int,int> $projectPositionMap Project-position identifier map.
+     * @return string HTML import report.
      */
     private function importMatchPlayers(
         array $parsedData,
@@ -140,10 +147,12 @@ final class XmlProjectMatchDetailImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $matchMap
-     * @param array<int, int> $teamStaffMap
-     * @param array<int, int> $projectPositionMap
+     * Insert match-staff records with mapped match, staff and optional project-position identifiers, skipping records whose required references cannot be resolved.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $matchMap Match identifier map.
+     * @param array<int,int> $teamStaffMap Team-staff identifier map.
+     * @param array<int,int> $projectPositionMap Project-position identifier map.
+     * @return string HTML import report.
      */
     private function importMatchStaff(
         array $parsedData,
@@ -186,10 +195,12 @@ final class XmlProjectMatchDetailImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $matchMap
-     * @param array<int, int> $projectRefereeMap
-     * @param array<int, int> $projectPositionMap
+     * Insert match-referee assignments using mapped match and project-referee identifiers and optional position mappings. Report unresolved required references without inserting those records.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $matchMap Match identifier map.
+     * @param array<int,int> $projectRefereeMap Project-referee identifier map.
+     * @param array<int,int> $projectPositionMap Project-position identifier map.
+     * @return string HTML import report.
      */
     private function importMatchReferees(
         array $parsedData,
@@ -232,11 +243,13 @@ final class XmlProjectMatchDetailImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $matchMap
-     * @param array<int, int> $projectTeamMap
-     * @param array<int, int> $teamPlayerMap
-     * @param array<int, int> $eventMap
+     * Insert match events with mapped match, project-team, event-type and optional player references. Skip events with missing required mappings or unresolved nonzero player references.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param array<int,int> $matchMap Match identifier map.
+     * @param array<int,int> $projectTeamMap Project-team identifier map.
+     * @param array<int,int> $teamPlayerMap Team-player identifier map.
+     * @param array<int,int> $eventMap Event-type identifier map.
+     * @return string HTML import report.
      */
     private function importMatchEvents(
         array $parsedData,
@@ -289,6 +302,15 @@ final class XmlProjectMatchDetailImportService
         return $message;
     }
 
+    /**
+     * Insert the prepared detail record into its target table and report the source record identifier if the database rejects the write.
+     * @param string $table Target table name.
+     * @param object $row Prepared detail record.
+     * @param string $label Record type for error reporting.
+     * @param int $oldId Source record identifier.
+     * @return void
+     * @throws RuntimeException If insertion fails.
+     */
     private function insert(string $table, object $row, string $label, int $oldId): void
     {
         if (!$this->database->insertObject($table, $row)) {
@@ -296,6 +318,12 @@ final class XmlProjectMatchDetailImportService
         }
     }
 
+    /**
+     * Copy source properties supported by the installed target table while excluding the source primary key.
+     * @param object $source Imported detail record.
+     * @param string $table Target table name.
+     * @return object Schema-compatible insert record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -314,6 +342,13 @@ final class XmlProjectMatchDetailImportService
         return $row;
     }
 
+    /**
+     * Build an escaped HTML success message identifying the imported source record and its target match.
+     * @param string $label Record type.
+     * @param int $oldId Source record identifier.
+     * @param int $matchId Target match identifier.
+     * @return string HTML success message.
+     */
     private function createdMessage(string $label, int $oldId, int $matchId): string
     {
         return '<span style="color:green">Created new ' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
@@ -322,6 +357,12 @@ final class XmlProjectMatchDetailImportService
             . '</strong><br />';
     }
 
+    /**
+     * Build an escaped HTML warning identifying a source detail record skipped because a required relation could not be resolved.
+     * @param string $label Record type.
+     * @param int $oldId Source record identifier.
+     * @return string HTML warning message.
+     */
     private function skippedMessage(string $label, int $oldId): string
     {
         return '<span style="color:red">Skipping ' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8')

@@ -45,6 +45,12 @@ final class HtmlView extends BaseHtmlView
     public string $bootstrap_fileinput_popperversion = '2.10.2';
     public string $bootstrap_fileinput_bootstrapversion = '5.1.0';
 
+    /**
+     * Load the image selector helper and native model, dispatch upload and drag-and-drop layouts or prepare the searchable image list and pagination. Fall back to the upload layout when no images exist and no search is active, then render through Joomla.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     * @throws \RuntimeException If the image handler model is unavailable.
+     */
     public function display($tpl = null)
     {
         $this->ensureImageSelectHelper();
@@ -105,11 +111,20 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Select the image record at the supplied list index for template rendering, using an empty object when the index does not exist.
+     * @param int $index Image list index.
+     * @return void
+     */
     public function setImage($index = 0): void
     {
         $this->_tmp_img = $this->images[(int) $index] ?? new \stdClass();
     }
 
+    /**
+     * Initialise upload configuration, requested image type and target field, FTP credential handling and the destination folder. Hide the main administrator menu and select the upload layout.
+     * @return void
+     */
     private function prepareUpload(): void
     {
         $input = self::administratorApplication()->getInput();
@@ -126,6 +141,11 @@ final class HtmlView extends BaseHtmlView
         $this->setLayout('upload');
     }
 
+    /**
+     * Load the shared frontend image-selection helper from the installed component when it is not already available.
+     * @return void
+     * @throws \RuntimeException If the helper remains unavailable.
+     */
     private function ensureImageSelectHelper(): void
     {
         if (class_exists(ImageSelectHelper::class)) {
@@ -142,6 +162,11 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('SportsManagement image select helper is unavailable.', 500);
         }
     }
+    /**
+     * Resolve the Joomla administrator application from the dependency injection container and verify that it belongs to the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the application client is invalid.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */

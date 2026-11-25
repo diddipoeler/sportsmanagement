@@ -19,12 +19,22 @@ use RuntimeException;
 /** Convert the special Slovenian league feed into the normal project-import collections. */
 final class XmlElanskaImportParserService
 {
+    /**
+     * Initialise the Slovenian league-feed parser with the database connection used to resolve the selected season.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @return array<string,mixed>
+     * Convert the historical Slovenian league XML feed into standard project import collections. Resolve the selected season, initialise league and project metadata from its first matching row, deduplicate entities by source ID and map match results and dates.
+     * @param \SimpleXMLElement $xml Parsed source feed.
+     * @param string $country Country code for imported entities.
+     * @param int $ageGroupId Target age-group identifier.
+     * @param int $seasonId Selected season identifier.
+     * @return array<string,mixed> Standard project import collections.
+     * @throws RuntimeException If required season or league data is missing.
      */
     public function parse(\SimpleXMLElement $xml, string $country, int $ageGroupId, int $seasonId): array
     {
@@ -167,7 +177,11 @@ final class XmlElanskaImportParserService
         return $data;
     }
 
-    /** @return list<\SimpleXMLElement> */
+    /**
+     * Collect the source season rows from the dataroot element when present, otherwise from the supplied XML root.
+     * @param \SimpleXMLElement $xml Source XML document.
+     * @return list<\SimpleXMLElement> Season rows.
+     */
     private function seasonRows(\SimpleXMLElement $xml): array
     {
         $root = isset($xml->dataroot) ? $xml->dataroot : $xml;
@@ -180,6 +194,12 @@ final class XmlElanskaImportParserService
         return $rows;
     }
 
+    /**
+     * Resolve the selected season name by its bound database identifier and reject missing or empty names.
+     * @param int $seasonId Selected season identifier.
+     * @return string Season name.
+     * @throws RuntimeException If the selected season cannot be resolved.
+     */
     private function seasonName(int $seasonId): string
     {
         $query = $this->database->createQuery()
@@ -198,7 +218,17 @@ final class XmlElanskaImportParserService
     }
 
     /**
-     * @param array<string,mixed> $data
+     * Add missing club, team and project-team records for a valid source participant, using its source identifier for each collection and applying the supplied country, age group and placeholder images.
+     * @param array<string,mixed> $data Import collections modified in place.
+     * @param int $id Source participant identifier.
+     * @param string $name Participant name.
+     * @param string $country Country code.
+     * @param int $ageGroupId Target age-group identifier.
+     * @param string $logoBig Large club logo.
+     * @param string $logoMiddle Medium club logo.
+     * @param string $logoSmall Small club logo.
+     * @param string $teamPicture Team placeholder image.
+     * @return void
      */
     private function addSide(
         array &$data,
@@ -252,6 +282,12 @@ final class XmlElanskaImportParserService
         }
     }
 
+    /**
+     * Read a named XML child element or, if absent, the corresponding attribute. Trim the text and return an empty string for missing values.
+     * @param \SimpleXMLElement $row Source row.
+     * @param string $field Field name.
+     * @return string Trimmed field value.
+     */
     private function value(\SimpleXMLElement $row, string $field): string
     {
         if (isset($row->{$field})) {
@@ -263,6 +299,11 @@ final class XmlElanskaImportParserService
         return isset($attributes[$field]) ? trim((string) $attributes[$field]) : '';
     }
 
+    /**
+     * Convert a nonempty historical score to an integer while preserving missing scores as null.
+     * @param string $value Source score.
+     * @return int|null Converted score or null.
+     */
     private function nullableResult(string $value): int|null
     {
         $value = trim($value);
@@ -270,6 +311,11 @@ final class XmlElanskaImportParserService
         return $value === '' ? null : (int) $value;
     }
 
+    /**
+     * Preserve the historical date-only import convention by removing the portion following the first T separator. Use the legacy zero-date placeholder for an empty value.
+     * @param string $value Source date string.
+     * @return string Normalised legacy date.
+     */
     private function normaliseLegacyMatchDate(string $value): string
     {
         $value = trim($value);
