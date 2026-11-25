@@ -34,12 +34,22 @@ final class TournamentbracketModel extends SportsManagementProjectModel
 {
     private TournamentbracketResultNormalizer $resultNormalizer;
 
+    /**
+     * Initialise the native tournament bracket model and create the result normalizer used to interpret match scores.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
         $this->resultNormalizer = new TournamentbracketResultNormalizer();
     }
 
+    /**
+     * Assemble the historical tournament bracket payload from tournament rounds and published matches. Track participants through rounds, combine single or multiple match results, fill result placeholders and return the team, score, round and detailed-result strings used by the bracket layout.
+     * @param mixed $project_id Tournament project identifier.
+     * @return array<string,mixed> Legacy bracket presentation payload.
+     */
     public function gettournamentbracket($project_id = 0): array
     {
         $projectId = max(0, (int) $project_id);
@@ -214,6 +224,11 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Retrieve the country of the league associated with the selected project, returning an empty string for an invalid project or a failed result query.
+     * @param int $projectId Project identifier.
+     * @return string League country code or empty string.
+     */
     private function getProjectCountry(int $projectId): string
     {
         if ($projectId <= 0) {
@@ -236,6 +251,11 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load the selected project's rounds marked as tournament rounds in descending round-code order.
+     * @param int $projectId Project identifier.
+     * @return array<int,object> Tournament rounds or an empty list on query failure.
+     */
     private function getTournamentRounds(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -259,6 +279,11 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load published matches belonging to a given tournament round.
+     * @param int $roundId Round identifier.
+     * @return array<int,object> Published matches or an empty list.
+     */
     private function getRoundMatches(int $roundId): array
     {
         if ($roundId <= 0) {
@@ -281,6 +306,12 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load the published matches in a given round in which the selected project team participates as either home or away team.
+     * @param int $roundId Round identifier.
+     * @param int $projectTeamId Project-team identifier.
+     * @return array<int,object> Matching games or an empty list.
+     */
     private function getMatchesForTeam(int $roundId, int $projectTeamId): array
     {
         if ($roundId <= 0 || $projectTeamId <= 0) {
@@ -306,6 +337,12 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Resolve a project team's name, club logo and country through its seasonal team relation. Return the historical bye label and placeholder logo for an invalid identifier, absent record or failed result query.
+     * @param int $projectTeamId Project-team identifier.
+     * @param string $fallbackCountry Country used by the placeholder team.
+     * @return object Team display information.
+     */
     private function getTeamInfo(int $projectTeamId, string $fallbackCountry): object
     {
         $fallback = (object) [
@@ -341,6 +378,11 @@ final class TournamentbracketModel extends SportsManagementProjectModel
     }
 
 
+    /**
+     * Aggregate numeric results and leading numeric portions of annotated score strings, ignoring unrecognised values. Return an integer when the total has no fractional part.
+     * @param array $values Normalised or annotated match scores.
+     * @return int|float Aggregate result.
+     */
     private function sumResultValues(array $values): int|float
     {
         $sum = 0.0;
@@ -364,12 +406,25 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         return floor($sum) === $sum ? (int) $sum : $sum;
     }
 
+    /**
+     * Construct the historical bracket result template containing home and away team identifiers, round name and placeholders for aggregate and partial scores.
+     * @param int $homeId Home project-team identifier.
+     * @param int $awayId Away project-team identifier.
+     * @param string $roundName Tournament round name.
+     * @return string Result template.
+     */
     private function resultPlaceholder(int $homeId, int $awayId, string $roundName): string
     {
         return '[result' . $homeId . ',result' . $awayId . ',"' . $roundName . '","teil'
             . $homeId . ' - teil' . $awayId . '"]';
     }
 
+    /**
+     * Construct a legacy bracket pair from the formatted home and away team labels, representing a missing opponent with null.
+     * @param object $homeTeam Home team display record.
+     * @param object|null $awayTeam Optional opponent display record.
+     * @return string Legacy team pair representation.
+     */
     private function buildTeamPair(object $homeTeam, ?object $awayTeam): string
     {
         $home = $this->buildTeamLabel($homeTeam);
@@ -381,6 +436,11 @@ final class TournamentbracketModel extends SportsManagementProjectModel
         return '[ "' . $home . '","' . $this->buildTeamLabel($awayTeam) . '"]';
     }
 
+    /**
+     * Build the team label used by the historical bracket script from the converted country flag code, club logo and team name, with fallback values for missing logo or name.
+     * @param object $team Team display information.
+     * @return string Team label with image markup.
+     */
     private function buildTeamLabel(object $team): string
     {
         $country = (string) ($team->country ?? '');
