@@ -359,17 +359,15 @@ class JSMCountries
 
     /**
      * Build the local flag image path for a three-letter ISO code.
-     * Resolves the corresponding ISO-2 code first, returning null for unknown countries.
+     * Resolves the corresponding ISO-2 code first and delegates to the
+     * validated two-letter flag path builder, returning null for unknown
+     * countries or malformed imported country codes.
      * @param string $iso_code_3 Three-letter ISO country code.
      * @return string|null Local flag image path when available.
      */
     public static function getIso3Flag($iso_code_3)
     {
-        $iso2 = self::convertIso3to2($iso_code_3);
-
-        return $iso2
-            ? 'images/com_sportsmanagement/database/flags/' . strtolower($iso2) . '.png'
-            : null;
+        return self::getIso2Flag(self::convertIso3to2($iso_code_3));
     }
 
     /**
@@ -388,12 +386,18 @@ class JSMCountries
 
     /**
      * Resolve the two-letter ISO code belonging to a three-letter country code.
-     * Uses a bound lookup on the configured countries table.
+     * Validates the three-letter input before a bound lookup and rejects
+     * malformed stored two-letter codes before returning them.
      * @param string $iso_code_3 Three-letter ISO country code.
      * @return string|null Two-letter ISO code if known.
      */
     public static function convertIso3to2($iso_code_3)
     {
+        if (!is_string($iso_code_3) || preg_match('/^[A-Za-z]{3}$/D', $iso_code_3) !== 1) {
+            return null;
+        }
+
+        $iso_code_3 = strtoupper($iso_code_3);
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('alpha2'))
@@ -403,7 +407,7 @@ class JSMCountries
         $db->setQuery($query);
         $result = $db->loadResult();
 
-        return $result ?: null;
+        return is_string($result) && preg_match('/^[A-Za-z]{2}$/D', $result) === 1 ? $result : null;
     }
 
     /**

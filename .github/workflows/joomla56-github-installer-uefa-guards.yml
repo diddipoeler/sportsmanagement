@@ -5,6 +5,8 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Model/GithubinstallModel.php'
+      - 'admin/assets/updates/jsm_update_github.php'
+      - '.github/tests/joomla56_github_image_randomplayer_security.php'
       - 'admin/src/Controller/GithubinstallController.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_admin_githubinstaller_guards.php'
@@ -14,6 +16,8 @@ on:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/Model/GithubinstallModel.php'
+      - 'admin/assets/updates/jsm_update_github.php'
+      - '.github/tests/joomla56_github_image_randomplayer_security.php'
       - 'admin/src/Controller/GithubinstallController.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_admin_githubinstaller_guards.php'
@@ -40,6 +44,7 @@ jobs:
       - name: Check PHP syntax and file-level metadata
         run: |
           php -l admin/src/Model/GithubinstallModel.php
+          php -l admin/assets/updates/jsm_update_github.php
           php -l admin/src/Controller/GithubinstallController.php
           php -l modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_admin_githubinstaller_guards.php

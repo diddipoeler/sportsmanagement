@@ -73,8 +73,8 @@ jobs:
               raise SystemExit('Legacy root site model bypasses centralized Joomla application access')
           if 'new LegacySportsmanagementTable(self::joomlaDatabase())' not in legacy:
               raise SystemExit('Legacy root site model bypasses centralized Joomla DB access')
-          if legacy.count('Factory::getApplication()') != 1:
-              raise SystemExit('Legacy root site model should call Factory::getApplication only in its helper')
+          if legacy.count('SportsManagementSiteApplicationResolver::resolve()') != 1 or 'Factory::getApplication()' in legacy:
+              raise SystemExit('Legacy root site model must use the native site application resolver')
           if legacy.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
               raise SystemExit('Legacy root site model should have exactly one Joomla DB container access')
 

@@ -209,10 +209,16 @@ namespace Joomla\CMS\Installer {
 namespace Joomla\Archive {
     class Archive
     {
+        public static bool $createPackage = false;
         public function __construct(array $options = []) {}
 
         public function extract(string $file, string $destination): bool
         {
+            if (self::$createPackage) {
+                $folder = $destination . '/sportsmanagement-joomla5-6';
+                mkdir($folder);
+                file_put_contents($folder . '/sportsmanagement.xml', '<extension/>');
+            }
             return true;
         }
     }
@@ -351,10 +357,12 @@ namespace {
     // An older sportsmanagement-* directory must not be mistaken for
     // an archive just downloaded in the current request.
     $tmpDirectory = sys_get_temp_dir() . '/jsm-github-regression-' . getmypid();
-    $staleDirectory = $tmpDirectory . '/sportsmanagement-stale-folder';
+    $staleDirectory = $tmpDirectory . '/sportsmanagement-joomla5-6';
     check(mkdir($tmpDirectory) && mkdir($staleDirectory),
         'Could not prepare isolated update-regression directories.');
     $app->tmpPath = $tmpDirectory;
+    file_put_contents($staleDirectory . '/sportsmanagement.xml', '<extension/>');
+    $fresh = null;
 
     try {
         $githubModel = new GithubinstallModel();
@@ -366,7 +374,21 @@ namespace {
             'Failed updates must clear the previous extracted directory.');
         check(($app->messages[0][1] ?? '') === 'error',
             'Missing update directory must produce an error message.');
+        \Joomla\Archive\Archive::$createPackage = true;
+        check(is_array($githubModel->CopyGithubLink('https://github.com/diddipoeler/sportsmanagement/archive/refs/heads/joomla5-6.zip')),
+            'A newly extracted component package must be accepted.');
+        $fresh = $app->userState['com_sportsmanagement.github_update_dir'];
+        check($fresh !== $staleDirectory && dirname(dirname($fresh)) === $tmpDirectory
+            && preg_match('/^jsm-github-[a-f0-9]{32}$/D', basename(dirname($fresh))) === 1,
+            'Fresh archive must be isolated from an older extraction of the same branch.');
     } finally {
+        \Joomla\Archive\Archive::$createPackage = false;
+        if (is_string($fresh) && $fresh !== $staleDirectory && is_dir($fresh)) {
+            unlink($fresh . '/sportsmanagement.xml');
+            rmdir($fresh);
+            rmdir(dirname($fresh));
+        }
+        unlink($staleDirectory . '/sportsmanagement.xml');
         rmdir($staleDirectory);
         rmdir($tmpDirectory);
     }

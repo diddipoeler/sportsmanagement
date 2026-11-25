@@ -15,6 +15,20 @@ namespace Joomla\CMS\Application {
 namespace Joomla\Database {
     interface DatabaseInterface {}
 }
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    final class SportsManagementDatabaseResolver {
+        /**
+         * Supply the native resolver contract so argument evaluation actually
+         * reaches the simulated failing Joomla database container.
+         * @param \Joomla\Database\DatabaseInterface $database Default driver.
+         * @param int $selector Database mode.
+         * @return \Joomla\Database\DatabaseInterface Selected driver.
+         */
+        public static function resolve(\Joomla\Database\DatabaseInterface $database, int $selector): \Joomla\Database\DatabaseInterface {
+            return $database;
+        }
+    }
+}
 namespace Joomla\Registry {
     final class Registry {
         /** Retain module parameters. @param array $values Module settings. */
@@ -55,5 +69,20 @@ namespace {
         || str_contains(\Joomla\CMS\Log\Log::$messages[0], 'password')) {
         throw new \RuntimeException('Club Icons database failure was not isolated.');
     }
-    echo "Club Icons optional database failure guard OK\n";
+    $mode = new \ReflectionMethod($helper, 'databaseSelector');
+    foreach ([0, 1, '0001', '0000'] as $valid) {
+        if ($mode->invoke(null, $valid) !== (int) $valid) {
+            throw new \RuntimeException('Supported Club Icons database mode was rejected.');
+        }
+    }
+    foreach ([2, '0007', true, ['1'], '1junk', str_repeat('0', 65)] as $invalid) {
+        if ($mode->invoke(null, $invalid) !== null
+            || $helper->getData(new \Joomla\Registry\Registry([
+                'project_ids' => 5, 'cfg_which_database' => $invalid,
+            ]), (object) ['id' => 7], $app) !== ['project' => null, 'ranking' => [], 'teams' => []]
+            || count(\Joomla\CMS\Log\Log::$messages) !== 1) {
+            throw new \RuntimeException('Unsupported Club Icons mode reached database resolution.');
+        }
+    }
+    echo "Club Icons optional database failure and selector guards OK\n";
 }

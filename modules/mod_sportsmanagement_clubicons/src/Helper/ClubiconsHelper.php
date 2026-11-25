@@ -225,26 +225,24 @@ final class ClubiconsHelper
      * Validate the selected local or external SportsManagement database.
      *
      * Unlike optional display parameters, a malformed database selector must
-     * not silently fall back to connection zero. Accepts only nonnegative
-     * integers and decimal strings (including zero-padded legacy values).
+     * not silently fall back to connection zero. Accepts only database modes
+     * zero and one, including bounded zero-padded legacy strings.
      *
      * @param mixed $value Raw module database selector.
      * @return int|null Valid selector, or null if malformed or overflowing.
      */
     private static function databaseSelector(mixed $value): ?int
     {
-        if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
             return null;
         }
 
-        if (is_string($value)) {
-            $digits = ltrim($value, '0');
-            $value = $digits === '' ? '0' : $digits;
-        }
-
-        $result = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-        return $result === false ? null : $result;
+        return (int) $matches[1];
     }
 
     /**

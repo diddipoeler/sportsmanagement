@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Joomla\Database {
     /** Minimal native database contract for country list regression tests. */
+    final class ParameterType { public const STRING = 'string'; }
+
     interface DatabaseInterface
     {
         public function createQuery(): object;
@@ -128,17 +130,41 @@ namespace {
          * @return static Query for fluent calls.
          */
         public function from(string $table): static { return $this; }
+
+        /**
+         * Accept a bound country lookup condition.
+         * @param string $condition SQL predicate.
+         * @return static Fluent query.
+         */
+        public function where(string $condition): static { return $this; }
+
+        /**
+         * Accept the normalized country code for the lookup.
+         * @param string $name Placeholder name.
+         * @param mixed $value Bound value.
+         * @param mixed $type Joomla parameter type.
+         * @return static Fluent query.
+         */
+        public function bind(string $name, mixed $value, mixed $type): static { return $this; }
     }
 
     /** Fake database returning malformed and valid legacy country rows. */
     final class SmCountryDatabase implements \Joomla\Database\DatabaseInterface
     {
+        public mixed $iso2 = 'DE';
+        public int $queries = 0;
+
+        /**
+         * Return the simulated ISO-2 result, including malformed imported values.
+         * @return mixed Stored two-letter code.
+         */
+        public function loadResult(): mixed { return $this->iso2; }
         /**
          * Create a stub Joomla query object for the country list lookup.
          *
          * @return object Fluent test query.
          */
-        public function createQuery(): object { return new SmCountryQuery(); }
+        public function createQuery(): object { ++$this->queries; return new SmCountryQuery(); }
 
         /**
          * Return column names without adding driver-specific quoting.
@@ -203,6 +229,20 @@ namespace {
         || \JSMCountries::getIso2Flag('../private') !== null
         || \JSMCountries::getIso2Flag(['de']) !== null) {
         throw new \RuntimeException('Malformed legacy flag identifier accepted.');
+    }
+
+    $db = \Joomla\CMS\Factory::$database;
+    $queries = $db->queries;
+    if (\JSMCountries::getIso3Flag(['DEU']) !== null
+        || \JSMCountries::getIso3Flag('../DEU') !== null || $db->queries !== $queries
+        || \JSMCountries::getIso3Flag('deu') !== 'images/com_sportsmanagement/database/flags/de.png') {
+        throw new \RuntimeException('Legacy ISO-3 flag validation regressed.');
+    }
+    foreach (['../private', ['DE'], '', 12] as $invalid) {
+        $db->iso2 = $invalid;
+        if (\JSMCountries::getIso3Flag('DEU') !== null) {
+            throw new \RuntimeException('Malformed stored ISO-2 code became a flag path.');
+        }
     }
 
     $before = count(spl_autoload_functions() ?: []);

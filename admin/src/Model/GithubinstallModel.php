@@ -49,8 +49,9 @@ final class GithubinstallModel extends BaseDatabaseModel
     /**
      * Download the configured repository archive and extract it into Joomla's temp directory.
      *
-     * The archive is intentionally extracted into the temp root because the existing
-     * jsm_update_github.php workflow installs from the GitHub-generated top-level folder.
+     * Each archive is extracted into a new private staging directory below
+     * Joomla's temporary root. An older extraction of the same branch cannot
+     * be selected by the folder-installer handoff.
      * Rejects malformed/non-string archive settings, resets stale success state
      * on each attempt and catches download and extraction exceptions.
      * Records only exception classes in Joomla's server log so archive URLs,
@@ -91,10 +92,20 @@ final class GithubinstallModel extends BaseDatabaseModel
             return false;
         }
 
-        $tmpPath = rtrim((string) $app->get('tmp_path'), '/\\');
-        $archivePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $downloadedFile);
+        $rawTmpPath = $app->get('tmp_path');
+        $tmpPath = is_string($rawTmpPath) && $rawTmpPath !== '' ? realpath($rawTmpPath) : false;
+        if ($tmpPath === false || !is_dir($tmpPath) || !is_writable($tmpPath)
+            || !is_string($downloadedFile) || basename($downloadedFile) !== $downloadedFile
+            || in_array($downloadedFile, ['.', '..'], true) || str_contains($downloadedFile, chr(92))
+            || preg_match('/[\x00-\x1F\x7F]/', $downloadedFile)) {
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
-        if (!File::exists($archivePath)) {
+            return false;
+        }
+
+        $archivePath = $tmpPath . DIRECTORY_SEPARATOR . $downloadedFile;
+
+        if (!File::exists($archivePath) || is_link($archivePath)) {
             $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
@@ -107,10 +118,15 @@ final class GithubinstallModel extends BaseDatabaseModel
             )
             . '</span><br />';
 
+        $stage = null;
         try {
-            $archive = new Archive(['tmp_path' => $tmpPath]);
-            $result = $archive->extract($archivePath, $tmpPath);
+            $stage = $this->createStagingDirectory($tmpPath);
+            $archive = new Archive(['tmp_path' => $stage]);
+            $result = $archive->extract($archivePath, $stage);
         } catch (\Throwable $e) {
+            if ($stage !== null) {
+                @rmdir($stage);
+            }
             // Archive paths, stack details and credentials must stay private.
             Log::add(__METHOD__ . ': extraction failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
@@ -119,14 +135,16 @@ final class GithubinstallModel extends BaseDatabaseModel
         }
 
         if (!$result) {
+            @rmdir($stage);
             $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
 
             return false;
         }
 
-        $installDirectory = $this->findExtractedDirectory($tmpPath, (string) $downloadedFile, $url);
+        $installDirectory = $this->findExtractedDirectory($stage, $downloadedFile, $url);
 
         if ($installDirectory === null) {
+            @rmdir($stage);
             $app->enqueueMessage('SportsManagement update archive directory could not be found after extraction.', 'error');
             return false;
         }
@@ -138,11 +156,33 @@ final class GithubinstallModel extends BaseDatabaseModel
     }
 
     /**
+     * Create a fresh private extraction directory for exactly one update.
+     *
+     * A random name and exclusive directory creation prevent reuse of
+     * existing contents, including an older download of the same branch.
+     *
+     * @param string $tmpPath Canonical Joomla temporary root.
+     * @return string Canonical newly created extraction directory.
+     * @throws \RuntimeException When staging cannot be created safely.
+     */
+    private function createStagingDirectory(string $tmpPath): string
+    {
+        $stage = $tmpPath . DIRECTORY_SEPARATOR . 'jsm-github-' . bin2hex(random_bytes(16));
+
+        if (!@mkdir($stage, 0700) || is_link($stage) || realpath($stage) !== $stage) {
+            throw new \RuntimeException('SportsManagement archive staging directory is unavailable.');
+        }
+
+        return $stage;
+    }
+
+    /**
      * Find the expected extracted GitHub archive folder.
      * Only considers names associated with the current downloaded archive,
      * and rejects symbolic links or unrelated/stale folder candidates so
      * a previous extraction cannot be installed by another request.
-     * @param string $tmpPath Joomla temporary directory.
+     * Requires the component manifest in the new canonical directory.
+     * @param string $tmpPath Newly created extraction directory.
      * @param string $downloadedFile Downloaded archive filename.
      * @param string $url Original archive URL.
      * @return string|null Matching extracted folder or null.
@@ -160,7 +200,10 @@ final class GithubinstallModel extends BaseDatabaseModel
 
                 // A symlinked old extraction directory must not be accepted
                 // as the source of an administrator component installation.
-                if (Folder::exists($candidate) && !is_link($candidate)) {
+                if (Folder::exists($candidate) && !is_link($candidate)
+                    && realpath($candidate) === $candidate
+                    && is_file($candidate . DIRECTORY_SEPARATOR . 'sportsmanagement.xml')
+                    && !is_link($candidate . DIRECTORY_SEPARATOR . 'sportsmanagement.xml')) {
                     return $candidate;
                 }
             }
