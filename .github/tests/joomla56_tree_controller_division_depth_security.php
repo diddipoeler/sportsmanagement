@@ -9,6 +9,23 @@
  */
 declare(strict_types=1);
 
+namespace Joomla\CMS\Log {
+    class Log {
+        public const ERROR = 3;
+        public static array $entries = [];
+
+        /**
+         * Capture Joomla error diagnostics emitted by the isolated tree models.
+         * @param string $message Diagnostic message.
+         * @param int $priority Log priority.
+         * @param string $category Log category.
+         * @return void
+         */
+        public static function add(string $message, int $priority, string $category): void {
+            self::$entries[] = [$message, $priority, $category];
+        }
+    }
+}
 namespace Joomla\CMS\Language {
     class Text {
         public static function _(string $key): string { return $key; }
@@ -380,6 +397,13 @@ namespace {
     $db->failUpdate = true;
     if ($listModel->storeshort([11], $payload) !== false || $db->rollbacks !== 1) {
         throw new \RuntimeException('Failed tournament division update did not roll back.');
+    }
+
+    $logs = \Joomla\CMS\Log\Log::$entries;
+    if ($logs === [] || end($logs)[1] !== \Joomla\CMS\Log\Log::ERROR
+        || end($logs)[2] !== 'com_sportsmanagement'
+        || !str_contains(end($logs)[0], 'SportsManagement tournament tree operation 2 failed')) {
+        throw new \RuntimeException('Failed tournament division update was not logged.');
     }
 
     echo "Joomla 5/6 tournament tree ACL, scoped divisions, node depths OK\n";

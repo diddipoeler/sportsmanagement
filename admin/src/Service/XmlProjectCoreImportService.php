@@ -20,6 +20,10 @@ use RuntimeException;
 /** Native writer for project XML import step 14. */
 final class XmlProjectCoreImportService
 {
+    /**
+     * Initialise the native project writer with the target SportsManagement database connection.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
@@ -144,6 +148,12 @@ final class XmlProjectCoreImportService
         return implode(',', $mapped);
     }
 
+    /**
+     * Check the target project table for an existing record with the supplied name using a bound query parameter.
+     * @param string $name Normalised project name.
+     * @return void
+     * @throws RuntimeException If a project with the same name exists.
+     */
     private function assertProjectNameAvailable(string $name): void
     {
         $query = $this->database->createQuery()
@@ -158,6 +168,14 @@ final class XmlProjectCoreImportService
         }
     }
 
+    /**
+     * Require a positive identifier and verify that the referenced record exists in the specified target table before project insertion.
+     * @param string $table Target reference table.
+     * @param int $id Reference identifier.
+     * @param string $label Reference type used in error messages.
+     * @return void
+     * @throws RuntimeException If the identifier is invalid or the record is absent.
+     */
     private function requireId(string $table, int $id, string $label): void
     {
         if ($id <= 0) {
@@ -176,6 +194,12 @@ final class XmlProjectCoreImportService
         }
     }
 
+    /**
+     * Copy source properties supported by the installed table, excluding the foreign primary key and converting scalar values to strings while retaining other values.
+     * @param object $source Imported project record.
+     * @param string $table Target table name.
+     * @return object Filtered project record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -194,6 +218,12 @@ final class XmlProjectCoreImportService
         return $row;
     }
 
+    /**
+     * Retain only properties whose names match installed target table columns, preserving the prepared values.
+     * @param object $source Prepared project record.
+     * @param string $table Target table name.
+     * @return object Schema-compatible record.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
