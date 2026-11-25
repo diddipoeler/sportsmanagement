@@ -33,12 +33,21 @@ final class GoogleCalendarMatchSynchronizer
 {
     private const CALENDAR_SCOPE = 'https://www.googleapis.com/auth/calendar';
 
+    /**
+     * Initialise the match synchronisation service with the database connection used to load match and calendar records.
+     * @param DatabaseInterface $db SportsManagement database connection.
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
     /**
-     * @param array<int|string> $matchIds
+     * Validate the requested project, calendar and match identifiers, load the optional Google API client and authenticate using the stored OAuth refresh credentials. Update existing calendar events or insert new ones and persist their returned identifiers.
+     * @param array<int|string> $matchIds Selected match identifiers.
+     * @param int $projectId Selected project identifier.
+     * @param int $calendarId Local calendar configuration identifier.
+     * @return int Number of matches synchronised.
+     * @throws RuntimeException If required selections, dependencies, credentials or event identifiers are missing.
      */
     public function synchronize(array $matchIds, int $projectId, int $calendarId): int
     {
@@ -123,6 +132,11 @@ final class GoogleCalendarMatchSynchronizer
         return $updated;
     }
 
+    /**
+     * Load the bundled Google API autoloader when needed and verify that the client and calendar event classes required for synchronisation are available.
+     * @return void
+     * @throws RuntimeException If a required Google API class is unavailable.
+     */
     private function loadGoogleClient(): void
     {
         $autoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
@@ -147,6 +161,12 @@ final class GoogleCalendarMatchSynchronizer
         }
     }
 
+    /**
+     * Retrieve the selected local calendar configuration, including its remote calendar identifier and stored parameters.
+     * @param int $calendarId Local calendar configuration identifier.
+     * @return object Calendar configuration record.
+     * @throws RuntimeException If the selected configuration does not exist.
+     */
     private function loadCalendar(int $calendarId): object
     {
         $query = $this->db->createQuery()
@@ -168,6 +188,12 @@ final class GoogleCalendarMatchSynchronizer
         return $calendar;
     }
 
+    /**
+     * Load the project's timezone, match duration and favourite-team synchronisation settings.
+     * @param int $projectId Project identifier.
+     * @return object Project configuration record.
+     * @throws RuntimeException If the project does not exist.
+     */
     private function loadProject(int $projectId): object
     {
         $query = $this->db->createQuery()
@@ -193,8 +219,11 @@ final class GoogleCalendarMatchSynchronizer
     }
 
     /**
-     * @param array<int> $matchIds
-     * @return array<object>
+     * Load published matches matching the selected identifiers and project, including team names, venue data and existing calendar event identifiers. Apply the favourite-team restriction when configured, returning no matches if that restriction has no valid team identifiers.
+     * @param array<int> $matchIds Validated match identifiers.
+     * @param int $projectId Project identifier.
+     * @param object $project Project synchronisation settings.
+     * @return array<object> Matches ordered by date and match number.
      */
     private function loadMatches(array $matchIds, int $projectId, object $project): array
     {
@@ -249,6 +278,12 @@ final class GoogleCalendarMatchSynchronizer
         return (array) $this->db->loadObjectList();
     }
 
+    /**
+     * Build a Google Calendar event with team names, result or cancellation information, round description and available venue details. Derive start and end times from the match date, project timezone and configured duration, with UTC and one-hour fallbacks.
+     * @param object $match Match record.
+     * @param object $project Project time settings.
+     * @return GoogleCalendarEvent Prepared calendar event.
+     */
     private function createEvent(object $match, object $project): GoogleCalendarEvent
     {
         $detail = '';
@@ -307,6 +342,12 @@ final class GoogleCalendarMatchSynchronizer
         return $event;
     }
 
+    /**
+     * Persist the remote event identifier against the local match so later synchronisations can update that event.
+     * @param int $matchId Local match identifier.
+     * @param string $eventId Remote calendar event identifier.
+     * @return void
+     */
     private function storeEventId(int $matchId, string $eventId): void
     {
         $row = (object) [
@@ -318,8 +359,9 @@ final class GoogleCalendarMatchSynchronizer
     }
 
     /**
-     * @param array<int|string> $ids
-     * @return array<int>
+     * Accept positive integer identifiers and canonical positive decimal strings within the PHP integer range. Discard invalid entries and remove duplicates before returning a sequential list.
+     * @param array<int|string> $ids Candidate identifiers.
+     * @return array<int> Unique valid identifiers.
      */
     private function normaliseIds(array $ids): array
     {

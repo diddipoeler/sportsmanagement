@@ -26,15 +26,21 @@ use RuntimeException;
  */
 final class XmlProjectReferenceImportService
 {
+    /**
+     * Initialise the reference importer with the database connection used by the native project import stages.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array{post:array<string,mixed>,messages:list<string>,projectId:?int}
+     * Validate the project import context and execute the requested cumulative import stages 1 through 14. Resolve sport, league and season references, delegate related entity imports and write the resolved identifiers back into the historical form fields for subsequent processing.
+     * @param array<string,mixed> $post Submitted import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param string $step Last import stage to execute.
+     * @param int $importProjectId Existing import project identifier when applicable.
+     * @return array{post:array<string,mixed>,messages:list<string>,projectId:?int} Prepared selections, reference messages and resolved project identifier.
      */
     public function prepare(
         array $post,
@@ -153,7 +159,12 @@ final class XmlProjectReferenceImportService
         }
     }
 
-    /** @param array<string, mixed> $post */
+    /**
+     * Reuse a selected sport type or find one by its truncated submitted name. Insert a missing type and indicate whether it was created during this import.
+     * @param array<string,mixed> $post Import form selections.
+     * @return object Sport type record with creation status.
+     * @throws RuntimeException If the selection is invalid or the write fails.
+     */
     private function resolveSportsType(array $post): object
     {
         $id = max(0, (int) ($post['sportstype'] ?? 0));
@@ -189,8 +200,12 @@ final class XmlProjectReferenceImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Resolve an explicitly selected league or reuse a matching name. Create a missing league with generated aliases, sport and age-group associations, source country and the configured placeholder image, retaining only supported database fields.
+     * @param array<string,mixed> $post Import form selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $sportTypeId Resolved sport type identifier.
+     * @return object League record with creation status.
+     * @throws RuntimeException If the selection is invalid or insertion fails.
      */
     private function resolveLeague(array $post, array $parsedData, int $sportTypeId): object
     {
@@ -242,7 +257,12 @@ final class XmlProjectReferenceImportService
         return $row;
     }
 
-    /** @param array<string, mixed> $post */
+    /**
+     * Reuse a selected season or look up the submitted new season name. Insert a missing season with its generated alias and record whether it was newly created.
+     * @param array<string,mixed> $post Import form selections.
+     * @return object Season record with creation status.
+     * @throws RuntimeException If the selection is invalid or insertion fails.
+     */
     private function resolveSeason(array $post): object
     {
         $id = max(0, (int) ($post['season'] ?? 0));
@@ -283,10 +303,11 @@ final class XmlProjectReferenceImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Validate selected event identifiers and resolve newly prepared event records by name. Replace creation flags with database identifiers so subsequent legacy stages can reuse the records.
+     * @param array<string,mixed> $post Import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated import selections.
+     * @throws RuntimeException If a required event reference cannot be resolved.
      */
     private function promoteEventIds(array $post, array $parsedData): array
     {
@@ -327,10 +348,11 @@ final class XmlProjectReferenceImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, mixed>
+     * Validate selected statistic identifiers and resolve newly prepared statistics by name and class. Replace creation flags with the corresponding database identifiers.
+     * @param array<string,mixed> $post Import selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,mixed> Updated import selections.
+     * @throws RuntimeException If a required statistic reference cannot be resolved.
      */
     private function promoteStatisticIds(array $post, array $parsedData): array
     {
@@ -371,6 +393,14 @@ final class XmlProjectReferenceImportService
         return $post;
     }
 
+    /**
+     * Retrieve a reference record from the specified table using a bound identifier and mark it as an existing record.
+     * @param string $table Reference table name.
+     * @param int $id Selected identifier.
+     * @param string $label Reference type for error reporting.
+     * @return object Existing reference record.
+     * @throws RuntimeException If the selected reference is missing.
+     */
     private function requireById(string $table, int $id, string $label): object
     {
         $query = $this->database->createQuery()
@@ -393,6 +423,12 @@ final class XmlProjectReferenceImportService
         return $row;
     }
 
+    /**
+     * Find the first reference record matching the supplied name in the specified table using a bound query parameter.
+     * @param string $table Reference table name.
+     * @param string $name Reference name.
+     * @return object|null Matching reference or null.
+     */
     private function findByName(string $table, string $name): ?object
     {
         $query = $this->database->createQuery()
@@ -408,6 +444,12 @@ final class XmlProjectReferenceImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find a statistic matching both its name and class using bound query parameters.
+     * @param string $name Statistic name.
+     * @param string $class Statistic class.
+     * @return object|null Matching statistic or null.
+     */
     private function findStatisticByNameAndClass(string $name, string $class): ?object
     {
         $query = $this->database->createQuery()
@@ -425,6 +467,12 @@ final class XmlProjectReferenceImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Copy only properties whose names correspond to columns in the installed target table.
+     * @param object $source Prepared reference record.
+     * @param string $table Target table name.
+     * @return object Schema-compatible record.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -439,6 +487,13 @@ final class XmlProjectReferenceImportService
         return $row;
     }
 
+    /**
+     * Build an HTML report entry distinguishing created and reused reference records and escape the reference name for display.
+     * @param string $type Internal reference type label.
+     * @param string $name Reference display name.
+     * @param bool $created Whether the record was newly inserted.
+     * @return string HTML report entry.
+     */
     private function message(string $type, string $name, bool $created): string
     {
         $action = $created ? 'Created new ' : 'Using existing ';
