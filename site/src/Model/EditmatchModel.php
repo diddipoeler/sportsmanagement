@@ -55,6 +55,14 @@ final class EditmatchModel extends AdminModel
     private ?DatabaseInterface $injectedDatabase = null;
     private ?MailerFactoryInterface $injectedMailerFactory = null;
 
+    /**
+     * Initialise the native edit-match form model with optional database and mailer dependencies, then capture the legacy project, round, season, division and layout context from Joomla input.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory MVC factory.
+     * @param FormFactoryInterface|null $formFactory Form factory.
+     * @param DatabaseInterface|null $database Optional database dependency.
+     * @param MailerFactoryInterface|null $mailerFactory Optional mailer factory.
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -77,6 +85,16 @@ final class EditmatchModel extends AdminModel
         self::$seasonid = $input->getInt('s', 0);
     }
 
+    /**
+     * Insert an individual match pairing with its parent match, home and away project teams and players, adding the current identity and UTC modification timestamp.
+     * @param mixed $match_id Parent match identifier.
+     * @param mixed $match_numer Individual match number.
+     * @param mixed $valuehometeamplayer_id Home player identifier.
+     * @param mixed $valueawayteamplayer_id Away player identifier.
+     * @param mixed $valuehomeprojectteam_id Home project-team identifier.
+     * @param mixed $valueawayprojectteam_id Away project-team identifier.
+     * @return bool Whether insertion succeeded.
+     */
     public function insertSingleMatchData(
         $match_id = 0,
         $match_numer = '',
@@ -109,6 +127,12 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Load individual match rows for the specified parent match and match number using bound parameters.
+     * @param mixed $match_id Parent match identifier.
+     * @param mixed $match_number Individual match number.
+     * @return array<int,object> Matching individual records.
+     */
     public function getSingleMatchData($match_id = 0, $match_number = ''): array
     {
         $matchId = (int) $match_id;
@@ -125,6 +149,11 @@ final class EditmatchModel extends AdminModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load all individual match records associated with a parent match using a bound identifier.
+     * @param mixed $match_id Parent match identifier.
+     * @return array<int,object> Individual match rows.
+     */
     public function getSingleMatchDatas($match_id = 0): array
     {
         $matchId = (int) $match_id;
@@ -138,6 +167,11 @@ final class EditmatchModel extends AdminModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Delegate submitted match statistics to the native write service and report a generic frontend error if persistence throws.
+     * @param mixed $data Submitted statistics payload.
+     * @return bool Whether the write succeeded.
+     */
     public function savestats($data): bool
     {
         try {
@@ -147,6 +181,11 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Load project referee position options, delegate assignment updates to the write service and notify newly assigned referees after successful persistence.
+     * @param mixed $data Submitted match and referee assignments.
+     * @return bool Whether the update and notification path succeeded.
+     */
     public function updateReferees($data): bool
     {
         $data = (array) $data;
@@ -165,6 +204,11 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Load project staff position options and delegate staff assignment changes to the native match write service.
+     * @param mixed $data Submitted match staff payload.
+     * @return bool Whether the update succeeded.
+     */
     public function updateStaff($data): bool
     {
         $data = (array) $data;
@@ -177,6 +221,11 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Load project player position options and delegate roster updates to the native match write service.
+     * @param mixed $data Submitted match roster payload.
+     * @return bool Whether the update succeeded.
+     */
     public function updateRoster($data): bool
     {
         $data = (array) $data;
@@ -381,6 +430,13 @@ final class EditmatchModel extends AdminModel
         return (int) $digits;
     }
 
+    /**
+     * Instantiate the native match table with the active model database for the historical match table name, otherwise defer to Joomla's table factory.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Table configuration.
+     * @return mixed Match table or parent factory result.
+     */
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'match') === 0) {
@@ -390,6 +446,12 @@ final class EditmatchModel extends AdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Register SportsManagement administrator form and legacy field paths, then load the named frontend edit form with optional persisted values.
+     * @param array $data Existing form values.
+     * @param bool $loadData Whether to load model data.
+     * @return mixed Joomla form or false.
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -404,6 +466,10 @@ final class EditmatchModel extends AdminModel
         return $form ?: false;
     }
 
+    /**
+     * Restore pending edit-match form data from the Joomla session, falling back to the stored match when no pending values exist.
+     * @return mixed Pending values or match record.
+     */
     protected function loadFormData()
     {
         $app = $this->siteApplication();
@@ -411,6 +477,10 @@ final class EditmatchModel extends AdminModel
         return empty($data) ? $this->getData() : $data;
     }
 
+    /**
+     * Load the requested match and both team names through the project-team and season-team relations, caching the selected record in the model.
+     * @return object|null Match record or null.
+     */
     public function getData()
     {
         $input = $this->siteApplication()->getInput();
@@ -441,6 +511,14 @@ final class EditmatchModel extends AdminModel
         return $this->_data;
     }
 
+    /**
+     * Insert a match roster row for a player and project position, preserving ordering as the shirt number and recording the current user's modification metadata.
+     * @param int $matchId Match identifier.
+     * @param int $teamPlayerId Player assignment identifier.
+     * @param int $positionId Project position identifier.
+     * @param int $ordering Roster order and shirt number.
+     * @return bool Whether insertion succeeded.
+     */
     private function insertMatchPlayer(int $matchId, int $teamPlayerId, int $positionId, int $ordering): bool
     {
         $app = $this->siteApplication();
@@ -510,6 +588,10 @@ final class EditmatchModel extends AdminModel
         return $db->loadObjectList('value') ?: [];
     }
 
+    /**
+     * Create the native match write service using the effective component database connection.
+     * @return MatchWriteService Service for match updates.
+     */
     private function writeService(): MatchWriteService
     {
         return new MatchWriteService($this->database());
@@ -603,6 +685,11 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Log a write exception server-side and enqueue a generic translated frontend error, returning false to the caller.
+     * @param \Throwable $e Write failure.
+     * @return bool Always false.
+     */
     private function reportWriteFailure(\Throwable $e): bool
     {
         Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
@@ -611,6 +698,10 @@ final class EditmatchModel extends AdminModel
         return false;
     }
 
+    /**
+     * Return the injected mailer factory when supplied or resolve Joomla's mailer service from the DI container.
+     * @return MailerFactoryInterface Active mailer factory.
+     */
     private function mailerFactory(): MailerFactoryInterface
     {
         if ($this->injectedMailerFactory !== null) {
@@ -623,6 +714,10 @@ final class EditmatchModel extends AdminModel
         return $mailerFactory;
     }
 
+    /**
+     * Resolve the component database using the injected primary connection or Joomla's default service and the legacy database selector.
+     * @return DatabaseInterface Effective connection.
+     */
     private function database(): DatabaseInterface
     {
         $joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();
@@ -633,6 +728,10 @@ final class EditmatchModel extends AdminModel
         );
     }
 
+    /**
+     * Retrieve the primary Joomla database service through dependency injection.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -641,6 +740,10 @@ final class EditmatchModel extends AdminModel
         return $database;
     }
 
+    /**
+     * Resolve the active site application using the shared SportsManagement runtime service.
+     * @return CMSApplicationInterface Active frontend application.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();

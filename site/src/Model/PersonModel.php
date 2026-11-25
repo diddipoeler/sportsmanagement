@@ -35,6 +35,11 @@ final class PersonModel extends SportsManagementProjectModel
     public $teamplayer = null;
     public $_playerhistory = null;
 
+    /**
+     * Initialise the native person model and mirror its project, person, team-player and database context into the legacy static properties used by profile layouts.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional native MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -54,6 +59,10 @@ final class PersonModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load the published referee assignment for the active person and project, matching the season-person relation to the project season and including position and profile metadata.
+     * @return object|null Referee assignment or null when absent.
+     */
     public static function getReferee()
     {
         if (self::$projectid <= 0 || self::$personid <= 0) {
@@ -90,6 +99,11 @@ final class PersonModel extends SportsManagementProjectModel
         return self::$_inproject;
     }
 
+    /**
+     * Check whether the active frontend identity may edit the current person as a project administrator or as the linked player.
+     * @param mixed $config_editOwnPlayer Whether own-profile editing is enabled.
+     * @return bool Whether editing is permitted.
+     */
     public static function getAllowed($config_editOwnPlayer)
     {
         $user = self::frontendApplication()->getIdentity();
@@ -97,6 +111,11 @@ final class PersonModel extends SportsManagementProjectModel
         return self::_isAdmin($user) || self::_isOwnPlayer($user, $config_editOwnPlayer);
     }
 
+    /**
+     * Check authenticated project administrator/editor privileges through the legacy project bridge, then fall back to the component person.edit permission.
+     * @param object|null $user Joomla identity.
+     * @return bool Whether administrative editing is permitted.
+     */
     public static function _isAdmin($user)
     {
         if ((int) ($user->id ?? 0) <= 0) {
@@ -115,6 +134,12 @@ final class PersonModel extends SportsManagementProjectModel
         return $user->authorise('person.edit', $option);
     }
 
+    /**
+     * Check whether own-profile editing is enabled and the authenticated user's ID matches the current person record's linked user.
+     * @param object|null $user Joomla identity.
+     * @param mixed $config_editOwnPlayer Own-profile edit setting.
+     * @return bool Whether the current person belongs to the user.
+     */
     public static function _isOwnPlayer($user, $config_editOwnPlayer)
     {
         if (!$config_editOwnPlayer || (int) ($user->id ?? 0) <= 0) {
@@ -126,6 +151,11 @@ final class PersonModel extends SportsManagementProjectModel
         return $person && (int) ($person->user_id ?? 0) === (int) $user->id;
     }
 
+    /**
+     * Determine whether contact details may be displayed. When restricted, allow project administrators or users whose team membership matches the current player's team context.
+     * @param mixed $config_showContactDataOnlyTeamMembers Contact visibility restriction.
+     * @return bool Whether the contact details may be shown.
+     */
     public static function isContactDataVisible($config_showContactDataOnlyTeamMembers = [])
     {
         if (!$config_showContactDataOnlyTeamMembers) {
@@ -153,6 +183,11 @@ final class PersonModel extends SportsManagementProjectModel
         return $projectTeamId > 0 && in_array($projectTeamId, $projectTeamIds, true);
     }
 
+    /**
+     * Read distinct season-team identifiers for published player or staff memberships linked to a Joomla user. Return an empty list when the identifier or query fails.
+     * @param mixed $userId Joomla user identifier.
+     * @return array<int,int> Unique season-team identifiers.
+     */
     public static function _getProjectTeamIds4UserId($userId = 0)
     {
         $userId = max(0, (int) $userId);
@@ -183,6 +218,11 @@ final class PersonModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Aggregate the current referee's match assignments by project, season and position, ordering the history by season, league and project.
+     * @param string $order Requested ASC or DESC history order.
+     * @return array<int,object> Referee history rows.
+     */
     public function getRefereeHistory($order = 'ASC')
     {
         $personId = self::$personid;
@@ -240,6 +280,11 @@ final class PersonModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Find the Joomla contact linked to the current person's legacy user ID in the supplied contact category.
+     * @param mixed $catid Joomla contact category identifier.
+     * @return int Contact identifier or zero.
+     */
     public function getContactID($catid)
     {
         $person = self::getPerson();
@@ -263,6 +308,13 @@ final class PersonModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Resolve the selected person and database context, optionally increment the profile hit counter, and load the person record with its routing slug into legacy static state.
+     * @param mixed $personid Explicit person identifier or zero for current context.
+     * @param mixed $cfg_which_database Database selector.
+     * @param mixed $inserthits Whether to increment profile hits.
+     * @return object|null Person record or null.
+     */
     public static function getPerson($personid = 0, $cfg_which_database = 0, $inserthits = 0)
     {
         $personId = max(0, (int) $personid);
@@ -300,6 +352,13 @@ final class PersonModel extends SportsManagementProjectModel
         return self::$person;
     }
 
+    /**
+     * Increment the selected person's profile hit counter using a bound identifier when hit recording is enabled.
+     * @param mixed $personid Person identifier.
+     * @param mixed $inserthits Whether hit recording is enabled.
+     * @param mixed $cfg_which_database Optional database selector; null retains current context.
+     * @return void
+     */
     public static function updateHits($personid = 0, $inserthits = 0, $cfg_which_database = null)
     {
         $personId = max(0, (int) $personid);
@@ -320,6 +379,10 @@ final class PersonModel extends SportsManagementProjectModel
         $db->execute();
     }
 
+    /**
+     * Collect position identifiers from the legacy player history and retrieve published event definitions assigned to those positions.
+     * @return array<int,object> Event type records.
+     */
     public function getAllEvents()
     {
         if (!class_exists('sportsmanagementModelPlayer')) {
@@ -353,6 +416,14 @@ final class PersonModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Aggregate the selected person's match events of the requested type, optionally restricted to a project-team assignment.
+     * @param mixed $eventid Event type identifier.
+     * @param mixed $projectid Retained compatibility argument, currently unused.
+     * @param mixed $projectteamid Optional project-team identifier.
+     * @param mixed $show_events_as_sum Select SUM rather than COUNT.
+     * @return int Aggregated event value.
+     */
     public function getPlayerEvents($eventid, $projectid = null, $projectteamid = null, $show_events_as_sum = 1)
     {
         $eventId = max(0, (int) $eventid);
@@ -383,6 +454,10 @@ final class PersonModel extends SportsManagementProjectModel
         return (int) ($db->loadResult() ?: 0);
     }
 
+    /**
+     * Load distinct email addresses of unblocked Joomla users in the historical administrator group names for profile-change notifications.
+     * @return array<int,string> Recipient addresses.
+     */
     public function getPlayerChangedRecipients()
     {
         $db = $this->getDatabase();
@@ -402,6 +477,13 @@ final class PersonModel extends SportsManagementProjectModel
         return $db->loadColumn() ?: [];
     }
 
+    /**
+     * Normalise recipient addresses, create a Joomla mailer and send the supplied message with the configured sender. Returns false when no valid recipient exists or sending fails.
+     * @param mixed $listOfRecipients Recipient array or delimited string.
+     * @param mixed $subject Mail subject.
+     * @param mixed $message Mail body.
+     * @return bool Whether the mailer completed without an exception.
+     */
     public function sendMailTo($listOfRecipients, $subject, $message)
     {
         $recipients = self::normaliseRecipients($listOfRecipients);
@@ -434,6 +516,12 @@ final class PersonModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Check authenticated administrative editing or own-profile editing when the general edit setting permits it.
+     * @param mixed $config_editOwnPlayer Own-profile editing setting.
+     * @param mixed $config_editAllowed General editing setting.
+     * @return bool Whether profile editing is allowed.
+     */
     public function isEditAllowed($config_editOwnPlayer, $config_editAllowed)
     {
         $user = $this->siteApplication()->getIdentity();
@@ -445,11 +533,20 @@ final class PersonModel extends SportsManagementProjectModel
             || ($config_editAllowed && self::_isOwnPlayer($user, $config_editOwnPlayer));
     }
 
+    /**
+     * Resolve the frontend application through the shared native site runtime service.
+     * @return CMSApplicationInterface Active site application.
+     */
     private static function frontendApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the effective component database for an explicit selector or the legacy static database context.
+     * @param int|null $selector Optional database mode.
+     * @return DatabaseInterface Resolved database connection.
+     */
     private static function database(?int $selector = null): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -458,6 +555,10 @@ final class PersonModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Retrieve Joomla's primary database service from the dependency injection container.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -466,6 +567,11 @@ final class PersonModel extends SportsManagementProjectModel
         return $database;
     }
 
+    /**
+     * Report a database exception through the frontend application using the existing translated database error message.
+     * @param \Throwable $e Database failure.
+     * @return void
+     */
     private static function enqueueDatabaseError(\Throwable $e): void
     {
         self::frontendApplication()->enqueueMessage(
@@ -474,6 +580,11 @@ final class PersonModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Split delimited recipient strings or iterate a supplied array, validate email addresses and remove duplicates before mail delivery.
+     * @param mixed $value Raw recipient selection.
+     * @return array<int,string> Unique validated email addresses.
+     */
     private static function normaliseRecipients($value): array
     {
         $values = is_array($value) ? $value : preg_split('/[;,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
