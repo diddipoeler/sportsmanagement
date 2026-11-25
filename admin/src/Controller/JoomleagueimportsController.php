@@ -27,6 +27,10 @@ use Joomla\Database\DatabaseInterface;
 /** Native Joomla 5/6 controller for the JoomLeague import workflow. */
 final class JoomleagueimportsController extends BaseController
 {
+    /**
+     * Check import permissions and delegate the legacy age-group setup to the import model, then return to the import information view with a translated status message.
+     * @return bool True after scheduling the redirect.
+     */
     public function joomleaguesetagegroup()
     {
         $this->assertImportPermission();
@@ -45,6 +49,10 @@ final class JoomleagueimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Dispatch the requested import stage after checking administrator permissions. Use native services for staging, post-import migration and Final Four predictions, and delegate earlier stages to the import model. Persist the stage report and redirect to the next stage or the information view at completion.
+     * @return bool True after scheduling the redirect.
+     */
     public function importjoomleaguenew()
     {
         $this->assertImportPermission();
@@ -93,6 +101,10 @@ final class JoomleagueimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Check import permissions and redirect to the information view used for the age-group import workflow.
+     * @return bool True after scheduling the redirect.
+     */
     public function importjoomleagueagegroup()
     {
         $this->assertImportPermission();
@@ -107,8 +119,16 @@ final class JoomleagueimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Obtain the administrator import model through Joomla's MVC factory while preserving supplied model options and disabling automatic request-state population.
+     * @param string $name Model name.
+     * @param string $prefix MVC client prefix.
+     * @param array $config Model configuration.
+     * @return mixed Model returned by Joomla's controller.
+     */
     public function getModel($name = 'Joomleagueimports', $prefix = 'Administrator', $config = [])
     {
+        $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);
@@ -128,6 +148,11 @@ final class JoomleagueimportsController extends BaseController
         }
     }
 
+    /**
+     * Open the configured JoomLeague source connection and copy staging tables into the target database for the selected sport. Disconnect the source in a finally block, format escaped per-table results and advance to step 11.
+     * @param int $sportsTypeId Selected sport type identifier.
+     * @return array<string,string> Runtime and table-copy report.
+     */
     private function runNativeStagingStep(int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -166,6 +191,11 @@ final class JoomleagueimportsController extends BaseController
         ];
     }
 
+    /**
+     * Migrate Final Four prediction data from the JoomLeague source into SportsManagement. Release the source connection even if migration fails, build an escaped result report and mark the import as finished.
+     * @param int $sportsTypeId Selected sport type identifier.
+     * @return array<string,string> Runtime and prediction migration report.
+     */
     private function runNativeFinalFourStep(int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -204,6 +234,12 @@ final class JoomleagueimportsController extends BaseController
         ];
     }
 
+    /**
+     * Dispatch stages 11 through 27 to the appropriate relation, structure, statistics, cleanup or prediction migration service. Format the returned status records and advance the request to the next stage or completion.
+     * @param int $step Native post-import stage number.
+     * @param int $sportsTypeId Selected sport type identifier.
+     * @return array<string,string> Runtime and stage-specific report.
+     */
     private function runNativePostImportStep(int $step, int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -289,7 +325,11 @@ final class JoomleagueimportsController extends BaseController
         ];
     }
 
-    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    /**
+     * Run the native database-tool migrations for image paths, component identifiers and JSON template parameters. Collect individual success or failure records before merging the results of the import cleanup service.
+     * @param DatabaseInterface $database Target database connection.
+     * @return array<int,array{label:string,success:bool,count:int,message:string}> Cleanup status records.
+     */
     private function runNativeCleanupStep(DatabaseInterface $database): array
     {
         $rows = [];
@@ -325,6 +365,12 @@ final class JoomleagueimportsController extends BaseController
         return array_merge($rows, (new JoomLeagueCleanupService($database))->cleanup());
     }
 
+    /**
+     * Update the active Joomla input with the sport selection and next numeric import stage for subsequent redirect handling.
+     * @param int $step Next import stage.
+     * @param int $sportsTypeId Selected sport type identifier.
+     * @return void
+     */
     private function setImportStep(int $step, int $sportsTypeId): void
     {
         $input = $this->app->getInput();
@@ -332,6 +378,11 @@ final class JoomleagueimportsController extends BaseController
         $input->set('jl_table_import_step', (string) $step);
     }
 
+    /**
+     * Mark the import as completed in the active Joomla input while retaining the selected sport type.
+     * @param int $sportsTypeId Selected sport type identifier.
+     * @return void
+     */
     private function setImportEnd(int $sportsTypeId): void
     {
         $input = $this->app->getInput();
@@ -339,6 +390,11 @@ final class JoomleagueimportsController extends BaseController
         $input->set('jl_table_import_step', 'ENDE');
     }
 
+    /**
+     * Calculate elapsed wall-clock time from the recorded start and format it to four decimal places in the existing translated runtime message.
+     * @param float $started Start time from microtime(true).
+     * @return string Formatted elapsed-time message.
+     */
     private function runtimeText(float $started): string
     {
         return Text::sprintf(
@@ -347,6 +403,10 @@ final class JoomleagueimportsController extends BaseController
         );
     }
 
+    /**
+     * Create the source database driver from JoomLeague component settings with Joomla configuration fallbacks. Translate historical MySQL and PostgreSQL driver names to their current equivalents and retain the configured source table prefix.
+     * @return DatabaseInterface Source database connection.
+     */
     private function createJoomLeagueDatabase(): DatabaseInterface
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
