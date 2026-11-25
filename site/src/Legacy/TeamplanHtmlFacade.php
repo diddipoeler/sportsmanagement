@@ -31,6 +31,10 @@ use Joomla\Database\DatabaseInterface;
  */
 final class TeamplanHtmlFacade
 {
+    /**
+     * Return the active Joomla application for the historical teamplan route context.
+     * @return CMSApplicationInterface Active Joomla application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return Factory::getApplication();
@@ -39,6 +43,16 @@ final class TeamplanHtmlFacade
     public static $project = null;
     public static array $teams = [];
 
+    /**
+     * Build the match event display for the home and away teams. In tab mode group recorded events by type and include a substitution tab when available; otherwise render the events in two inline columns.
+     * @param mixed $matchInfo Match and project-team identifiers.
+     * @param mixed $projectevents Project event definitions.
+     * @param mixed $matchevents Recorded match events.
+     * @param mixed $substitutions Recorded player substitutions.
+     * @param array $config Event presentation options.
+     * @param mixed $project Project sport context.
+     * @return string Event container markup.
+     */
     public static function showEventsContainerInResults(
         $matchInfo = [],
         $projectevents = [],
@@ -152,6 +166,20 @@ final class TeamplanHtmlFacade
         return $output;
     }
 
+    /**
+     * Generate a thumbnail link using the selected legacy JCE popup, secondary browser window or Bootstrap modal mode. The supplied image and link attributes are used to construct the markup.
+     * @param mixed $target Modal or link identifier.
+     * @param mixed $picture Image source.
+     * @param mixed $text Image label and title.
+     * @param mixed $pictureheight Thumbnail height in pixels.
+     * @param mixed $url Optional destination URL.
+     * @param mixed $width Popup width.
+     * @param mixed $height Popup height.
+     * @param mixed $useJqueryModal Legacy popup mode.
+     * @param mixed $schemaorg Image metadata attribute name.
+     * @param mixed $schemaorgvalue Image metadata attribute value.
+     * @return string Thumbnail and popup markup.
+     */
     public static function getBootstrapModalImage(
         $target = '',
         $picture = '',
@@ -198,6 +226,14 @@ final class TeamplanHtmlFacade
         return $output;
     }
 
+    /**
+     * Format the scheduled match time using the configured UTC display format and optional clock suffix. When live marking is enabled, replace the time with a live indicator during the calculated playing window.
+     * @param mixed $game Match record passed by reference.
+     * @param array $config Match display configuration passed by reference.
+     * @param array $overallconfig Overall time format configuration passed by reference.
+     * @param mixed $project Project timing rules passed by reference.
+     * @return string Match time or live indicator markup.
+     */
     public static function showMatchTime(&$game, &$config, &$overallconfig, &$project): string
     {
         $output = '';
@@ -239,6 +275,14 @@ final class TeamplanHtmlFacade
         return $output;
     }
 
+    /**
+     * Calculate the elapsed match minute and playing period, including configured breaks and the optional extra period. Substitute period and minute placeholders in the configured live tooltip.
+     * @param mixed $thisTime Current Unix timestamp.
+     * @param mixed $matchStamp Scheduled match Unix timestamp.
+     * @param array $config Live display settings passed by reference.
+     * @param mixed $project Match duration rules passed by reference.
+     * @return string Live period or break description.
+     */
     public static function mark_now_playing($thisTime, $matchStamp, &$config, &$project): string
     {
         $goneSinceBegin = (int) (($thisTime - $matchStamp) / 60);
@@ -266,6 +310,14 @@ final class TeamplanHtmlFacade
         return $text;
     }
 
+    /**
+     * Apply the requested home-away display order, update both team objects with the selected division metadata or clear it, then render one or two division labels according to the configuration.
+     * @param mixed $hometeam Home team passed by reference.
+     * @param mixed $guestteam Away team passed by reference.
+     * @param array $config Division display options passed by reference.
+     * @param mixed $divisionId Selected division identifier.
+     * @return string Division labels or nonbreaking space.
+     */
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $divisionId = 0): string
     {
         $output = '';
@@ -314,6 +366,12 @@ final class TeamplanHtmlFacade
         return $output;
     }
 
+    /**
+     * Resolve the match venue from the match record, home team or club default and cache the fallback on the team object. Emit the configured venue link or alternative-venue warning directly.
+     * @param mixed $game Match record passed by reference.
+     * @param array $config Venue display options.
+     * @return string Empty string; output is emitted directly.
+     */
     public static function showMatchPlayground(&$game, $config = []): string
     {
         $projectTeamId = (int) ($game->projectteam1_id ?? 0);
@@ -391,6 +449,13 @@ final class TeamplanHtmlFacade
         return '';
     }
 
+    /**
+     * Determine the selected team's match outcome using the legacy helper and render the corresponding win, draw or loss icon in Font Awesome or historical image format.
+     * @param mixed $game Match record.
+     * @param mixed $projectteamId Project-team identifier.
+     * @param array|null $attributes Optional icon attributes.
+     * @return string|false Outcome icon markup or false for an unavailable result.
+     */
     public static function getThumbUpDownImg($game, $projectteamId, $attributes = null)
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -422,6 +487,15 @@ final class TeamplanHtmlFacade
         return HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $state . '.png', $alt, $attributes);
     }
 
+    /**
+     * Render a recorded event only when its event type and project team match the requested column. Include the configured event icon or name, minute, player name, count and notice.
+     * @param mixed $matchEvent Recorded match event.
+     * @param mixed $event Project event definition.
+     * @param mixed $projectTeamId Requested project-team identifier.
+     * @param int $showEventInfo Event display mode.
+     * @param array $config Event display options.
+     * @return string Event list item or empty string.
+     */
     private static function formatEventContainer($matchEvent, $event, $projectTeamId, int $showEventInfo, array $config): string
     {
         if ((int) ($matchEvent->event_type_id ?? 0) !== (int) ($event->id ?? 0)
@@ -463,6 +537,16 @@ final class TeamplanHtmlFacade
         return $output . '</li>';
     }
 
+    /**
+     * Render a substitution for the requested project team, including its minute, outgoing and incoming players, position labels and supplied icons.
+     * @param mixed $substitution Recorded substitution.
+     * @param mixed $projectTeamId Requested project-team identifier.
+     * @param string $imgTime Retained time icon markup, currently unused.
+     * @param string $imgOut Outgoing-player icon markup.
+     * @param string $imgIn Incoming-player icon markup.
+     * @param array $config Name display options.
+     * @return string Substitution list item or empty string.
+     */
     private static function formatSubstitutionContainer($substitution, $projectTeamId, string $imgTime, string $imgOut, string $imgIn, array $config): string
     {
         if ((int) ($substitution->ptid ?? 0) !== (int) $projectTeamId) {
@@ -478,6 +562,13 @@ final class TeamplanHtmlFacade
             . '&nbsp;(' . Text::_((string) ($substitution->in_position ?? '')) . ')<br /><br /></li>';
     }
 
+    /**
+     * Read the selected division name property and optionally link it to the project ranking using the current request database, season and project context.
+     * @param object $team Team division metadata.
+     * @param string $nameType Division label property.
+     * @param array $config Division link options.
+     * @return string Division label or link markup.
+     */
     private static function divisionLabel(object $team, string $nameType, array $config): string
     {
         $label = (string) ($team->{$nameType} ?? '');
@@ -500,6 +591,10 @@ final class TeamplanHtmlFacade
         return HTMLHelper::link($link, $label);
     }
 
+    /**
+     * Retrieve the primary Joomla database service from the dependency injection container for venue and division lookups.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function database(): DatabaseInterface
     {
         return Factory::getContainer()->get(DatabaseInterface::class);
