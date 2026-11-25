@@ -62,6 +62,12 @@ final class HtmlView extends BaseHtmlView
     public string $assignModal = '';
     public string $changeTeamsModal = '';
 
+    /**
+     * Load the project context, model state and team list, initialise session context and dispatch copy, assignment or replacement layouts. Prepare filters, quick-add options, toolbar and modal dialogs for the default list.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     * @throws \RuntimeException If the model is unavailable or reports errors.
+     */
     public function display($tpl = null)
     {
         $this->app = self::administratorApplication();
@@ -177,6 +183,11 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve the administrator application from Joomla's dependency injection container and verify the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the client is invalid.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -189,6 +200,10 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Restore selected project-team identifiers and destination project options from administrator user state for the copy layout.
+     * @return void
+     */
     private function prepareCopy(): void
     {
         $this->ptids = array_values(array_filter(array_map(
@@ -201,6 +216,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Build assigned and available season-team selection lists, skipping nonpositive identifiers and excluding already assigned teams from available options. Append supplemental team information to labels when present.
+     * @return void
+     */
     private function prepareAssignmentOptions(): void
     {
         $assignedRows = $this->model->getProjectTeams($this->project_id, false);
@@ -234,11 +253,19 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Load replacement team options for the current project, falling back to an empty array.
+     * @return void
+     */
     private function prepareReplacementOptions(): void
     {
         $this->replacementTeamOptions = $this->model->getAllTeams($this->project_id) ?: [];
     }
 
+    /**
+     * Configure the project team or individual participant toolbar with editing, publication, copying, ranking and venue actions. Add assignment and replacement dialog buttons for HTML documents.
+     * @return void
+     */
     private function addToolbar(): void
     {
         $title = $this->individualProject
@@ -322,6 +349,10 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Render the assignment and replacement Bootstrap modal dialogs with the current project identifier and configured dimensions.
+     * @return void
+     */
     private function prepareModals(): void
     {
         $this->assignModal = HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignTeams', [

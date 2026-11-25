@@ -90,7 +90,8 @@ jobs:
           grep -Fq "'value' => '0'" "$ajax_model"
           grep -Fq "'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')" "$ajax_model"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$ajax_model"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ajax_model"
+          grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$ajax_model"
+          grep -Fq 'private static function joomlaDatabase(): DatabaseInterface' "$ajax_model"
 
           if grep -E -- 'HTMLHelper::|\$app->getContainer\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$ajax_model"; then
             echo 'Administrator AjaxModel regressed to a removed Joomla API' >&2
