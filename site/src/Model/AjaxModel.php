@@ -58,6 +58,16 @@ final class AjaxModel extends BaseDatabaseModel
         'treetonode',
     ];
 
+    /**
+     * Build a native navigation URL for an allowed view using the selected project, season and optional team context. Returns an empty string when the project or view cannot be resolved.
+     * @param string $view Requested component view.
+     * @param int $projectId Project identifier.
+     * @param int $teamId Optional team identifier.
+     * @param int $divisionId Optional division identifier.
+     * @param string $alltimePoints All-time ranking points setting.
+     * @param int $treeNodeId Optional tournament tree node.
+     * @return string Routed URL or empty string.
+     */
     public function getLink(
         string $view = '',
         int $projectId = 0,
@@ -275,6 +285,11 @@ final class AjaxModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Load distinct teams assigned to the selected project through season-team relations, sorted by team name and prefixed with a selection prompt.
+     * @param int $projectId Project identifier.
+     * @return array Team selection options.
+     */
     public function getProjectTeams(int $projectId): array
     {
         $projectId = max(0, $projectId);
@@ -305,6 +320,11 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->withPrompt($db->loadObjectList() ?: [], '-- Team selektieren --', '-- keine Teams -- ');
     }
 
+    /**
+     * Load published projects for the selected league, ordered by season descending and project name ascending, with a selection prompt.
+     * @param int $leagueId League identifier.
+     * @return array Project selection options.
+     */
     public function getProjectSelect(int $leagueId): array
     {
         $leagueId = max(0, $leagueId);
@@ -332,6 +352,12 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->withPrompt($db->loadObjectList() ?: [], '-- Projekt selektieren --', '-- keine Projekte -- ');
     }
 
+    /**
+     * Load published leagues with published projects in the specified country and optionally restrict them to an association.
+     * @param string $country Country code.
+     * @param int $associationId Optional association identifier.
+     * @return array League selection options.
+     */
     public function getAssocLeagueSelect(string $country, int $associationId): array
     {
         $country = trim($country);
@@ -365,6 +391,11 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->withPrompt($db->loadObjectList() ?: [], '-- Liga selektieren --', '-- keine Ligen -- ');
     }
 
+    /**
+     * Load district associations under the selected lower-level association with the corresponding German selection prompt.
+     * @param int $subAssociationId Parent association identifier.
+     * @return array District association options.
+     */
     public function getCountrySubSubAssocSelect(int $subAssociationId): array
     {
         return $this->getAssociationOptions(
@@ -375,6 +406,11 @@ final class AjaxModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Load regional subdivisions beneath the selected association with the state-association selection prompt.
+     * @param int $associationId Parent association identifier.
+     * @return array Subassociation options.
+     */
     public function getCountrySubAssocSelect(int $associationId): array
     {
         return $this->getAssociationOptions(
@@ -385,6 +421,11 @@ final class AjaxModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Load published top-level associations for the requested country.
+     * @param string $country Country code.
+     * @return array Association selection options.
+     */
     public function getCountryAssocSelect(string $country): array
     {
         return $this->getAssociationOptions(
@@ -477,6 +518,14 @@ final class AjaxModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Query published associations by parent identifier and optional country, sort them by name and prepend the appropriate prompt.
+     * @param int $parentId Parent association identifier.
+     * @param string|null $country Optional country filter.
+     * @param string $prompt Prompt when records exist.
+     * @param string $emptyPrompt Prompt when no records exist.
+     * @return array Association selection options.
+     */
     private function getAssociationOptions(
         int $parentId,
         ?string $country,
@@ -507,6 +556,11 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->withPrompt($db->loadObjectList() ?: [], $prompt, $emptyPrompt);
     }
 
+    /**
+     * Load project, season, league and current-round routing metadata and construct the slugs required by navigation links.
+     * @param int $projectId Project identifier.
+     * @return object|null Navigation context or null if absent.
+     */
     private function getProjectNavigationContext(int $projectId): ?object
     {
         $projectId = max(0, $projectId);
@@ -559,6 +613,11 @@ final class AjaxModel extends BaseDatabaseModel
         return $project;
     }
 
+    /**
+     * Load the team and associated club metadata and construct their routing slugs.
+     * @param int $teamId Team identifier.
+     * @return object|null Team navigation context or null.
+     */
     private function getTeamNavigationContext(int $teamId): ?object
     {
         $teamId = max(0, $teamId);
@@ -594,6 +653,10 @@ final class AjaxModel extends BaseDatabaseModel
         return $team;
     }
 
+    /**
+     * Resolve the effective SportsManagement connection from the model database and current navigation database selector.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function sportsDatabase(): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -602,16 +665,28 @@ final class AjaxModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Return the database already assigned to the Joomla model as the fallback connection.
+     * @return DatabaseInterface Model database.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         return $this->getDatabase();
     }
 
+    /**
+     * Resolve the active Joomla site application through the shared frontend runtime service.
+     * @return SiteApplication Active site application.
+     */
     private function siteApplication(): SiteApplication
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Read the navigation database selection from Joomla input, using the component setting as the default.
+     * @return int Requested database selector.
+     */
     private function databaseSelector(): int
     {
         return $this->siteApplication()->getInput()->getInt(
@@ -620,6 +695,12 @@ final class AjaxModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Combine an identifier with a nonempty trimmed alias for legacy routing, or retain the numeric identifier when no alias is available.
+     * @param int $id Record identifier.
+     * @param string $alias Routing alias.
+     * @return int|string Numeric identifier or ID:alias slug.
+     */
     private function slug(int $id, string $alias): int|string
     {
         $alias = trim($alias);
@@ -627,6 +708,13 @@ final class AjaxModel extends BaseDatabaseModel
         return $alias !== '' ? $id . ':' . $alias : $id;
     }
 
+    /**
+     * Prepend a zero-valued selection option to the query results, choosing its text according to whether the result list is empty.
+     * @param array $rows Existing selection options.
+     * @param string $prompt Prompt for a nonempty list.
+     * @param string $emptyPrompt Prompt for an empty list.
+     * @return array Options including the prompt.
+     */
     private function withPrompt(array $rows, string $prompt, string $emptyPrompt): array
     {
         return array_merge([

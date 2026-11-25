@@ -19,6 +19,11 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
     protected int $groupRanking = 0;
     protected int $rankingType = 0;
 
+    /**
+     * Initialise the shared prediction model and copy the inherited group ranking and ranking type settings into the read-model properties.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -26,16 +31,29 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         $this->rankingType = $this->type;
     }
 
+    /**
+     * Return the group-ranking setting captured from the inherited prediction model during construction.
+     * @return int Group ranking setting.
+     */
     public function getGroupRanking(): int
     {
         return $this->groupRanking;
     }
 
+    /**
+     * Return the current ranking type captured from the inherited prediction model.
+     * @return int Ranking type.
+     */
     public function getRankingType(): int
     {
         return $this->rankingType;
     }
 
+    /**
+     * Load the requested project or the active project, replacing a legacy zero start date with the earliest round start date.
+     * @param int $projectId Project identifier or zero for active project.
+     * @return object|null Project record or null.
+     */
     public function getPredictionProject(int $projectId = 0): ?object
     {
         $projectId = $projectId ?: $this->projectId;
@@ -69,6 +87,13 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $project;
     }
 
+    /**
+     * Load round selection options containing ID:alias values and names for the selected project, optionally restricting the result to the supplied round identifiers.
+     * @param int $projectId Project identifier or zero for active project.
+     * @param string $ordering ASC or DESC ordering by identifier.
+     * @param array|null $roundIds Optional round identifier filter.
+     * @return array Round selection options.
+     */
     public function getRoundNames(int $projectId = 0, string $ordering = 'ASC', ?array $roundIds = null): array
     {
         $projectId = $projectId ?: $this->projectId;
@@ -96,6 +121,10 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load prediction group identifiers and names as selection options sorted alphabetically.
+     * @return array Prediction group options.
+     */
     public function getPredictionGroupList(): array
     {
         $db = $this->getDatabase();
@@ -108,6 +137,12 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load members of the active prediction game with user and group metadata, selecting full names or usernames according to configuration and optionally filtering by group.
+     * @param array $config Member display settings.
+     * @param array $avatarConfig Retained compatibility argument, currently unused.
+     * @return array Prediction member records.
+     */
     public function getPredictionMembersList(array $config = [], array $avatarConfig = []): array
     {
         if ($this->predictionGameId <= 0) {
@@ -148,6 +183,14 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Read noncancelled match results and submitted predictions for the active prediction game, restricting them by round range and optionally by project and user.
+     * @param int $projectId Optional project identifier.
+     * @param int $roundFrom Minimum round identifier.
+     * @param int $roundTo Optional maximum round identifier.
+     * @param int $userId Optional user identifier.
+     * @return array Match and prediction result records.
+     */
     public function getPredictionMembersResultsList(int $projectId, int $roundFrom, int $roundTo = 0, int $userId = 0): array
     {
         if ($this->predictionGameId <= 0) {
@@ -216,6 +259,11 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Retrieve a project-team assignment with its underlying team, club logos, country and routing metadata.
+     * @param int $projectTeamId Project-team identifier.
+     * @return object|null Team information or null.
+     */
     public function getProjectTeamInfo(int $projectTeamId): ?object
     {
         if ($projectTeamId <= 0) {
@@ -247,6 +295,19 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Assemble actual match scores, decision scores, predicted scores and joker status into the record expected by prediction scoring.
+     * @param int $home Actual home score.
+     * @param int $away Actual away score.
+     * @param int $tipp Predicted outcome code.
+     * @param int $tippHome Predicted home score.
+     * @param int $tippAway Predicted away score.
+     * @param bool $joker Whether joker scoring applies.
+     * @param int $homeDecision Home decision score.
+     * @param int $awayDecision Away decision score.
+     * @param int $matchRoundId Round identifier for scoring overrides.
+     * @return object Prediction scoring record.
+     */
     public function createResultObject(int $home, int $away, int $tipp, int $tippHome, int $tippAway, bool $joker, int $homeDecision = 0, int $awayDecision = 0, int $matchRoundId = 0): object
     {
         return (object) [
@@ -262,6 +323,12 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         ];
     }
 
+    /**
+     * Calculate prediction points using outcome-only scoring or score-based rules. Applies joker ratings or published round overrides when appropriate and returns zero for incomplete results.
+     * @param object $project Prediction scoring configuration.
+     * @param object $result Actual and predicted result record.
+     * @return int Awarded points.
+     */
     public function scorePredictionResult(object $project, object $result): int
     {
         if ((int) ($project->mode ?? 0) !== 0) {
@@ -291,6 +358,12 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $this->score($rating, $result);
     }
 
+    /**
+     * Sort member totals using up to five configured ranking criteria, fall back to standard points and prediction counts, and break remaining ties by name. Marks consecutive equal-point entries with a dash rank.
+     * @param array $rows Member aggregate records.
+     * @param array $config Ranking sort settings.
+     * @return array Sorted member rows with rank labels.
+     */
     public function computeMembersRanking(array $rows, array $config): array
     {
         $keys = [];
@@ -334,6 +407,11 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $rows;
     }
 
+    /**
+     * Load published round-specific point settings for the prediction game, indexed by round identifier.
+     * @param object $project Prediction project configuration.
+     * @return array Round rating records.
+     */
     private function roundRatings(object $project): array
     {
         $predictionId = (int) ($project->prediction_id ?? $this->predictionGameId);
@@ -360,6 +438,12 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         return $db->loadObjectList('round_id') ?: [];
     }
 
+    /**
+     * Build the scoring configuration from the normal or joker point fields of a prediction project.
+     * @param object $project Prediction project configuration.
+     * @param bool $joker Whether to use joker-specific fields.
+     * @return object Point values for scoring categories.
+     */
     private function rating(object $project, bool $joker): object
     {
         $suffix = $joker ? '_joker' : '';
@@ -373,6 +457,12 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         ];
     }
 
+    /**
+     * Award points in priority order for an exact result, correct draw, goal difference, winning tendency or participation according to the supplied rating.
+     * @param object $rating Point configuration.
+     * @param object $result Actual and predicted scores.
+     * @return int Awarded points.
+     */
     private function score(object $rating, object $result): int
     {
         if ($result->team1_result == $result->tipp_home && $result->team2_result == $result->tipp_away) {

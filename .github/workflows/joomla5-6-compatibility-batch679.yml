@@ -63,7 +63,12 @@ jobs:
           editmatch = Path('site/src/Model/EditmatchModel.php').read_text()
           if 'private static function joomlaDatabase(): DatabaseInterface' not in editmatch:
               raise SystemExit('EditmatchModel Joomla DB helper is missing')
-          if '$joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();' not in editmatch:
+          if ('$joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();' not in editmatch
+              and not all(fragment in editmatch for fragment in (
+                  'if ($this->injectedDatabase === null)',
+                  '$joomlaDatabase = self::joomlaDatabase();',
+                  '$joomlaDatabase = $this->injectedDatabase;',
+              ))):
               raise SystemExit('EditmatchModel bypasses centralized Joomla DB access')
           if editmatch.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
               raise SystemExit('EditmatchModel should have exactly one Joomla DB container access')
