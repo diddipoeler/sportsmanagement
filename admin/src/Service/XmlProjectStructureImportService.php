@@ -25,15 +25,25 @@ use RuntimeException;
  */
 final class XmlProjectStructureImportService
 {
+    /**
+     * Initialise the native project structure importer with the target database connection.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>}
+     * Import the project structure for stages 16 through 19 in dependency order: divisions, positions, referees and teams. Collect source-to-target identifier maps and reports for subsequent import stages.
+     * @param array<string,mixed> $post Prepared entity selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param int $seasonId Target season identifier.
+     * @param int $adminId Administrator assigned to project teams.
+     * @param string $importVersion Source format version.
+     * @param string $step Current import stage.
+     * @return array{maps:array<string,array<int,int>>,messages:array<string,string>} Conversion maps and reports.
+     * @throws RuntimeException If the target project is missing or a required write fails.
      */
     public function import(
         array $post,
@@ -102,8 +112,11 @@ final class XmlProjectStructureImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @return array{map:array<int,int>,message:string}
+     * Insert divisions for the target project with generated aliases, then restore their parent relationships using the newly assigned identifiers rather than foreign primary keys.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @return array{map:array<int,int>,message:string} Division conversion map and report.
+     * @throws RuntimeException If insertion or parent mapping fails.
      */
     private function importDivisions(array $parsedData, int $projectId): array
     {
@@ -161,9 +174,11 @@ final class XmlProjectStructureImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $positionMap
-     * @return array{map:array<int,int>,message:string}
+     * Resolve imported positions through the prepared position map, reuse matching project-position relations or create missing ones and report unresolved source records.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param array<int,int> $positionMap Source position IDs mapped to target IDs.
+     * @return array{map:array<int,int>,message:string} Project-position map and report.
      */
     private function importProjectPositions(array $parsedData, int $projectId, array $positionMap): array
     {
@@ -211,10 +226,12 @@ final class XmlProjectStructureImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $personMap
-     * @param array<int, int> $projectPositionMap
-     * @return array{map:array<int,int>,message:string}
+     * Insert published project referee records using the mapped person and project-position identifiers, skipping records whose required relations cannot be resolved.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param array<int,int> $personMap Source person IDs mapped to target IDs.
+     * @param array<int,int> $projectPositionMap Source project-position IDs mapped to target IDs.
+     * @return array{map:array<int,int>,message:string} Referee conversion map and report.
      */
     private function importProjectReferees(
         array $parsedData,
@@ -262,11 +279,16 @@ final class XmlProjectStructureImportService
     }
 
     /**
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $teamMap
-     * @param array<int, int> $playgroundMap
-     * @param array<int, int> $divisionMap
-     * @return array{map:array<int,int>,message:string}
+     * Resolve seasonal team relations and insert project teams with mapped divisions and default venues. Translate historical description and information fields and choose the conversion-map key according to the source format.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param int $projectId Target project identifier.
+     * @param int $seasonId Target season identifier.
+     * @param int $adminId Assigned administrator identifier.
+     * @param string $importVersion Source format version.
+     * @param array<int,int> $teamMap Source team IDs mapped to target IDs.
+     * @param array<int,int> $playgroundMap Source venue IDs mapped to target IDs.
+     * @param array<int,int> $divisionMap Source division IDs mapped to target IDs.
+     * @return array{map:array<int,int>,message:string} Project-team conversion map and report.
      */
     private function importProjectTeams(
         array $parsedData,
@@ -333,6 +355,14 @@ final class XmlProjectStructureImportService
         return ['map' => $map, 'message' => $message];
     }
 
+    /**
+     * Find an existing team-season relation or insert one with the supplied team picture if none exists.
+     * @param int $teamId Target team identifier.
+     * @param int $seasonId Target season identifier.
+     * @param string $picture Seasonal team picture.
+     * @return int Existing or newly assigned season-team identifier.
+     * @throws RuntimeException If insertion fails.
+     */
     private function resolveSeasonTeam(int $teamId, int $seasonId, string $picture): int
     {
         $query = $this->database->createQuery()
@@ -362,6 +392,12 @@ final class XmlProjectStructureImportService
         return (int) $this->database->insertid();
     }
 
+    /**
+     * Look up the project-position relation matching the supplied project and position using bound query parameters.
+     * @param int $projectId Target project identifier.
+     * @param int $positionId Target position identifier.
+     * @return int Relation identifier or zero.
+     */
     private function findProjectPosition(int $projectId, int $positionId): int
     {
         $query = $this->database->createQuery()
@@ -377,9 +413,12 @@ final class XmlProjectStructureImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     * @return array<int, int>
+     * Build a conversion map from the selected parsed XML collection and its corresponding indexed form fields, retaining only positive source and target identifiers.
+     * @param array<string,mixed> $post Prepared form selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @param string $collection Source collection name.
+     * @param string $fieldPrefix Target selection field prefix.
+     * @return array<int,int> Source-to-target identifier map.
      */
     private function buildPreparedMap(
         array $post,
@@ -405,6 +444,12 @@ final class XmlProjectStructureImportService
         return $map;
     }
 
+    /**
+     * Copy fields supported by the installed target table schema into a new object, omitting the source primary key.
+     * @param object $source Imported record.
+     * @param string $table Target table name.
+     * @return object Filtered insert record.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -423,24 +468,47 @@ final class XmlProjectStructureImportService
         return $row;
     }
 
+    /**
+     * Build a success report entry for an inserted record with an escaped display value.
+     * @param string $type Internal record-type label.
+     * @param string $value Record display value.
+     * @return string HTML success entry.
+     */
     private function createdMessage(string $type, string $value): string
     {
         return '<span style="color:green">Created new ' . $type . ' data: </span><strong>'
             . $this->escape($value) . '</strong><br />';
     }
 
+    /**
+     * Build an informational report entry for a reused record with an escaped display value.
+     * @param string $type Internal record-type label.
+     * @param string $value Record display value.
+     * @return string HTML information entry.
+     */
     private function existingMessage(string $type, string $value): string
     {
         return '<span style="color:orange">Using existing ' . $type . ' data: </span><strong>'
             . $this->escape($value) . '</strong><br />';
     }
 
+    /**
+     * Build a warning report entry identifying the source record skipped during import.
+     * @param string $type Internal record-type label.
+     * @param int $oldId Source record identifier.
+     * @return string HTML warning entry.
+     */
     private function skippedMessage(string $type, int $oldId): string
     {
         return '<span style="color:red">Skipping ' . $type . ' source ID: </span><strong>'
             . $oldId . '</strong><br />';
     }
 
+    /**
+     * Escape a report value for HTML output using UTF-8 and both quote types.
+     * @param string $value Raw display value.
+     * @return string Escaped value.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
