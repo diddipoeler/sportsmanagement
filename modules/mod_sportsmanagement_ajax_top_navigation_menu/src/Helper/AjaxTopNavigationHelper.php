@@ -126,7 +126,7 @@ final class AjaxTopNavigationHelper
 
         foreach ($points as $row) {
             $key = $row->name;
-            $federationSelect[$key] = $legacyHelper->getFederationSelect($key, self::databaseSelector($row->id));
+            $federationSelect[$key] = $legacyHelper->getFederationSelect($key, self::nonNegativeSelector($row->id));
             $countryAssocSelect[$key] = ['assocs' => []];
             $leagueSelect[$key] = ['leagues' => []];
             $countrySubAssocSelect[$key] = ['assocs' => []];
@@ -222,7 +222,7 @@ final class AjaxTopNavigationHelper
             'projectselect' => $projectSelect,
             'divisionsselect' => $divisionsSelect,
             'clientConfig' => [
-                'moduleId' => self::databaseSelector($module->id ?? 0) ?? 0,
+                'moduleId' => self::nonNegativeSelector($module->id ?? 0) ?? 0,
                 'baseUrl' => rtrim((string) Uri::root(), '/') . '/',
                 'ajaxUrl' => rtrim((string) Uri::root(), '/') . '/index.php',
                 'cfgWhichDatabase' => $databaseSelector,
@@ -267,15 +267,38 @@ final class AjaxTopNavigationHelper
     }
 
     /**
-     * Validate a Joomla database selector without lossy integer coercion.
+     * Validate the actual SportsManagement database choice before resolution.
+     *
+     * Only primary/external modes zero and one are supported by the site
+     * database resolver. Other record identifiers must use the separate
+     * numeric parser so federation IDs remain unrestricted by this switch.
+     *
+     * @param mixed $value Raw request or module database configuration.
+     * @return int|null Zero or one, or null for an unsupported choice.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
+    }
+
+    /**
+     * Validate a Joomla navigation record identifier without lossy integer coercion.
      *
      * Zero and zero-padded decimal values are allowed. Arrays, booleans,
      * partial numeric strings, negative numbers and overflows are rejected.
      *
-     * @param mixed $value Raw request or module database setting.
-     * @return int|null Valid nonnegative selector, or null when malformed.
+     * @param mixed $value Raw federation or module identifier.
+     * @return int|null Valid nonnegative identifier, or null when malformed.
      */
-    private static function databaseSelector(mixed $value): ?int
+    private static function nonNegativeSelector(mixed $value): ?int
     {
         if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
             return null;
@@ -328,7 +351,7 @@ final class AjaxTopNavigationHelper
                 continue;
             }
 
-            $id = self::databaseSelector($row->id ?? null);
+            $id = self::nonNegativeSelector($row->id ?? null);
 
             if ($id === null || $id <= 0) {
                 continue;

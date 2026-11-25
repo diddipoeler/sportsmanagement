@@ -33,7 +33,9 @@ final class SportsManagementDatabaseResolver
      *
      * Only explicit database selection, an enabled profile, a matching
      * nonempty serial and a valid active access interval can authorise
-     * external storage. Invalid settings fall back to Joomla.
+     * external storage. Invalid settings fall back to Joomla. Rejects nested
+     * configuration fields and malformed server-user IDs before connecting,
+     * and accepts historical plain-text and Joomla JSON-string profiles.
      *
      * @param mixed $whichDatabase Legacy database selection.
      * @param DatabaseInterface|null $fallback Existing Joomla driver.
@@ -53,24 +55,29 @@ final class SportsManagementDatabaseResolver
             return $fallback;
         }
 
-        $serverUserId = (int) $params->get('jsm_server_user', 0);
+        $rawUserId = $params->get('jsm_server_user', 0);
+        $serverUserId = is_int($rawUserId) || is_string($rawUserId)
+            ? filter_var($rawUserId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
 
         // Historical behaviour: an external connection was only returned after
         // validating a configured server user/profile. Without it Joomla's DB wins.
-        if ($serverUserId <= 0) {
+        if ($serverUserId === false) {
             return $fallback;
         }
 
         try {
+            $options = [];
+            foreach ([
+                'host' => 'jsm_host', 'user' => 'jsm_user', 'password' => 'jsm_password',
+                'database' => 'jsm_db', 'prefix' => 'jsm_dbprefix',
+            ] as $option => $key) {
+                $options[$option] = self::connectionSetting($params, $key);
+            }
+
             $external = (new DatabaseFactory())->getDriver(
-                $this->normaliseDriver((string) $params->get('jsm_dbtype', '')),
-                [
-                    'host' => (string) $params->get('jsm_host', ''),
-                    'user' => (string) $params->get('jsm_user', ''),
-                    'password' => (string) $params->get('jsm_password', ''),
-                    'database' => (string) $params->get('jsm_db', ''),
-                    'prefix' => (string) $params->get('jsm_dbprefix', ''),
-                ]
+                $this->normaliseDriver(self::connectionSetting($params, 'jsm_dbtype')),
+                $options
             );
 
             $profiles = $this->loadAccessProfile($external, $serverUserId);
@@ -86,8 +93,9 @@ final class SportsManagementDatabaseResolver
             return $fallback;
         }
 
-        $configuredSerial = (string) $params->get('jsm_user_serialnumber', '');
-        $profileSerial = (string) ($profiles['jsmprofile.serialnumber']['profile_value'] ?? '');
+        $rawSerial = $params->get('jsm_user_serialnumber', '');
+        $configuredSerial = is_string($rawSerial) || is_int($rawSerial) ? trim((string) $rawSerial) : '';
+        $profileSerial = self::profileText($profiles, 'jsmprofile.serialnumber');
 
         if ($configuredSerial === '' || $profileSerial === ''
             || !hash_equals($configuredSerial, $profileSerial)) {
@@ -96,8 +104,8 @@ final class SportsManagementDatabaseResolver
             return $fallback;
         }
 
-        $accessFrom = (string) ($profiles['jsmprofile.access_from']['profile_value'] ?? '');
-        $accessTo = (string) ($profiles['jsmprofile.access_to']['profile_value'] ?? '');
+        $accessFrom = self::profileText($profiles, 'jsmprofile.access_from');
+        $accessTo = self::profileText($profiles, 'jsmprofile.access_to');
 
         // Historical behaviour required both range values before returning the
         // external connection.
@@ -120,6 +128,58 @@ final class SportsManagementDatabaseResolver
         Log::add('SportsManagement external database access granted.', Log::INFO, 'jsmerror');
 
         return $external;
+    }
+
+    /**
+     * Retrieve one textual external database connection setting.
+     *
+     * Rejects non-string registry values before creating a driver, rather
+     * than converting arrays or booleans to usernames, passwords or hosts.
+     * The setting value is deliberately omitted from exception messages.
+     *
+     * @param object $params Joomla component parameter registry.
+     * @param string $key Name of the connection setting.
+     * @return string Original setting, or an empty string if missing.
+     * @throws \UnexpectedValueException For non-text configuration.
+     */
+    private static function connectionSetting(object $params, string $key): string
+    {
+        $value = $params->get($key, '');
+        if (!is_string($value)) {
+            throw new \UnexpectedValueException('Invalid external database connection setting.');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Read a scalar serial number or entitlement date from a profile row.
+     *
+     * Decodes Joomla's JSON-encoded strings and preserves historical plain
+     * text values. Rejects nested driver records and non-text/non-integer
+     * values rather than casting them to an apparently matching credential.
+     *
+     * @param array $profiles Profile rows indexed by Joomla profile key.
+     * @param string $key Profile field identifier.
+     * @return string Normalised text, or empty for malformed/missing fields.
+     */
+    private static function profileText(array $profiles, string $key): string
+    {
+        $row = $profiles[$key] ?? null;
+        $value = is_array($row) ? ($row['profile_value'] ?? null) : null;
+
+        if (!is_string($value) && !is_int($value)) {
+            return '';
+        }
+
+        $raw = trim((string) $value);
+        $decoded = json_decode($raw, true);
+
+        if (is_string($decoded)) {
+            return trim($decoded);
+        }
+
+        return $raw;
     }
 
     /**
@@ -190,7 +250,8 @@ final class SportsManagementDatabaseResolver
      */
     private function hasDatabaseAccess(array $profiles): bool
     {
-        $raw = $profiles['jsmprofile.databaseaccess']['profile_value'] ?? null;
+        $row = $profiles['jsmprofile.databaseaccess'] ?? null;
+        $raw = is_array($row) ? ($row['profile_value'] ?? null) : null;
         if (!is_string($raw) && !is_int($raw) && !is_bool($raw)) {
             return false;
         }

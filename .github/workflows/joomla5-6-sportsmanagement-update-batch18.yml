@@ -77,7 +77,7 @@ jobs:
           update=admin/src/Controller/UpdateController.php
           grep -Fq 'final class UpdateController extends BaseController' "$update"
           grep -Fq "\$this->checkToken('get');" "$update"
-          grep -Fq 'private function normaliseFileName(string $fileName): ?string' "$update"
+          grep -Fq 'private function normaliseFileName(mixed $fileName): ?string' "$update"
           grep -Fq 'private function buildUpdatePath(string $fileName): ?string' "$update"
           grep -Fq "count(\$parts) > 2" "$update"
           grep -Fq "PATHINFO_EXTENSION)) !== 'php'" "$update"

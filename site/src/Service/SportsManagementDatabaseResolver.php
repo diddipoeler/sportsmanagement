@@ -117,6 +117,8 @@ final class SportsManagementDatabaseResolver
      * Uses parameterised Joomla database queries to read the user's profile,
      * checks the access flag and serial number, and validates the UTC interval.
      * Incomplete or malformed records never authorise an external connection.
+     * The access switch is checked separately from text fields, so JSON
+     * floating-point values cannot be rounded or stringified into an enabled flag.
      *
      * @param DatabaseInterface $db External Joomla database connection.
      * @param Registry $params Component configuration and entitlement settings.
@@ -157,7 +159,8 @@ final class SportsManagementDatabaseResolver
          * @return string Decoded value or an empty string when missing.
          */
         $profileValue = static function (string $key) use ($profiles): string {
-            $value = $profiles[$key]['profile_value'] ?? '';
+            $row = $profiles[$key] ?? null;
+            $value = is_array($row) ? ($row['profile_value'] ?? '') : '';
             $raw = is_string($value) || is_int($value) ? trim((string) $value) : '';
 
             if ($raw === '') {
@@ -166,16 +169,15 @@ final class SportsManagementDatabaseResolver
 
             $decoded = json_decode($raw, true);
 
-            return is_string($decoded) || is_numeric($decoded)
-                ? trim((string) $decoded)
-                : $raw;
+            return is_string($decoded) ? trim($decoded) : $raw;
         };
 
         // Treat JSON booleans and the common plain-text representations
         // consistently, but never grant access for "false" or other strings.
-        $accessEnabled = strtolower($profileValue('jsmprofile.databaseaccess'));
+        $accessRow = $profiles['jsmprofile.databaseaccess'] ?? null;
+        $accessEnabled = is_array($accessRow) ? ($accessRow['profile_value'] ?? null) : null;
 
-        if (!in_array($accessEnabled, ['1', 'true'], true)) {
+        if (!self::profileAccessEnabled($accessEnabled)) {
             return false;
         }
 
@@ -205,6 +207,29 @@ final class SportsManagementDatabaseResolver
         return $from !== null && $to !== null
             && $from <= $to
             && $now >= $from && $now <= $to;
+    }
+
+    /**
+     * Recognise explicit access grants in legacy and JSON Joomla profiles.
+     *
+     * Accepts true, integer one and their historical string representations.
+     * A JSON decimal/exponent, an array, an object or a different number
+     * must never become an enabled flag through numeric string coercion.
+     *
+     * @param mixed $raw Stored databaseaccess profile value.
+     * @return bool Whether external access was explicitly enabled.
+     */
+    private static function profileAccessEnabled(mixed $raw): bool
+    {
+        if (!is_string($raw) && !is_int($raw) && !is_bool($raw)) {
+            return false;
+        }
+
+        $decoded = is_string($raw) ? json_decode($raw, true) : $raw;
+        $value = $decoded === null ? $raw : $decoded;
+
+        return $value === true || $value === 1 || $value === '1'
+            || (is_string($value) && strtolower(trim($value)) === 'true');
     }
 
     /**

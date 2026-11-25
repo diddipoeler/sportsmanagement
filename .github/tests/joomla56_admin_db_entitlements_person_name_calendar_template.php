@@ -38,6 +38,24 @@ namespace Joomla\Database {
         }
     }
 }
+namespace Joomla\Registry {
+    final class Registry {
+        /**
+         * Hold component settings for both native database resolvers.
+         * @param array $values Saved parameter values.
+         */
+        public function __construct(private array $values) {}
+        /**
+         * Read a setting without coercing malformed data types.
+         * @param string $name Parameter key.
+         * @param mixed $default Missing-key fallback.
+         * @return mixed Stored setting or default.
+         */
+        public function get(string $name, mixed $default = null): mixed {
+            return $this->values[$name] ?? $default;
+        }
+    }
+}
 namespace Joomla\CMS\Component {
     /** Configured component parameters used by the admin resolver. */
     final class ComponentHelper {
@@ -48,18 +66,8 @@ namespace Joomla\CMS\Component {
          * @param string $option Component identifier.
          * @return object Parameter registry fixture.
          */
-        public static function getParams(string $option): object {
-            return new class {
-                /**
-                 * Read a configured component setting.
-                 * @param string $name Component parameter key.
-                 * @param mixed $default Default setting.
-                 * @return mixed Stored parameter.
-                 */
-                public function get(string $name, mixed $default = null): mixed {
-                    return \Joomla\CMS\Component\ComponentHelper::$values[$name] ?? $default;
-                }
-            };
+        public static function getParams(string $option): \Joomla\Registry\Registry {
+            return new \Joomla\Registry\Registry(self::$values);
         }
     }
 }
@@ -86,6 +94,7 @@ namespace {
     define('_JEXEC', 1);
     $root = dirname(__DIR__, 2);
     require_once $root . '/admin/src/Helper/SportsManagementDatabaseResolver.php';
+    require_once $root . '/site/src/Service/SportsManagementDatabaseResolver.php';
     require_once $root . '/site/src/Helper/PersonNameFormatter.php';
 
     $fallback = new class implements \Joomla\Database\DatabaseInterface {};
@@ -164,6 +173,14 @@ namespace {
 
     $from = gmdate('Y-m-d H:i:s', time() - 86400);
     $to = gmdate('Y-m-d H:i:s', time() + 86400);
+    /**
+     * Assemble the four entitlement profile rows with configurable stored values.
+     * @param mixed $enabled Stored external database access switch.
+     * @param string $serial Stored serial number.
+     * @param string $start Start of the entitlement interval.
+     * @param string $end End of the entitlement interval.
+     * @return array Profile data indexed by field name.
+     */
     $profile = static function (mixed $enabled, string $serial, string $start, string $end): array {
         return [
             'jsmprofile.databaseaccess' => ['profile_value' => $enabled],
@@ -191,6 +208,37 @@ namespace {
     $external::$profiles = $profile('true', 'A-SECRET-1', $from, $to);
     if ($resolver->resolve('1', $fallback) !== $external) {
         throw new \RuntimeException('Valid external database entitlement was rejected.');
+    }
+
+    $site = \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::class;
+    foreach (['1.0', '1e0', 'false', [], 1.0, false] as $badFlag) {
+        $external::$profiles = $profile($badFlag, 'A-SECRET-1', $from, $to);
+        if ($resolver->resolve(1, $fallback) !== $fallback || $site::resolve($fallback, 1) !== $fallback) {
+            throw new \RuntimeException('Malformed access flag granted database access.');
+        }
+    }
+
+    foreach (['true', '1', true, '"true"'] as $flag) {
+        $external::$profiles = $profile($flag, json_encode('A-SECRET-1'), json_encode($from), json_encode($to));
+        if ($resolver->resolve(1, $fallback) !== $external || $site::resolve($fallback, 1) !== $external) {
+            throw new \RuntimeException('Valid Joomla JSON profile rejected by one of the resolvers.');
+        }
+    }
+
+    $savedSettings = \Joomla\CMS\Component\ComponentHelper::$values;
+    foreach (['jsm_server_user' => ['1'], 'jsm_host' => ['host'], 'jsm_password' => true] as $key => $badValue) {
+        \Joomla\CMS\Component\ComponentHelper::$values = $savedSettings;
+        \Joomla\CMS\Component\ComponentHelper::$values[$key] = $badValue;
+        $calls = \Joomla\Database\DatabaseFactory::$calls;
+        if ($resolver->resolve(1, $fallback) !== $fallback || \Joomla\Database\DatabaseFactory::$calls !== $calls) {
+            throw new \RuntimeException('Malformed administrator connection settings reached the driver factory.');
+        }
+    }
+    \Joomla\CMS\Component\ComponentHelper::$values = $savedSettings;
+    $external::$profiles = $profile('true', 'A-SECRET-1', $from, $to);
+    $external::$profiles['jsmprofile.serialnumber'] = ['profile_value' => ['A-SECRET-1']];
+    if ($resolver->resolve(1, $fallback) !== $fallback || $site::resolve($fallback, 1) !== $fallback) {
+        throw new \RuntimeException('Nested entitlement serial value was accepted.');
     }
 
     \Joomla\Database\DatabaseFactory::$fail = true;

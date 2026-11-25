@@ -141,7 +141,7 @@ namespace {
     $federations = new \ReflectionMethod($class, 'federationRows');
 
     foreach ([
-        [0, 0], ['0', 0], ['0007', 7], [7, 7],
+        [0, 0], ['0', 0], ['0001', 1], [1, 1], ['0007', null], [7, null],
         [true, null], [false, null], [['7'], null],
         ['7x', null], ['-7', null], ['7.0', null],
         [PHP_INT_MAX . '0', null], [new \stdClass(), null],
@@ -176,7 +176,7 @@ namespace {
         throw new \RuntimeException('AJAX navigation accepted malformed federation rows.');
     }
 
-    foreach ([true, ['2'], '2junk', PHP_INT_MAX . '0', -3] as $bad) {
+    foreach ([true, ['2'], '2junk', 2, '0007', PHP_INT_MAX . '0', -3] as $bad) {
         $input = new FakeInput($bad);
         $result = $helper->getData(new \Joomla\Registry\Registry(['cfg_which_database' => '2']), (object) [], new FakeApplication($input));
 

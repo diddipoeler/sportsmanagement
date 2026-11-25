@@ -286,7 +286,7 @@ namespace {
     $db = new NavigationDatabaseStub();
     $resolver = \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::class;
 
-    foreach ([true, ['2'], '2junk', PHP_INT_MAX . '0'] as $invalid) {
+    foreach ([true, ['2'], '2junk', 2, '0007', PHP_INT_MAX . '0'] as $invalid) {
         try {
             new $class(new \Joomla\Registry\Registry(['cfg_which_database' => 2]),
                 new NavigationAppStub(new NavigationInputStub($invalid)), $db);
@@ -299,11 +299,11 @@ namespace {
         throw new \RuntimeException('Malformed database selectors reached resolver.');
     }
 
-    $input = new NavigationInputStub('0007');
+    $input = new NavigationInputStub('0001');
     $helper = new $class(new \Joomla\Registry\Registry(),
         new NavigationAppStub($input), $db);
-    if ($resolver::$calls !== 1 || $resolver::$selector !== 7
-        || ($input->settings['cfg_which_database'] ?? null) !== 7) {
+    if ($resolver::$calls !== 1 || $resolver::$selector !== 1
+        || ($input->settings['cfg_which_database'] ?? null) !== 1) {
         throw new \RuntimeException('Valid database selector was not reused consistently.');
     }
 
@@ -321,9 +321,9 @@ namespace {
     // The helper must use Joomla's public Factory container if no database
     // was explicitly injected, not the application object.
     \Joomla\CMS\Factory::$databaseService = $db;
-    $factoryInput = new NavigationInputStub('0008');
+    $factoryInput = new NavigationInputStub('0000');
     new $class(new \Joomla\Registry\Registry(), new NavigationAppStub($factoryInput));
-    if ($resolver::$calls !== 2 || $resolver::$selector !== 8) {
+    if ($resolver::$calls !== 2 || $resolver::$selector !== 0) {
         throw new \RuntimeException('AJAX navigation failed to resolve the public database service.');
     }
 

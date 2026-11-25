@@ -27,13 +27,13 @@ use Joomla\Registry\Registry;
 final class NavigationDataHelper
 {
     /**
-     * Validate a database or team identifier without lossy integer casts.
+     * Validate a navigation record or team identifier without lossy integer casts.
      *
      * Accepts nonnegative integers and decimal strings including leading
      * zeros; rejects booleans, arrays, negative or overflowing numbers and
      * partially numeric strings.
      *
-     * @param mixed $value Raw Joomla selector or stored numeric identifier.
+     * @param mixed $value Raw or stored numeric record identifier.
      * @return int|null Valid nonnegative integer, or null if invalid.
      */
     private static function nonNegativeSelector(mixed $value): ?int
@@ -50,6 +50,30 @@ final class NavigationDataHelper
         $result = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $result === false ? null : $result;
+    }
+
+    /**
+     * Interpret the module's primary/external database switch.
+     *
+     * The component database resolver supports only zero and one. Reject
+     * other integers rather than allowing an unsupported choice to become
+     * a primary database lookup. Leading zeroes in saved values are retained
+     * as valid decimal representations of the two supported modes.
+     *
+     * @param mixed $value Unfiltered request or stored database selector.
+     * @return int|null Supported mode, or null for invalid configuration.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**
@@ -186,18 +210,18 @@ final class NavigationDataHelper
 
         $this->_app = $resolvedApp;
 
-        $joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);
         $input = $this->_app->getInput();
         $componentSelector = ComponentHelper::getParams('com_sportsmanagement')
             ->get('cfg_which_database', 0);
         $configuredSelector = $this->_params->get('cfg_which_database', $componentSelector);
         $requestedSelector = $input->get('cfg_which_database', null, 'RAW');
-        $selector = self::nonNegativeSelector($requestedSelector ?? $configuredSelector);
+        $selector = self::databaseSelector($requestedSelector ?? $configuredSelector);
 
         if ($selector === null) {
             throw new \InvalidArgumentException('Invalid SportsManagement navigation database selector.');
         }
 
+        $joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);
         $input->set('cfg_which_database', $selector);
         $this->_db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
