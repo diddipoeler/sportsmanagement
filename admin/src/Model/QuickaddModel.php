@@ -153,12 +153,14 @@ final class QuickaddModel extends SportsManagementListModel
      * Preserve the historical quick-add behaviour: when only a name is given,
      * create the person record. Team assignment itself was never implemented in
      * the legacy method and therefore remains outside this compatibility API.
-     * Validate one to three name parts before creating a new person.
+     * Requires component creation permission and validates one to three
+     * name parts before creating a new person.
      *
      * @param mixed $projectteam_id Historical project-team identifier (unused).
      * @param mixed $personid Existing person identifier, or zero to create one.
      * @param mixed $name Name of a new person when no person ID is provided.
      * @return bool Whether the selected or newly created person is available.
+     * @throws \RuntimeException If component creation permission is denied.
      */
     public function addPlayer($projectteam_id, $personid, $name = null): bool
     {

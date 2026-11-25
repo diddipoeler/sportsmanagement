@@ -85,6 +85,48 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
     {
         public ?\Joomla\Database\DatabaseInterface $database = null;
         public array $errors = [];
+        public bool $allowCreate = true;
+
+        /**
+         * Supply the administrator identity required by the native quick-add ACL guard.
+         * @return object Application fixture with a configurable create permission.
+         */
+        protected function administratorApplication(): object
+        {
+            return new class($this->allowCreate) {
+                /**
+                 * Capture the permission for this test request.
+                 * @param bool $allowed Whether person creation is permitted.
+                 */
+                public function __construct(private bool $allowed) {}
+
+                /**
+                 * Return the simulated administrator identity.
+                 * @return object Identity fixture implementing Joomla authorise.
+                 */
+                public function getIdentity(): object
+                {
+                    return new class($this->allowed) {
+                        /**
+                         * Initialise the identity with its configured ACL decision.
+                         * @param bool $allowed Whether creation is permitted.
+                         */
+                        public function __construct(private bool $allowed) {}
+
+                        /**
+                         * Permit only the requested component creation action.
+                         * @param string $action Joomla ACL action.
+                         * @param string $asset Component asset name.
+                         * @return bool Whether this action is authorised.
+                         */
+                        public function authorise(string $action, string $asset): bool
+                        {
+                            return $this->allowed && $action === 'core.create' && $asset === 'com_sportsmanagement';
+                        }
+                    };
+                }
+            };
+        }
 
         /**
          * Supply the failing database service to the quick-add model.
@@ -208,6 +250,16 @@ namespace {
         throw new \RuntimeException('Quick-add search disclosed details or returned stale pagination state.');
     }
 
+    $quickAddModel->allowCreate = false;
+    try {
+        $quickAddModel->addPlayer(0, 0, 'Test Person');
+        throw new \LogicException('Unauthorised quick-add was accepted.');
+    } catch (\RuntimeException $error) {
+        if ($error->getCode() !== 403) {
+            throw $error;
+        }
+    }
+    $quickAddModel->allowCreate = true;
     $created = $quickAddModel->addPlayer(0, 0, 'Test Person');
 
     if ($created !== false || $quickAddModel->errors !== ['An error occurred.', 'An error occurred.']) {

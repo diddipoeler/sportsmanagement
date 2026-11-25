@@ -59,7 +59,8 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
     /**
      * Notify administrators after a prediction template has been saved.
-     * Uses the existing translated creation notice for new templates.
+     * Uses the translated creation notice with a count of one newly created
+     * template, not the primary key of the saved record.
      * @param array $data Saved prediction template values.
      * @param int $id Saved record identifier.
      * @param bool $isNew Whether the record was newly inserted.
@@ -69,7 +70,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
     {
         if ($isNew) {
             $this->administratorApplication()->enqueueMessage(
-                Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
+                Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', 1),
                 'message'
             );
         }

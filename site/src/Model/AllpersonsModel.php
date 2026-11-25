@@ -48,7 +48,7 @@ final class AllpersonsModel extends SportsManagementListModel
     {
         $input = $this->siteApplication()->getInput();
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
-        $this->limitstart = $input->getInt('limitstart', 0);
+        $this->limitstart = max(0, $input->getInt('limitstart', 0));
 
         $config['filter_fields'] = [
             'v.lastname',
@@ -70,6 +70,7 @@ final class AllpersonsModel extends SportsManagementListModel
     /**
      * Public database access for presentation helpers without exposing Joomla's
      * protected BaseDatabaseModel::getDatabase() API to the view layer.
+     * @return DatabaseInterface Currently assigned model database.
      */
     public function getSportsManagementDatabase(): DatabaseInterface
     {
@@ -91,7 +92,7 @@ final class AllpersonsModel extends SportsManagementListModel
             return $this->cache[$store];
         }
 
-        $start = (int) $this->getState('list.start');
+        $start = max(0, (int) $this->getState('list.start'));
         $limit = (int) $this->getState('list.limit');
         $total = (int) $this->getTotal();
 

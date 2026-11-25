@@ -38,6 +38,7 @@ final class BirthdayHelper
      * Malformed database choices cannot silently select the Joomla database.
      * Unexpected types for name format, sorting or display mode use safe
      * defaults rather than causing PHP 8 array-to-string conversion warnings.
+     * Non-array database results are treated as an empty list.
      * Invalid age-group selectors and malformed birthday rows are rejected
      * before they can expand a filter or interrupt frontend rendering.
      * @param Registry $params Birthday module configuration.
@@ -153,7 +154,8 @@ final class BirthdayHelper
                 ->order($db->quoteName('p.id') . ' ASC');
 
             $db->setQuery($query);
-            $rows = $db->loadObjectList() ?: [];
+            $rawRows = $db->loadObjectList();
+            $rows = is_array($rawRows) ? $rawRows : [];
         } catch (\Throwable $e) {
             // Database and SQL details belong in the administrator log, not in
             // messages rendered to public site visitors.
