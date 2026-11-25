@@ -26,7 +26,7 @@ final class UpdateController extends BaseController
      */
     public function display($cachable = false, $urlparams = [])
     {
-        $this->input->set('view', 'updates');
+        $this->app->getInput()->set('view', 'updates');
 
         return parent::display($cachable, $urlparams);
     }
@@ -49,8 +49,8 @@ final class UpdateController extends BaseController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $input = $this->input;
-        $fileName = $this->normaliseFileName((string) $input->get('file_name', '', 'raw'));
+        $input = $this->app->getInput();
+        $fileName = $this->normaliseFileName($input->get('file_name', '', 'raw'));
 
         if ($fileName === null) {
             echo Text::_('Update file not found!');
@@ -68,7 +68,7 @@ final class UpdateController extends BaseController
 
         $model = $this->getModel('Updates', 'Administrator', ['ignore_request' => true]);
 
-        if (!is_object($model)) {
+        if (!is_object($model) || !is_callable([$model, 'loadUpdateFile'])) {
             echo Text::_('Update file not found!');
 
             return;
@@ -96,21 +96,28 @@ final class UpdateController extends BaseController
     /**
      * Validate an update-script file name from the request.
      * Normalises slash separators, limits scripts to one or two path
-     * components and requires a PHP extension, rejecting traversal.
-     * @param string $fileName User-selected update script path.
+     * components and requires a PHP extension, rejecting traversal, empty
+     * segments, control characters and non-string Joomla request values.
+     * @param mixed $fileName Raw user-selected update script path.
      * @return string|null Safe relative filename or null on invalid input.
      */
-    private function normaliseFileName(string $fileName): ?string
+    private function normaliseFileName(mixed $fileName): ?string
     {
-        $normalised = str_replace('\\', '/', trim($fileName));
-        $parts = array_values(array_filter(explode('/', $normalised), static fn (string $part): bool => $part !== ''));
+        if (!is_string($fileName) || $fileName === '' || strlen($fileName) > 512
+            || preg_match('/[\x00-\x1F\x7F]/', $fileName) === 1) {
+            return null;
+        }
+
+        $normalised = str_replace('\\', '/', $fileName);
+        $parts = explode('/', $normalised);
 
         if (!$parts || count($parts) > 2) {
             return null;
         }
 
         foreach ($parts as $part) {
-            if ($part === '.' || $part === '..' || basename($part) !== $part) {
+            if ($part === '' || $part === '.' || $part === '..'
+                || trim($part) !== $part || str_contains($part, ':')) {
                 return null;
             }
         }

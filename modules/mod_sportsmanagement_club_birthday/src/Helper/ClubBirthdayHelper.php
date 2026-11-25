@@ -124,14 +124,22 @@ final class ClubBirthdayHelper
      *
      * Rejects arrays, signs, non-decimal text and integer overflows; an
      * invalid parameter falls back to zero without PHP 8 conversion warnings.
+     * Normalises zero-padded decimal settings before range validation so
+     * legacy saved limits such as 0030 continue to mean thirty days.
      *
      * @param mixed $raw Raw Joomla limit or day-count setting.
      * @return int Nonnegative validated value, or zero by default.
      */
     private static function nonNegativeOption(mixed $raw): int
     {
-        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+        if (!is_int($raw) && (!is_string($raw) || strlen($raw) > 64
+            || !preg_match('/^[0-9]+$/D', $raw))) {
             return 0;
+        }
+
+        if (is_string($raw)) {
+            $digits = ltrim($raw, '0');
+            $raw = $digits === '' ? '0' : $digits;
         }
 
         $value = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);

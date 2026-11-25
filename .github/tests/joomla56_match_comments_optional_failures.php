@@ -76,7 +76,21 @@ namespace Joomla\CMS\Language {
 namespace Joomla\CMS\Plugin {
     final class PluginHelper
     {
-        public static function importPlugin(string $type, string $name): void {}
+        public static bool $failImport = false;
+
+        /**
+         * Simulate a transient plugin loader failure before event dispatch.
+         * @param string $type Joomla plugin group.
+         * @param string $name Plugin element to import.
+         * @return void
+         * @throws \RuntimeException When the fixture enables import failure.
+         */
+        public static function importPlugin(string $type, string $name): void
+        {
+            if (self::$failImport) {
+                throw new \RuntimeException('Plugin import private path');
+            }
+        }
         public static function getPlugin(string $type, string $name): object
         {
             return (object) ['params' => ''];
@@ -168,12 +182,22 @@ namespace {
         (new \ReflectionProperty($helper, 'kunenaEnabled'))->setValue(null, null);
         (new \ReflectionProperty($helper, 'jcommentsEnabled'))->setValue(null, null);
 
+        \Joomla\CMS\Plugin\PluginHelper::$failImport = true;
+        $output = $helper::render($match, $team, $team, [], $project);
+        if ($output !== 'Comments not available'
+            || (new \ReflectionProperty($helper, 'jcommentsPrepared'))->getValue(null) !== false
+            || count(\Joomla\CMS\Log\Log::$errors) !== 2
+            || str_contains(\Joomla\CMS\Log\Log::$errors[1][0], 'private path')) {
+            throw new \RuntimeException('Failed JComments import poisoned preparation or leaked details.');
+        }
+        \Joomla\CMS\Plugin\PluginHelper::$failImport = false;
+
         $output = $helper::render($match, $team, $team, [], $project);
 
         if ($output !== 'Comments not available'
-            || count(\Joomla\CMS\Log\Log::$errors) !== 2
-            || !str_contains(\Joomla\CMS\Log\Log::$errors[1][0], 'RuntimeException')
-            || str_contains(\Joomla\CMS\Log\Log::$errors[1][0], '/srv/passwords')) {
+            || count(\Joomla\CMS\Log\Log::$errors) !== 3
+            || !str_contains(\Joomla\CMS\Log\Log::$errors[2][0], 'RuntimeException')
+            || str_contains(\Joomla\CMS\Log\Log::$errors[2][0], '/srv/passwords')) {
             throw new \RuntimeException('JComments failure was exposed to match visitors.');
         }
     } finally {

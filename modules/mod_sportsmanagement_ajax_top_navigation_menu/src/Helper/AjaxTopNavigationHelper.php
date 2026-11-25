@@ -29,7 +29,7 @@ final class AjaxTopNavigationHelper
      * resolves a connection, discards malformed federation records and
      * prepares the initial project, league and team dropdowns plus client
      * configuration. Rejects non-site application contexts and verifies the
-     * injected Joomla database service before instantiating the legacy helper.
+     * Joomla database service before instantiating the legacy helper.
      * An incompatible service produces a controlled error rather than a
      * PHP 8 constructor type error.
      *
@@ -64,11 +64,7 @@ final class AjaxTopNavigationHelper
         // Set the already validated selector before constructing it.
         $input->set('cfg_which_database', $databaseSelector);
 
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$database instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement AJAX navigation database service is unavailable.', 500);
-        }
+        $database = self::joomlaDatabase();
 
         $legacyHelper = new NavigationDataHelper($params, $app, $database);
         $points = self::federationRows($legacyHelper->getFederations());
@@ -95,7 +91,7 @@ final class AjaxTopNavigationHelper
         $projectId = max(0, $input->getInt('p', 0));
         $teamId = max(0, $input->getInt('tid', 0));
         $divisionId = max(0, $input->getInt('division', 0));
-         $legacyHelper->setProject($projectId, $teamId, $divisionId);
+        $legacyHelper->setProject($projectId, $teamId, $divisionId);
         $leagueId = max(0, (int) $legacyHelper->getLeagueId());
         $countryId = $legacyHelper->getProjectCountry($projectId);
         $leagueAssocId = max(0, (int) $legacyHelper->getLeagueAssocId());
@@ -246,6 +242,28 @@ final class AjaxTopNavigationHelper
                 'loader' => 'modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif',
             ],
         ];
+    }
+
+    /**
+     * Obtain the Joomla-managed database for the navigation helper.
+     *
+     * Resolves DatabaseInterface through the public Joomla 5/6 dependency
+     * container and rejects incompatible services before constructing the
+     * navigation data helper. External database selection remains the
+     * responsibility of the component database resolver.
+     *
+     * @return DatabaseInterface Joomla primary database service.
+     * @throws \RuntimeException If the configured service is incompatible.
+     */
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement AJAX navigation database service is unavailable.', 500);
+        }
+
+        return $database;
     }
 
     /**

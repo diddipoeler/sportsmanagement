@@ -23,14 +23,15 @@ final class UpdatesModel extends BaseDatabaseModel
     /**
      * Execute one allowlisted, local SportsManagement update script and record its version.
      * Resolves the requested filename inside trusted update directories, includes the script, and updates its execution count and version metadata in the component version table.
+     * Non-string request values and symlinked scripts are rejected before execution.
      * @param mixed $myfilename Optional update directory or fully qualified legacy script path.
      * @param mixed $file Name of the update script requested by the administrator.
      * @return string Script status message, or an empty string when unavailable.
      */
     public function loadUpdateFile($myfilename, $file): string
     {
-        $fileName = trim((string) $file);
-        $resolved = $this->resolveUpdateFile($fileName, (string) $myfilename);
+        $fileName = is_string($file) ? $file : '';
+        $resolved = is_string($myfilename) ? $this->resolveUpdateFile($fileName, $myfilename) : null;
 
         if ($resolved === null) {
             $this->administratorApplication()->enqueueMessage(Text::_('Update file not found!'), 'error');
@@ -323,56 +324,69 @@ final class UpdatesModel extends BaseDatabaseModel
 
     /**
      * Resolve an update filename to a trusted local PHP script path.
-     * Normalises path separators, rejects parent-directory components and unexpected depth, and limits resolved paths to known SportsManagement update directories.
+     *
+     * Accepts one component filename or an extension name and filename.
+     * Rejects malformed path segments, control characters, non-PHP files
+     * and symlinked entries that resolve outside the expected installed
+     * directory structure. A legacy absolute path hint must resolve to
+     * exactly the same verified script and is never used as an alternative.
+     *
      * @param string $fileName Filename or supported relative update path.
      * @param string $providedPath Optional legacy path hint from the caller.
      * @return string|null Canonical trusted script path, or null when rejected.
      */
     private function resolveUpdateFile(string $fileName, string $providedPath = ''): ?string
     {
-        $normalised = str_replace('\\', '/', trim($fileName));
-        $parts = array_values(array_filter(explode('/', $normalised), static fn (string $part): bool => $part !== ''));
+        if ($fileName === '' || strlen($fileName) > 512
+            || preg_match('/[\x00-\x1F\x7F]/', $fileName) === 1
+            || strlen($providedPath) > 4096
+            || preg_match('/[\x00-\x1F\x7F]/', $providedPath) === 1) {
+            return null;
+        }
 
-        if (!$parts || count($parts) > 2) {
+        $normalised = str_replace('\\', '/', $fileName);
+        $parts = explode('/', $normalised);
+
+        if (count($parts) > 2) {
             return null;
         }
 
         foreach ($parts as $part) {
-            if ($part === '.' || $part === '..' || basename($part) !== $part) {
+            if ($part === '' || $part === '.' || $part === '..'
+                || trim($part) !== $part || str_contains($part, ':')) {
                 return null;
             }
         }
 
-        if (count($parts) === 1) {
-            $candidate = JPATH_ADMINISTRATOR
-                . DIRECTORY_SEPARATOR . 'components'
-                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
-                . DIRECTORY_SEPARATOR . 'assets'
-                . DIRECTORY_SEPARATOR . 'updates'
-                . DIRECTORY_SEPARATOR . $parts[0];
-        } else {
-            $candidate = JPATH_SITE
-                . DIRECTORY_SEPARATOR . 'components'
-                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
-                . DIRECTORY_SEPARATOR . 'extensions'
-                . DIRECTORY_SEPARATOR . $parts[0]
-                . DIRECTORY_SEPARATOR . 'admin'
-                . DIRECTORY_SEPARATOR . 'install'
-                . DIRECTORY_SEPARATOR . $parts[1];
-        }
-
-        $real = realpath($candidate);
-
-        if ($real === false || !is_file($real) || strtolower(pathinfo($real, PATHINFO_EXTENSION)) !== 'php') {
+        if (strtolower(pathinfo($parts[array_key_last($parts)], PATHINFO_EXTENSION)) !== 'php') {
             return null;
         }
 
-        if ($providedPath !== '') {
-            $providedReal = realpath($providedPath);
+        if (count($parts) === 1) {
+            $root = realpath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement');
+            $relative = 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR . $parts[0];
+        } else {
+            $root = realpath(JPATH_SITE . '/components/com_sportsmanagement');
+            $relative = 'extensions' . DIRECTORY_SEPARATOR . $parts[0]
+                . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'install'
+                . DIRECTORY_SEPARATOR . $parts[1];
+        }
 
-            if ($providedReal === false || $providedReal !== $real) {
-                return null;
-            }
+        if ($root === false || !is_dir($root)) {
+            return null;
+        }
+
+        $candidate = $root . DIRECTORY_SEPARATOR . $relative;
+        $real = realpath($candidate);
+
+        // Exact canonical equality also refuses symlinked parent directories.
+        if ($real === false || $real !== $candidate || is_link($candidate)
+            || !is_file($real) || !is_readable($real)) {
+            return null;
+        }
+
+        if ($providedPath !== '' && realpath($providedPath) !== $real) {
+            return null;
         }
 
         return $real;

@@ -31,6 +31,8 @@ final class MatchCommentsHelper
 {
     /**
      * Resolve the Joomla site application for comment plugin events.
+     * Uses the public Joomla service container and verifies the returned
+     * application type before invoking optional content plugin events.
      * @return SiteApplication Validated Joomla site application.
      * @throws \RuntimeException When the service is unavailable.
      */
@@ -47,6 +49,8 @@ final class MatchCommentsHelper
 
     /**
      * Resolve Joomla's database for optional comments integrations.
+     * The Kunena tables belong to the Joomla installation, not to a
+     * separately selected SportsManagement external database.
      * @return DatabaseInterface Validated Joomla database service.
      * @throws \RuntimeException When no database service is available.
      */
@@ -225,7 +229,8 @@ final class MatchCommentsHelper
      * entry file, imports the content plugin through Joomla and reads the
      * separate-comments option to select the appropriate match event.
      * Reuses the preparation result during subsequent match renders in the
-     * same request rather than importing the extension repeatedly.
+     * same request rather than importing the extension repeatedly. A failed
+     * plugin import is not cached as a successful preparation attempt.
      *
      * @return bool Whether the comments integration can be used.
      */
@@ -235,9 +240,9 @@ final class MatchCommentsHelper
             return self::$jcommentsAvailable;
         }
 
-        self::$jcommentsPrepared = true;
         $root = JPATH_ROOT . '/components/com_jcomments';
         if (!is_file($root . '/jcomments.class.php')) {
+            self::$jcommentsPrepared = true;
             return false;
         }
 
@@ -246,6 +251,7 @@ final class MatchCommentsHelper
         $params = new Registry(is_object($plugin) ? (string) ($plugin->params ?? '') : '');
         self::$separateComments = (bool) $params->get('separate_comments', 0);
         self::$jcommentsAvailable = true;
+        self::$jcommentsPrepared = true;
 
         return true;
     }

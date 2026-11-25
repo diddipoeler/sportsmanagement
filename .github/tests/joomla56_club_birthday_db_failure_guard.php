@@ -72,13 +72,21 @@ namespace {
     $selector = new \ReflectionMethod($helper, 'databaseSelector');
 
     foreach ([
-        [0, 0], [1, 1], ['0007', 7], ['000', 0],
+        [0, 0], [1, 1], ['0001', 1], ['000', 0], [7, null], ['0007', null],
         [-1, null], ['-1', null], [true, null], [false, null],
         [['7'], null], [[], null], ['7garbage', null], ['1.4', null],
         ['99999999999999999999999999', null],
     ] as [$value, $expected]) {
         if ($selector->invoke(null, $value) !== $expected) {
             throw new \RuntimeException('Invalid club birthday database selector: ' . var_export($value, true));
+        }
+    }
+
+    $limit = new \ReflectionMethod($helper, 'nonNegativeOption');
+    foreach ([[0, 0], ['0030', 30], ['000', 0], [12, 12], [-1, 0],
+        [true, 0], [['12'], 0], ['1bad', 0], [str_repeat('9', 65), 0]] as [$value, $expected]) {
+        if ($limit->invoke(null, $value) !== $expected) {
+            throw new \RuntimeException('Club birthday numeric limit was not normalised.');
         }
     }
 
@@ -130,14 +138,14 @@ namespace {
     }
 
     $params = new \Joomla\Registry\Registry([
-        'cfg_which_database' => '0007',
+        'cfg_which_database' => '0001',
         'mode' => 'BC',
     ]);
 
     $result = $helper->getData($params, $app, $db);
 
     if ($result !== ['clubs' => [], 'mode' => 'BC']
-        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 7
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 1
         || $db->queries !== 0) {
         throw new \RuntimeException('Club birthday database resolution failure reached a public page.');
     }
@@ -153,7 +161,7 @@ namespace {
 
     if ($result !== ['clubs' => [], 'mode' => 'L']
         || $db->queries !== 0
-        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 7
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 1
         || count(\Joomla\CMS\Log\Log::$errors) !== 1) {
         throw new \RuntimeException('Invalid club birthday database selector must fail closed.');
     }
