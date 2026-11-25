@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -59,6 +60,8 @@ final class ClubiconsHelper
      * team links and image URLs. Missing projects yield empty collections.
      * A malformed database selector also yields no results rather than
      * silently loading club details from the default Joomla connection.
+     * Optional database or ranking failures return empty module data and
+     * log only the exception class, leaving the surrounding site available.
      *
      * @param Registry $params Module configuration.
      * @param object $module Joomla module record.
@@ -82,46 +85,52 @@ final class ClubiconsHelper
             return ['project' => null, 'ranking' => [], 'teams' => []];
         }
 
-        $db = SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
-        $divisionId = $this->firstId($params->get('division_id', 0));
-        $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
-        $result = is_array($result) ? $result : [];
-        $project = is_object($result['project'] ?? null) ? $result['project'] : null;
-        $ranking = is_array($result['ranking'] ?? null) ? $result['ranking'] : [];
+        try {
+            $db = SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
+            $divisionId = $this->firstId($params->get('division_id', 0));
+            $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
+            $result = is_array($result) ? $result : [];
+            $project = is_object($result['project'] ?? null) ? $result['project'] : null;
+            $ranking = is_array($result['ranking'] ?? null) ? $result['ranking'] : [];
 
-        if (empty($project->id) || !$ranking) {
-            return ['project' => $project ?: null, 'ranking' => [], 'teams' => []];
-        }
-
-        // Fetch club websites only for the configured external-link mode.
-        $websites = self::nonNegativeInteger($params->get('teamlink', 0)) === 5
-            ? $this->websiteMap($db, $ranking)
-            : [];
-        $teams = [];
-        foreach ($ranking as $row) {
-            if (!is_object($row) || !is_object($row->team ?? null)) {
-                continue;
+            if (empty($project->id) || !$ranking) {
+                return ['project' => $project ?: null, 'ranking' => [], 'teams' => []];
             }
 
-            $team = $row->team;
-            $projectTeamId = $this->firstId($row->projectteamid ?? null);
-            if ($projectTeamId <= 0) {
-                continue;
+            // Fetch club websites only for the configured external-link mode.
+            $websites = self::nonNegativeInteger($params->get('teamlink', 0)) === 5
+                ? $this->websiteMap($db, $ranking)
+                : [];
+            $teams = [];
+            foreach ($ranking as $row) {
+                if (!is_object($row) || !is_object($row->team ?? null)) {
+                    continue;
+                }
+
+                $team = $row->team;
+                $projectTeamId = $this->firstId($row->projectteamid ?? null);
+                if ($projectTeamId <= 0) {
+                    continue;
+                }
+
+                $name = $team->name ?? '';
+                $teams[$projectTeamId] = [
+                    'name' => is_string($name) ? $name : '',
+                    'link' => $this->teamLink($params, $project, $team, $websites),
+                    'logo_url' => $this->logoUrl($params, $team),
+                ];
             }
 
-            $name = $team->name ?? '';
-            $teams[$projectTeamId] = [
-                'name' => is_string($name) ? $name : '',
-                'link' => $this->teamLink($params, $project, $team, $websites),
-                'logo_url' => $this->logoUrl($params, $team),
+            return [
+                'project' => $project,
+                'ranking' => $ranking,
+                'teams' => $teams,
             ];
-        }
+        } catch (\Throwable $e) {
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
-        return [
-            'project' => $project,
-            'ranking' => $ranking,
-            'teams' => $teams,
-        ];
+            return ['project' => null, 'ranking' => [], 'teams' => []];
+        }
     }
 
     /**

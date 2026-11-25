@@ -283,19 +283,31 @@ final class ImageSelectHelper
      *
      * Rejects missing files, oversized uploads, unsupported extensions,
      * mismatching image MIME types and embedded active HTML. Reports a
-     * translated warning to Joomla's image-handler log on failure.
+     * translated warning to Joomla's image-handler log on failure. Rejects
+     * malformed upload metadata before coercion and bounds the configured
+     * image size consistently with the frontend controller.
      *
      * @param mixed $file Uploaded file metadata with name, size and tmp_name.
      * @return bool True only when the uploaded raster image passes validation.
      */
     public static function check($file): bool
     {
-        $file = (array) $file;
-        $name = (string) ($file['name'] ?? '');
-        $tmpName = (string) ($file['tmp_name'] ?? '');
-        $size = (int) ($file['size'] ?? 0);
+        if (!is_array($file)
+            || !is_string($file['name'] ?? null)
+            || !is_string($file['tmp_name'] ?? null)
+            || preg_match('/[\x00-\x1F\x7F]/', $file['name'])
+            || str_contains($file['tmp_name'], "\0")) {
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1'), Log::WARNING, 'jsmerror');
+
+            return false;
+        }
+
+        $name = $file['name'];
+        $tmpName = $file['tmp_name'];
+        $size = self::nonNegativeInteger($file['size'] ?? null);
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $sizeLimit = max(1, (int) $params->get('image_max_size', 120)) * 1024;
+        $kilobytes = self::nonNegativeInteger($params->get('image_max_size', 120)) ?? 120;
+        $sizeLimit = max(1, min($kilobytes, 65536)) * 1024;
         $extension = strtolower((string) File::getExt($name));
         // SVG can execute scripts when opened in the browser. Restrict new
         // uploads to raster formats and verify their actual image MIME type.
@@ -321,7 +333,7 @@ final class ImageSelectHelper
 
         $actualSize = is_file($tmpName) ? filesize($tmpName) : false;
 
-        if ($size <= 0 || $size > $sizeLimit
+        if ($size === null || $size <= 0 || $size > $sizeLimit
             || $actualSize === false || $actualSize <= 0 || $actualSize > $sizeLimit) {
             Log::add(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' '
@@ -342,13 +354,13 @@ final class ImageSelectHelper
         }
 
         try {
-            $xssCheck = file_get_contents($tmpName, false, null, 0, 4096);
+            $xssCheck = @file_get_contents($tmpName, false, null, 0, 4096);
 
             if ($xssCheck === false) {
                 throw new \RuntimeException('Uploaded image could not be read.');
             }
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
 
             return false;
         }
@@ -363,6 +375,32 @@ final class ImageSelectHelper
         }
 
         return true;
+    }
+
+    /**
+     * Parse a nonnegative image size without PHP's lossy integer casts.
+     *
+     * Accepts integers or bounded decimal strings, including zero padding.
+     * Rejects malformed values and overflow before comparing or multiplying
+     * the configured size by the number of bytes in a kibibyte.
+     *
+     * @param mixed $value Uploaded size or component size setting.
+     * @return int|null Valid integer, or null for invalid input.
+     */
+    private static function nonNegativeInteger(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 16 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+        $number = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
     }
 
     /**

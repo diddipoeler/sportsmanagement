@@ -84,18 +84,18 @@ namespace Joomla\Filesystem {
     final class Folder
     {
         /**
-         * List visible and hidden names to exercise the model's own checks.
-         *
-         * @param string $path Folder being inspected.
-         * @return array<int,string> Directory entries.
-         */
-        /**
          * Create one directory inside the temporary fixture.
          * @param string $path Validated directory.
          * @return bool Whether the directory was created.
          */
         public static function create(string $path): bool { return mkdir($path); }
 
+        /**
+         * List visible and hidden names to exercise the model's own checks.
+         *
+         * @param string $path Folder being inspected.
+         * @return array<int,string> Directory entries.
+         */
         public static function files(string $path): array {
             return array_values(array_diff(scandir($path) ?: [], ['.', '..']));
         }

@@ -50,6 +50,8 @@ jobs:
         run: |
           php -l .github/tests/joomla56_clubicons_rows.php
           php .github/tests/joomla56_clubicons_rows.php
+          php -l .github/tests/joomla56_clubicons_failure.php
+          php .github/tests/joomla56_clubicons_failure.php
 
       - name: Test round-robin reuse and independent Club Icons instances
         run: |

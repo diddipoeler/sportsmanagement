@@ -32,4 +32,7 @@ jobs:
           php -l .github/tests/joomla56_update_script_paths.php
           php .github/tests/phpdoc_metadata.php admin/src/Controller/UpdateController.php admin/src/Model/UpdatesModel.php .github/tests/joomla56_update_script_paths.php
       - name: Run update path regression
-        run: php .github/tests/joomla56_update_script_paths.php
+        run: |
+          php .github/tests/joomla56_update_script_paths.php
+          php -l .github/tests/joomla56_update_history_failure.php
+          php .github/tests/joomla56_update_history_failure.php

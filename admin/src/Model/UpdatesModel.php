@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatab
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -56,8 +57,14 @@ final class UpdatesModel extends BaseDatabaseModel
         }
 
         $db = $this->sportsDatabase();
-        $existing = $this->getVersionRow($db, $fileName);
-        $baseVersion = $this->getVersionRow($db, 'sportsmanagement');
+        try {
+            $existing = $this->getVersionRow($db, $fileName, true);
+            $baseVersion = $this->getVersionRow($db, 'sportsmanagement', true);
+        } catch (\Throwable $e) {
+            $this->reportDatabaseFailure($e);
+
+            return '';
+        }
         $record = (object) [
             'id' => (int) ($existing->id ?? 0),
             'count' => (int) ($existing->count ?? 0) + 1,
@@ -71,16 +78,16 @@ final class UpdatesModel extends BaseDatabaseModel
 
         try {
             if ($record->id > 0) {
-                $db->updateObject('#__sportsmanagement_version', $record, 'id');
+                $saved = $db->updateObject('#__sportsmanagement_version', $record, 'id');
             } else {
                 unset($record->id);
-                $db->insertObject('#__sportsmanagement_version', $record);
+                $saved = $db->insertObject('#__sportsmanagement_version', $record);
+            }
+            if (!$saved) {
+                throw new \RuntimeException('SportsManagement update history write failed.');
             }
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'notice'
-            );
+            $this->reportDatabaseFailure($e);
         }
 
         return '';
@@ -107,7 +114,7 @@ final class UpdatesModel extends BaseDatabaseModel
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
+            $this->reportDatabaseFailure($e);
 
             return [];
         }
@@ -178,7 +185,7 @@ final class UpdatesModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
+            $this->reportDatabaseFailure($e);
 
             return [];
         }
@@ -419,25 +426,51 @@ final class UpdatesModel extends BaseDatabaseModel
      * Queries the component version table by a parameter-bound filename and handles database failures without terminating the administrator list.
      * @param DatabaseInterface $db Active SportsManagement database connection.
      * @param string $file Stored update script identifier.
-     * @return object|null Matching version record, or null if unavailable.
+     * @param bool $strict Whether a failed lookup must abort a subsequent write.
+     * @return object|null Matching version record, or null when absent.
+     * @throws \Throwable When a strict lookup fails.
      */
-    private function getVersionRow(DatabaseInterface $db, string $file): ?object
+    private function getVersionRow(DatabaseInterface $db, string $file, bool $strict = false): ?object
     {
-        $query = $db->createQuery()
-            ->select('*')
-            ->from($db->quoteName('#__sportsmanagement_version'))
-            ->where($db->quoteName('file') . ' = :versionFile')
-            ->bind(':versionFile', $file, ParameterType::STRING);
-
         try {
+            $query = $db->createQuery()
+                ->select('*')
+                ->from($db->quoteName('#__sportsmanagement_version'))
+                ->where($db->quoteName('file') . ' = :versionFile')
+                ->bind(':versionFile', $file, ParameterType::STRING);
             $db->setQuery($query, 0, 1);
 
-            return $db->loadObject() ?: null;
+            $row = $db->loadObject();
+            if ($row !== null && !is_object($row)) {
+                throw new \UnexpectedValueException('SportsManagement version lookup returned invalid data.');
+            }
+
+            return $row;
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
+            if ($strict) {
+                throw $e;
+            }
+
+            $this->reportDatabaseFailure($e);
 
             return null;
         }
+    }
+
+    /**
+     * Report a failed update-history database operation without private details.
+     *
+     * Keeps exception classes in the Joomla server log and uses a generic
+     * translated administrator message. SQL, connection credentials and
+     * internal filesystem paths must not appear in either output.
+     *
+     * @param \Throwable $error Database or validation failure.
+     * @return void
+     */
+    private function reportDatabaseFailure(\Throwable $error): void
+    {
+        Log::add(__METHOD__ . ' failed (' . get_class($error) . ').', Log::ERROR, 'com_sportsmanagement');
+        $this->administratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
     }
 
     /**
