@@ -36,12 +36,21 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     private bool $presentationDependenciesLoaded = false;
     private bool $presentationAssetsLoaded = false;
 
+    /**
+     * Initialise the shared project view and add the common frontend template directory.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
+    /**
+     * Load shared presentation dependencies, debug information, project configuration and required assets before preparing the concrete view. Record preparation time and delegate template rendering to Joomla.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $started = microtime(true);
@@ -54,6 +63,10 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Provide an optional preparation hook for concrete project views. The base implementation intentionally performs no additional work.
+     * @return void
+     */
     protected function prepareView(): void
     {
     }
@@ -87,6 +100,11 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         return true;
     }
 
+    /**
+     * Require a project model, resolve the current view and project, merge overall and view-specific template settings and initialise layout classes, modal dimensions and the legacy view constant.
+     * @return void
+     * @throws \RuntimeException If the assigned model is not a SportsManagement project model.
+     */
     protected function prepareProjectContext(): void
     {
         $model = $this->getModel();
@@ -108,6 +126,10 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         }
     }
 
+    /**
+     * Register legacy presentation dependencies when requested, initialise shared debug and picture-server constants and activate common styles through the Web Asset Manager once per view instance.
+     * @return void
+     */
     private function loadPresentationDependencies(): void
     {
         if ($this->presentationDependenciesLoaded) {
@@ -156,6 +178,10 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
             );
     }
 
+    /**
+     * Reset the debug collection and copy legacy helper success messages only when debugging and legacy presentation dependencies are enabled and the helper is loaded.
+     * @return void
+     */
     private function prepareDebugEntries(): void
     {
         $this->debug = [];
@@ -171,6 +197,10 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         $this->debug = (array) (\sportsmanagementHelper::$_success_text ?? []);
     }
 
+    /**
+     * Activate jQuery and the JCE MediaBox assets according to the concrete view's dependency requirements, avoiding duplicate registration within the view instance.
+     * @return void
+     */
     private function loadPresentationAssets(): void
     {
         if ($this->presentationAssetsLoaded) {

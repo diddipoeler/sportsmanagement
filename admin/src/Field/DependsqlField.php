@@ -20,6 +20,13 @@ final class DependsqlField extends SportsManagementListField
 {
     protected $type = 'dependsql';
 
+    /**
+     * Normalise legacy XML list-field attributes for Joomla, including the multiple-selection flag and automatic form submission for the nation dependency, before delegating field setup.
+     * @param \SimpleXMLElement $element Field definition.
+     * @param mixed $value Current field value.
+     * @param string|null $group Optional form group.
+     * @return bool Parent setup result.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['class'] = 'form-select';
@@ -38,6 +45,10 @@ final class DependsqlField extends SportsManagementListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Resolve the dependent field configuration and register its client-side update script when both an AJAX task and dependency are configured. Render the standard list input afterwards.
+     * @return string Rendered list input.
+     */
     protected function getInput(): string
     {
         $state = $this->resolveState();
@@ -61,6 +72,10 @@ final class DependsqlField extends SportsManagementListField
         return parent::getInput();
     }
 
+    /**
+     * Resolve the form state and load the initial options using the configured AJAX task, current value, database, slug and optional club filter.
+     * @return array Initial selection options.
+     */
     protected function getOptions(): array
     {
         $state = $this->resolveState();
@@ -75,6 +90,10 @@ final class DependsqlField extends SportsManagementListField
         );
     }
 
+    /**
+     * Read the field's XML configuration and current administrator form values. Determine the appropriate request or parameter group, including prediction-game and no-request exceptions, and collect the values required for dependent option loading.
+     * @return array<string,mixed> Resolved field configuration and form state.
+     */
     private function resolveState(): array
     {
         $app = $this->administratorApplication();
@@ -126,6 +145,16 @@ final class DependsqlField extends SportsManagementListField
         ];
     }
 
+    /**
+     * Resolve the configured AJAX model getter and return its initial option list. Pass database and club filters only for getters that support the corresponding arguments, and return an empty list when the task or callable is unavailable.
+     * @param string $ajaxTask Configured option task.
+     * @param mixed $value Current form value.
+     * @param bool $required Whether the field is required.
+     * @param bool $slug Whether slug values are requested.
+     * @param mixed $database Database selector.
+     * @param mixed $clubValue Optional club filter.
+     * @return array Initial selection options.
+     */
     private function loadInitialOptions(
         string $ajaxTask,
         mixed $value,
@@ -173,6 +202,11 @@ final class DependsqlField extends SportsManagementListField
         };
     }
 
+    /**
+     * Encode the field configuration for safe embedding in JavaScript and register an inline script for HTML documents. The script binds dependency change listeners, requests updated options from the administrator AJAX endpoint, refreshes the target list and dispatches a change event.
+     * @param array $config Dependency identifiers, AJAX task and request context.
+     * @return void
+     */
     private function registerDependencyScript(array $config): void
     {
         $json = json_encode(
@@ -353,6 +387,10 @@ JS;
         }
     }
 
+    /**
+     * Obtain the validated administrator application from the shared application resolver.
+     * @return AdministratorApplication Active administrator application.
+     */
     private function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
