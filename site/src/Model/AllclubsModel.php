@@ -35,7 +35,7 @@ final class AllclubsModel extends SportsManagementListModel
     {
         $input = $this->siteApplication()->getInput();
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
-        $this->limitstart = $input->getInt('limitstart', 0);
+        $this->limitstart = max(0, $input->getInt('limitstart', 0));
         $config['filter_fields'] = [
             'v.name', 'v.logo_big', 'v.website', 'v.address', 'v.zipcode',
             'v.location', 'v.country', 'v.unique_id', 'v.phone', 'v.email',
@@ -59,7 +59,7 @@ final class AllclubsModel extends SportsManagementListModel
             return $this->cache[$store];
         }
 
-        $start = (int) $this->getState('list.start');
+        $start = max(0, (int) $this->getState('list.start'));
         $limit = (int) $this->getState('list.limit');
         $total = (int) $this->getTotal();
 
@@ -78,6 +78,7 @@ final class AllclubsModel extends SportsManagementListModel
      * Build the frontend club listing query with related team context.
      * Joins clubs to teams and projects, filters by name, nation, sport
      * and optionally season, and restricts sorting to approved columns.
+     * Non-string search filters are ignored without PHP conversion warnings.
      * @return \Joomla\Database\DatabaseQuery Project-aware club listing query.
      */
     protected function getListQuery()
@@ -130,14 +131,16 @@ final class AllclubsModel extends SportsManagementListModel
                 ->bind(':sportsType', $sportsType, ParameterType::INTEGER);
         }
 
-        $search = trim((string) $this->getState('filter.search'));
+        $rawSearch = $this->getState('filter.search');
+        $search = is_string($rawSearch) ? trim($rawSearch) : '';
         if ($search !== '') {
             $searchValue = '%' . strtolower($search) . '%';
             $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :clubSearch')
                 ->bind(':clubSearch', $searchValue, ParameterType::STRING);
         }
 
-        $nation = trim((string) $this->getState('filter.search_nation'));
+        $rawNation = $this->getState('filter.search_nation');
+        $nation = is_string($rawNation) ? trim($rawNation) : '';
         if ($nation !== '') {
             $query->where($db->quoteName('v.country') . ' = :nation')
                 ->bind(':nation', $nation, ParameterType::STRING);

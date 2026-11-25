@@ -62,6 +62,7 @@ class ClubnamesController extends SportsManagementAdminController
      */
     public function getModel($name = 'Clubname', $prefix = 'Administrator', $config = [])
     {
+        $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);
