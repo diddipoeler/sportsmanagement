@@ -24,15 +24,20 @@ use RuntimeException;
  */
 final class XmlEventImportService
 {
+    /**
+     * Initialise the standalone event-type XML writer with the target database connection.
+     * @param DatabaseInterface $database Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     *
-     * @return array<string, string>
+     * Resolve the selected or newly requested sport type and process the imported event definitions. Reuse explicitly selected or name-matched existing records, create only rows selected in the import form and return escaped status reports.
+     * @param array<string,mixed> $post Import form selections.
+     * @param array<string,mixed> $parsedData Parsed XML records.
+     * @return array<string,string> Sport type and event import reports.
+     * @throws RuntimeException If a required sport type cannot be resolved or an insertion fails.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -104,7 +109,10 @@ final class XmlEventImportService
     }
 
     /**
-     * @param array<string, mixed> $post
+     * Resolve the selected sport type by identifier or trim and look up the requested new sport type by name. Insert a missing type and mark whether the returned record was created during this import.
+     * @param array<string,mixed> $post Import form selections.
+     * @return object Sport type record with creation status.
+     * @throws RuntimeException If the selection is invalid or insertion fails.
      */
     private function resolveSportType(array $post): object
     {
@@ -148,6 +156,11 @@ final class XmlEventImportService
         return $row;
     }
 
+    /**
+     * Retrieve an existing sport type's identifier and name using its bound primary key.
+     * @param int $id Sport type identifier.
+     * @return object|null Matching sport type or null.
+     */
     private function findSportTypeById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -163,6 +176,11 @@ final class XmlEventImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Retrieve the first sport type matching the supplied name using a bound query parameter.
+     * @param string $name Sport type name.
+     * @return object|null Matching sport type or null.
+     */
     private function findSportTypeByName(string $name): ?object
     {
         $query = $this->database->createQuery()
@@ -178,6 +196,11 @@ final class XmlEventImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Retrieve an existing event type's identifier and name using its bound primary key.
+     * @param int $id Event type identifier.
+     * @return object|null Matching event type or null.
+     */
     private function findEventById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -193,6 +216,11 @@ final class XmlEventImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find the first event type with the supplied name across the event-type table, independently of sport type.
+     * @param string $name Event type name.
+     * @return object|null Matching event type or null.
+     */
     private function findEventByName(string $name): ?object
     {
         $query = $this->database->createQuery()
@@ -208,6 +236,12 @@ final class XmlEventImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Copy source properties supported by the installed target table, excluding the foreign primary key and converting copied values to strings.
+     * @param object $source Imported XML record.
+     * @param string $table Target table name.
+     * @return object Filtered insert record.
+     */
     private function copyTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -226,6 +260,11 @@ final class XmlEventImportService
         return $row;
     }
 
+    /**
+     * Escape report values for HTML output using UTF-8 and both quote types.
+     * @param string $value Raw report value.
+     * @return string HTML-escaped value.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
