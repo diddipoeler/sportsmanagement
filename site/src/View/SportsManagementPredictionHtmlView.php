@@ -47,6 +47,10 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
     public float $jsmseitenaufbau = 0.0;
     protected SportsManagementPredictionModel $predictionModel;
 
+    /**
+     * Initialise the shared prediction view, register common and prediction-heading template paths and load legacy presentation dependencies.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -55,6 +59,11 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         LegacyPresentationLoader::register();
     }
 
+    /**
+     * Activate presentation assets, prepare the prediction context and concrete view, record the preparation time and delegate rendering to Joomla.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $started = microtime(true);
@@ -65,15 +74,35 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         parent::display($tpl);
     }
 
+    /**
+     * Delegate the example score calculation to the prepared prediction model using the project scoring rules, actual result, predicted outcome and optional joker.
+     * @param object $project Prediction project scoring configuration.
+     * @param int $home Actual home score.
+     * @param int $away Actual away score.
+     * @param int $tipp Predicted outcome.
+     * @param int $tippHome Predicted home score.
+     * @param int $tippAway Predicted away score.
+     * @param bool $joker Whether the joker applies.
+     * @return int Calculated example points.
+     */
     public function scoreRuleExample(object $project, int $home, int $away, int $tipp, int $tippHome, int $tippAway, bool $joker = false): int
     {
         return $this->predictionModel->scoreRuleExample($project, $home, $away, $tipp, $tippHome, $tippAway, $joker);
     }
 
+    /**
+     * Provide an optional preparation hook for concrete prediction views. The base implementation intentionally performs no additional work.
+     * @return void
+     */
     protected function prepareView(): void
     {
     }
 
+    /**
+     * Require a prediction model and load the game, member, project, round, group and database selection. Merge template configuration, load member and project records and initialise the current user, administration flag and layout settings.
+     * @return void
+     * @throws \RuntimeException If the assigned model is not a prediction model.
+     */
     protected function preparePredictionContext(): void
     {
         $model = $this->getModel();
@@ -108,6 +137,10 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         }
     }
 
+    /**
+     * Initialise the shared debug flag when absent and activate jQuery and prediction styles through Joomla's Web Asset Manager.
+     * @return void
+     */
     private function loadPresentationAssets(): void
     {
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {

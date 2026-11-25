@@ -282,10 +282,15 @@ namespace {
         throw new \RuntimeException('GCalendar database failures were not logged.');
     }
 
-    foreach ($logs as [$message, $level, $category]) {
+    $expectedMessages = [
+        'SportsManagement GCalendar query setup failed (RuntimeException).',
+        'SportsManagement GCalendar query execution failed (RuntimeException).',
+    ];
+    foreach ($logs as $index => [$message, $level, $category]) {
         if ($level !== \Joomla\CMS\Log\Log::ERROR
             || $category !== 'com_sportsmanagement'
-            || !str_contains($message, 'password=private')) {
+            || $message !== $expectedMessages[$index]
+            || str_contains($message, 'password=private')) {
             throw new \RuntimeException('GCalendar diagnostic details were not logged correctly.');
         }
     }
