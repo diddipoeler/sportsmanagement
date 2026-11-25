@@ -39,7 +39,8 @@ jobs:
           php -l "$countries"
 
           grep -Fq 'int $selector = 0' "$resolver"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase)' "$countries"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase())' "$countries"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$countries"
 
           if grep -Fq 'int $selector): DatabaseInterface' "$resolver"; then
             echo 'Database resolver selector regressed to a required argument' >&2

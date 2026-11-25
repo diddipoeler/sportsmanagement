@@ -31,11 +31,34 @@ final class LegacyModelDatabaseHelper
      * existing native SportsManagementDatabaseResolver. Does not load or
      * reference the removed global sportsmanagementHelper class.
      *
+     * @param DatabaseInterface|null $fallback Optional model-owned Joomla connection.
      * @return DatabaseInterface Selected Joomla or external database driver.
      * @throws \RuntimeException If no Joomla administrator/DB service exists.
      * @throws \InvalidArgumentException If the selected database is malformed.
      */
-    public static function resolve(): DatabaseInterface
+    public static function resolve(?DatabaseInterface $fallback = null): DatabaseInterface
+    {
+        $selector = self::selector();
+        $fallback ??= Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$fallback instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement administrator database service is unavailable.', 500);
+        }
+
+        return (new SportsManagementDatabaseResolver())->resolve($selector, $fallback);
+    }
+
+    /**
+     * Validate the administrator database selection without opening a connection.
+     *
+     * Gives mutation workflows a preflight check before running update scripts
+     * and preserves the current request's precedence over the saved setting.
+     * Explicit malformed choices are rejected rather than switching databases.
+     *
+     * @return int Supported primary/external database mode.
+     * @throws \InvalidArgumentException If the request or stored choice is invalid.
+     */
+    public static function selector(): int
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
         // getInt() would silently convert malformed request input to another
@@ -47,14 +70,9 @@ final class LegacyModelDatabaseHelper
         if ($selector === null) {
             throw new \InvalidArgumentException('Invalid SportsManagement administrator database selector.', 400);
         }
-        $fallback = Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$fallback instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement administrator database service is unavailable.', 500);
-        }
-
-        return (new SportsManagementDatabaseResolver())->resolve($selector, $fallback);
+        return $selector;
     }
+
     /**
      * Parse the requested administrator database choice without an unsafe cast.
      *

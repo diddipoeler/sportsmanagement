@@ -23,6 +23,47 @@ namespace Joomla\Database {
     }
 }
 
+namespace Joomla\CMS {
+    final class Factory
+    {
+        public static \Joomla\Database\DatabaseInterface $database;
+
+        /**
+         * Provide the Joomla container fixture to the legacy country facade.
+         * @return object Container exposing the configured test database.
+         */
+        public static function getContainer(): object
+        {
+            return new class {
+                /**
+                 * Return the isolated database instead of a live driver.
+                 * @param string $service Requested service identifier.
+                 * @return \Joomla\Database\DatabaseInterface Configured fixture.
+                 */
+                public function get(string $service): \Joomla\Database\DatabaseInterface
+                {
+                    return Factory::$database;
+                }
+            };
+        }
+    }
+}
+
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    final class SportsManagementDatabaseResolver
+    {
+        /**
+         * Preserve the fixture database for country lookups.
+         * @param \Joomla\Database\DatabaseInterface $fallback Default database.
+         * @return \Joomla\Database\DatabaseInterface Same isolated connection.
+         */
+        public static function resolve(\Joomla\Database\DatabaseInterface $fallback): \Joomla\Database\DatabaseInterface
+        {
+            return $fallback;
+        }
+    }
+}
+
 namespace Joomla\CMS\HTML {
     /** Minimal HTML option factory for a country selector. */
     final class HTMLHelper
@@ -33,11 +74,13 @@ namespace Joomla\CMS\HTML {
          * @param string $method HTML helper operation.
          * @param string $code ISO alpha-3 value.
          * @param string $name Translated country display name.
+         * @param string $valueKey Option value property.
+         * @param string $textKey Option label property.
          * @return object Selection record.
          */
-        public static function _(string $method, string $code, string $name): object
+        public static function _(string $method, string $code, string $name, string $valueKey = 'value', string $textKey = 'text'): object
         {
-            return (object) ['value' => $code, 'text' => $name];
+            return (object) [$valueKey => $code, $textKey => $name];
         }
     }
 }
@@ -73,10 +116,10 @@ namespace {
         /**
          * Accept selected columns for a country query without executing SQL.
          *
-         * @param array<string> $fields Requested columns.
+         * @param array<string>|string $fields Requested columns.
          * @return static Query for fluent calls.
          */
-        public function select(array $fields): static { return $this; }
+        public function select(array|string $fields): static { return $this; }
 
         /**
          * Accept the country table name for an isolated test.
@@ -131,6 +174,11 @@ namespace {
     }
 
     $options = CountryOptionsHelper::getOptions(new SmCountryDatabase());
+    /**
+     * Extract the default option value for order assertions.
+     * @param object $entry Country option.
+     * @return string ISO country identifier.
+     */
     $codes = array_map(static fn (object $entry): string => $entry->value, $options);
 
     if ($codes !== ['FRA', 'DEU', 'ESP']) {
@@ -139,6 +187,22 @@ namespace {
 
     if ($options[0]->text !== 'FRA') {
         throw new \RuntimeException('Malformed country labels must fall back to the ISO code.');
+    }
+
+    \Joomla\CMS\Factory::$database = new SmCountryDatabase();
+    require_once dirname(__DIR__, 2) . '/site/helpers/countries.php';
+    $legacyOptions = \JSMCountries::getCountryOptions('code', 'label');
+
+    if (count($legacyOptions) !== 3 || $legacyOptions[0]->code !== 'FRA'
+        || $legacyOptions[0]->label !== 'FRA' || $legacyOptions[1]->code !== 'DEU'
+        || $legacyOptions[2]->code !== 'ESP') {
+        throw new \RuntimeException('Legacy country custom option keys or malformed row handling regressed.');
+    }
+
+    if (\JSMCountries::getIso2Flag('DE') !== 'images/com_sportsmanagement/database/flags/de.png'
+        || \JSMCountries::getIso2Flag('../private') !== null
+        || \JSMCountries::getIso2Flag(['de']) !== null) {
+        throw new \RuntimeException('Malformed legacy flag identifier accepted.');
     }
 
     $before = count(spl_autoload_functions() ?: []);

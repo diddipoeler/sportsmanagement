@@ -390,7 +390,12 @@ namespace {
         $request->values = ['cfg_which_database' => $valid];
         $app->state = 0;
         selectorAssertSame($db, LegacyModelDatabaseHelper::resolve(), 'Valid admin selector was rejected');
+        selectorAssertSame((int) $valid, LegacyModelDatabaseHelper::selector(), 'Preflight selector changed a supported value');
     }
+
+    $request->values = ['cfg_which_database' => 0];
+    $injectedDatabase = new SelectorTestDatabase();
+    selectorAssertSame($injectedDatabase, LegacyModelDatabaseHelper::resolve($injectedDatabase), 'Injected MVC database was not preserved');
 
     $request->values = [];
     $app->state = '0001';

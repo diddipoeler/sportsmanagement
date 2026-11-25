@@ -305,6 +305,10 @@ namespace {
         ['p' => ['7'], 's' => ['12']],
         ['p' => ['7'], 's' => '9999999999999999999999'],
         ['p' => ['bad'], 's' => 10],
+        ['p' => ['7'], 's' => 10, 'teams' => ['bad']],
+        ['p' => ['7'], 's' => 10, 'teams' => [['22']]],
+        ['p' => ['7'], 's' => 10, 'teams' => true],
+        ['p' => ['7'], 's' => 10, 'teams' => ['9999999999999999999999999']],
     ] as $values) {
         if ($module->getData(new \Joomla\Registry\Registry($values), $db) !== []) {
             throw new \RuntimeException('Invalid RandomPlayer selection unexpectedly returned players.');
@@ -323,6 +327,15 @@ namespace {
         || ($db->last->binds[':eligibleSeason'] ?? null) !== 12
         || ($db->last->binds[':eligiblePlayerSeason'] ?? null) !== 12) {
         throw new \RuntimeException('Valid RandomPlayer season not bound as integer.');
+    }
+
+    foreach ([null, [], '', '0', ['0', '000']] as $emptySelection) {
+        $before = $db->queries;
+        if ($module->getData(new \Joomla\Registry\Registry([
+            'p' => ['7'], 'teams' => $emptySelection, 's' => 12,
+        ]), $db) !== [] || $db->queries !== $before + 1) {
+            throw new \RuntimeException('Empty optional RandomPlayer team filter no longer permits all teams.');
+        }
     }
 
     echo "Joomla 5/6 person form, admin IDs and RandomPlayer selectors OK\n";

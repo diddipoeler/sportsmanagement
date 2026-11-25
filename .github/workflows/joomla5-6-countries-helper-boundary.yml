@@ -34,8 +34,8 @@ jobs:
             failures=1
           fi
 
-          if grep -nE -- '->createQuery\s*\(' "$helper"; then
-            echo 'Country helper must use Joomla DatabaseInterface::getQuery().' 
+          if ! grep -Fq -- '->createQuery()' "$helper" || grep -nE -- '->getQuery\s*\(\s*true\s*\)' "$helper"; then
+            echo 'Country helper must create queries with Joomla DatabaseInterface::createQuery().'
             failures=1
           fi
 

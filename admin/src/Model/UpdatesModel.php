@@ -9,7 +9,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -24,6 +24,8 @@ final class UpdatesModel extends BaseDatabaseModel
      * Execute one allowlisted, local SportsManagement update script and record its version.
      * Resolves the requested filename inside trusted update directories, includes the script, and updates its execution count and version metadata in the component version table.
      * Non-string request values and symlinked scripts are rejected before execution.
+     * Validates the raw administrator database choice before including scripts
+     * that may alter installed component data.
      * @param mixed $myfilename Optional update directory or fully qualified legacy script path.
      * @param mixed $file Name of the update script requested by the administrator.
      * @return string Script status message, or an empty string when unavailable.
@@ -38,6 +40,8 @@ final class UpdatesModel extends BaseDatabaseModel
 
             return '';
         }
+
+        LegacyModelDatabaseHelper::selector();
 
         $version = null;
         $major = null;
@@ -450,18 +454,14 @@ final class UpdatesModel extends BaseDatabaseModel
 
     /**
      * Resolve the configured SportsManagement database for update operations.
-     * Reads the selected database number from the administrator request or session and resolves it through the component database resolver.
+     * Reuses the shared native administrator bridge for request/session
+     * validation and entitlement checks while retaining the MVC model's
+     * injected Joomla database as the fallback connection.
      * @return DatabaseInterface Connection used for version reads and writes.
      */
     private function sportsDatabase(): DatabaseInterface
     {
-        $app = $this->administratorApplication();
-        $selector = $app->getInput()->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
-
-        return (new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase());
+        return LegacyModelDatabaseHelper::resolve($this->getDatabase());
     }
 
     /**

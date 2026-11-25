@@ -94,6 +94,8 @@ class JSMCountries
     /**
      * Build translated select-list options for available countries.
      * Loads ISO codes and country names, maps them to Joomla HTML options, and sorts by label.
+     * Skips malformed or duplicate country records and respects custom
+     * option property names used by historical layouts.
      * @param string $value_tag Option value property name.
      * @param string $text_tag Option label property name.
      * @param int $useflag Historical flag-display option (currently unused).
@@ -108,23 +110,35 @@ class JSMCountries
         $db->setQuery($query);
         $countries = $db->loadAssocList();
 
-        $options = [];
-        foreach ($countries as $country) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $country['alpha3'],
-                Text::_($country['name']),
-                $value_tag,
-                $text_tag
-            );
+        if (!is_iterable($countries)) {
+            return [];
         }
 
-        return self::sortCountryArray($options, 'text');
+        $options = [];
+        $seen = [];
+
+        foreach ($countries as $country) {
+            $rawCode = is_array($country) ? ($country['alpha3'] ?? null) : null;
+            $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
+
+            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+                continue;
+            }
+
+            $seen[$code] = true;
+            $name = $country['name'] ?? null;
+            $label = is_string($name) && trim($name) !== '' ? $name : $code;
+            $options[] = HTMLHelper::_('select.option', $code, Text::_($label), $value_tag, $text_tag);
+        }
+
+        return self::sortCountryArray($options, $text_tag);
     }
 
     /**
      * Sort a list of country option objects by a selected property.
      * Uses natural case-insensitive ordering while preserving complete option objects.
+     * Skips malformed option objects and supports sparse input arrays without
+     * stopping at the first missing numeric index.
      * @param array $array Country option objects to order.
      * @param string $index Property containing the text used for sorting.
      * @return array Reordered option objects.
@@ -134,8 +148,14 @@ class JSMCountries
         $sort = [];
         $result = [];
 
-        for ($i = 0; isset($array[$i]); $i++) {
-            $sort[$i] = $array[$i]->{$index};
+        if (!is_array($array) || !is_string($index) || $index === '') {
+            return [];
+        }
+
+        foreach ($array as $key => $option) {
+            if (is_object($option) && is_string($option->{$index} ?? null)) {
+                $sort[$key] = $option->{$index};
+            }
         }
 
         natcasesort($sort);
@@ -354,14 +374,15 @@ class JSMCountries
 
     /**
      * Build the conventional country flag image path from a two-letter ISO code.
-     * Returns null when the code is empty, avoiding a filename without a country identifier.
+     * Accepts only a two-letter country identifier, ignoring malformed or
+     * non-string values so they cannot become arbitrary media paths.
      * @param string $iso_code_2 Two-letter ISO country code.
      * @return string|null Relative flag path or null.
      */
     public static function getIso2Flag($iso_code_2)
     {
-        return $iso_code_2
-            ? 'images/com_sportsmanagement/database/flags/' . strtolower((string) $iso_code_2) . '.png'
+        return is_string($iso_code_2) && preg_match('/^[A-Za-z]{2}$/D', $iso_code_2) === 1
+            ? 'images/com_sportsmanagement/database/flags/' . strtolower($iso_code_2) . '.png'
             : null;
     }
 

@@ -15,6 +15,41 @@ namespace Joomla\CMS\MVC\Model {
 namespace Joomla\CMS\MVC\Controller {
     class BaseController {}
 }
+namespace Diddipoeler\Component\SportsManagement\Administrator\Service {
+    final class SportsManagementAdministratorApplicationResolver
+    {
+        /**
+         * Simulate a backend request containing an unsupported database mode.
+         * @return object Minimal application exposing invalid raw input.
+         */
+        public static function resolve(): object
+        {
+            return new class {
+                /**
+                 * Supply the invalid selector without integer coercion.
+                 * @return object Joomla input fixture.
+                 */
+                public function getInput(): object
+                {
+                    return new class {
+                        /**
+                         * Return malformed raw database selection.
+                         * @param string $key Request field.
+                         * @param mixed $default Fallback.
+                         * @param string $filter Input filter.
+                         * @return array Invalid selector.
+                         */
+                        public function get(string $key, mixed $default, string $filter): array
+                        {
+                            return ['1'];
+                        }
+                    };
+                }
+            };
+        }
+    }
+}
+
 namespace {
     define('_JEXEC', 1);
     $root = sys_get_temp_dir() . '/jsm-update-path-' . bin2hex(random_bytes(8));
@@ -52,6 +87,7 @@ namespace {
         }
         require dirname(__DIR__, 2) . '/admin/src/Controller/UpdateController.php';
         require dirname(__DIR__, 2) . '/admin/src/Model/UpdatesModel.php';
+        require dirname(__DIR__, 2) . '/admin/src/Helper/LegacyModelDatabaseHelper.php';
         $controller = new \Diddipoeler\Component\SportsManagement\Administrator\Controller\UpdateController();
         $model = new \Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel();
         $normalise = new \ReflectionMethod($controller, 'normaliseFileName');
@@ -72,6 +108,17 @@ namespace {
             if ($normalise->invoke($controller, $invalid) !== null
                 || (is_string($invalid) && $resolve->invoke($model, $invalid) !== null)) {
                 throw new \RuntimeException('Malformed update script selector accepted.');
+            }
+        }
+
+        $marker = $outside . '/executed';
+        file_put_contents($admin . '/preflight.php', '<?php file_put_contents(' . var_export($marker, true) . ', "executed");');
+        try {
+            $model->loadUpdateFile($admin . '/preflight.php', 'preflight.php');
+            throw new \RuntimeException('Invalid database choice did not stop update execution.');
+        } catch (\InvalidArgumentException $e) {
+            if ($e->getCode() !== 400 || is_file($marker)) {
+                throw new \RuntimeException('Invalid database choice reached an update script.');
             }
         }
 

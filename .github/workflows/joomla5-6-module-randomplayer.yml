@@ -85,7 +85,10 @@ jobs:
           grep -Fq "set('layout', 'native')" "$dispatcher"
           grep -Fq "getHelper('RandomPlayerHelper')" "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
-          grep -Fq 'getWebAssetManager()->registerAndUseStyle(' "$dispatcher"
+          grep -Fq '$document->getWebAssetManager()' "$dispatcher"
+          grep -Fq "assetExists('style', 'mod_sportsmanagement_randomplayer')" "$dispatcher"
+          grep -Fq '$assets->registerStyle(' "$dispatcher"
+          grep -Fq "useStyle('mod_sportsmanagement_randomplayer')" "$dispatcher"
 
           grep -Fq 'final class RandomPlayerHelper' "$native_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$native_helper"

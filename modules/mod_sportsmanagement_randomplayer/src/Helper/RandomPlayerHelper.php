@@ -24,7 +24,7 @@ final class RandomPlayerHelper
     /**
      * Select a random eligible player for the Joomla module.
      *
-     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing or non-string optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
+     * Validates the season, project and database selectors, refuses malformed explicit team filters, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing or non-string optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -33,11 +33,13 @@ final class RandomPlayerHelper
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectIds = $this->normaliseIds($params->get('p'));
-        $teamIds = $this->normaliseIds($params->get('teams'));
+        $teamSelection = $params->get('teams');
+        $teamIds = $this->normaliseIds($teamSelection);
         $seasonId = self::positiveId($params->get('s', 0));
 
         // Invalid selectors must not open an optional/external database.
-        if (!$projectIds || $seasonId <= 0) {
+        if (!$projectIds || $seasonId <= 0
+            || ($teamIds === [] && self::hasTeamSelection($teamSelection))) {
             return [];
         }
 
@@ -530,6 +532,37 @@ final class RandomPlayerHelper
         }
 
         return (int) $digits;
+    }
+
+    /**
+     * Distinguish an unconfigured team filter from a malformed selection.
+     *
+     * Empty, null and zero-valued legacy choices mean all teams. If an
+     * explicitly configured filter contains no valid team identifiers,
+     * the caller must return no player rather than broaden the SQL query.
+     *
+     * @param mixed $value Raw team multiselect module setting.
+     * @return bool Whether a nonempty team filter was explicitly supplied.
+     */
+    private static function hasTeamSelection(mixed $value): bool
+    {
+        if ($value === null) {
+            return false;
+        }
+
+        foreach (is_array($value) ? $value : [$value] as $entry) {
+            if (!is_string($entry) && !is_int($entry)) {
+                return true;
+            }
+
+            $text = trim((string) $entry);
+
+            if ($text !== '' && preg_match('/^0+$/D', $text) !== 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
