@@ -24,7 +24,11 @@ abstract class SportsManagementListModel extends ListModel
      */
     private bool $stateReadInProgress = false;
 
-    /** Resolve the active Joomla administrator application through the shared runtime resolver. */
+    /**
+     * Resolve the active administrator application through the shared runtime service.
+     * Supplies the correct Joomla client for list filters, user state and database selection.
+     * @return AdministratorApplication Active administrator application.
+     */
     protected function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -64,7 +68,11 @@ abstract class SportsManagementListModel extends ListModel
         }
     }
 
-    /** Public database contract for administrator views and services. */
+    /**
+     * Expose the resolved list-model database to administrator views and services.
+     * Avoids direct access to the protected database API of Joomla's model base.
+     * @return DatabaseInterface Database currently assigned to the model.
+     */
     public function getSportsManagementDatabase(): DatabaseInterface
     {
         return $this->getDatabase();
@@ -73,7 +81,8 @@ abstract class SportsManagementListModel extends ListModel
     /**
      * Bind the list model to the chosen administrator database.
      * Attempts the active configured SportsManagement connection and falls
-     * back to the primary Joomla database when resolution fails.
+     * back to the primary Joomla database when resolution fails or the raw
+     * database preference is malformed. Accepts only supported modes 0 and 1.
      * @param DatabaseInterface $db Default Joomla database connection.
      * @return void
      */
@@ -81,10 +90,15 @@ abstract class SportsManagementListModel extends ListModel
     {
         try {
             $app = $this->administratorApplication();
-            $selector = $app->getInput()->getInt(
-                'cfg_which_database',
-                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-            );
+            $raw = $app->getInput()->get('cfg_which_database', null, 'raw');
+            $raw = $raw ?? $app->getUserState('com_sportsmanagement.cfg_which_database', 0);
+            $selector = self::databaseSelector($raw);
+
+            if ($selector === null) {
+                parent::setDatabase($db);
+
+                return;
+            }
             parent::setDatabase((new SportsManagementDatabaseResolver())->resolve($selector, $db));
             return;
         } catch (\Throwable) {
@@ -92,5 +106,26 @@ abstract class SportsManagementListModel extends ListModel
         }
 
         parent::setDatabase($db);
+    }
+
+    /**
+     * Validate the raw request or persisted database preference before resolution.
+     * Accepts integers zero and one and bounded zero-padded decimal strings;
+     * rejects structured, signed and partially numeric input without coercion.
+     * @param mixed $value Raw database preference.
+     * @return int|null Supported database mode or null for malformed input.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 }

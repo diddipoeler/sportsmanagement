@@ -97,7 +97,8 @@ final class ClubBirthdayHelper
     /**
      * Validate the configured external database selector without coercion.
      *
-     * Accepts nonnegative integer and zero-padded decimal string values.
+     * Accepts only the supported modes zero and one, including zero-padded
+     * decimal string values.
      * Invalid or overflowing selections return null instead of silently
      * selecting the default database and exposing unrelated club records.
      *
@@ -106,18 +107,16 @@ final class ClubBirthdayHelper
      */
     private static function databaseSelector(mixed $raw): ?int
     {
-        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+        if (is_int($raw)) {
+            return $raw === 0 || $raw === 1 ? $raw : null;
+        }
+
+        if (!is_string($raw) || strlen($raw) > 64
+            || preg_match('/^0*([01])$/D', $raw, $matches) !== 1) {
             return null;
         }
 
-        if (is_string($raw)) {
-            $digits = ltrim($raw, '0');
-            $raw = $digits === '' ? '0' : $digits;
-        }
-
-        $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-        return $selector === false ? null : $selector;
+        return (int) $matches[1];
     }
 
     /**

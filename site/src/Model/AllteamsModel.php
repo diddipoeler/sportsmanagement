@@ -29,7 +29,7 @@ final class AllteamsModel extends SportsManagementListModel
     {
         $input = $this->siteApplication()->getInput();
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
-        $this->limitstart = $input->getInt('limitstart', 0);
+        $this->limitstart = max(0, $input->getInt('limitstart', 0));
         $config['filter_fields'] = [
             'v.name', 'v.picture', 'v.website', 'c.address', 'c.zipcode', 'c.location', 'c.country',
         ];
@@ -38,6 +38,7 @@ final class AllteamsModel extends SportsManagementListModel
 
     /**
      * Calculate a valid page start for the team listing.
+     * Clamps negative offsets and adjusts pages beyond the available results.
      * @return int First result index for the current page.
      */
     public function getStart()
@@ -49,7 +50,7 @@ final class AllteamsModel extends SportsManagementListModel
             return $this->cache[$store];
         }
 
-        $start = (int) $this->getState('list.start');
+        $start = max(0, (int) $this->getState('list.start'));
         $limit = (int) $this->getState('list.limit');
         $total = (int) $this->getTotal();
 
@@ -67,6 +68,7 @@ final class AllteamsModel extends SportsManagementListModel
     /**
      * Build the filtered teams listing with clubs and project aliases.
      * Uses Joomla query binding for user-supplied search and filters.
+     * Ignores non-string search values to prevent PHP conversion warnings.
      * @return mixed Joomla database query for available teams.
      */
     protected function getListQuery()
@@ -108,14 +110,16 @@ final class AllteamsModel extends SportsManagementListModel
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
             );
 
-        $search = trim((string) $this->getState('filter.search'));
+        $rawSearch = $this->getState('filter.search');
+        $search = is_string($rawSearch) ? trim($rawSearch) : '';
         if ($search !== '') {
             $searchValue = '%' . strtolower($search) . '%';
             $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :teamSearch')
                 ->bind(':teamSearch', $searchValue, ParameterType::STRING);
         }
 
-        $nation = trim((string) $this->getState('filter.search_nation'));
+        $rawNation = $this->getState('filter.search_nation');
+        $nation = is_string($rawNation) ? trim($rawNation) : '';
         if ($nation !== '') {
             $query->where($db->quoteName('c.country') . ' = :nation')
                 ->bind(':nation', $nation, ParameterType::STRING);
