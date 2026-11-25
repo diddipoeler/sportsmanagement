@@ -36,7 +36,7 @@ final class ProjectpositionsController extends SportsManagementAdminController
         $post = $this->app->getInput()->post->getArray();
         $model = $this->getModel();
 
-        if (!is_object($model)) {
+        if (!is_object($model) || !is_callable([$model, 'store'])) {
             throw new \RuntimeException('Projectposition model is unavailable.', 500);
         }
 
@@ -62,6 +62,7 @@ final class ProjectpositionsController extends SportsManagementAdminController
      */
     public function getModel($name = 'Projectposition', $prefix = 'Administrator', $config = [])
     {
+        $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);

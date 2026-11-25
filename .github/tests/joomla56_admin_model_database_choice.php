@@ -82,6 +82,11 @@ namespace Joomla\CMS\MVC\Model {
     }
 }
 
+namespace Joomla\CMS\MVC\Model {
+    /** Reuse the database capture fixture for administrator list models. */
+    class ListModel extends AdminModel {}
+}
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\Service {
     class SportsManagementAdministratorApplicationResolver
     {
@@ -142,7 +147,10 @@ namespace {
     define('_JEXEC', 1);
     require_once dirname(__DIR__, 2) . '/admin/src/Model/SportsManagementAdminModel.php';
 
+    require_once dirname(__DIR__, 2) . '/admin/src/Model/SportsManagementListModel.php';
+
     class DatabaseChoiceTestModel extends SportsManagementAdminModel {}
+    class DatabaseChoiceTestListModel extends \Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel {}
 
     final class DatabaseChoiceTestConnection implements DatabaseInterface {}
 
@@ -287,6 +295,20 @@ namespace {
     $model->setDatabase($joomla);
     modelChoiceAssert($joomla, $model->selectedDatabase,
         'Model early construction without application lost Joomla fallback');
+
+    foreach ([0, '0001', true, ['1'], '1junk', 2, str_repeat('0', 65) . '1'] as $raw) {
+        $app = new AdministratorApplication(new DatabaseChoiceTestInput(['cfg_which_database' => $raw]));
+        SportsManagementAdministratorApplicationResolver::$application = $app;
+        SportsManagementDatabaseResolver::$choices = [];
+        $list = new DatabaseChoiceTestListModel();
+        $list->setDatabase($joomla);
+
+        $expected = $raw === 0 ? [0] : ($raw === '0001' ? [1] : []);
+        modelChoiceAssert($expected, SportsManagementDatabaseResolver::$choices,
+            'List model database resolver received an invalid mode');
+        modelChoiceAssert($raw === '0001' ? $external : $joomla,
+            $list->selectedDatabase, 'List model selected the wrong database');
+    }
 
     echo "Joomla 5/6 administrator model database mode checks: OK\n";
 }

@@ -67,12 +67,13 @@ final class TeamtrainingsdatasController extends SportsManagementAdminController
      */
     public function getModel($name = 'Trainingdata', $prefix = 'Administrator', $config = [])
     {
-        $normalisedName = strtolower((string) $name);
+        $normalisedName = is_string($name) ? strtolower($name) : '';
 
         if ($normalisedName === '' || in_array($normalisedName, ['teamtrainingsdata', 'teamtrainingsdatas'], true)) {
             $name = 'Trainingdata';
         }
 
+        $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);

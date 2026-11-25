@@ -32,7 +32,7 @@ final class PredictiontemplatesController extends SportsManagementAdminControlle
      */
     public function getModel($name = 'Predictiontemplate', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], is_array($config) ? $config : []));
     }
 
     /**

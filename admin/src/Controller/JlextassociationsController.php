@@ -35,7 +35,7 @@ final class JlextassociationsController extends SportsManagementAdminController
      * model importer, and then returns to the association overview.
      *
      * @return void
-     * @throws \RuntimeException If the request token or permission is invalid.
+     * @throws \RuntimeException If the request token or permission is invalid or the import model is unavailable.
      */
     public function import(): void
     {
@@ -44,9 +44,11 @@ final class JlextassociationsController extends SportsManagementAdminController
 
         $model = parent::getModel('Jlextassociations', 'Administrator', ['ignore_request' => false]);
 
-        if ($model !== false) {
-            $model->checkAssociations();
+        if (!is_object($model) || !is_callable([$model, 'checkAssociations'])) {
+            throw new \RuntimeException('SportsManagement association import model is unavailable.', 500);
         }
+
+        $model->checkAssociations();
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=jlextassociations');
     }

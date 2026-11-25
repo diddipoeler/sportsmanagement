@@ -16,6 +16,8 @@ define('_JEXEC', 1);
 
 $root = dirname(__DIR__, 2);
 $modules = [
+    [$root . '/modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php',
+     \Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper\ClubBirthdayHelper::class],
     [$root . '/modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php',
      \Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper::class],
     [$root . '/modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php',
