@@ -45,8 +45,11 @@ jobs:
           done
 
           grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$site_model"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$site_model"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$site_model"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$site_model"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$site_model"
+          grep -Fq '$this->joomlaDatabase(),' "$site_model"
+          grep -Fq '$this->databaseSelector()' "$site_model"
+          php -l site/src/Service/SportsManagementSiteApplicationResolver.php
 
           grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' "$admin_model"
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' "$admin_model"

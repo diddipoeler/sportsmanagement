@@ -23,11 +23,18 @@ final class JoomLeagueStructureMigrationService
         '#__sportsmanagement_person_project_position',
     ];
 
+    /**
+     * Initialise the structure migration service with the database connection containing the imported SportsManagement records.
+     * @param DatabaseInterface $db Target database connection.
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
-    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    /**
+     * Prepare the configured import tables and run the season-team, staff, player and referee migrations independently. Collect per-step success, affected-row counts and diagnostic messages so a failed step does not suppress the remaining results.
+     * @return array<int,array{label:string,success:bool,count:int,message:string}> Migration step results.
+     */
     public function migrate(): array
     {
         $results = [];
@@ -67,7 +74,11 @@ final class JoomLeagueStructureMigrationService
         return $results;
     }
 
-    /** @return array{label:string,success:bool,count:int,message:string} */
+    /**
+     * Ensure the import identifier column exists, then delete previously imported rows with a nonzero import identifier. Report the affected-row count or the caught database failure.
+     * @param string $table Configured import table name.
+     * @return array{label:string,success:bool,count:int,message:string} Preparation result.
+     */
     private function prepareImportTable(string $table): array
     {
         try {
@@ -84,6 +95,11 @@ final class JoomLeagueStructureMigrationService
         }
     }
 
+    /**
+     * Inspect the target table columns when supported by the driver and add an integer import_id column with default zero if it is absent.
+     * @param string $table Target table name including the Joomla prefix placeholder.
+     * @return void
+     */
     private function ensureImportIdColumn(string $table): void
     {
         $resolvedTable = method_exists($this->db, 'replacePrefix')
@@ -104,6 +120,10 @@ final class JoomLeagueStructureMigrationService
         $this->db->execute();
     }
 
+    /**
+     * Resolve imported project teams to season-team assignments, creating missing assignments. Move existing references through temporary identifiers before writing their final values to avoid collisions.
+     * @return int Number of final project-team reference updates.
+     */
     private function migrateProjectTeams(): int
     {
         $query = $this->db->createQuery()
@@ -173,6 +193,10 @@ final class JoomLeagueStructureMigrationService
         return $updated;
     }
 
+    /**
+     * Create season-person and season-team-person records for imported staff and replace legacy staff references in imported match data.
+     * @return int Number of updated imported references.
+     */
     private function migrateTeamStaff(): int
     {
         $query = $this->db->createQuery()
@@ -228,6 +252,10 @@ final class JoomLeagueStructureMigrationService
         return $updated;
     }
 
+    /**
+     * Create season-person and season-team-person records for imported players and replace their historical identifiers in imported match and event relations.
+     * @return int Number of updated imported references.
+     */
     private function migrateTeamPlayers(): int
     {
         $query = $this->db->createQuery()
@@ -285,6 +313,10 @@ final class JoomLeagueStructureMigrationService
         return $updated;
     }
 
+    /**
+     * Remap imported match referee references using the original import identifiers, then associate imported project referees with season-person records of referee type.
+     * @return int Number of updated references.
+     */
     private function migrateProjectReferees(): int
     {
         $updated = 0;
@@ -359,6 +391,12 @@ final class JoomLeagueStructureMigrationService
         return $updated;
     }
 
+    /**
+     * Reuse the season-team assignment for a season and team or insert a published imported assignment and look up its identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $teamId Team identifier.
+     * @return int Season-team identifier or zero.
+     */
     private function findOrCreateSeasonTeam(int $seasonId, int $teamId): int
     {
         $id = $this->findSeasonTeam($seasonId, $teamId);
@@ -382,6 +420,12 @@ final class JoomLeagueStructureMigrationService
         return $this->findSeasonTeam($seasonId, $teamId);
     }
 
+    /**
+     * Look up the first season-team assignment matching the supplied season and team.
+     * @param int $seasonId Season identifier.
+     * @param int $teamId Team identifier.
+     * @return int Assignment identifier or zero.
+     */
     private function findSeasonTeam(int $seasonId, int $teamId): int
     {
         $query = $this->db->createQuery()
@@ -394,6 +438,15 @@ final class JoomLeagueStructureMigrationService
         return (int) $this->db->loadResult();
     }
 
+    /**
+     * Reuse or insert a published imported person assignment for the specified season, person, optional team and role in the selected season-person table.
+     * @param string $table Target season-person table.
+     * @param int $seasonId Season identifier.
+     * @param int $personId Person identifier.
+     * @param int|null $teamId Optional team identifier.
+     * @param int $personType Person role identifier.
+     * @return int Assignment identifier or zero.
+     */
     private function findOrCreateSeasonPerson(
         string $table,
         int $seasonId,
@@ -435,6 +488,15 @@ final class JoomLeagueStructureMigrationService
         return $this->findSeasonPerson($table, $seasonId, $personId, $teamId, $personType);
     }
 
+    /**
+     * Find the first person assignment matching the season, person and role, adding a team constraint when supplied.
+     * @param string $table Season-person table name.
+     * @param int $seasonId Season identifier.
+     * @param int $personId Person identifier.
+     * @param int|null $teamId Optional team identifier.
+     * @param int $personType Person role identifier.
+     * @return int Assignment identifier or zero.
+     */
     private function findSeasonPerson(
         string $table,
         int $seasonId,
@@ -458,6 +520,14 @@ final class JoomLeagueStructureMigrationService
         return (int) $this->db->loadResult();
     }
 
+    /**
+     * Replace a legacy identifier with its migrated value only in rows marked as imported. Skip invalid or unchanged identifiers.
+     * @param string $table Target relation table.
+     * @param string $field Reference column.
+     * @param int $oldId Legacy identifier.
+     * @param int $newId Replacement identifier.
+     * @return int Number of affected rows.
+     */
     private function replaceImportedReference(string $table, string $field, int $oldId, int $newId): int
     {
         if ($oldId <= 0 || $newId <= 0 || $oldId === $newId) {
@@ -475,6 +545,14 @@ final class JoomLeagueStructureMigrationService
         return $this->affectedRows();
     }
 
+    /**
+     * Update one integer field in the row identified by its primary key in the supplied migration table.
+     * @param string $table Target table.
+     * @param int $id Row identifier.
+     * @param string $field Column to update.
+     * @param int $value Replacement integer value.
+     * @return int Number of affected rows.
+     */
     private function updateById(string $table, int $id, string $field, int $value): int
     {
         $query = $this->db->createQuery()
@@ -487,6 +565,12 @@ final class JoomLeagueStructureMigrationService
         return $this->affectedRows();
     }
 
+    /**
+     * Read the maximum numeric column value from a migration table to calculate temporary reference identifiers.
+     * @param string $table Target table.
+     * @param string $field Numeric column.
+     * @return int Maximum value or zero.
+     */
     private function loadMax(string $table, string $field): int
     {
         $query = $this->db->createQuery()
@@ -497,12 +581,23 @@ final class JoomLeagueStructureMigrationService
         return (int) $this->db->loadResult();
     }
 
+    /**
+     * Return the affected-row count from the database driver when supported, otherwise return zero.
+     * @return int Number of affected rows.
+     */
     private function affectedRows(): int
     {
         return method_exists($this->db, 'getAffectedRows') ? (int) $this->db->getAffectedRows() : 0;
     }
 
-    /** @return array{label:string,success:bool,count:int,message:string} */
+    /**
+     * Build the structured migration status entry used by the administrator import report.
+     * @param string $label Migration step label.
+     * @param bool $success Whether the step succeeded.
+     * @param int $count Affected-row count.
+     * @param string $message Status or diagnostic message.
+     * @return array{label:string,success:bool,count:int,message:string} Structured step result.
+     */
     private function result(string $label, bool $success, int $count, string $message): array
     {
         return [
