@@ -21,6 +21,18 @@ use Joomla\CMS\Uri\Uri;
  */
 final class TeamplanTeamPresentationHelper
 {
+    /**
+     * Render the selected team name format with escaped text, optional favourite-team styling and an optional link. Add an accessible toggle and contextual information links when enabled by the team-plan configuration.
+     * @param object $team Team display record.
+     * @param string $containerPrefix Prefix for the information container identifier.
+     * @param array $config Team-plan display options.
+     * @param bool $isFavorite Whether the team is a favourite.
+     * @param string|null $link Optional team destination.
+     * @param int $databaseSelector SportsManagement database selector.
+     * @param int $seasonId Season identifier.
+     * @param object|null $project Optional favourite-team styling context.
+     * @return string Team name and optional information markup.
+     */
     public static function renderName(
         object $team,
         string $containerPrefix,
@@ -88,6 +100,17 @@ final class TeamplanTeamPresentationHelper
             . '</' . $element . '>';
     }
 
+    /**
+     * Render a country flag, team photograph or selected club logo according to the visual mode. Use the configured image fallback and modal helper for supported logo modes.
+     * @param object $team Team display record.
+     * @param int $mode Visual display mode.
+     * @param int $matchId Match identifier used in the modal identifier.
+     * @param int $modalWidth Modal width.
+     * @param int $modalHeight Modal height.
+     * @param int $modalMode Modal display mode.
+     * @param int $teamPictureWidth Team photograph width.
+     * @return string Visual markup or an empty string.
+     */
     public static function renderVisual(
         object $team,
         int $mode,
@@ -149,6 +172,14 @@ final class TeamplanTeamPresentationHelper
         );
     }
 
+    /**
+     * Build the enabled roster, schedule, statistics and related team or club links using the current project, season and database context. Render each destination as a labelled image link.
+     * @param object $team Team routing and display record.
+     * @param array $config Enabled information links.
+     * @param int $databaseSelector Database selector carried into routes.
+     * @param int $seasonId Season identifier.
+     * @return string Information icon list or an empty string.
+     */
     private static function renderInfoIcons(
         object $team,
         array $config,
@@ -216,6 +247,12 @@ final class TeamplanTeamPresentationHelper
         return $output . '</ul>';
     }
 
+    /**
+     * Select the short, middle or full team name according to the requested display format, falling back to the full name when the selected value is empty.
+     * @param object $team Team record.
+     * @param int $format Team name format.
+     * @return string Trimmed display name.
+     */
     private static function teamName(object $team, int $format): string
     {
         $value = match ($format) {
@@ -227,6 +264,11 @@ final class TeamplanTeamPresentationHelper
         return $value !== '' ? $value : trim((string) ($team->name ?? ''));
     }
 
+    /**
+     * Check whether any supported team or club information link is enabled in the team-plan configuration.
+     * @param array $config Team-plan display options.
+     * @return bool Whether at least one information icon is enabled.
+     */
     private static function hasInfoIcons(array $config): bool
     {
         foreach ([
@@ -248,6 +290,12 @@ final class TeamplanTeamPresentationHelper
         return false;
     }
 
+    /**
+     * Resolve the image source using an HTTP(S) URL or a local file check and the configured placeholder when the supplied image is missing. Prefix relative paths with the configured picture server or Joomla root URL.
+     * @param string $picture Image source.
+     * @param string $placeholderKey Component parameter containing the fallback image.
+     * @return string Image URL or an empty string.
+     */
     private static function resolvePicture(string $picture, string $placeholderKey): string
     {
         $picture = trim($picture);
@@ -272,6 +320,11 @@ final class TeamplanTeamPresentationHelper
         return rtrim($server, '/') . '/' . ltrim($picture, '/');
     }
 
+    /**
+     * Replace unsupported identifier characters with hyphens and provide a default identifier when the resulting value is empty.
+     * @param string $value Candidate HTML identifier.
+     * @return string Normalised identifier.
+     */
     private static function safeId(string $value): string
     {
         $value = preg_replace('/[^A-Za-z0-9_-]+/', '-', $value) ?? '';
@@ -279,11 +332,21 @@ final class TeamplanTeamPresentationHelper
         return trim($value, '-') ?: 'teamplan-team';
     }
 
+    /**
+     * Remove characters outside the supported character set for inline colour values, preventing declaration separators from passing through.
+     * @param string $value Configured CSS colour value.
+     * @return string Filtered CSS value.
+     */
     private static function cssValue(string $value): string
     {
         return preg_replace('/[^#A-Za-z0-9(),.%\s-]/', '', $value) ?? '';
     }
 
+    /**
+     * Escape a display string for HTML text and quoted attributes using UTF-8 and both quote types.
+     * @param string $value Raw display value.
+     * @return string HTML-escaped value.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

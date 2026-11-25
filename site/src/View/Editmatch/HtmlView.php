@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -66,11 +67,21 @@ final class HtmlView extends SportsManagementHtmlView
     public string $sortDirection = 'ASC';
     public string $sortColumn = 'mc.id';
 
+    /**
+     * Initialise the frontend match-editing view using the shared SportsManagement view configuration.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
     }
 
+    /**
+     * Resolve legacy layout aliases, reject unsupported layouts and require the native edit-match model. Prepare the common match context and dispatch to the relevant referee, event, statistics, lineup or general edit layout before rendering.
+     * @param string|null $tpl Optional template name.
+     * @return mixed Parent view rendering result.
+     * @throws \RuntimeException If the layout or model is unavailable.
+     */
     public function display($tpl = null)
     {
         $requestedLayout = strtolower($this->getLayout());
@@ -109,6 +120,13 @@ final class HtmlView extends SportsManagementHtmlView
         return parent::display($tpl);
     }
 
+    /**
+     * Load the selected project, its timing configuration and the match data. Store project and season context in user state, initialise the match forms and resolve the round and request URL for the edit layout.
+     * @param EditmatchModel $model Native match model.
+     * @param EditmatchViewDataService $service Match view data service.
+     * @return void
+     * @throws \RuntimeException If the project or match is unavailable.
+     */
     private function prepareNativeContext(EditmatchModel $model, EditmatchViewDataService $service): void
     {
         $this->project_id = $this->input->getInt('p', 0);
@@ -146,6 +164,11 @@ final class HtmlView extends SportsManagementHtmlView
         $this->pagination = (object) ['total' => 0];
     }
 
+    /**
+     * Prepare general match editing lists and, for the golf/billiards sport type, load individual matches and participating players and activate the required script through the Web Asset Manager.
+     * @param EditmatchViewDataService $service Match view data service.
+     * @return void
+     */
     private function prepareEditLayout(EditmatchViewDataService $service): void
     {
         if (!$this->match) {
@@ -177,6 +200,11 @@ final class HtmlView extends SportsManagementHtmlView
         $this->prepareMatchRelationLists($service);
     }
 
+    /**
+     * Build available and assigned referee selection lists, excluding already assigned referees from the available roster. Load referee positions and activate the list-editing script when positions exist.
+     * @param EditmatchViewDataService $service Match view data service.
+     * @return void
+     */
     private function prepareRefereeLayout(EditmatchViewDataService $service): void
     {
         if (!$this->match) {
@@ -260,6 +288,11 @@ final class HtmlView extends SportsManagementHtmlView
         }
     }
 
+    /**
+     * Prepare selectors for previous and replacement matches while excluding the current match and conflicting relation identifiers. Also build the result-counting and awarded-winner options.
+     * @param EditmatchViewDataService $service Match view data service.
+     * @return void
+     */
     private function prepareMatchRelationLists(EditmatchViewDataService $service): void
     {
         if (!$this->match) {
@@ -329,7 +362,11 @@ final class HtmlView extends SportsManagementHtmlView
         );
     }
 
-    /** @param array<int,object> $rows */
+    /**
+     * Build readable match relation labels from the stored match date and team names. Attempt to convert UTC dates to the configured timezone, retaining the original date string if conversion fails.
+     * @param array<int,object> $rows Match relation records.
+     * @return array<int,object> Records with formatted selection labels.
+     */
     private function formatRelationOptions(array $rows): array
     {
         foreach ($rows as $row) {
@@ -357,6 +394,11 @@ final class HtmlView extends SportsManagementHtmlView
         return $rows;
     }
 
+    /**
+     * Join nonempty first name, quoted nickname and last name components into a display name.
+     * @param object $person Person record.
+     * @return string Formatted person name.
+     */
     private function formatPersonName(object $person): string
     {
         $firstname = trim((string) ($person->firstname ?? ''));
@@ -371,6 +413,11 @@ final class HtmlView extends SportsManagementHtmlView
         return implode(' ', $parts);
     }
 
+    /**
+     * Load the match extension data into a registry, create the administrator-defined match extension form with its own control name and bind the stored data.
+     * @param string $data Stored extended match data.
+     * @return Form|false Bound extension form or false if unavailable.
+     */
     private function buildExtendedForm(string $data): Form|false
     {
         $registry = new Registry();
@@ -396,6 +443,10 @@ final class HtmlView extends SportsManagementHtmlView
         return $form;
     }
 
+    /**
+     * Resolve the primary Joomla database and the selected SportsManagement database using the request or stored database selection. Initialise the view data service with both connections.
+     * @return EditmatchViewDataService Configured match view data service.
+     */
     private function viewDataService(): EditmatchViewDataService
     {
         $joomlaDatabase = self::joomlaDatabase();
