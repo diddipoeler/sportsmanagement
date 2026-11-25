@@ -21,6 +21,12 @@ final class InlineHockeyMatchImportService
 {
     private const SPORTS_TYPE = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
 
+    /**
+     * Initialise the schedule importer with its database, external API client and project relation service.
+     * @param DatabaseInterface $db Target database connection.
+     * @param InlineHockeyApiClient $api External schedule client.
+     * @param InlineHockeyProjectService $projects Project relation service.
+     */
     public function __construct(
         private readonly DatabaseInterface $db,
         private readonly InlineHockeyApiClient $api,
@@ -28,6 +34,15 @@ final class InlineHockeyMatchImportService
     ) {
     }
 
+    /**
+     * Resolve the project season and schedule URL, ensure the sport and round prerequisites, then process the paginated external schedules. Prepare team relations, import match records and synchronise venue information before refreshing the round dates.
+     * @param int $projectId Target project identifier.
+     * @param string $matchLink Optional schedule URL overriding project configuration.
+     * @param string $username API username.
+     * @param string $password API password.
+     * @return int Number of matches reported as changed.
+     * @throws \RuntimeException If required import prerequisites are missing.
+     */
     public function importMatches(
         int $projectId,
         string $matchLink = '',
@@ -130,7 +145,12 @@ final class InlineHockeyMatchImportService
     }
 
     /**
-     * @return array{club_id:int,team_id:int,project_team_id:int,club_info_href:string}
+     * Resolve an external match side to club, team and project-team identifiers. Create missing club and team records when the supplied identifiers and names permit it, or use the alternate team information for lookup.
+     * @param mixed $side External team-side payload.
+     * @param int $projectId Target project identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $sportsTypeId Sport type identifier.
+     * @return array{club_id:int,team_id:int,project_team_id:int,club_info_href:string} Resolved side and club information URL.
      */
     private function prepareSide(
         mixed $side,
@@ -177,8 +197,13 @@ final class InlineHockeyMatchImportService
     }
 
     /**
-     * @param array{club_id:int,team_id:int,project_team_id:int,club_info_href:string} $home
-     * @param array{club_id:int,team_id:int,project_team_id:int,club_info_href:string} $away
+     * Build a match record from the external identifier, mapped participants, date and numeric scores, including overtime and shootout result types. Update the existing project-scoped import record or insert a new one.
+     * @param object $externalMatch External match payload.
+     * @param int $projectId Target project identifier.
+     * @param int $roundId Target round identifier.
+     * @param array{club_id:int,team_id:int,project_team_id:int,club_info_href:string} $home Resolved home side.
+     * @param array{club_id:int,team_id:int,project_team_id:int,club_info_href:string} $away Resolved away side.
+     * @return bool False for an invalid external identifier, otherwise true after issuing the database write.
      */
     private function upsertMatch(
         object $externalMatch,
@@ -243,6 +268,11 @@ final class InlineHockeyMatchImportService
         return true;
     }
 
+    /**
+     * Look up the season identifier assigned to the target project.
+     * @param int $projectId Project identifier.
+     * @return int Season identifier or zero.
+     */
     private function projectSeasonId(int $projectId): int
     {
         $query = $this->db->createQuery()
@@ -255,6 +285,11 @@ final class InlineHockeyMatchImportService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
+    /**
+     * Find the project's round with code one, creating the default first matchday when no matching round exists.
+     * @param int $projectId Project identifier.
+     * @return int Existing or newly inserted round identifier.
+     */
     private function ensureRound(int $projectId): int
     {
         $roundCode = '1';
@@ -282,6 +317,10 @@ final class InlineHockeyMatchImportService
         return (int) $this->db->insertid();
     }
 
+    /**
+     * Find the skater hockey sport type by its translation key and insert the type when absent.
+     * @return int Existing or newly inserted sport type identifier.
+     */
     private function ensureSportsType(): int
     {
         $name = self::SPORTS_TYPE;
@@ -303,6 +342,13 @@ final class InlineHockeyMatchImportService
         return (int) $this->db->insertid();
     }
 
+    /**
+     * Reuse a club with the supplied external primary key or insert a new German club with its name, website and generated URL alias.
+     * @param int $clubId External club identifier used as primary key.
+     * @param string $name Club name.
+     * @param string $website Club website.
+     * @return void
+     */
     private function ensureClub(int $clubId, string $name, string $website): void
     {
         $query = $this->db->createQuery()
@@ -326,6 +372,15 @@ final class InlineHockeyMatchImportService
         $this->db->insertObject('#__sportsmanagement_club', $record);
     }
 
+    /**
+     * Reuse a team with the supplied external primary key or insert a team with its club relation, names, alternate information, sport type and generated alias.
+     * @param int $teamId External team identifier used as primary key.
+     * @param int $clubId Club identifier.
+     * @param string $name Team name.
+     * @param string $info Alternate team information.
+     * @param int $sportsTypeId Sport type identifier.
+     * @return void
+     */
     private function ensureTeam(
         int $teamId,
         int $clubId,
@@ -357,6 +412,12 @@ final class InlineHockeyMatchImportService
         $this->db->insertObject('#__sportsmanagement_team', $record);
     }
 
+    /**
+     * Find an existing team by the exact club identifier and alternate team information using bound query parameters.
+     * @param int $clubId Club identifier.
+     * @param string $info Alternate team information.
+     * @return int Matching team identifier or zero.
+     */
     private function findTeamByInfo(int $clubId, string $info): int
     {
         $query = $this->db->createQuery()
@@ -371,6 +432,12 @@ final class InlineHockeyMatchImportService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
+    /**
+     * Look up the imported match identifier within the target project through its round relationship, preventing matches in other projects from being selected for update.
+     * @param int $projectId Project identifier.
+     * @param int $externalId External match identifier.
+     * @return int Existing match identifier or zero.
+     */
     private function findMatchId(int $projectId, int $externalId): int
     {
         $query = $this->db->createQuery()
@@ -390,6 +457,14 @@ final class InlineHockeyMatchImportService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
+    /**
+     * Fetch club venue metadata from the supplied API link, using the ISHD base URL for relative links. Update the club's default venue and insert missing playground information when a valid venue identifier is provided.
+     * @param int $clubId Club identifier.
+     * @param string $clubInfoHref Club detail URL.
+     * @param string $username API username.
+     * @param string $password API password.
+     * @return void
+     */
     private function syncPlayground(
         int $clubId,
         string $clubInfoHref,
@@ -462,6 +537,11 @@ final class InlineHockeyMatchImportService
         $this->db->insertObject('#__sportsmanagement_playground', $record);
     }
 
+    /**
+     * Calculate the earliest and latest match dates in the selected round and update its date range when both values are available.
+     * @param int $roundId Round identifier.
+     * @return void
+     */
     private function refreshRoundDates(int $roundId): void
     {
         $query = $this->db->createQuery()
@@ -487,7 +567,12 @@ final class InlineHockeyMatchImportService
         $this->db->updateObject('#__sportsmanagement_round', $round, 'id');
     }
 
-    /** @return array{0:string,1:int} */
+    /**
+     * Parse the external match date using DateTimeImmutable and return its formatted local date string and Unix timestamp.
+     * @param string $dateTime External match date and time.
+     * @return array{0:string,1:int} Formatted date and timestamp.
+     * @throws \RuntimeException If date parsing fails.
+     */
     private function normaliseDate(string $dateTime): array
     {
         try {

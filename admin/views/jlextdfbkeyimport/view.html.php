@@ -18,6 +18,10 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 {
+    /**
+     * Read the selected division and dispatch historical layout aliases to the corresponding DFB-key import preparation method.
+     * @return void
+     */
     public function init()
     {
         $this->division_id = $this->app->getInput()->getInt('divisionid');
@@ -60,6 +64,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         }
     }
 
+    /**
+     * Check the project type, available teams, DFB schedule key and existing rounds or matches. Redirect to the appropriate division selection, round creation, first-matchday or administration screen.
+     * @param mixed $tpl Retained template argument, currently unused.
+     * @return void
+     */
     public function _displayDefault($tpl)
     {
         $this->division_id = $this->app->getInput()->getInt('divisionid');
@@ -127,6 +136,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         );
     }
 
+    /**
+     * Load all DFB-key matchdays for the selected project and division's team count, then initialise the stylesheet and round-creation toolbar.
+     * @param mixed $tpl Retained template argument, currently unused.
+     * @return void
+     */
     public function _displayDefaultCreatedays($tpl)
     {
         $this->division_id = $this->app->getInput()->getInt('divisionid');
@@ -141,6 +155,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $this->addToolbardefault_createdays();
     }
 
+    /**
+     * Prepare the project-team selection options and corresponding first-matchday schedule key for fixture assignment.
+     * @param mixed $tpl Retained template argument, currently unused.
+     * @return void
+     */
     public function _displayDefaultFirstMatchday($tpl)
     {
         $this->division_id = $this->app->getInput()->getInt('divisionid');
@@ -161,6 +180,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $this->addToolbardefault_firstmatchday();
     }
 
+    /**
+     * Restore the first-matchday form data from user state and generate the schedule preview for the selected project and division.
+     * @param mixed $tpl Retained template argument, currently unused.
+     * @return void
+     */
     public function _displayDefaultSaveMatchdays($tpl)
     {
         $post = $this->app->getUserState($this->option . '.first_post', []);
@@ -175,6 +199,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $this->addToolbardefault_savematchdays();
     }
 
+    /**
+     * Prepare the project division options with an initial selection prompt and configure the division-selection toolbar.
+     * @param mixed $tpl Retained template argument, currently unused.
+     * @return void
+     */
     public function _displayDefaultGetDivision($tpl)
     {
         $projectDivisions = $this->model->getDivisions($this->project_id);
@@ -191,10 +220,18 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $this->addToolbardefault_getdivision();
     }
 
+    /**
+     * Retain the default toolbar hook for the legacy view without adding any toolbar actions.
+     * @return void
+     */
     protected function addToolbardefault()
     {
     }
 
+    /**
+     * Set the translated round-creation title and configure back and insert-rounds toolbar actions.
+     * @return void
+     */
     protected function addToolbardefault_createdays()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1');
@@ -204,6 +241,10 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         ToolbarHelper::divider();
     }
 
+    /**
+     * Set the first-matchday title and configure the back and apply actions for initial fixture assignments.
+     * @return void
+     */
     protected function addToolbardefault_firstmatchday()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1');
@@ -213,6 +254,10 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         ToolbarHelper::divider();
     }
 
+    /**
+     * Set the schedule insertion title and configure navigation and matchday insertion actions.
+     * @return void
+     */
     protected function addToolbardefault_savematchdays()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1');
@@ -222,6 +267,10 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         ToolbarHelper::divider();
     }
 
+    /**
+     * Configure navigation and the action that confirms the selected division, leaving the toolbar title empty.
+     * @return void
+     */
     protected function addToolbardefault_getdivision()
     {
         $this->title = '';
@@ -233,6 +282,10 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         );
     }
 
+    /**
+     * Register and activate the importer stylesheet through Joomla's Web Asset Manager when the document is an HTML document.
+     * @return void
+     */
     private function addImporterStylesheet(): void
     {
         if ($this->document instanceof HtmlDocument) {
