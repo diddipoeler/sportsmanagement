@@ -40,11 +40,13 @@ class RRobin
 	/* Methods */
 
 	/**
-	 * Create Round-Robin schedule
+	 * Generate the initial Berger round-robin schedule for a competitor list.
+	 * Resets previous rounds on a successful new request, creates a ghost slot
+	 * for odd team counts and rotates the pairing grid once per round.
+	 * Invalid input leaves the previous schedule unchanged.
 	 *
-	 * @param   array competitors list
-	 *
-	 * @return boolean result
+	 * @param array $list Zero-indexed competitor list with at least three entries.
+	 * @return bool True when a new schedule was generated.
 	 */
 	public function create($list = array())
 	{
@@ -60,7 +62,8 @@ class RRobin
 			return false;
 		}
 
-		// Other
+		// A reused generator must not retain rounds from a larger schedule.
+		$this->tour = array();
 		$this->tot_games = ($n / 2) * ($n - 1);
 
 		// Initial array content

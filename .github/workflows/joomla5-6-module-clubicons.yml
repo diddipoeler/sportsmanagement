@@ -7,12 +7,16 @@ on:
       - 'modules/mod_sportsmanagement_clubicons/**'
       - '.github/workflows/joomla5-6-module-clubicons.yml'
       - '.github/tests/joomla56_clubicons_rows.php'
+      - 'admin/helpers/RRobin.class.php'
+      - '.github/tests/joomla56_roundrobin_clubicons_instances.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_clubicons/**'
       - '.github/workflows/joomla5-6-module-clubicons.yml'
       - '.github/tests/joomla56_clubicons_rows.php'
+      - 'admin/helpers/RRobin.class.php'
+      - '.github/tests/joomla56_roundrobin_clubicons_instances.php'
 
 jobs:
   club-icons-module:
@@ -47,6 +51,10 @@ jobs:
           php -l .github/tests/joomla56_clubicons_rows.php
           php .github/tests/joomla56_clubicons_rows.php
 
+      - name: Test round-robin reuse and independent Club Icons instances
+        run: |
+          php -l .github/tests/joomla56_roundrobin_clubicons_instances.php
+          php .github/tests/joomla56_roundrobin_clubicons_instances.php
       - name: Validate manifest and native contracts
         shell: bash
         run: |
@@ -78,7 +86,11 @@ jobs:
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
-              'native stylesheet': (dispatcher, 'registerAndUseStyle('),
+              'reusable stylesheet registration': (dispatcher, 'registerStyle('),
+              'reusable stylesheet existence guard': (dispatcher, "assetExists('style', $styleName)"),
+              'native stylesheet activation': (dispatcher, 'useStyle($styleName)'),
+              'per-instance zoom scope': (dispatcher, "'#clubicons' . (int) ($data['module']->id ?? 0) . ' .img-zoom'"),
+              'matching template scope': (default, 'id="clubicons<?php echo (int) $module->id; ?>"'),
               'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
               'provider dispatcher': (provider, "ModuleDispatcherFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubicons')"),
               'provider helper': (provider, "HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubicons\\\\Site\\\\Helper')"),

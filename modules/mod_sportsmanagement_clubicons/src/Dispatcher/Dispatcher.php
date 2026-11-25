@@ -28,6 +28,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * bounded numeric settings. Rejects non-finite or excessively large
      * values before rendering inline styles. Registers the shared default
      * stylesheet only once when multiple module instances share a document.
+     * Scopes configurable image dimensions and zoom to the instance's table
+     * so later modules cannot override earlier modules' settings.
      *
      * @return array|false Template context, or false when rendering is skipped.
      * @throws \RuntimeException When invoked outside Joomla's site client.
@@ -107,10 +109,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $height = is_numeric($rawHeight) && is_scalar($rawHeight)
             && is_finite((float) $rawHeight) ? (float) $rawHeight : 50.0;
         $height = (int) min(1000, max(1, $height));
+        // The default layout renders this numeric table ID for each module.
+        $selector = '#clubicons' . (int) ($data['module']->id ?? 0) . ' .img-zoom';
         $wam->addInlineStyle(
-            '.mod-sportsmanagement-clubicons .img-zoom{' .
+            $selector . '{' .
             'width:auto;height:' . $height . 'px;transition:transform .2s ease-in-out}' .
-            '.mod-sportsmanagement-clubicons .img-zoom:hover{' .
+            $selector . ':hover{' .
             'transform:scale(' . rtrim(rtrim(number_format($scale, 4, '.', ''), '0'), '.') . ')}'
         );
 
