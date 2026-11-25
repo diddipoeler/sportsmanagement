@@ -7,6 +7,7 @@ on:
       - 'site/views/ical/view.html.php'
       - 'admin/src/View/Jlextdfbnetplayerimport/HtmlView.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch176.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -14,6 +15,7 @@ on:
       - 'site/views/ical/view.html.php'
       - 'admin/src/View/Jlextdfbnetplayerimport/HtmlView.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch176.yml'
 
 permissions:
@@ -61,6 +63,10 @@ jobs:
           grep -Fq -- 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' admin/src/View/Jlextdfbnetplayerimport/HtmlView.php
 
           grep -Fq -- 'SportsManagement Ranking legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_ranking/helper.php
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' site/src/Service/SportsManagementSiteApplicationResolver.php
+          grep -Fq -- "!\$app instanceof SiteApplication || !\$app->isClient('site')" site/src/Service/SportsManagementSiteApplicationResolver.php
+          grep -Fq -- "!\$app->isClient('site')" modules/mod_sportsmanagement_ranking/helper.php
+          php -l site/src/Service/SportsManagementSiteApplicationResolver.php
 
           echo 'Joomla 5/6 batch 176 contracts OK.'
