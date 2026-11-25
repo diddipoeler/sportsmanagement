@@ -23,6 +23,11 @@ use Joomla\CMS\Uri\Uri;
 
 class sportsmanagementViewJLXMLImports extends sportsmanagementView
 {
+    /**
+     * Initialise the historical XML import screen, load media settings and import metadata, prepare country, age-group and season selectors and dispatch the selected import layout.
+     * @param mixed $tpl Optional template argument.
+     * @return void
+     */
     public function init($tpl = null)
     {
         $app = self::administratorApplication();
@@ -126,6 +131,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         }
     }
 
+    /**
+     * Load the submitted XML import context and parsed records, restore upload state and prepare the selection lists for mapping imported project entities to existing database records.
+     * @param mixed $tpl Optional template argument.
+     * @return void
+     */
     private function _displayForm($tpl)
     {
         $starttime = microtime(true);
@@ -239,6 +249,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $this->setLayout('form');
     }
 
+    /**
+     * Prepare the update layout by reading the submitted import data, loading update records and import identifiers, and configuring the title, stylesheet and navigation toolbar.
+     * @param mixed $tpl Optional template argument.
+     * @return void
+     */
     private function _displayUpdate($tpl)
     {
         $app = self::administratorApplication();
@@ -262,6 +277,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $this->setLayout('update');
     }
 
+    /**
+     * Execute the selected XML import through the administrator model using submitted form data and prepare the resulting information screen and navigation.
+     * @param mixed $tpl Optional template argument.
+     * @return void
+     */
     private function _displayInfo($tpl)
     {
         $app = self::administratorApplication();
@@ -286,6 +306,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $this->setLayout('info');
     }
 
+    /**
+     * Restore the selection type and source record identifier from administrator user state and build the corresponding entity-selection controls for the import mapping popup.
+     * @param mixed $tpl Optional template argument.
+     * @return void
+     */
     private function _displaySelectpage($tpl)
     {
         $app = self::administratorApplication();
@@ -478,6 +503,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $this->setLayout('selectpage');
     }
 
+    /**
+     * Create the requested native administrator model through the component MVC factory using the supplied configuration.
+     * @param string $name Model name.
+     * @param array $config Model configuration.
+     * @return object Created model.
+     * @throws RuntimeException If the factory cannot create the model.
+     */
     private function createAdminModel(string $name, array $config = []): object
     {
         $model = self::administratorApplication()
@@ -491,6 +523,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
         return $model;
     }
+    /**
+     * Resolve the administrator application from Joomla's dependency injection container and verify that it belongs to the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the application client is invalid.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */

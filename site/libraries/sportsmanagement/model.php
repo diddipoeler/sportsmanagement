@@ -28,6 +28,10 @@ use Joomla\Database\DatabaseInterface;
 
 trait JSMJoomlaServices
 {
+    /**
+     * Resolve the Joomla frontend application service from the dependency injection container for the legacy model bases.
+     * @return SiteApplication Joomla site application.
+     */
     private static function joomlaSiteApplication(): SiteApplication
     {
         /** @var SiteApplication $application */
@@ -36,6 +40,10 @@ trait JSMJoomlaServices
         return $application;
     }
 
+    /**
+     * Resolve the Joomla database service from the dependency injection container for legacy database selection.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -51,6 +59,10 @@ trait JSMJoomlaServices
 class JSMModelAdmin extends AdminModel
 {
     use JSMJoomlaServices;
+    /**
+     * Initialise the administrator-style legacy model and capture the frontend application, request input, component option and view.
+     * @param array $config Joomla model configuration.
+     */
     public function __construct($config = array())
     {
         parent::__construct($config);
@@ -62,6 +74,12 @@ class JSMModelAdmin extends AdminModel
         $this->jsmview   = $this->jsmjinput->getCmd('view');
     }
 
+    /**
+     * Provide the legacy form-loading compatibility hook. This base implementation intentionally does not construct or return a form.
+     * @param array $data Form data.
+     * @param bool $loadData Whether to load existing data.
+     * @return void
+     */
     public function getForm($data = array(), $loadData = true)
     {
     }
@@ -78,6 +96,10 @@ class JSMModelList extends ListModel
 {
     use JSMJoomlaServices;
 
+    /**
+     * Initialise the legacy list model, capture the request context, resolve and bind the selected SportsManagement database and allocate its reusable query builders.
+     * @param array $config Joomla model configuration.
+     */
     public function __construct($config = array())
     {
         parent::__construct($config);
@@ -96,6 +118,10 @@ class JSMModelList extends ListModel
         $this->jsmsubquery3 = $this->jsmdb->createQuery();
     }
 
+    /**
+     * Select the primary or external SportsManagement database according to the integer request selector and delegate connection resolution to the shared database resolver.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function resolveDatabase(): DatabaseInterface
     {
         $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
@@ -115,6 +141,10 @@ class JSMModelLegacy extends BaseDatabaseModel
 {
     use JSMJoomlaServices;
 
+    /**
+     * Initialise the legacy database model with the frontend request context and selected database, allocate a query builder and register the message-queue and database loggers.
+     * @param array $config Joomla model configuration.
+     */
     public function __construct($config = array())
     {
         parent::__construct($config);
@@ -142,6 +172,10 @@ class JSMModelLegacy extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Resolve the selected SportsManagement database using the legacy request selector and the shared database resolver.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function resolveDatabase(): DatabaseInterface
     {
         $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
