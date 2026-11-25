@@ -293,7 +293,8 @@ namespace {
 
     $moduleResolver::$offline = true;
     if ($events->getData(new \Joomla\Registry\Registry(['p' => [12]]), $db) !== $empty
-        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE SQL CREDENTIALS')) {
+        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'RuntimeException')
+        || str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE SQL CREDENTIALS')) {
         throw new \RuntimeException('Unavailable event-ranking database leaked to frontend.');
     }
 

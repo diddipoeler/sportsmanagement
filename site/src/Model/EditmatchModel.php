@@ -529,7 +529,7 @@ final class EditmatchModel extends AdminModel
             'project_position_id' => $positionId,
             'ordering' => $ordering,
             'trikot_number' => $ordering,
-            'modified' => (new Date())->toSql(),
+            'modified' => (new Date('now', new \DateTimeZone('UTC')))->toSql(),
             'modified_by' => (int) $identity->id,
         ];
 
@@ -543,7 +543,13 @@ final class EditmatchModel extends AdminModel
         }
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load the positions assigned to a project in the configured position order.
+     * Includes both the position identifier and the project-specific assignment
+     * identifier needed when persisting match rosters.
+     * @param int $projectId Project identifier.
+     * @return array<int,object> Project position records.
+     */
     private function getProjectPositions(int $projectId): array
     {
         $db = $this->database();
@@ -562,7 +568,14 @@ final class EditmatchModel extends AdminModel
         return $db->loadObjectList() ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Retrieve project position options for a specific person type.
+     * Returns records keyed by the project-position ID with the option label
+     * and underlying position identifier for roster and assignment updates.
+     * @param int $projectId Project identifier.
+     * @param int $personType Player, staff or referee person type.
+     * @return array<int,object> Position options keyed by assignment identifier.
+     */
     private function getProjectPositionOptions(int $projectId, int $personType): array
     {
         if ($projectId <= 0) {
@@ -597,7 +610,15 @@ final class EditmatchModel extends AdminModel
         return new MatchWriteService($this->database());
     }
 
-    /** @param array<int,array{project_referee_id:int,project_position_id:int}> $assignments */
+    /**
+     * Notify newly assigned referees using the configured email template.
+     * Retrieves match, venue, team and recipient details for each assignment,
+     * skips missing recipients and reports mail failures without exposing
+     * exception details to the frontend.
+     * @param int $matchId Match identifier.
+     * @param array<int,array{project_referee_id:int,project_position_id:int}> $assignments Newly persisted referee assignments.
+     * @return void
+     */
     private function notifyNewRefereeAssignments(int $matchId, array $assignments): void
     {
         $template = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ishd_referee_insert_match_mail', '');
@@ -720,7 +741,11 @@ final class EditmatchModel extends AdminModel
      */
     private function database(): DatabaseInterface
     {
-        $joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();
+        if ($this->injectedDatabase === null) {
+            $joomlaDatabase = self::joomlaDatabase();
+        } else {
+            $joomlaDatabase = $this->injectedDatabase;
+        }
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
