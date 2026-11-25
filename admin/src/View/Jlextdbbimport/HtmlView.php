@@ -32,6 +32,10 @@ final class HtmlView extends BaseHtmlView
     public array $uploadArray = [];
     public $importData = null;
 
+    /**
+     * Initialise the administrator DBB import view and register shared footer and list-header template directories.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -39,6 +43,11 @@ final class HtmlView extends BaseHtmlView
         $this->addTemplatePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/listheader/tmpl');
     }
 
+    /**
+     * Translate historical default and update layout aliases to their native names, prepare the corresponding import screen and configure its toolbar before rendering.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $layout = $this->getLayout();
@@ -61,6 +70,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Restore the selected project from administrator user state, initialise the request URL and media configuration and set the historical import format metadata.
+     * @return void
+     */
     public function init(): void
     {
         $app = self::administratorApplication();
@@ -73,11 +86,20 @@ final class HtmlView extends BaseHtmlView
         $this->import_version = 'NEW';
     }
 
+    /**
+     * Provide the historical default-layout preparation entry point by delegating to the common initialisation method.
+     * @return void
+     */
     public function _displayDefault(): void
     {
         $this->init();
     }
 
+    /**
+     * Restore the project and upload context and load update information from the assigned DBB import model for the update screen.
+     * @return void
+     * @throws \RuntimeException If the model does not provide the update-data method.
+     */
     public function _displayDefaultUpdate(): void
     {
         $app = self::administratorApplication();
@@ -95,6 +117,10 @@ final class HtmlView extends BaseHtmlView
         $this->importData = $model->getUpdateData();
     }
 
+    /**
+     * Activate the importer stylesheet for HTML documents using Joomla's Web Asset Manager and set the translated DBB import toolbar title.
+     * @return void
+     */
     protected function addToolbar(): void
     {
         $document = $this->getDocument();
@@ -109,6 +135,11 @@ final class HtmlView extends BaseHtmlView
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
     }
+    /**
+     * Resolve the administrator application from Joomla's dependency injection container and verify that it belongs to the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the resolved application is not the administrator client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */

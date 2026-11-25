@@ -39,6 +39,10 @@ final class HtmlView extends BaseHtmlView
     public array $postData = [];
     public float $starttime = 0.0;
 
+    /**
+     * Initialise the administrator DFB.net import view and register shared footer and list-header template directories.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -46,6 +50,11 @@ final class HtmlView extends BaseHtmlView
         $this->addTemplatePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/listheader/tmpl');
     }
 
+    /**
+     * Record the start time, normalise historical layout suffixes and prepare the default import or update screen. Configure the toolbar before delegating rendering to Joomla.
+     * @param string|null $tpl Optional template name.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $this->starttime = microtime(true);
@@ -62,6 +71,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Restore the selected project from administrator user state, load media settings and initialise the import metadata and country and season filters.
+     * @return void
+     */
     private function prepareDefault(): void
     {
         $app = self::administratorApplication();
@@ -75,6 +88,11 @@ final class HtmlView extends BaseHtmlView
         $this->lists = $this->buildFilters();
     }
 
+    /**
+     * Restore the project and uploaded-file context, collect the submitted form data and obtain update information from the assigned import model.
+     * @return void
+     * @throws \RuntimeException If the model does not provide the update-data method.
+     */
     private function prepareUpdate(): void
     {
         $app = self::administratorApplication();
@@ -93,6 +111,11 @@ final class HtmlView extends BaseHtmlView
         $this->importData = $model->getUpdateData();
     }
 
+    /**
+     * Create the native Seasons model without request-dependent state, load available seasons and translated country options and build the corresponding selection controls.
+     * @return array Filter options and rendered selection lists.
+     * @throws \RuntimeException If the Seasons model is unavailable.
+     */
     private function buildFilters(): array
     {
         $app = self::administratorApplication();
@@ -141,6 +164,10 @@ final class HtmlView extends BaseHtmlView
         ];
     }
 
+    /**
+     * Load country codes and names from the default SportsManagement database connection, translate their names and sort the resulting selection options using natural case-insensitive ordering.
+     * @return array<int,object> Translated country options.
+     */
     private function getCountryOptions(): array
     {
         /** @var DatabaseInterface $joomlaDatabase */
@@ -172,6 +199,10 @@ final class HtmlView extends BaseHtmlView
         return $options;
     }
 
+    /**
+     * Activate the importer stylesheet for HTML documents through Joomla's Web Asset Manager and configure the title, back action and component preferences.
+     * @return void
+     */
     protected function addToolbar(): void
     {
         $document = $this->getDocument();
@@ -189,6 +220,11 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::divider();
         ToolbarHelper::preferences('com_sportsmanagement');
     }
+    /**
+     * Resolve the Joomla administrator application through its dependency injection container and validate the administrator client.
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the resolved application is not the administrator client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
