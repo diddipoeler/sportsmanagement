@@ -58,6 +58,9 @@ namespace {
         public ?object $project = null;
         public array $queries = [];
         public array $inserted = [];
+        public array $transactions = [];
+        public ?int $failPosition = null;
+        private array $snapshot = [];
 
         /** Create a query double. @return PanelQuery New query fixture. */
         public function createQuery(): PanelQuery { return new PanelQuery(); }
@@ -85,6 +88,32 @@ namespace {
         public function loadColumn(): mixed { return $this->positions; }
 
         /**
+         * Snapshot rows before starting a simulated database transaction.
+         * @return void
+         */
+        public function transactionStart(): void
+        {
+            $this->snapshot = $this->inserted;
+            $this->transactions[] = 'start';
+        }
+
+        /**
+         * Record a successful transaction commit.
+         * @return void
+         */
+        public function transactionCommit(): void { $this->transactions[] = 'commit'; }
+
+        /**
+         * Restore the initial rows after a simulated insertion failure.
+         * @return void
+         */
+        public function transactionRollback(): void
+        {
+            $this->inserted = $this->snapshot;
+            $this->transactions[] = 'rollback';
+        }
+
+        /**
          * Record a standard-position insertion rather than writing to a database.
          * @param string $table Target table.
          * @param object $row Project-position association.
@@ -92,6 +121,9 @@ namespace {
          */
         public function insertObject(string $table, object $row): bool
         {
+            if ($row->position_id === $this->failPosition) {
+                return false;
+            }
             $this->inserted[] = [$table, $row->project_id, $row->position_id];
             return true;
         }
@@ -135,6 +167,7 @@ namespace {
     $db->positions = ['0007', 7, '8junk', ['9'], 8, false, 0];
 
     if (!$panel->initializeForProject(5)
+        || $db->transactions !== ['start', 'commit']
         || $db->inserted !== [['#__sportsmanagement_project_position', 5, 7]]
         || $db->queries[0]->bindings !== [':panelProject' => 5]
         || $db->queries[1]->bindings !== [':panelId' => 5]
@@ -158,6 +191,27 @@ namespace {
     $db->counts = [0];
     if ($panel->initializeForProject(5) || $db->inserted !== []) {
         throw new \RuntimeException('Exempt project type was initialized.');
+    }
+
+    $db->project = $project;
+    $db->counts = [0, 0, 0];
+    $db->positions = [7, 8];
+    $db->failPosition = 8;
+    $db->transactions = [];
+    try {
+        $panel->initializeForProject(5);
+        throw new \LogicException('Failed insertion was treated as a successful initialization.');
+    } catch (\RuntimeException $e) {
+        if ($db->transactions !== ['start', 'rollback'] || $db->inserted !== []) {
+            throw new \RuntimeException('A partial position setup was not rolled back.');
+        }
+    }
+
+    $db->failPosition = null;
+    $db->counts = [0];
+    $db->positions = [];
+    if ($panel->initializeForProject(5)) {
+        throw new \RuntimeException('Empty position definitions reported a successful setup.');
     }
 
     $controller = file_get_contents(dirname(__DIR__, 2) . '/admin/src/Controller/ProjectController.php');

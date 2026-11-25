@@ -12,6 +12,10 @@
  */
 declare(strict_types=1);
 
+namespace Joomla\CMS\MVC\Controller {
+    class BaseController {}
+}
+
 namespace Joomla\CMS\MVC\Factory {
     interface MVCFactoryInterface {}
 }
@@ -85,6 +89,13 @@ namespace Joomla\Filesystem {
          * @param string $path Folder being inspected.
          * @return array<int,string> Directory entries.
          */
+        /**
+         * Create one directory inside the temporary fixture.
+         * @param string $path Validated directory.
+         * @return bool Whether the directory was created.
+         */
+        public static function create(string $path): bool { return mkdir($path); }
+
         public static function files(string $path): array {
             return array_values(array_diff(scandir($path) ?: [], ['.', '..']));
         }
@@ -181,7 +192,30 @@ namespace {
             throw new \RuntimeException('Invalid image directory was accepted.');
         }
 
-        echo "Joomla 5/6 image selector formats, symlinks and folder guards OK\n";
+        require_once dirname(__DIR__, 2) . '/site/src/Controller/ImagehandlerController.php';
+        $controller = (new \ReflectionClass(
+            \Diddipoeler\Component\SportsManagement\Site\Controller\ImagehandlerController::class
+        ))->newInstanceWithoutConstructor();
+        $directory = new \ReflectionMethod($controller, 'imageBaseDirectory');
+        $target = new \ReflectionMethod($controller, 'isSafeImageTarget');
+
+        if ($directory->invoke($controller, 'valid', false) !== $images . '/valid/'
+            || $directory->invoke($controller, '../private', true) !== null
+            || $directory->invoke($controller, 'created/nested', true) !== $images . '/created/nested/'
+            || !$target->invoke($controller, $images . '/', 'good.png')
+            || !$target->invoke($controller, $images . '/', 'new.png')
+            || $target->invoke($controller, $images . '/', '../private/secrets.png')) {
+            throw new \RuntimeException('Image write directory or target validation regressed.');
+        }
+
+        if ($hasSymlink && ($directory->invoke($controller, 'escape', false) !== null
+            || $directory->invoke($controller, 'escape/created', true) !== null
+            || $target->invoke($controller, $images . '/', 'linked.png')
+            || is_dir($outside . '/created'))) {
+            throw new \RuntimeException('Image mutation accepted an external symbolic link.');
+        }
+
+        echo "Joomla 5/6 image selector and mutation filesystem guards OK\n";
     } finally {
         foreach ([
             $images . '/linked.png', $images . '/escape',
@@ -194,6 +228,8 @@ namespace {
                 @unlink($file);
             }
         }
+        @rmdir($images . '/created/nested');
+        @rmdir($images . '/created');
         @rmdir($images . '/valid');
         @rmdir($images);
         @rmdir($site . '/images/com_sportsmanagement');

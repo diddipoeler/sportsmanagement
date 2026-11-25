@@ -4,11 +4,13 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Model/ImagehandlerModel.php'
+      - 'site/src/Controller/ImagehandlerController.php'
       - '.github/tests/joomla56_imagehandler_filesystem_guards.php'
       - '.github/workflows/joomla56-imagehandler-filesystem-guards.yml'
   pull_request:
     paths:
       - 'site/src/Model/ImagehandlerModel.php'
+      - 'site/src/Controller/ImagehandlerController.php'
       - '.github/tests/joomla56_imagehandler_filesystem_guards.php'
       - '.github/workflows/joomla56-imagehandler-filesystem-guards.yml'
   workflow_dispatch:
@@ -32,6 +34,7 @@ jobs:
           php .github/tests/phpdoc_metadata.php site/src/Model/ImagehandlerModel.php
           php .github/scripts/check-php-function-docs.php site/src/Model/ImagehandlerModel.php .github/tests/joomla56_imagehandler_filesystem_guards.php
           php -l site/src/Model/ImagehandlerModel.php
+          php -l site/src/Controller/ImagehandlerController.php
           php -l .github/tests/joomla56_imagehandler_filesystem_guards.php
       - name: Check image selector filesystem safety
         run: php .github/tests/joomla56_imagehandler_filesystem_guards.php

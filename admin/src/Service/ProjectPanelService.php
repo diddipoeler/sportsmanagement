@@ -88,9 +88,11 @@ final class ProjectPanelService
      * trusting posted sport or project-kind fields, and repeats the count
      * check before making any changes. Existing custom positions remain
      * untouched. The caller must enforce the POST token and edit ACL.
+     * Position writes are transactional: any failed insertion rolls back
+     * the changes instead of leaving a partially initialized project.
      *
      * @param int $projectId Validated project identifier.
-     * @return bool True when an eligible project was processed.
+     * @return bool True when at least one standard position was inserted.
      */
     public function initializeForProject(int $projectId): bool
     {
@@ -111,9 +113,17 @@ final class ProjectPanelService
             return false;
         }
 
-        $this->ensureStandardPositions($projectId, self::nonNegativeInteger($project->sports_type_id));
+        $this->db->transactionStart();
 
-        return true;
+        try {
+            $inserted = $this->ensureStandardPositions($projectId, self::nonNegativeInteger($project->sports_type_id));
+            $this->db->transactionCommit();
+
+            return $inserted > 0;
+        } catch (\Throwable $e) {
+            $this->db->transactionRollback();
+            throw $e;
+        }
     }
 
     /**
@@ -124,9 +134,10 @@ final class ProjectPanelService
      *
      * @param int $projectId Project receiving the standard positions.
      * @param int $sportsTypeId Sport type providing its position definitions.
-     * @return void
+     * @return int Number of successfully inserted position associations.
+     * @throws \RuntimeException When the database refuses an insertion.
      */
-    private function ensureStandardPositions(int $projectId, int $sportsTypeId): void
+    private function ensureStandardPositions(int $projectId, int $sportsTypeId): int
     {
         $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
@@ -149,6 +160,7 @@ final class ProjectPanelService
             }
         }
 
+        $inserted = 0;
         foreach ($positionIds as $positionId) {
             $check = $this->db->createQuery()
                 ->select('COUNT(*)')
@@ -160,12 +172,17 @@ final class ProjectPanelService
             $this->db->setQuery($check);
 
             if ($this->readCount() === 0) {
-                $this->db->insertObject(
+                if (!$this->db->insertObject(
                     '#__sportsmanagement_project_position',
                     (object) ['project_id' => $projectId, 'position_id' => $positionId]
-                );
+                )) {
+                    throw new \RuntimeException('SportsManagement project position insertion failed.');
+                }
+                ++$inserted;
             }
         }
+
+        return $inserted;
     }
 
     /**

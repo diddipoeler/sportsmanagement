@@ -110,5 +110,18 @@ namespace {
         }
     }
 
+    $mode = new \ReflectionMethod($helper, 'databaseMode');
+    foreach ([0, 1, '0000', '0001'] as $valid) {
+        if ($mode->invoke($helper, $valid) !== (int) $valid) {
+            throw new \RuntimeException('Supported database mode was rejected.');
+        }
+    }
+    foreach ([2, 5, '0005', true, ['1'], '1junk'] as $invalid) {
+        if ($mode->invoke($helper, $invalid) !== null
+            || $helper->getData(new \Joomla\Registry\Registry(['cfg_which_database' => $invalid]), $app) !== []) {
+            throw new \RuntimeException('Unsupported New Project database mode reached the data loader.');
+        }
+    }
+
     echo "New Project permission and database selector guards OK\n";
 }

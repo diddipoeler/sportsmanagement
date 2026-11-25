@@ -17,6 +17,13 @@ namespace Joomla\CMS\Application {
         public bool $adminAllowed = false;
         public bool $deleteAllowed = false;
         public string $tmpPath = '';
+        public ?object $input = null;
+
+        /**
+         * Expose the request through Joomla's public application API.
+         * @return object Current test input.
+         */
+        public function getInput(): object { return $this->input; }
 
         /**
          * Identify the fixture as Joomla's administrator application.
@@ -394,6 +401,7 @@ namespace {
         }
     };
 
+    $app->input = $input;
     $imageController = new ImagehandlerController([], null, $app, $input);
     Session::$valid = false;
     try {

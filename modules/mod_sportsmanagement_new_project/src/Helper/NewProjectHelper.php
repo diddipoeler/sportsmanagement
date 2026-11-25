@@ -60,7 +60,7 @@ final class NewProjectHelper
         CMSApplicationInterface $app,
         ?DatabaseInterface $joomlaDatabase = null
     ): array {
-        $databaseSelector = $this->databaseSelector($params->get('cfg_which_database', 0));
+        $databaseSelector = $this->databaseMode($params->get('cfg_which_database', 0));
 
         // Invalid module settings must not silently select another database.
         if ($databaseSelector === null) {
@@ -384,7 +384,24 @@ final class NewProjectHelper
     }
 
     /**
-     * Validate the database connection selector without unsafe PHP casts.
+     * Validate a configured SportsManagement database mode independently of IDs.
+     *
+     * The component resolver recognises only 0 and 1. Project, module and
+     * category IDs still use the historical nonnegative integer parser,
+     * but unsupported connection modes cannot silently select the local DB.
+     *
+     * @param mixed $value Raw module connection preference.
+     * @return int|null Supported database mode or null when invalid.
+     */
+    private function databaseMode(mixed $value): ?int
+    {
+        $mode = $this->databaseSelector($value);
+
+        return $mode === 0 || $mode === 1 ? $mode : null;
+    }
+
+    /**
+     * Validate a legacy nonnegative integer selector without unsafe PHP casts.
      *
      * Accepts nonnegative integers and zero-padded decimal strings of at
      * most 64 bytes within the platform integer range. Rejects malformed,

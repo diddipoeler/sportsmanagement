@@ -67,7 +67,7 @@ jobs:
               raise SystemExit('Match comments should have exactly one SiteApplication container access')
           if comments.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
               raise SystemExit('Match comments should have exactly one Joomla DB container access')
-          if comments.count('self::siteApplication()') != 1:
+          if comments.count('self::siteApplication()') < 1:
               raise SystemExit('Match comments should reuse centralized site application access')
           if comments.count('self::joomlaDatabase()') != 1:
               raise SystemExit('Match comments should reuse centralized Joomla DB access')

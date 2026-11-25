@@ -44,7 +44,7 @@ final class ImagehandlerController extends BaseController
         $this->assertImagePermission('upload');
 
         $app = $this->app;
-        $input = $this->input;
+        $input = $this->app->getInput();
         $type = $input->post->getCmd('type', '');
         $field = $input->post->getCmd('field', '');
         $fieldId = $input->post->getCmd('fieldid', '');
@@ -84,7 +84,8 @@ final class ImagehandlerController extends BaseController
 
         $filename = basename(ImageSelectHelper::sanitize($baseDir, (string) $file['name']));
 
-        if ($filename === '' || !$this->uploadFile((string) $file['tmp_name'], $baseDir . $filename)) {
+        if ($filename === '' || !$this->isSafeImageTarget($baseDir, $filename)
+            || !$this->uploadFile((string) $file['tmp_name'], $baseDir . $filename)) {
             $this->showError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED'));
             return;
         }
@@ -110,7 +111,7 @@ final class ImagehandlerController extends BaseController
 
         $this->assertImagePermission('delete');
 
-        $input = $this->input;
+        $input = $this->app->getInput();
         $type = $input->post->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);
@@ -135,11 +136,12 @@ final class ImagehandlerController extends BaseController
                     $fullPath = $baseDir . $image;
                     $thumbPath = $baseDir . 'small/' . $image;
 
-                    if (is_file($fullPath)) {
+                    if ($this->isSafeImageTarget($baseDir, $image) && is_file($fullPath)) {
                         File::delete($fullPath);
                     }
 
-                    if (is_file($thumbPath)) {
+                    if (is_dir($baseDir . 'small') && !is_link($baseDir . 'small')
+                        && $this->isSafeImageTarget($baseDir . 'small/', $image) && is_file($thumbPath)) {
                         File::delete($thumbPath);
                     }
                 } catch (\Throwable $e) {
@@ -156,6 +158,9 @@ final class ImagehandlerController extends BaseController
     /**
      * CSRF protection is not authorization. Only users with component editing
      * rights may upload images, and removing files requires delete rights.
+     * @param string $action Requested upload or deletion operation.
+     * @return void
+     * @throws \RuntimeException When the current identity lacks permission.
      */
     private function assertImagePermission(string $action): void
     {
@@ -180,7 +185,10 @@ final class ImagehandlerController extends BaseController
 
     /**
      * Resolve a permitted SportsManagement image directory below the site root.
-     * Normalises configured directory separators, rejects empty or traversal path elements, optionally creates the directory through Joomla's filesystem API, and returns null when unavailable.
+     * Normalises configured directory separators, rejects traversal and
+     * symbolic links at each component of the image directory, and creates
+     * missing directories individually through Joomla's filesystem API.
+     * The Joomla site root itself may be a canonical deployment symlink.
      * @param string $folder Image category subdirectory relative to the component image root.
      * @param bool $create Whether a missing category directory may be created.
      * @return string|null Absolute directory path with trailing separator, or null.
@@ -199,18 +207,67 @@ final class ImagehandlerController extends BaseController
             }
         }
 
-        $directory = JPATH_SITE . '/images/com_sportsmanagement/database/' . $folder;
+        $siteRoot = realpath(JPATH_SITE);
+        if ($siteRoot === false || !is_dir($siteRoot)) {
+            return null;
+        }
+
+        $directory = rtrim($siteRoot, '/\\');
 
         try {
-            if ($create && !is_dir($directory)) {
-                Folder::create($directory);
+            foreach (explode('/', 'images/com_sportsmanagement/database/' . $folder) as $segment) {
+                if (preg_match('/^[A-Za-z0-9_-]+$/D', $segment) !== 1) {
+                    return null;
+                }
+                $directory .= DIRECTORY_SEPARATOR . $segment;
+
+                if (is_link($directory)) {
+                    return null;
+                }
+
+                if (!is_dir($directory)) {
+                    if (!$create || file_exists($directory) || !Folder::create($directory)) {
+                        return null;
+                    }
+                }
+
+                if (is_link($directory) || realpath($directory) !== $directory) {
+                    return null;
+                }
             }
         } catch (\Throwable $e) {
             Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
 
-        return is_dir($directory) ? rtrim($directory, '/\\') . '/' : null;
+        return $directory . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Check a candidate image file before upload, remote storage or deletion.
+     *
+     * Accepts only a single basename inside an already validated real
+     * directory. Refuses symbolic links, including dangling links, so file
+     * operations cannot follow a pre-existing link to unrelated site data.
+     *
+     * @param string $directory Canonical image directory with trailing separator.
+     * @param string $filename Candidate image basename.
+     * @return bool Whether the destination is safe to access.
+     */
+    private function isSafeImageTarget(string $directory, string $filename): bool
+    {
+        $root = rtrim($directory, '/\\');
+        if ($filename === '' || $filename !== basename($filename)
+            || in_array($filename, ['.', '..'], true)
+            || str_contains($filename, chr(92))
+            || preg_match('/[\x00-\x1F\x7F]/', $filename)
+            || is_link($root) || realpath($root) !== $root) {
+            return false;
+        }
+
+        $target = $root . DIRECTORY_SEPARATOR . $filename;
+
+        return !is_link($target) && (!file_exists($target) || (is_file($target) && realpath($target) === $target));
     }
 
     /**
@@ -258,7 +315,7 @@ final class ImagehandlerController extends BaseController
 
         $filename = basename(ImageSelectHelper::sanitize($baseDir, $rawName));
 
-        if ($filename === '') {
+        if ($filename === '' || !$this->isSafeImageTarget($baseDir, $filename)) {
             return null;
         }
 
