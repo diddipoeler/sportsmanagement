@@ -90,6 +90,11 @@ final class TreetoController extends SportsManagementFormController
         $this->setRedirect($this->treetosUrl($projectId), $message, $result ? 'message' : 'error');
     }
 
+    /**
+     * Validate the session token and return to the tournament-tree list for the current project without saving the form.
+     * @param mixed $key Optional record key retained for controller compatibility.
+     * @return bool True after setting the redirect.
+     */
     public function cancel($key = null)
     {
         $this->checkToken();
@@ -99,11 +104,24 @@ final class TreetoController extends SportsManagementFormController
         return true;
     }
 
+    /**
+     * Resolve the requested tournament-tree administrator model through the parent MVC controller, preserving the caller's model configuration.
+     * @param string $name Model name.
+     * @param string $prefix Model client prefix.
+     * @param array $config MVC model configuration.
+     * @return mixed Model returned by the parent controller.
+     */
     public function getModel($name = 'Treeto', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Validate the session token and require the current identity to possess the requested component-level permission before a tournament-tree write.
+     * @param string $action Required Joomla ACL action.
+     * @return void
+     * @throws \RuntimeException If the identity lacks the required permission.
+     */
     private function assertTreeWritePermission(string $action): void
     {
         $this->checkToken();
@@ -114,6 +132,12 @@ final class TreetoController extends SportsManagementFormController
         }
     }
 
+    /**
+     * Validate a selection of at most 500 tree identifiers, accepting positive integers and trimmed canonical decimal strings within the PHP integer range. Reject malformed selections and return unique identifiers.
+     * @param mixed $raw Submitted checkbox selection.
+     * @return array<int> Unique validated tree identifiers.
+     * @throws \UnexpectedValueException If the selection or any identifier is invalid.
+     */
     private function selectedTreeIds(mixed $raw): array
     {
         if (!is_array($raw) || count($raw) > 500) {
@@ -147,6 +171,11 @@ final class TreetoController extends SportsManagementFormController
         return array_values($ids);
     }
 
+    /**
+     * Generate the administrator tournament-tree list URL, including the project filter only when its identifier is positive.
+     * @param int $projectId Current project identifier.
+     * @return string Joomla-routed list URL.
+     */
     private function treetosUrl(int $projectId): string
     {
         return Route::_(

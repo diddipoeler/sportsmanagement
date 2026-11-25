@@ -27,9 +27,19 @@ namespace Joomla\CMS\MVC\Controller {
             $this->redirects[] = [$url, $message, $type];
         }
 
+        /**
+         * Return the requested native model fixture rather than a single editor for every MVC lookup.
+         * @param string $name Requested model name.
+         * @return object Matching model fixture.
+         */
         public function getModel(string $name = ''): object
         {
-            return new \Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel();
+            return match ($name) {
+                'ResultsAccess' => new \Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel(),
+                'ResultsEdit' => new \Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel(),
+                'Editmatch' => new \Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel(),
+                default => throw new \RuntimeException('Unexpected model fixture: ' . $name),
+            };
         }
     }
 }

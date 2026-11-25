@@ -16,6 +16,11 @@ use Joomla\Database\ParameterType;
 
 final class LeaguesModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the league list model with default filter and ordering fields unless the caller provides a custom field list.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -36,6 +41,12 @@ final class LeaguesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Initialise the parent list state, restore historical league filter input names when corresponding native filters are empty and persist country and federation choices without recursively triggering state initialisation.
+     * @param string $ordering Default ordering column.
+     * @param string $direction Default ordering direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -74,6 +85,10 @@ final class LeaguesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the administrator league list query with sport, editor, age-group and association details. Apply bound search and filter values and restrict ordering to the supported column map and ascending or descending direction.
+     * @return \Joomla\Database\DatabaseQuery Prepared league list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -228,6 +243,10 @@ final class LeaguesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load league identifiers, names and levels in alphabetical order, optionally restricting the result to the selected country and association.
+     * @return array League records.
+     */
     public function getLeagues(): array
     {
         $db = $this->getDatabase();
@@ -259,6 +278,10 @@ final class LeaguesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load country, association and age-group value/text option lists for inline editing, ordered by their display names.
+     * @return array{countries:array,associations:array,agegroups:array} Selection options.
+     */
     public function getInlineOptions(): array
     {
         $db = $this->getDatabase();
