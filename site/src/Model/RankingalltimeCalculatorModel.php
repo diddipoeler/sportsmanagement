@@ -36,6 +36,11 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
     public static array $rankingalltimewarnings = [];
     public static array $rankingalltimetips = [];
 
+    /**
+     * Initialise the native calculator model and read the requested all-time win, draw and loss points string from Joomla input.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -97,11 +102,22 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return $this->_matches;
     }
 
+    /**
+     * Delegate parsing of the configured ranking colour definitions to the native all-time data reader.
+     * @param string $configColors Raw colour configuration.
+     * @return array Parsed colour definitions.
+     */
     public function getColors(string $configColors = ''): array
     {
         return $this->reader()->parseColors($configColors);
     }
 
+    /**
+     * Return the supplied ranking configuration unchanged through the historical parameter interface.
+     * @param bool $comeFromMenu Retained compatibility flag, currently unused.
+     * @param array $config Ranking configuration.
+     * @return array Supplied configuration.
+     */
     public function getAllTimeParams(bool $comeFromMenu = false, array $config = []): array
     {
         return $config;
@@ -431,6 +447,12 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return [0 => $ranking];
     }
 
+    /**
+     * Sort accumulated team records by the explicit request criterion or configured priority criteria. Interpret ascending and descending suffixes, default to descending points and use case-insensitive team names as the final tie-breaker.
+     * @param array $ranking Team records keyed by team identifier.
+     * @param array $rankingOrder Configured ranking criteria.
+     * @return array Sorted ranking with original keys preserved.
+     */
     private function sortRanking(array $ranking, array $rankingOrder): array
     {
         $input = $this->siteApplication()->getInput();
@@ -477,6 +499,13 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return $ranking;
     }
 
+    /**
+     * Compare two ranking records by a supported statistical field, team name or derived percentage or ratio. Unknown criteria compare equally.
+     * @param object $first First team record.
+     * @param object $second Second team record.
+     * @param string $criterion Normalised comparison criterion.
+     * @return int Comparison result.
+     */
     private function compareCriterion(object $first, object $second, string $criterion): int
     {
         $field = match ($criterion) {
@@ -525,6 +554,11 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return $left <=> $right;
     }
 
+    /**
+     * Calculate the percentage of wins among recorded wins, draws and losses, returning zero when their sum is not positive.
+     * @param object $team Accumulated team statistics.
+     * @return float Win percentage.
+     */
     private function winPercentage(object $team): float
     {
         $games = (int) ($team->cnt_won ?? 0) + (int) ($team->cnt_draw ?? 0) + (int) ($team->cnt_lost ?? 0);
@@ -532,16 +566,31 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return $games > 0 ? ((float) ($team->cnt_won ?? 0) / $games) * 100.0 : 0.0;
     }
 
+    /**
+     * Divide two statistical values for ranking comparisons, retaining the numerator when the denominator is zero to preserve the historical convention.
+     * @param float $numerator Dividend.
+     * @param float $denominator Divisor.
+     * @return float Calculated ratio or numerator.
+     */
     private function ratio(float $numerator, float $denominator): float
     {
         return $denominator != 0.0 ? $numerator / $denominator : $numerator;
     }
 
+    /**
+     * Remove historical jl_ prefixes, trim whitespace and convert a ranking criterion to lowercase for comparison dispatch.
+     * @param string $criterion Raw ranking criterion.
+     * @return string Normalised criterion.
+     */
     private function normaliseCriterion(string $criterion): string
     {
         return strtolower(trim(str_replace('jl_', '', $criterion)));
     }
 
+    /**
+     * Read the comma-separated win, draw and loss points configuration, using individual defaults of three, one and zero for absent or nonnumeric fields.
+     * @return array{0:float,1:float,2:float} Win, draw and loss points.
+     */
     private function pointValues(): array
     {
         $values = array_map('trim', explode(',', $this->alltimepoints));
@@ -553,6 +602,10 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         ];
     }
 
+    /**
+     * Load the native all-time ranking reader when necessary and initialise a new instance with the requested database selector for delegated reads.
+     * @return RankingalltimeModel Configured ranking reader.
+     */
     private function reader(): RankingalltimeModel
     {
         if (!class_exists(RankingalltimeModel::class)) {
@@ -565,6 +618,11 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         return $reader;
     }
 
+    /**
+     * Convert a legacy comma-separated project list or array to unique positive integer identifiers, preserving the first occurrence and returning sequential array keys.
+     * @param array|string $projectIds Project selection.
+     * @return array<int,int> Converted project identifiers.
+     */
     private function normaliseProjectIds(array|string $projectIds): array
     {
         if (is_string($projectIds)) {
@@ -577,6 +635,11 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         )));
     }
 
+    /**
+     * Ensure the historical ranking team class is available for template-compatible result objects, loading the ranking helper from the component directory when required.
+     * @return void
+     * @throws \RuntimeException If the ranking helper cannot provide the class.
+     */
     private function ensureRankingTeamClass(): void
     {
         if (class_exists('JSMRankingTeamClass', false)) {
