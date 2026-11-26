@@ -403,7 +403,7 @@ class JSMparseCSV
     }
 
     /**
-     * Serialize CSV records and persist the result to the selected file, optionally appending existing contents.
+     * Serialize CSV records and persist the result to the selected file, optionally appending existing contents. Invalid CSV formatting options are rejected before opening or truncating the target file.
      *
      * @since 5.6.0
      */
@@ -420,15 +420,13 @@ class JSMparseCSV
         $mode = $append ? 'ab' : 'wb';
         $isPhp = (bool) preg_match('/\.php$/i', $file);
 
-        return $this->_wfile(
-            $file,
-            $this->unparse($data, $fields, $append, $isPhp),
-            $mode
-        );
+        $csv = $this->unparse($data, $fields, $append, $isPhp);
+
+        return $csv !== false && $this->_wfile($file, $csv, $mode);
     }
 
     /**
-     * Write text to the specified file using the requested write mode and report whether the write and close operations succeeded.
+     * Write text to the specified file using the requested write mode and report success only when the complete payload was written and the stream closed successfully.
      *
      * @since 5.6.0
      */
@@ -441,14 +439,15 @@ class JSMparseCSV
         }
 
         $locked = flock($fp, (int) $lock);
-        $written = $locked ? fwrite($fp, (string) $string) : false;
+        $payload = (string) $string;
+        $written = $locked ? fwrite($fp, $payload) : false;
         $closed = fclose($fp);
 
-        return $written !== false && $closed;
+        return $written === strlen($payload) && $closed;
     }
 
     /**
-     * Convert rows into correctly delimited and escaped CSV text, including optional headings and PHP-style output compatibility.
+     * Convert rows into correctly delimited and escaped CSV text, including optional headings and PHP-style output compatibility. Returns false for invalid single-byte delimiter or enclosure settings before any output is generated.
      *
      * @since 5.6.0
      */
@@ -457,6 +456,10 @@ class JSMparseCSV
         $data = is_array($data) && $data !== [] ? $data : $this->data;
         $fields = is_array($fields) && $fields !== [] ? $fields : $this->titles;
         $delimiter = $delimiter === null ? (string) $this->delimiter : (string) $delimiter;
+
+        if (strlen($delimiter) !== 1 || strlen((string) $this->enclosure) !== 1) {
+            return false;
+        }
 
         $string = $is_php ? "<?php header('Status: 403'); die(' '); ?>" . $this->linefeed : '';
 
@@ -505,7 +508,7 @@ class JSMparseCSV
     }
 
     /**
-     * Produce CSV text and optionally emit a downloadable response using the configured output filename.
+     * Produce CSV text and optionally emit a downloadable response using the configured output filename. Invalid CSV formatting options return false without sending headers or partial output.
      *
      * @since 5.6.0
      */
@@ -514,6 +517,10 @@ class JSMparseCSV
         $filename = $filename ?: $this->output_filename;
         $delimiter = $delimiter === null ? $this->output_delimiter : $delimiter;
         $output = $this->unparse($data, $fields, false, false, $delimiter);
+
+        if ($output === false) {
+            return false;
+        }
 
         if ($filename !== null) {
             header('Content-Type: text/csv; charset=' . $this->output_encoding);
@@ -698,7 +705,7 @@ class JSMparseCSV
     }
 
     /**
-     * Parse CSV records from an in-memory stream while respecting separators, enclosure characters and multiline fields.
+     * Parse CSV records from an in-memory stream while respecting separators, enclosure characters and multiline fields. Rejects invalid delimiter or enclosure lengths before PHP 8 can throw a ValueError.
      *
      * @since 5.6.0
      */
@@ -708,6 +715,11 @@ class JSMparseCSV
         ?string $enclosure = null,
         ?int $limit = null
     ) {
+        $enclosure = $enclosure ?? (string) $this->enclosure;
+        if (strlen($delimiter) !== 1 || strlen($enclosure) !== 1) {
+            return false;
+        }
+
         $stream = fopen('php://temp', 'r+');
 
         if ($stream === false) {
@@ -718,7 +730,6 @@ class JSMparseCSV
         rewind($stream);
 
         $records = [];
-        $enclosure = $enclosure ?? (string) $this->enclosure;
 
         while (($record = fgetcsv($stream, 0, $delimiter, $enclosure, '\\')) !== false) {
             $records[] = $record;
