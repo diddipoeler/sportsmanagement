@@ -165,7 +165,9 @@ final class JlxmlimportController extends BaseController
 
     /**
      * Fetch project XML export from the configured trusted endpoint.
-     * Validates remote response status and size before staging data.
+     * Supports PSR-style and legacy Joomla HTTP responses. Rejects empty,
+     * oversized or unsuccessful responses and symbolic-link destinations.
+     * Handles filesystem exceptions without disclosing private diagnostics.
      * @param int $projectId Remote project identifier.
      * @param bool $update Whether the source requests an update export.
      * @return bool Whether the remote document was staged.
@@ -184,7 +186,7 @@ final class JlxmlimportController extends BaseController
             $http = HttpFactory::getHttp(new Registry(), ['curl', 'stream']);
             $response = $http->get($remoteUrl);
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             $app->enqueueMessage(
                 Text::_('daten -> ' . $remoteUrl . ' konnten nicht kopiert werden!'),
                 'error'
@@ -195,12 +197,24 @@ final class JlxmlimportController extends BaseController
 
         // Do not persist unexpectedly large remote import responses.
         // Network transfer itself is handled by Joomla's HTTP client.
-        $remoteBody = (string) ($response->body ?? '');
+        try {
+            $status = method_exists($response, 'getStatusCode')
+                ? (int) $response->getStatusCode()
+                : (int) ($response->code ?? 0);
+            $remoteBody = method_exists($response, 'getBody')
+                ? (string) $response->getBody()
+                : (string) ($response->body ?? '');
+            $staged = $status >= 200 && $status < 300
+                && trim($remoteBody) !== ''
+                && strlen($remoteBody) <= 25 * 1024 * 1024
+                && !is_link($importFile)
+                && File::write($importFile, $remoteBody);
+        } catch (\Throwable $e) {
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
+            $staged = false;
+        }
 
-        if ($response->code < 200
-            || $response->code >= 300
-            || strlen($remoteBody) > 25 * 1024 * 1024
-            || !File::write($importFile, $remoteBody)) {
+        if (!$staged) {
             $app->enqueueMessage(
                 Text::_('daten -> ' . $remoteUrl . ' konnten nicht kopiert werden!'),
                 'error'
@@ -290,7 +304,7 @@ final class JlxmlimportController extends BaseController
                 ['jlg', 'xml']
             );
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             $staged = false;
         } finally {
             File::delete($archiveFile);
