@@ -54,11 +54,17 @@ final class HtmlView extends BaseHtmlView
         $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
+        if (!$model instanceof LeagueModel) {
+            throw new \RuntimeException('League view requires LeagueModel.', 500);
+        }
+
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
+
+        if ($errors = $model->getErrors()) {
             // Model errors may include SQL or driver details: keep them private.
             Log::add(
                 __METHOD__ . ': league model reported ' . count((array) $errors) . ' errors.',
@@ -68,11 +74,10 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
         }
 
-        if (!$this->form) {
+        if (!$this->form instanceof Form || !is_object($this->item)) {
             throw new \RuntimeException('League form could not be loaded.', 500);
         }
 
-        $model = $this->getModel();
         $leagueId = (int) ($this->item->id ?? 0);
 
         foreach (['founded', 'dissolved'] as $field) {
@@ -103,7 +108,7 @@ final class HtmlView extends BaseHtmlView
             (int) ($this->item->agegroup_id ?? 0)
         );
 
-        if ($model instanceof LeagueModel && $leagueId > 0) {
+        if ($leagueId > 0) {
             $this->logohistory = $model->getlogohistoryLeague($leagueId);
             $this->extraFields = $model->getExtraFields($leagueId);
         }

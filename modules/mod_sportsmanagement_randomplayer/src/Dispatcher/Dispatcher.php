@@ -28,8 +28,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Loads component translations, keeps missing helper output iterable and registers the HTML stylesheet.
      *
+     * Optional database and helper failures are logged without private
+     * diagnostics and produce empty results instead of interrupting the page.
      * @return array|false Module layout variables, or false when skipped.
-     * @throws \RuntimeException On invalid application or helper services.
+     * @throws \RuntimeException On an invalid application client.
      */
     protected function getLayoutData(): array|false
     {
@@ -56,10 +58,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         // The native layout consumes the structured player result returned by the helper.
         $data['params']->set('layout', 'native');
 
-        $database = $this->joomlaDatabase();
-        $players = $this->getHelperFactory()
-            ->getHelper('RandomPlayerHelper')
-            ->getData($data['params'], $database);
+        try {
+            $database = $this->joomlaDatabase();
+            $players = $this->getHelperFactory()
+                ->getHelper('RandomPlayerHelper')
+                ->getData($data['params'], $database);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $players = [];
+        }
 
         // The native template expects an iterable list, even for empty results.
         $data['list'] = is_array($players) ? $players : [];

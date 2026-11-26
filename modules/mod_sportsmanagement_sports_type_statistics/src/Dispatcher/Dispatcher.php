@@ -30,8 +30,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * The method rejects administrator execution and preserves Joomla's
      * original layout context when rendering is skipped.
      *
+     * Optional database and helper failures are logged without private
+     * diagnostics and produce empty results instead of interrupting the page.
      * @return array|false Template variables, or false when skipped.
-     * @throws \RuntimeException When the site context or database is unavailable.
+     * @throws \RuntimeException When the site context is unavailable.
      */
     protected function getLayoutData(): array|false
     {
@@ -55,10 +57,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $database = $this->joomlaDatabase();
-        $statistics = $this->getHelperFactory()
-            ->getHelper('SportsTypeStatisticsHelper')
-            ->getData($data['params'], $database);
+        try {
+            $database = $this->joomlaDatabase();
+            $statistics = $this->getHelperFactory()
+                ->getHelper('SportsTypeStatisticsHelper')
+                ->getData($data['params'], $database);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $statistics = [];
+        }
 
         $data['statistics'] = is_array($statistics) ? $statistics : [];
 

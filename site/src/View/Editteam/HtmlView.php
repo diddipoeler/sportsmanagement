@@ -15,7 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EditteamModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
-use Joomla\Registry\Registry;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 
 /** Joomla 5/6 frontend view for team editing. */
 final class HtmlView extends SportsManagementHtmlView
@@ -90,39 +90,15 @@ final class HtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Construct the extended team fields form from its administrator XML.
-     *
-     * Decode the team's stored extension settings into a Joomla Registry,
-     * load the team-specific XML form definition and bind all settings to
-     * the extended form so templates can render additional editable fields.
-     *
-     * @param string $data Persisted Joomla registry configuration.
-     * @return Form|false Bound extended form or false if creation failed.
+     * Load and bind the optional team extension form.
+     * Delegates XML path validation, native Joomla FormFactory creation,
+     * persisted Registry binding and safe failure handling to the shared
+     * frontend helper. No deprecated static form instance is required.
+     * @param string $data Stored extended field values.
+     * @return Form|false Bound extension form or false when unavailable.
      */
     private function buildExtendedForm(string $data): Form|false
     {
-        $xmlFile = JPATH_ADMINISTRATOR
-            . '/components/com_sportsmanagement/assets/extended/team.xml';
-        $registry = new Registry();
-
-        if ($data !== '') {
-            $registry->loadString($data);
-        }
-
-        $form = Form::getInstance(
-            'extended',
-            $xmlFile,
-            ['control' => 'extended'],
-            false,
-            '/config'
-        );
-
-        if (!$form) {
-            return false;
-        }
-
-        $form->bind($registry);
-
-        return $form;
+        return ExtendedFormHelper::load($data, 'team');
     }
 }

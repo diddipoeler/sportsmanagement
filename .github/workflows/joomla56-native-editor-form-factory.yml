@@ -1,0 +1,46 @@
+name: Joomla 5/6 native editor form factory
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Editteam/HtmlView.php'
+      - 'site/src/View/Editperson/HtmlView.php'
+      - 'site/src/View/Editprojectteam/HtmlView.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'site/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/View/League/HtmlView.php'
+      - '.github/tests/joomla56_admin_league_view_runtime.php'
+      - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
+      - '.github/workflows/joomla56-native-editor-form-factory.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-forms:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate native editor contracts
+        run: |
+          set -euo pipefail
+          for view in Editteam Editperson Editprojectteam Editmatch; do
+            file="site/src/View/$view/HtmlView.php"
+            php -l "$file"
+            grep -Fq 'ExtendedFormHelper::load(' "$file"
+            if grep -Fq 'Form::getInstance(' "$file"; then
+              echo "$file uses the deprecated form factory"
+              exit 1
+            fi
+          done
+          php -l admin/src/View/League/HtmlView.php
+          php .github/tests/joomla56_admin_league_view_runtime.php
+          php .github/tests/joomla56_extended_form_extra_select_ranking_guards.php

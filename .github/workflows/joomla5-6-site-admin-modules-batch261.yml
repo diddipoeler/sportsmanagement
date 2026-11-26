@@ -113,9 +113,10 @@ jobs:
             modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           )
           for file in "${dispatchers[@]}"; do
-            grep -Fq -- '$app->getContainer()->get(DatabaseInterface::class)' "$file"
-            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
-              echo "$file still uses the global Factory container" >&2
+            grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
+            grep -Fq -- 'private function joomlaDatabase(): DatabaseInterface' "$file"
+            if grep -Fq -- '$app->getContainer()->get(DatabaseInterface::class)' "$file"; then
+              echo "$file uses unsupported application container access" >&2
               exit 1
             fi
             if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then

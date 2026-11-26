@@ -102,18 +102,16 @@ namespace Joomla\CMS\Document {
 namespace Joomla\CMS\MVC\View {
     class HtmlView
     {
-        public array $responses = [];
+        public mixed $model = null;
         public mixed $document = null;
 
         /**
-         * Provide the requested fake Joomla MVC model value.
-         *
-         * @param string $key Model state field name.
-         * @return mixed Stored test value, when present.
+         * Return the model injected into the league view.
+         * @return mixed Native model fixture or null.
          */
-        public function get(string $key): mixed
+        public function getModel(): mixed
         {
-            return $this->responses[$key] ?? null;
+            return $this->model;
         }
 
         /**
@@ -133,6 +131,20 @@ namespace Joomla\CMS\MVC\View {
          * @return void
          */
         public function display($tpl = null) {}
+    }
+}
+
+namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
+    final class LeagueModel
+    {
+        /** Return the editor form fixture. @return \Joomla\CMS\Form\Form Form. */
+        public function getForm(): \Joomla\CMS\Form\Form { return new \Joomla\CMS\Form\Form(); }
+        /** Return the selected league fixture. @return object League. */
+        public function getItem(): object { return (object) ['id' => 1]; }
+        /** Return the editor state fixture. @return null Empty state. */
+        public function getState(): null { return null; }
+        /** Simulate a sensitive model failure. @return array Error list. */
+        public function getErrors(): array { return ['SQL SELECT internal_table WHERE auth_token=secret']; }
     }
 }
 
@@ -340,12 +352,7 @@ namespace {
     }
 
     // A model error list must also be redacted in the primary league editor.
-    $view->responses = [
-        'Form' => new \Joomla\CMS\Form\Form(),
-        'Item' => (object) ['id' => 1],
-        'State' => null,
-        'Errors' => ['SQL SELECT internal_table WHERE auth_token=secret'],
-    ];
+    $view->model = new \Diddipoeler\Component\SportsManagement\Administrator\Model\LeagueModel();
 
     try {
         $view->display();

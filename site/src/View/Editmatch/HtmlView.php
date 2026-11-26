@@ -21,7 +21,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\Registry\Registry;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 
 /** Joomla 5/6 frontend view for match editing. */
 final class HtmlView extends SportsManagementHtmlView
@@ -414,33 +414,16 @@ final class HtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Load the match extension data into a registry, create the administrator-defined match extension form with its own control name and bind the stored data.
-     * @param string $data Stored extended match data.
-     * @return Form|false Bound extension form or false if unavailable.
+     * Load and bind the optional match extension form.
+     * Delegates XML path validation, native Joomla FormFactory creation,
+     * persisted Registry binding and safe failure handling to the shared
+     * frontend helper. No deprecated static form instance is required.
+     * @param string $data Stored extended field values.
+     * @return Form|false Bound extension form or false when unavailable.
      */
     private function buildExtendedForm(string $data): Form|false
     {
-        $registry = new Registry();
-
-        if ($data !== '') {
-            $registry->loadString($data);
-        }
-
-        $form = Form::getInstance(
-            'editmatch-extended',
-            JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/extended/match.xml',
-            ['control' => 'extended'],
-            false,
-            '/config'
-        );
-
-        if (!$form) {
-            return false;
-        }
-
-        $form->bind($registry);
-
-        return $form;
+        return ExtendedFormHelper::load($data, 'match');
     }
 
     /**

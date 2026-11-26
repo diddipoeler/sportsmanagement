@@ -17,7 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Registry\Registry;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 
 /** Joomla 5/6 frontend view for person editing. */
 final class HtmlView extends SportsManagementHtmlView
@@ -131,43 +131,16 @@ final class HtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Build the optional extended XML-backed person form.
-     *
-     * @param string $data data argument.
-     * @param string $file file argument.
-     * @return Form|false
+     * Load and bind the optional person extension form.
+     * Delegates XML path validation, native Joomla FormFactory creation,
+     * persisted Registry binding and safe failure handling to the shared
+     * frontend helper. No deprecated static form instance is required.
+     * @param string $data Stored extended field values.
+     * @param string $file Installed extension definition identifier.
+     * @return Form|false Bound extension form or false when unavailable.
      */
     private function buildExtendedForm(string $data, string $file): Form|false
     {
-        $xmlFile = JPATH_ADMINISTRATOR
-            . '/components/com_sportsmanagement/assets/extended/'
-            . $file
-            . '.xml';
-
-        if (!is_file($xmlFile)) {
-            return false;
-        }
-
-        $registry = new Registry();
-
-        if ($data !== '') {
-            $registry->loadString($data);
-        }
-
-        $form = Form::getInstance(
-            'extended',
-            $xmlFile,
-            ['control' => 'extended'],
-            false,
-            '/config'
-        );
-
-        if (!$form) {
-            return false;
-        }
-
-        $form->bind($registry);
-
-        return $form;
+        return ExtendedFormHelper::load($data, $file);
     }
 }
