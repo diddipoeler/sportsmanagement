@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SmimageimportModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Session\Session;
 
 /** Native Joomla 5/6 list controller for image-package imports. */
@@ -23,8 +24,9 @@ final class SmimageimportsController extends SportsManagementAdminController
      *
      * Verifies the POST CSRF token and an existing identity with component
      * create permission before resolving the native model. Delegates the
-     * import, replaces potentially sensitive model error text with a
-     * translated generic warning and redirects to the import overview.
+     * import, catches runtime failures and logs only the exception class.
+     * Every unsuccessful import receives a translated generic warning,
+     * without exposing model diagnostics, before redirecting to the overview.
      *
      * @return void
      * @throws \RuntimeException For CSRF failure, absent permissions or missing model.
@@ -48,9 +50,14 @@ final class SmimageimportsController extends SportsManagementAdminController
             throw new \RuntimeException('SmimageimportModel is unavailable.', 500);
         }
 
-        $ok = (bool) $model->import();
+        try {
+            $ok = (bool) $model->import();
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ' failed (' . get_class($exception) . ').', Log::ERROR, 'jsmerror');
+            $ok = false;
+        }
 
-        if (!$ok && $model->getError()) {
+        if (!$ok) {
             // Custom model/database drivers may supply SQL or credentials in
             // getError(); never render their diagnostic text in Joomla HTML.
             $this->app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
@@ -64,7 +71,8 @@ final class SmimageimportsController extends SportsManagementAdminController
      *
      * Applies request-independent loading by default while retaining
      * explicitly provided Joomla model factory options and the caller's
-     * requested model name and namespace.
+     * requested model name and namespace. Invalid configuration types are
+     * normalised to an empty array before merging factory options.
      *
      * @param string $name Requested image import model.
      * @param string $prefix Administrator MVC model namespace.
@@ -73,6 +81,8 @@ final class SmimageimportsController extends SportsManagementAdminController
      */
     public function getModel($name = 'Smimageimport', $prefix = 'Administrator', $config = [])
     {
+        $config = is_array($config) ? $config : [];
+
         return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 }
