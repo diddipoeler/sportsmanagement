@@ -123,6 +123,8 @@ final class ModalImageHelper
      * Accepts ordinary HTTP(S) URLs without embedded credentials and safe
      * site-relative paths. Rejects executable schemes, control characters,
      * backslashes, raw and multiply percent-encoded parent-directory traversal.
+     * Query parameters and fragments of valid Joomla routes are preserved;
+     * only the URL path is subject to the repeated path-decoding checks.
      *
      * @param string $value Proposed media URL or relative path.
      * @return string Safe URL, or empty text when validation fails.
@@ -152,34 +154,34 @@ final class ModalImageHelper
             return '';
         }
 
-        $decoded = ltrim($value, '/');
+        $parts = parse_url($value);
+        if (!is_array($parts) || isset($parts['scheme']) || isset($parts['host'])
+            || !is_string($parts['path'] ?? null) || $parts['path'] === '') {
+            return '';
+        }
 
-        // Apply the same bounded repeated-decoding safety rule as other
-        // SportsManagement picture helpers, without changing public URLs.
-        for ($depth = 0; $depth < 8; $depth++) {
-            if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
-                || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+        $decoded = $parts['path'];
+        // Check each decoding layer, including the final one. Query values
+        // may legitimately contain encoded separators in Joomla routes.
+        for ($depth = 0; $depth <= 8; $depth++) {
+            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
                 || str_contains($decoded, chr(92))
-                || str_contains($decoded, '?')
-                || str_contains($decoded, '#')) {
+                || str_starts_with($decoded, '//')
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', ltrim($decoded, '/'))
+                || str_contains($decoded, '?') || str_contains($decoded, '#')) {
                 return '';
             }
 
             $next = rawurldecode($decoded);
-
             if ($next === $decoded) {
-                break;
+                return $value;
             }
 
             $decoded = $next;
         }
 
-        return preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
-            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
-            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
-            || str_contains($decoded, chr(92))
-            || str_contains($decoded, '?')
-            || str_contains($decoded, '#') ? '' : $value;
+        return '';
     }
 
     /**

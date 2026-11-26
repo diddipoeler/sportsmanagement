@@ -25,6 +25,9 @@ foreach ([
     ['', []],
     [null, []],
     [[1, 1, '0001'], [1]],
+    [range(1, 250), range(1, 200)],
+    [str_repeat('1,', 2100), []],
+    [[str_repeat('0', 129) . '7', 9], [9]],
 ] as [$input, $expected]) {
     $actual = $normalise->invoke($helper, $input);
 

@@ -272,37 +272,32 @@ final class ActSeasonHelper
     /**
      * Parse a deduplicated list of positive season identifiers.
      * Accepts numeric IDs or legacy delimited strings and rejects
-     * nested, malformed or overflowing input before SQL binding.
+     * nested, malformed or overflowing input before SQL binding. Caps the
+     * input to 200 distinct IDs, 1000 examined entries and 4096 bytes for
+     * a delimited selection.
      * @param mixed $ids Requested season IDs or delimited values.
      * @return array<int> Unique positive season identifiers.
      */
     private function normaliseIds(mixed $ids): array
     {
         if (is_string($ids)) {
+            if (strlen($ids) > 4096) {
+                return [];
+            }
             $ids = preg_split('/[\s,;]+/', $ids, -1, PREG_SPLIT_NO_EMPTY) ?: [];
         }
         if (!is_array($ids)) {
             $ids = [$ids];
         }
 
-        // Invalid or nested configuration values must not silently become season 1.
         $normalised = [];
-        foreach ($ids as $id) {
-            if (!is_int($id) && (!is_string($id) || !preg_match('/^[0-9]+$/D', $id))) {
-                continue;
-            }
-
-            if (is_string($id)) {
-                $id = ltrim($id, '0');
-
-                if ($id === '') {
-                    continue;
-                }
-            }
-
-            $id = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-            if ($id !== false) {
+        foreach (array_slice($ids, 0, 1000) as $raw) {
+            $id = self::positiveId($raw);
+            if ($id > 0) {
                 $normalised[$id] = $id;
+                if (count($normalised) >= 200) {
+                    break;
+                }
             }
         }
 

@@ -53,16 +53,19 @@ jobs:
           projects = Path('admin/src/View/Projects/HtmlView.php').read_text()
           if 'private static function administratorApplication(): CMSApplicationInterface' not in projects:
               raise SystemExit('Projects view administrator application helper is missing')
-          if 'private static function joomlaDatabase(): DatabaseInterface' not in projects:
-              raise SystemExit('Projects view Joomla DB helper is missing')
           if '$app = self::administratorApplication();' not in projects:
               raise SystemExit('Projects view bypasses centralized administrator application access')
-          if 'self::joomlaDatabase(),' not in projects:
-              raise SystemExit('Projects view bypasses centralized Joomla DB access')
+          if '$this->model->getSportsManagementDatabase()' not in projects:
+              raise SystemExit('Projects view must use the list model database')
+          for method in ('getItems()', 'getPagination()', 'getState()'):
+              if '$this->model->' + method not in projects:
+                  raise SystemExit('Projects view must use direct native model calls')
+          if '$this->get(' in projects:
+              raise SystemExit('Projects view uses deprecated generic view getter')
           if projects.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
               raise SystemExit('Projects view should resolve the administrator application only in its helper')
-          if projects.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
-              raise SystemExit('Projects view should have exactly one Joomla DB container access')
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' in projects:
+              raise SystemExit('Projects view should not resolve a second database connection')
 
           legacy = Path('site/models/sportsmanagement.php').read_text()
           if 'private static function joomlaApplication(): CMSApplicationInterface' not in legacy:

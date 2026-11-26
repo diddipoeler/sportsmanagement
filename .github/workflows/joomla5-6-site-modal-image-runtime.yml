@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/src/View/SportsManagementHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - '.github/tests/joomla56_modal_image_safe_urls.php'
       - 'site/assets/js/modal-image-popup.js'
       - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
   pull_request:
@@ -13,6 +14,7 @@ on:
     paths:
       - 'site/src/View/SportsManagementHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - '.github/tests/joomla56_modal_image_safe_urls.php'
       - 'site/assets/js/modal-image-popup.js'
       - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
 
@@ -29,6 +31,9 @@ jobs:
           set -euo pipefail
           php -l site/src/View/SportsManagementHtmlView.php
           php -l site/src/Helper/ModalImageHelper.php
+          php -l .github/tests/joomla56_modal_image_safe_urls.php
+          php .github/scripts/check-php-function-docs.php site/src/Helper/ModalImageHelper.php .github/tests/joomla56_modal_image_safe_urls.php
+          php .github/tests/joomla56_modal_image_safe_urls.php
           node --check site/assets/js/modal-image-popup.js
 
           python3 - <<'PY'

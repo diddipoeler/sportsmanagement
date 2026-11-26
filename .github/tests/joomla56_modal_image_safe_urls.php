@@ -16,6 +16,13 @@ namespace Joomla\CMS\HTML {
         public static array $options = [];
         public static int $calls = 0;
 
+        /**
+         * Capture the native modal call and its URL configuration.
+         * @param string $name Joomla HTML helper operation.
+         * @param string $target Modal identifier.
+         * @param array $options Modal settings.
+         * @return string Stub modal markup.
+         */
         public static function _(string $name, string $target, array $options): string
         {
             if ($name !== 'bootstrap.renderModal') {
@@ -33,6 +40,11 @@ namespace Joomla\CMS\HTML {
 namespace Joomla\CMS\Language {
     final class Text
     {
+        /**
+         * Return untranslated language keys for stable assertions.
+         * @param string $key Language key.
+         * @return string Unchanged key.
+         */
         public static function _(string $key): string
         {
             return $key;
@@ -54,6 +66,10 @@ namespace {
         '//external.example/escape',
         'http://user:pass@example.org/image',
         'https://user@example.org/path',
+        '%2f%2fexternal.example/escape',
+        '%256aavascript%253aalert(1)',
+        'images/%252e%252e/private.png',
+        'images/%2500.png',
         "https://example.org/\npath",
         'https:\evil.example\path',
     ] as $unsafe) {
@@ -76,8 +92,7 @@ namespace {
 
         $output = $modal::render(picture: $unsafe, mode: 2);
 
-        if (str_contains($output, '<a ')
-            || !str_contains($output, 'src=""')) {
+        if ($output !== '') {
             throw new \RuntimeException('Unsafe image source bypassed validation.');
         }
     }
@@ -113,6 +128,14 @@ namespace {
 
     if (!str_contains($output, 'href="images/club.png"')) {
         throw new \RuntimeException('Legacy image-only lightbox was rejected.');
+    }
+
+    $html::$calls = 0;
+    $route = 'index.php?option=com_sportsmanagement&view=clubinfo&name=A%20B#details';
+    $output = $modal::render(target: 'route-test', picture: 'images/club%20logo.png', url: $route);
+    if ($html::$calls !== 1 || ($html::$options['url'] ?? null) !== $route
+        || !str_contains($output, 'src="images/club%20logo.png"')) {
+        throw new \RuntimeException('Joomla query parameters or encoded image names were rejected.');
     }
 
     echo "Joomla 5/6 modal URL validation passed.\n";
