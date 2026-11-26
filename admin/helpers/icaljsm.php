@@ -776,16 +776,16 @@ class icaljsm
 
     /**
      * Removes the last event (i.e. most recently parsed) if its start date is outside the window spanned by
-     * `$windowMinTimestamp` / `$windowMaxTimestamp`.
+     * `$windowMinTimestamp` / `$windowMaxTimestamp`. Handles empty and sparse event arrays.
      *
      * @return void
      */
     protected function removeLastEventIfOutsideWindowAndNonRecurring()
     {
-        $events = $this->cal['VEVENT'];
+        $events = $this->cal['VEVENT'] ?? [];
 
         if (!empty($events)) {
-            $lastIndex = count($events) - 1;
+            $lastIndex = array_key_last($events);
             $lastEvent = $events[$lastIndex];
 
             if ((!isset($lastEvent['RRULE']) || $lastEvent['RRULE'] === '') && $this->doesEventStartOutsideWindow($lastEvent)) {
@@ -837,7 +837,7 @@ class icaljsm
      */
     protected function doesEventStartOutsideWindow(array $event)
     {
-        return !$this->isValidDate($event['DTSTART']) || $this->isOutOfRange($event['DTSTART'], $this->windowMinTimestamp, $this->windowMaxTimestamp);
+        return !$this->isValidDate($event['DTSTART'] ?? null) || $this->isOutOfRange($event['DTSTART'], $this->windowMinTimestamp, $this->windowMaxTimestamp);
     }
 
     /**
@@ -1189,7 +1189,7 @@ class icaljsm
     /**
      * Performs admin tasks on all events as read from the iCal file.
      * Adds a Unix timestamp to all `{DTSTART|DTEND|RECURRENCE-ID}_array` arrays
-     * Tracks modified recurrence instances
+     * Tracks modified recurrence instances and discards events with missing or invalid dates before expanding recurrence rules. Other valid events remain available.
      *
      * @return void
      */
@@ -1200,21 +1200,35 @@ class icaljsm
 
         if (!empty($events)) {
             foreach ($events as $key => $anEvent) {
-                foreach (array('DTSTART', 'DTEND', 'RECURRENCE-ID') as $type) {
-                    if (isset($anEvent[$type])) {
-                        $date = $anEvent["{$type}_array"][1];
-
-                        if (isset($anEvent["{$type}_array"][0]['TZID'])) {
-                            $timeZone = $this->escapeParamText($anEvent["{$type}_array"][0]['TZID']);
-                            $date     = sprintf(self::ICAL_DATE_TIME_TEMPLATE, $timeZone) . $date;
-                        }
-
-                        $anEvent["{$type}_array"][2] = $this->iCalDateToUnixTimestamp($date);
-                        $anEvent["{$type}_array"][3] = $date;
-                    }
+                // Reject incomplete events before recurrence processing accesses their start date.
+                if (!isset($anEvent['DTSTART'], $anEvent['DTSTART_array'][1])) {
+                    unset($events[$key]);
+                    $this->eventCount--;
+                    continue;
                 }
 
-                if (isset($anEvent['RECURRENCE-ID'])) {
+                try {
+                    foreach (array('DTSTART', 'DTEND', 'RECURRENCE-ID') as $type) {
+                        if (isset($anEvent[$type])) {
+                            $date = $anEvent["{$type}_array"][1];
+    
+                            if (isset($anEvent["{$type}_array"][0]['TZID'])) {
+                                $timeZone = $this->escapeParamText($anEvent["{$type}_array"][0]['TZID']);
+                                $date     = sprintf(self::ICAL_DATE_TIME_TEMPLATE, $timeZone) . $date;
+                            }
+    
+                            $anEvent["{$type}_array"][2] = $this->iCalDateToUnixTimestamp($date);
+                            $anEvent["{$type}_array"][3] = $date;
+                        }
+                    }
+                } catch (\InvalidArgumentException $exception) {
+                    // A malformed date in one event must not prevent importing other events.
+                    unset($events[$key]);
+                    $this->eventCount--;
+                    continue;
+                }
+
+                if (isset($anEvent['RECURRENCE-ID'], $anEvent['UID'])) {
                     $uid = $anEvent['UID'];
 
                     if (!isset($this->alteredRecurrenceInstances[$uid])) {
@@ -1720,7 +1734,7 @@ class icaljsm
 
         if (!empty($events)) {
             foreach ($events as $key => $anEvent) {
-                if (is_null($anEvent) || !$this->isValidDate($anEvent['DTSTART'])) {
+                if (is_null($anEvent) || !$this->isValidDate($anEvent['DTSTART'] ?? null)) {
                     unset($events[$key]);
                     $this->eventCount--;
 
