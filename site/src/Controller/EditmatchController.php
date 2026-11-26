@@ -14,7 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -75,8 +74,8 @@ final class EditmatchController extends FormController
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? $post['id'] ?? 0));
-        $saved = $this->editMatchModel()->savestats($post);
+        $database = $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? $post['id'] ?? 0));
+        $saved = $this->editMatchModel($database)->savestats($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS'
             : 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
@@ -110,8 +109,8 @@ final class EditmatchController extends FormController
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
-        $saved = $this->editMatchModel()->updateReferees($post);
+        $database = $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
+        $saved = $this->editMatchModel($database)->updateReferees($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES'
             : 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR');
@@ -131,8 +130,8 @@ final class EditmatchController extends FormController
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
-        $saved = $this->editMatchModel()->updateRosterBillard($post);
+        $database = $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
+        $saved = $this->editMatchModel($database)->updateRosterBillard($post);
         $message = $saved
             ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED')
             : Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
@@ -152,8 +151,8 @@ final class EditmatchController extends FormController
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
-        $model = $this->editMatchModel();
+        $database = $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
+        $model = $this->editMatchModel($database);
         $playersSaved = $model->updateRoster($post);
         $staffSaved = $model->updateStaff($post);
         $saved = $playersSaved && $staffSaved;
@@ -180,7 +179,7 @@ final class EditmatchController extends FormController
         $post = $this->input->post->getArray();
         $matchId = self::positiveInputId($post['matchid'] ?? 0);
 
-        $this->assertMatchWriteAccess($post, $matchId);
+        $database = $this->assertMatchWriteAccess($post, $matchId);
 
         $data = [
             'id' => $matchId,
@@ -214,7 +213,7 @@ final class EditmatchController extends FormController
             $data['extended'] = (string) $registry;
         }
 
-        $saved = $this->editMatchModel()->updItem($data);
+        $saved = $this->editMatchModel($database)->updItem($data);
         $message = $saved
             ? sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $matchId)
             : Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
@@ -225,16 +224,19 @@ final class EditmatchController extends FormController
     /**
      * Resolve the expected Joomla frontend match-editing model.
      *
-     * Checks the MVC factory result before any edit operation is invoked.
-     *
+     * Checks the MVC factory result and binds the exact connection used
+     * by the successful permission check before any edit operation.
+     * @param DatabaseInterface $database Authorized database connection.
      * @return EditmatchModel
      */
-    private function editMatchModel(): EditmatchModel
+    private function editMatchModel(DatabaseInterface $database): EditmatchModel
     {
         $model = $this->getModel('Editmatch');
         if (!$model instanceof EditmatchModel) {
             throw new \RuntimeException('EditmatchModel is unavailable.', 500);
         }
+
+        $model->useAuthorizedDatabase($database);
 
         return $model;
     }
@@ -255,10 +257,10 @@ final class EditmatchController extends FormController
         $input = $this->input;
         $post = $input->post->getArray();
         $ids = (array) $input->post->get('cid', [], 'array');
-        $selector = $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? 0));
+        $database = $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? 0));
 
         try {
-            $saved = $this->individualMatchWriteService($selector)->saveShort(
+            $saved = $this->individualMatchWriteService($database)->saveShort(
                 $post,
                 $ids,
                 (int) $app->getIdentity()->id,
@@ -285,10 +287,10 @@ final class EditmatchController extends FormController
      *
      * @param array<string,mixed> $post Submitted match-editing context.
      * @param int $matchId Positive identifier of the requested match.
-     * @return int Validated database selector used by the access decision.
+     * @return DatabaseInterface Exact connection used by the access decision.
      * @throws \RuntimeException If the target is invalid or access is denied.
      */
-    private function assertMatchWriteAccess(array $post, int $matchId): int
+    private function assertMatchWriteAccess(array $post, int $matchId): DatabaseInterface
     {
         $projectId = self::positiveInputId($post['project_id'] ?? $post['p'] ?? $this->input->getInt('p', 0));
 
@@ -296,12 +298,15 @@ final class EditmatchController extends FormController
             throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 400);
         }
 
-        $app = $this->app;
-        $selector = self::nonNegativeInputId($post['cfg_which_database']
-            ?? $this->input->getInt(
-                'cfg_which_database',
-                0
-            ));
+        $raw = array_key_exists('cfg_which_database', $post)
+            ? $post['cfg_which_database']
+            : $this->input->get('cfg_which_database', 0, 'raw');
+        if (!in_array($raw, [0, 1], true)
+            && (!is_string($raw) || strlen($raw) > 64 || preg_match('/^0*[01]$/D', $raw) !== 1)) {
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 400);
+        }
+
+        $selector = (int) $raw;
 
         $accessModel = new ResultsAccessModel();
         $accessModel->setDatabaseSelector($selector);
@@ -311,37 +316,23 @@ final class EditmatchController extends FormController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        return $selector;
+        $database = $accessModel->getSportsManagementDatabase();
+        if ($selector === 1 && $database === $this->joomlaDatabase()) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        return $database;
     }
 
     /**
-     * Create the individual-sport match persistence service.
-     *
-     * Reuses the exact database selector that passed the match ACL check.
-     *
-     * @param int $selector Database selector authorised for the requested match.
-     * @return IndividualMatchWriteService
+     * Create individual-sport persistence using the authorized connection.
+     * No second resolver call may silently switch the write destination.
+     * @param DatabaseInterface $database Connection verified by match ACL.
+     * @return IndividualMatchWriteService Scoped persistence service.
      */
-    private function individualMatchWriteService(int $selector): IndividualMatchWriteService
+    private function individualMatchWriteService(DatabaseInterface $database): IndividualMatchWriteService
     {
-        return new IndividualMatchWriteService($this->database($selector));
-    }
-
-    /**
-     * Resolve the SportsManagement database used by match editing.
-     *
-     * Resolves only the selector authorised by the match ACL check,
-     * rather than rereading a potentially conflicting GET or user-state value.
-     *
-     * @param int $selector Validated and authorised database selection.
-     * @return DatabaseInterface
-     */
-    private function database(int $selector): DatabaseInterface
-    {
-        return SportsManagementDatabaseResolver::resolve(
-            $this->joomlaDatabase(),
-            $selector
-        );
+        return new IndividualMatchWriteService($database);
     }
 
     /**

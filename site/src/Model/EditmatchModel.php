@@ -53,6 +53,8 @@ final class EditmatchModel extends AdminModel
     protected $_data = null;
 
     private ?DatabaseInterface $injectedDatabase = null;
+    private ?DatabaseInterface $authorizedDatabase = null;
+    private ?DatabaseInterface $resolvedDatabase = null;
     private ?MailerFactoryInterface $injectedMailerFactory = null;
 
     /**
@@ -80,7 +82,9 @@ final class EditmatchModel extends AdminModel
         self::$order = $input->getInt('order', 0);
         self::$projectid = $input->getInt('p', 0);
         self::$oldlayout = $input->getCmd('oldlayout', '');
-        self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+        $raw = $input->get('cfg_which_database', 0, 'raw');
+        self::$cfg_which_database = $raw === 1 || (is_string($raw) && strlen($raw) <= 64
+            && preg_match('/^0*1$/D', $raw) === 1) ? 1 : 0;
         self::$roundid = $input->getInt('r', 0);
         self::$seasonid = $input->getInt('s', 0);
     }
@@ -121,7 +125,7 @@ final class EditmatchModel extends AdminModel
             $this->database()->insertObject('#__sportsmanagement_match_single', $row);
             return true;
         } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             return false;
         }
@@ -397,7 +401,7 @@ final class EditmatchModel extends AdminModel
 
             return true;
         } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
@@ -440,7 +444,7 @@ final class EditmatchModel extends AdminModel
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'match') === 0) {
-            return new MatchTable($this->getDatabase());
+            return new MatchTable($this->database());
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -537,7 +541,7 @@ final class EditmatchModel extends AdminModel
             $this->database()->insertObject('#__sportsmanagement_match_player', $row);
             return true;
         } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             return false;
         }
@@ -700,7 +704,7 @@ final class EditmatchModel extends AdminModel
                 $mailer->setBody($body);
                 $mailer->send();
             } catch (\Throwable $e) {
-                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::WARNING, 'jsmerror');
+                Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
                 $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
             }
         }
@@ -713,7 +717,7 @@ final class EditmatchModel extends AdminModel
      */
     private function reportWriteFailure(\Throwable $e): bool
     {
-        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+        Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
         $this->siteApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
         return false;
@@ -736,21 +740,52 @@ final class EditmatchModel extends AdminModel
     }
 
     /**
-     * Resolve the component database using the injected primary connection or Joomla's default service and the legacy database selector.
+     * Resolve and retain the selected component database for this model.
+     * Explicitly authorized write connections take precedence over request
+     * selection, preventing a subsequent resolution from changing targets.
      * @return DatabaseInterface Effective connection.
      */
     private function database(): DatabaseInterface
     {
+        if ($this->authorizedDatabase !== null) {
+            return $this->authorizedDatabase;
+        }
+        if ($this->resolvedDatabase !== null) {
+            return $this->resolvedDatabase;
+        }
+
         if ($this->injectedDatabase === null) {
             $joomlaDatabase = self::joomlaDatabase();
         } else {
             $joomlaDatabase = $this->injectedDatabase;
         }
 
-        return SportsManagementDatabaseResolver::resolve(
+        return $this->resolvedDatabase = SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
             (int) self::$cfg_which_database
         );
+    }
+
+    /**
+     * Bind a connection already verified by the controller's match ACL.
+     * This is the effective connection, not a primary fallback to resolve
+     * again. Both native tables and relation write services use it.
+     * @param DatabaseInterface $database Authorized effective connection.
+     * @return void
+     */
+    public function useAuthorizedDatabase(DatabaseInterface $database): void
+    {
+        $this->authorizedDatabase = $database;
+    }
+
+    /**
+     * Expose the effective model database for the read-only match view.
+     * Reuses the same connection as the model's match record lookup.
+     * @return DatabaseInterface Effective SportsManagement database.
+     */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->database();
     }
 
     /**

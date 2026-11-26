@@ -47,7 +47,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table {
     class MatchTable {
         public static array $bound = [];
         public static int $writes = 0;
-        public function __construct(mixed $db) {}
+        public static mixed $database = null;
+        /** Capture the actual table connection for the write-target regression. */
+        public function __construct(mixed $db) { self::$database = $db; }
         public function bind(array $record): bool {
             self::$bound = $record;
             return true;
@@ -81,6 +83,8 @@ namespace {
     $modelClass = \Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel::class;
     $model = (new \ReflectionClass($modelClass))->newInstanceWithoutConstructor();
     $table = \Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable::class;
+    $authorized = new class implements \Joomla\Database\DatabaseInterface {};
+    $model->useAuthorizedDatabase($authorized);
 
     foreach ([['id' => 0], ['id' => null], ['id' => true], ['id' => -2],
         ['id' => '12junk'], ['id' => '1e3'], ['id' => []],
@@ -96,7 +100,8 @@ namespace {
         'jform' => ['id' => 888, 'preview' => '', 'summary' => 'text', 'show_report' => false],
     ]);
 
-    if ($ok !== true || $table::$writes !== 1
+    if ($ok !== true || $table::$writes !== 1 || $table::$database !== $authorized
+        || $model->getSportsManagementDatabase() !== $authorized
         || ($table::$bound['id'] ?? null) !== 41
         || ($table::$bound['preview'] ?? null) !== ''
         || ($table::$bound['cancel'] ?? null) !== 0

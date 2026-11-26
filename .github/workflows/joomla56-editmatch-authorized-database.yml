@@ -1,0 +1,46 @@
+name: Joomla 5/6 authorized match database identity
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/EditmatchController.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'site/src/Model/ResultsAccessModel.php'
+      - '.github/tests/joomla56_editmatch_authorized_database.php'
+      - '.github/tests/joomla56_editmatch_teamplayer_playgroundticker.php'
+      - '.github/workflows/joomla56-editmatch-authorized-database.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/EditmatchController.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'site/src/Model/ResultsAccessModel.php'
+      - '.github/tests/joomla56_editmatch_authorized_database.php'
+      - '.github/tests/joomla56_editmatch_teamplayer_playgroundticker.php'
+      - '.github/workflows/joomla56-editmatch-authorized-database.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  match-database:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Verify match database contracts
+        run: |
+          set -euo pipefail
+          for file in site/src/Controller/EditmatchController.php site/src/Model/EditmatchModel.php site/src/View/Editmatch/HtmlView.php .github/tests/joomla56_editmatch_authorized_database.php; do
+            php -l "$file"
+            php .github/tests/phpdoc_metadata.php "$file"
+          done
+          php .github/tests/joomla56_editmatch_authorized_database.php
+          php .github/tests/joomla56_editmatch_teamplayer_playgroundticker.php

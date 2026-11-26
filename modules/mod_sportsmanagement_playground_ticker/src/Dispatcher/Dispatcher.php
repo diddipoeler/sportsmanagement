@@ -24,7 +24,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Populate the playground ticker with selected grounds and image URLs.
      *
-     * Retrieves validated playgrounds and the picture server from the helper, prepares Joomla layout data, and activates the Bootstrap carousel only when the configured mode requests it.
+     * Retrieves validated grounds and image-server settings, preserves the
+     * native layout and enables the carousel only in its configured mode.
+     * Helper or database failures leave an empty ticker and are logged
+     * without exposing connection diagnostics.
      *
      * @return array|false Module layout variables, or false if skipped.
      * @throws \RuntimeException When called outside the Joomla site application.
@@ -37,7 +40,6 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
-        $helper = $this->getHelperFactory()->getHelper('PlaygroundTickerHelper');
         $app = $this->getApplication();
 
         if (!$app->isClient('site')) {
@@ -46,10 +48,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $database = $this->joomlaDatabase();
-        $playgrounds = $helper->getData($data['params'], $app, $database);
-        $data['playgrounds'] = is_array($playgrounds) ? $playgrounds : [];
-        $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
+        $data['playgrounds'] = [];
+        $data['module']->picture_server = '';
+
+        try {
+            $helper = $this->getHelperFactory()->getHelper('PlaygroundTickerHelper');
+            $database = $this->joomlaDatabase();
+            $playgrounds = $helper->getData($data['params'], $app, $database);
+            $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
+            $data['playgrounds'] = is_array($playgrounds) ? $playgrounds : [];
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+        }
 
         $document = $app->getDocument();
 

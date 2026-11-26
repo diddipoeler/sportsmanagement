@@ -13,7 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
@@ -427,17 +426,15 @@ final class HtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Resolve the primary Joomla database and the selected SportsManagement database using the request or stored database selection. Initialise the view data service with both connections.
+     * Initialize the read service using the model's effective database.
+     * Preserve the historical default Joomla connection for relation reads,
+     * while project and round metadata use the same connection as the match.
      * @return EditmatchViewDataService Configured match view data service.
      */
     private function viewDataService(): EditmatchViewDataService
     {
         $joomlaDatabase = self::joomlaDatabase();
-        $selector = $this->input->getInt(
-            'cfg_which_database',
-            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
-        $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        $sportsDatabase = $this->model->getSportsManagementDatabase();
 
         return new EditmatchViewDataService($joomlaDatabase, $sportsDatabase);
     }

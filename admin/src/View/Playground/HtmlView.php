@@ -22,6 +22,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Database\DatabaseInterface;
@@ -41,31 +43,33 @@ final class HtmlView extends BaseHtmlView
     public bool $map = false;
 
     /**
-     * Load and render the playground editing form.
-     *
-     * @param mixed $tpl tpl value.
-     * @return mixed
+     * Load the native playground model's form, item and state directly.
+     * Prepare extended fields, logo history, map state and toolbar actions.
+     * Redact internal model and optional form errors before rendering.
+     * @param string|null $tpl Optional layout suffix.
+     * @return void
      */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
-
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
-        }
-
-        if (!$this->form) {
-            throw new \RuntimeException('Playground form could not be loaded.', 500);
-        }
-
         $model = $this->getModel();
         if (!$model instanceof PlaygroundModel) {
             throw new \RuntimeException('Playground view requires PlaygroundModel.', 500);
+        }
+
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
+
+        if ($errors = $model->getErrors()) {
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
+        }
+
+        if (!$this->form instanceof Form || !is_object($this->item)) {
+            throw new \RuntimeException('Playground form could not be loaded.', 500);
         }
 
         $playgroundId = (int) ($this->item->id ?? 0);
@@ -150,7 +154,8 @@ final class HtmlView extends BaseHtmlView
 
             return $form->loadFile($path) ? $form : null;
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'warning');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'com_sportsmanagement');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
 
             return null;
         }
@@ -200,18 +205,11 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Resolve and validate the administrator application.
-     * @return AdministratorApplication
+     * Resolve the administrator application using the shared client service.
+     * @return AdministratorApplication Validated backend application.
      */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement playground view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 }
