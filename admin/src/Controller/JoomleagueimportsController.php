@@ -29,6 +29,8 @@ final class JoomleagueimportsController extends BaseController
 {
     /**
      * Check import permissions and delegate the legacy age-group setup to the import model, then return to the import information view with a translated status message.
+     * Validates the MVC factory result before invoking the migration method.
+     * @throws \RuntimeException If permissions are missing or the model cannot be resolved.
      * @return bool True after scheduling the redirect.
      */
     public function joomleaguesetagegroup()
@@ -36,6 +38,10 @@ final class JoomleagueimportsController extends BaseController
         $this->assertImportPermission();
 
         $model = $this->getModel();
+        if (!is_object($model) || !is_callable([$model, 'joomleaguesetagegroup'])) {
+            throw new \RuntimeException('SportsManagement JoomLeague age-group import model is unavailable.', 500);
+        }
+
         $model->joomleaguesetagegroup();
 
         $this->setRedirect(
@@ -51,6 +57,8 @@ final class JoomleagueimportsController extends BaseController
 
     /**
      * Dispatch the requested import stage after checking administrator permissions. Use native services for staging, post-import migration and Final Four predictions, and delegate earlier stages to the import model. Persist the stage report and redirect to the next stage or the information view at completion.
+     * Checks the legacy-stage model is callable before performing migration work.
+     * @throws \RuntimeException If permissions are missing or the required model is unavailable.
      * @return bool True after scheduling the redirect.
      */
     public function importjoomleaguenew()
@@ -81,6 +89,10 @@ final class JoomleagueimportsController extends BaseController
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
+            if (!is_object($model) || !is_callable([$model, 'importjoomleaguenew'])) {
+                throw new \RuntimeException('SportsManagement JoomLeague import model is unavailable.', 500);
+            }
+
             $result = $model->importjoomleaguenew($step, $sportsTypeId);
         }
 
@@ -137,6 +149,8 @@ final class JoomleagueimportsController extends BaseController
     /**
      * The multi-step import can migrate and delete records. Each POST task
      * must verify component admin rights before loading any import models.
+     * @return void
+     * @throws \RuntimeException If component administrator access is denied.
      */
     private function assertImportPermission(): void
     {
