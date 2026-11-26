@@ -105,6 +105,10 @@ namespace Joomla\Filesystem {
     }
 }
 
+namespace Joomla\Registry {
+    final class Registry {}
+}
+
 namespace Joomla\Http {
     final class HttpFactory
     {
@@ -113,11 +117,11 @@ namespace Joomla\Http {
         /**
          * Return an HTTP stub that throws a credential-bearing network error.
          *
-         * @param array<string,mixed> $options Joomla HTTP options.
+         * @param \Joomla\Registry\Registry $options Joomla HTTP options.
          * @param array<int,string> $adapters Supported Joomla HTTP adapters.
          * @return object Client with a simulated failing get() method.
          */
-        public static function getHttp(array $options = [], array $adapters = []): object
+        public static function getHttp(\Joomla\Registry\Registry $options, array $adapters = []): object
         {
             return new class {
                 /**
@@ -312,6 +316,45 @@ namespace {
 
         if ($ids !== [7, 13]) {
             throw new \RuntimeException('Invalid image record IDs were coerced into a selection.');
+        }
+
+        // Exercise real ZIP metadata without network or Joomla extraction.
+        if (class_exists(\ZipArchive::class)) {
+            $validate = new \ReflectionMethod($model, 'validateImageArchive');
+            $archivePath = $site . '/tmp/preflight.zip';
+            try {
+                foreach ([
+                    ['logos/team.png', true, false],
+                    ['../team.png', false, false],
+                    ['/team.png', false, false],
+                    ['logos\\team.png', false, false],
+                    ['script.php', false, false],
+                    ['team.png', false, true],
+                ] as [$entry, $expected, $symlink]) {
+                    $zip = new \ZipArchive();
+                    if ($zip->open($archivePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true
+                        || !$zip->addFromString($entry, 'fixture')) {
+                        throw new \RuntimeException('Unable to build ZIP fixture.');
+                    }
+                    if ($symlink && !$zip->setExternalAttributesName(
+                        $entry, \ZipArchive::OPSYS_UNIX, 0120777 << 16
+                    )) {
+                        throw new \RuntimeException('Unable to build symbolic-link fixture.');
+                    }
+                    if (!$zip->close()) {
+                        throw new \RuntimeException('Unable to close ZIP fixture.');
+                    }
+                    if ($validate->invoke($model, $archivePath, $site) !== $expected) {
+                        throw new \RuntimeException('Unexpected ZIP preflight result: ' . $entry);
+                    }
+                }
+            } finally {
+                if (is_file($archivePath)) {
+                    unlink($archivePath);
+                }
+            }
+        } else {
+            echo "ZIP preflight fixtures skipped: ext-zip unavailable.\n";
         }
 
         \Joomla\CMS\Session\Session::$valid = false;
