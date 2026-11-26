@@ -283,8 +283,11 @@ namespace Joomla\Archive {
          */
         public function __construct(array $options = []) {}
 
+        public static ?string $lastDestination = null;
+
         /**
          * Simulate an extraction error containing confidential diagnostics.
+         * Creates a partial nested extraction to verify failure cleanup.
          *
          * @param string $file Downloaded ZIP path.
          * @param string $destination Temporary extraction root.
@@ -293,6 +296,9 @@ namespace Joomla\Archive {
          */
         public function extract(string $file, string $destination): bool
         {
+            self::$lastDestination = $destination;
+            mkdir($destination . '/partial');
+            file_put_contents($destination . '/partial/incomplete.php', '<?php return;');
             throw new \RuntimeException('archive failed: password=internal-secret');
         }
     }
@@ -413,6 +419,11 @@ namespace {
         throw new \RuntimeException('Archive extraction error was not safely logged or handled.');
     }
 
+    if (!is_string(\Joomla\Archive\Archive::$lastDestination)
+        || file_exists(\Joomla\Archive\Archive::$lastDestination)) {
+        throw new \RuntimeException('Failed partial archive was not removed.');
+    }
+
     foreach ($app->messages as [$message]) {
         if (str_contains($message, 'internal-secret')) {
             throw new \RuntimeException('Archive extraction error exposed sensitive details to the administrator.');
@@ -445,6 +456,23 @@ namespace {
         if (!symlink($real, $link)) {
             throw new \RuntimeException('Could not create an extracted-folder symlink test fixture.');
         }
+
+        $cleanup = new \ReflectionMethod($model, 'discardStagingDirectory');
+        $cleanup->invoke($model, $tmp, $real);
+        if (!is_dir($real)) {
+            throw new \RuntimeException('Cleanup removed a directory unrelated to staging.');
+        }
+
+        $stage = $tmp . '/jsm-github-' . str_repeat('a', 32);
+        mkdir($stage);
+        file_put_contents($real . '/keep.txt', 'keep');
+        symlink($real, $stage . '/linked-directory');
+        symlink($real . '/keep.txt', $stage . '/linked-file');
+        $cleanup->invoke($model, $tmp, $stage);
+        if (file_exists($stage) || !is_file($real . '/keep.txt')) {
+            throw new \RuntimeException('Staging cleanup followed a symbolic link or left files behind.');
+        }
+        unlink($real . '/keep.txt');
 
         $lookup = new \ReflectionMethod($model, 'findExtractedDirectory');
 

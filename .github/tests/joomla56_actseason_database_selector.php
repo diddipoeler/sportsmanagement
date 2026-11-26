@@ -21,10 +21,12 @@ $cases = [
     [0, 0],
     [1, 1],
     ['0', 0],
-    ['2', 2],
-    ['0002', 2],
+    ['2', 0],
+    ['0002', 0],
+    ['0001', 1],
     ['0000', 0],
-    ['0008', 8],
+    ['0008', 0],
+    [str_repeat('0', 64) . '1', 0],
     [-1, 0],
     ['-1', 0],
     ['abc', 0],
@@ -47,4 +49,20 @@ foreach ($cases as [$value, $expected]) {
     }
 }
 
-echo "Current-season database selector validation passed.\n";
+$valid = new ReflectionMethod($helper, 'isValidDatabaseSelector');
+foreach ([0, 1, '0000', '0001'] as $value) {
+    if (!$valid->invoke(null, $value)) {
+        throw new RuntimeException('Supported current-season mode was rejected.');
+    }
+}
+foreach ([2, '0002', '0008', true, ['1'], '1junk', str_repeat('0', 65)] as $value) {
+    if ($valid->invoke(null, $value)) {
+        throw new RuntimeException('Unsupported current-season mode was accepted.');
+    }
+}
+$source = file_get_contents(dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php');
+if (!str_contains($source, "quoteName('pro.published') . ' = 1'")) {
+    throw new RuntimeException('Unpublished projects are not excluded from the season query.');
+}
+
+echo "Current-season database selector and publication validation passed.\n";

@@ -214,6 +214,14 @@ namespace {
         throw new \RuntimeException('Empty position definitions reported a successful setup.');
     }
 
+    $view = file_get_contents(dirname(__DIR__, 2) . '/admin/src/View/Project/HtmlView.php');
+    if (!str_contains($view, '$model->getItem()')
+        || !str_contains($view, '$model->getForm()')
+        || str_contains($view, '$this->get(')
+        || substr_count($view, 'LegacyModelDatabaseHelper::selector()') !== 2) {
+        throw new \RuntimeException('Project view must use native model access and validated database selection.');
+    }
+
     $controller = file_get_contents(dirname(__DIR__, 2) . '/admin/src/Controller/ProjectController.php');
     $layout = file_get_contents(dirname(__DIR__, 2) . '/admin/tmpl/project/panel.php');
     $dispatcher = file_get_contents(dirname(__DIR__, 2) . '/admin/src/Dispatcher/Dispatcher.php');

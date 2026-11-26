@@ -51,7 +51,9 @@ final class GithubinstallModel extends BaseDatabaseModel
      *
      * Each archive is extracted into a new private staging directory below
      * Joomla's temporary root. An older extraction of the same branch cannot
-     * be selected by the folder-installer handoff.
+     * be selected by the folder-installer handoff. Failed extractions are
+     * removed without following symbolic links; a successful package is
+     * retained for the subsequent Joomla installer request.
      * Rejects malformed/non-string archive settings, resets stale success state
      * on each attempt and catches download and extraction exceptions.
      * Records only exception classes in Joomla's server log so archive URLs,
@@ -125,7 +127,7 @@ final class GithubinstallModel extends BaseDatabaseModel
             $result = $archive->extract($archivePath, $stage);
         } catch (\Throwable $e) {
             if ($stage !== null) {
-                @rmdir($stage);
+                $this->discardStagingDirectory($tmpPath, $stage);
             }
             // Archive paths, stack details and credentials must stay private.
             Log::add(__METHOD__ . ': extraction failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
@@ -135,7 +137,7 @@ final class GithubinstallModel extends BaseDatabaseModel
         }
 
         if (!$result) {
-            @rmdir($stage);
+            $this->discardStagingDirectory($tmpPath, $stage);
             $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
 
             return false;
@@ -144,7 +146,7 @@ final class GithubinstallModel extends BaseDatabaseModel
         $installDirectory = $this->findExtractedDirectory($stage, $downloadedFile, $url);
 
         if ($installDirectory === null) {
-            @rmdir($stage);
+            $this->discardStagingDirectory($tmpPath, $stage);
             $app->enqueueMessage('SportsManagement update archive directory could not be found after extraction.', 'error');
             return false;
         }
@@ -174,6 +176,47 @@ final class GithubinstallModel extends BaseDatabaseModel
         }
 
         return $stage;
+    }
+
+    /**
+     * Remove only the staging directory created for this failed download.
+     *
+     * Verify its canonical parent and random directory name before walking
+     * the tree. Symbolic links are removed as links, never traversed. Cleanup
+     * is best effort so a secondary filesystem failure cannot hide the
+     * original extraction failure or expose its private diagnostic details.
+     *
+     * @param string $tmpPath Canonical Joomla temporary root.
+     * @param string $stage Newly created staging directory.
+     * @return void
+     */
+    private function discardStagingDirectory(string $tmpPath, string $stage): void
+    {
+        if (dirname($stage) !== $tmpPath
+            || preg_match('/^jsm-github-[a-f0-9]{32}$/D', basename($stage)) !== 1
+            || is_link($stage) || realpath($stage) !== $stage || !is_dir($stage)) {
+            return;
+        }
+
+        try {
+            $entries = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($stage, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+
+            foreach ($entries as $entry) {
+                $path = $entry->getPathname();
+                if ($entry->isLink() || !$entry->isDir()) {
+                    @unlink($path);
+                } else {
+                    @rmdir($path);
+                }
+            }
+
+            @rmdir($stage);
+        } catch (\Throwable $e) {
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
+        }
     }
 
     /**

@@ -245,6 +245,30 @@ namespace {
         }
     }
 
+    $queries = $db->queries;
+    foreach ([null, ['DEU'], true, 'DEU/x', '123'] as $invalid) {
+        if (\JSMCountries::getCountry($invalid) !== null
+            || \JSMCountries::getCountryName($invalid) !== null
+            || \JSMCountries::getCountryalpha3fifa($invalid) !== null
+            || \JSMCountries::convertIso2to3($invalid) !== null) {
+            throw new \RuntimeException('Malformed country lookup was accepted.');
+        }
+    }
+    if ($db->queries !== $queries) {
+        throw new \RuntimeException('Invalid country codes reached the database.');
+    }
+    $db->iso2 = 'DEU';
+    if (\JSMCountries::convertIso2to3('de') !== 'DEU'
+        || \JSMCountries::getCountryalpha3fifa('ger') !== 'DEU') {
+        throw new \RuntimeException('Valid lowercase country identifiers were rejected.');
+    }
+    $db->iso2 = ['bad'];
+    if (\JSMCountries::getCountryName('DEU') !== null
+        || \JSMCountries::convertIso2to3('DE') !== null
+        || \JSMCountries::getCountryalpha3fifa('GER') !== null) {
+        throw new \RuntimeException('Malformed country database result was accepted.');
+    }
+
     $before = count(spl_autoload_functions() ?: []);
     LegacyPresentationLoader::register();
     $afterFirst = count(spl_autoload_functions() ?: []);

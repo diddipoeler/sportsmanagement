@@ -93,11 +93,11 @@ final class HtmlView extends BaseHtmlView
     {
         $app = self::administratorApplication();
         $input = $app->getInput();
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
         $this->project = $this->item;
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
@@ -142,6 +142,8 @@ final class HtmlView extends BaseHtmlView
 
     /**
      * Prepare and render the project edit form and its controls.
+     * Uses the native model directly instead of HtmlView's generic legacy
+     * getter and validates the database mode before loading extra fields.
      *
      * @param ProjectModel $model model value.
      * @return void
@@ -152,11 +154,11 @@ final class HtmlView extends BaseHtmlView
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
         if (!$this->form || !$this->item) {
@@ -211,10 +213,7 @@ final class HtmlView extends BaseHtmlView
         $this->lists['ext_fields'] = [];
 
         if (!$isNew) {
-            $databaseSelector = $input->getInt(
-                'cfg_which_database',
-                (int) $app->getUserState($this->option . '.cfg_which_database', 0)
-            );
+            $databaseSelector = LegacyModelDatabaseHelper::selector();
             $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
                 (int) $this->item->id,
                 'project',

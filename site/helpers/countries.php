@@ -74,12 +74,18 @@ class JSMCountries
 
     /**
      * Load a country record by its three-letter ISO code.
-     * Uses a bound database parameter to avoid interpolating caller input into SQL.
+     * Validates the ISO code before using a bound database parameter and
+     * returns only object records from the Joomla database driver.
      * @param string $countrycode Three-letter ISO country code.
      * @return object|null Matching country record, if available.
      */
     public static function getCountry($countrycode = '')
     {
+        if (!is_string($countrycode) || preg_match('/^[A-Za-z]{3}$/D', $countrycode) !== 1) {
+            return null;
+        }
+
+        $countrycode = strtoupper($countrycode);
         $db = self::database();
         $query = $db->createQuery()
             ->select('*')
@@ -88,7 +94,9 @@ class JSMCountries
             ->bind(':countryAlpha3', $countrycode, ParameterType::STRING);
         $db->setQuery($query);
 
-        return $db->loadObject();
+        $country = $db->loadObject();
+
+        return is_object($country) ? $country : null;
     }
 
     /**
@@ -169,12 +177,18 @@ class JSMCountries
 
     /**
      * Look up a three-letter ISO country code from a two-letter code.
-     * Reads the countries table with a bound input value and returns null for missing entries.
+     * Validates the ISO-2 input and ISO-3 result, using a bound lookup
+     * and returning null for missing or malformed records.
      * @param string $iso_code_2 Two-letter ISO code.
      * @return string|null Three-letter ISO code if found.
      */
     public static function convertIso2to3($iso_code_2)
     {
+        if (!is_string($iso_code_2) || preg_match('/^[A-Za-z]{2}$/D', $iso_code_2) !== 1) {
+            return null;
+        }
+
+        $iso_code_2 = strtoupper($iso_code_2);
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('alpha3'))
@@ -184,7 +198,7 @@ class JSMCountries
         $db->setQuery($query);
         $result = $db->loadResult();
 
-        return $result ?: null;
+        return is_string($result) && preg_match('/^[A-Za-z]{3}$/D', $result) === 1 ? $result : null;
     }
 
     /**
@@ -207,12 +221,18 @@ class JSMCountries
 
     /**
      * Resolve the SportsManagement ISO-3 country code for a FIFA code.
-     * Queries the configured country database using a bound FIFA identifier.
+     * Queries the configured country database using a validated, bound
+     * three-letter FIFA identifier and accepts only valid ISO-3 results.
      * @param string $fifa FIFA country code.
      * @return string|null ISO-3 country code when present.
      */
     public static function getCountryalpha3fifa($fifa = '')
     {
+        if (!is_string($fifa) || preg_match('/^[A-Za-z]{3}$/D', $fifa) !== 1) {
+            return null;
+        }
+
+        $fifa = strtoupper($fifa);
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('alpha3'))
@@ -222,17 +242,23 @@ class JSMCountries
         $db->setQuery($query);
         $result = $db->loadResult();
 
-        return $result ?: null;
+        return is_string($result) && preg_match('/^[A-Za-z]{3}$/D', $result) === 1 ? $result : null;
     }
 
     /**
      * Load and translate a country's name using its ISO-3 code.
-     * Returns null for unknown countries and uses the Joomla translation service for labels.
+     * Validates the ISO-3 lookup value, returns null for unknown or malformed
+     * names, and uses Joomla's translation service only for string labels.
      * @param string $iso3 Three-letter ISO country code.
      * @return string|null Translated country name, if found.
      */
     public static function getCountryName($iso3)
     {
+        if (!is_string($iso3) || preg_match('/^[A-Za-z]{3}$/D', $iso3) !== 1) {
+            return null;
+        }
+
+        $iso3 = strtoupper($iso3);
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
@@ -242,7 +268,7 @@ class JSMCountries
         $db->setQuery($query);
         $result = $db->loadResult();
 
-        return $result ? Text::_($result) : null;
+        return is_string($result) && trim($result) !== '' ? Text::_($result) : null;
     }
 
     /**

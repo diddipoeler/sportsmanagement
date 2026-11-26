@@ -26,7 +26,7 @@ final class ActSeasonHelper
      * Validates selected season IDs and the database configuration before
      * accessing the native resolver. An invalid explicit database selector
      * must not fall back to the default Joomla database. Uses bound SQL
-     * parameters to load published current-season leagues.
+     * parameters to load published projects in current-season leagues.
      * Builds translated labels, safe flags and project/round route segments.
      * @param mixed $seasonIds Season IDs or legacy selection values.
      * @param Registry $componentParams SportsManagement component options.
@@ -80,6 +80,7 @@ final class ActSeasonHelper
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
                 ->where($db->quoteName('le.published_act_season') . ' = 1')
+                ->where($db->quoteName('pro.published') . ' = 1')
                 ->whereIn($db->quoteName('pro.season_id'), $ids, ParameterType::INTEGER)
                 ->order([
                     $db->quoteName('le.country') . ' ASC',
@@ -181,7 +182,7 @@ final class ActSeasonHelper
     /**
      * Verify a stored database selector without introducing a default value.
      *
-     * Accepts nonnegative integer IDs and decimal strings, including
+     * Accepts only local/external modes zero and one, including bounded
      * zero-padded historical configuration values. Nested data, booleans,
      * negative values and overflowing numbers fail closed before any query
      * touches the default or a remote SportsManagement database.
@@ -191,22 +192,9 @@ final class ActSeasonHelper
      */
     private static function isValidDatabaseSelector(mixed $value): bool
     {
-        if (is_int($value)) {
-            return $value >= 0;
-        }
-
-        if (!is_string($value) || $value === '' || strlen($value) > 128
-            || preg_match('/^[0-9]+$/D', $value) !== 1) {
-            return false;
-        }
-
-        $digits = ltrim($value, '0');
-
-        if ($digits === '') {
-            return true;
-        }
-
-        return filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) !== false;
+        return is_int($value)
+            ? $value === 0 || $value === 1
+            : is_string($value) && strlen($value) <= 64 && preg_match('/^0*[01]$/D', $value) === 1;
     }
 
     /**
@@ -271,26 +259,14 @@ final class ActSeasonHelper
 
     /**
      * Validate the configured SportsManagement database selector.
-     * Rejects malformed and overflowing values and accepts nonnegative
-     * decimal integers, including legacy values with leading zeros.
+     * Converts the two supported database modes, including legacy values
+     * with leading zeros. The caller separately rejects invalid selectors.
      * @param mixed $rawSelector Raw database selector setting.
      * @return int Valid selector or zero for malformed input.
      */
     private function normaliseDatabaseSelector(mixed $rawSelector): int
     {
-        if (!is_int($rawSelector) && (!is_string($rawSelector) || !preg_match('/^[0-9]+$/D', $rawSelector))) {
-            return 0;
-        }
-
-        // Historical module parameters may contain leading-zero decimal IDs.
-        if (is_string($rawSelector)) {
-            $digits = ltrim($rawSelector, '0');
-            $rawSelector = $digits === '' ? '0' : $digits;
-        }
-
-        $selector = filter_var($rawSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-        return $selector === false ? 0 : $selector;
+        return self::isValidDatabaseSelector($rawSelector) ? (int) $rawSelector : 0;
     }
 
     /**
