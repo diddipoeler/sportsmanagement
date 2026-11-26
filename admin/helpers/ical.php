@@ -71,7 +71,7 @@ class ical
     public $last_key = null;
 
     /**
-     * Vraci pocet udalosti v kalendari
+     * Return the historical event counter, which starts at -1 before the first VEVENT.
      *
      * @return int
      */
@@ -81,7 +81,7 @@ class ical
     }
 
     /**
-     * Vraci pocet ToDo uloh
+     * Return the number of VTODO components encountered in the current calendar.
      *
      * @return int
      */
@@ -97,7 +97,8 @@ class ical
      * envelope and unfolds RFC 5545 lines beginning with a space or tab
      * before splitting properties. This preserves colons and separators in
      * multi-line descriptions without creating spurious calendar fields.
-     * Returns the legacy error string for a missing calendar envelope.
+     * Accepts a UTF-8 byte order mark and case-insensitive component markers.
+     * Returns the legacy error string for a missing calendar opening marker.
      *
      * @param string $uri Path or supported stream identifier of an ICS file.
      * @return array|string Parsed properties or a legacy invalid-calendar message.
@@ -128,7 +129,11 @@ class ical
         }
 
         // A valid iCalendar stream starts with BEGIN:VCALENDAR.
-        if ($lines === [] || stripos(trim((string) $lines[0]), 'BEGIN:VCALENDAR') === false) {
+        if (isset($lines[0]) && str_starts_with($lines[0], "\xEF\xBB\xBF")) {
+            $lines[0] = substr($lines[0], 3);
+        }
+
+        if ($lines === [] || strcasecmp(trim($lines[0]), 'BEGIN:VCALENDAR') !== 0) {
             return 'error not VCALENDAR';
         }
 
@@ -144,7 +149,7 @@ class ical
             // get Key and Value VCALENDAR:Begin -> Key = VCALENDAR, Value = begin
             [$key, $value] = $this->retun_key_value($text);
 
-            switch ($text) {
+            switch (strtoupper($text)) {
                 case 'BEGIN:VTODO':
                     $this->todo_count++;
                     $type = 'VTODO';
@@ -159,7 +164,8 @@ class ical
                 case 'BEGIN:DAYLIGHT':
                 case 'BEGIN:VTIMEZONE':
                 case 'BEGIN:STANDARD':
-                    $type = $value;
+                    $type = strtoupper($value);
+                    $this->last_key = null;
                     break;
 
                 case 'END:VTODO':
@@ -184,7 +190,7 @@ class ical
      * Read the complete raw iCalendar source for the legacy import parser.
      *
      * Retains the original source identifier for callers and normalises
-     * Mozilla's legacy split property separators; standard folded lines
+     * Mozilla's legacy split property separators; invalid source identifiers and read failures return empty text without emitting PHP warnings. Standard folded lines
      * are unfolded by parse() before tokenisation.
      *
      * @param string $file ICS source path or stream accepted by PHP.
@@ -193,7 +199,15 @@ class ical
     public function read_file($file)
     {
         $this->file = $file;
-        $fileText = file_get_contents($file);
+        if (!is_string($file) || trim($file) === '' || str_contains($file, "\0")) {
+            return '';
+        }
+
+        try {
+            $fileText = @file_get_contents($file);
+        } catch (\Throwable) {
+            return '';
+        }
 
         if ($fileText === false) {
             return '';
@@ -286,7 +300,8 @@ class ical
      * Convert a complete iCalendar DATE or DATE-TIME into a Unix timestamp.
      *
      * Accepts YYYYMMDD and YYYYMMDDTHHMMSS with an optional UTC suffix,
-     * verifying calendar dates and time bounds before calling mktime().
+     * verifying calendar dates and time bounds before converting to a timestamp.
+     * UTC values ending in Z use gmmktime(); floating local dates retain the PHP timezone.
      * Rejects trailing junk and rollover dates instead of returning an
      * unrelated timestamp. Preserves the legacy pre-1971 year fallback
      * for compatibility with historical imports.
@@ -317,7 +332,9 @@ class ical
             $year = 1971;
         }
 
-        return mktime($hour, $minute, $second, $month, $day, $year);
+        return str_ends_with($ical_date, 'Z')
+            ? gmmktime($hour, $minute, $second, $month, $day, $year)
+            : mktime($hour, $minute, $second, $month, $day, $year);
     }
 
     /**
