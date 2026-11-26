@@ -322,7 +322,8 @@ final class ActSeasonHelper
         $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars((string) ($row->country_label ?? $alpha3), ENT_QUOTES, 'UTF-8');
 
-        if ((int) $params->get('cfg_flags_css', 0) === 1) {
+        $mode = $params->get('cfg_flags_css', 0);
+        if (in_array($mode, [1, '1', true], true)) {
             $cssCode = match ($alpha3) {
                 'WAL' => 'gb-wls',
                 'SCO' => 'gb-sct',
@@ -338,31 +339,62 @@ final class ActSeasonHelper
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : (string) ($row->country_picture ?? $params->get('ph_flags', ''));
-
+            : self::plainText($row->country_picture ?? null);
         if ($path === '') {
-            return '';
+            $path = self::plainText($params->get('ph_flags', ''));
         }
 
-        // Reject untrusted schemes, protocol-relative URLs and traversal paths.
-        // A value from a database or module configuration must never become a
-        // javascript: URL or escape the site's image directory.
-        $path = trim($path);
-        if (preg_match('~^https?://~i', $path)) {
-            $source = $path;
-        } elseif (
-            str_starts_with($path, '//')
-            || str_starts_with($path, '/')
-            || str_contains($path, '\\')
-            || preg_match('~(?:^|/)\\.\\.(?:/|$)|[\\x00-\\x1F]|^[a-z][a-z0-9+.-]*:~i', $path)
-        ) {
+        $source = $this->flagSource($path);
+        if ($source === '') {
             return '';
-        } else {
-            $source = Uri::root() . $path;
         }
 
         return '<img src="' . htmlspecialchars($source, ENT_QUOTES, 'UTF-8')
             . '" alt="' . $label . '" title="' . $label . '" />';
+    }
+
+    /**
+     * Validate an imported flag URL or local image path before rendering.
+     *
+     * Accepts HTTP(S) URLs without embedded credentials and local relative
+     * paths without traversal or executable schemes, including after
+     * repeated percent decoding. Returns an empty value for unsafe sources.
+     *
+     * @param string $path Imported flag path or placeholder.
+     * @return string Safe image source URL, or empty text.
+     */
+    private function flagSource(string $path): string
+    {
+        if ($path === '' || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, chr(92))) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $path)) {
+            $parts = parse_url($path);
+
+            return filter_var($path, FILTER_VALIDATE_URL) !== false && is_array($parts)
+                && !empty($parts['host']) && !isset($parts['user']) && !isset($parts['pass'])
+                ? $path : '';
+        }
+
+        $decoded = $path;
+        for ($depth = 0; $depth <= 8; $depth++) {
+            if (str_starts_with($decoded, '/') || str_contains($decoded, chr(92))
+                || preg_match('~(?:^|/)\.{1,2}(?:/|$)|[\x00-\x1F\x7F]|^[a-z][a-z0-9+.-]*:~i', $decoded)
+                || str_contains($decoded, '?') || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+            if ($next === $decoded) {
+                return rtrim(Uri::root(), '/') . '/' . $path;
+            }
+
+            $decoded = $next;
+        }
+
+        return '';
     }
 
     /**

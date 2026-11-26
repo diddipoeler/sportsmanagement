@@ -8,6 +8,8 @@ on:
       - 'site/src/View/Eventsranking/HtmlView.php'
       - 'admin/views/division/view.html.php'
       - 'admin/src/View/Division/HtmlView.php'
+      - 'admin/src/Model/DivisionModel.php'
+      - '.github/tests/joomla56_division_edit_project.php'
       - 'admin/tmpl/division/edit.php'
       - 'admin/src/View/Projects/HtmlView.php'
       - '.github/workflows/joomla5-6-site-admin-division-batch145.yml'
@@ -18,6 +20,8 @@ on:
       - 'site/src/View/Eventsranking/HtmlView.php'
       - 'admin/views/division/view.html.php'
       - 'admin/src/View/Division/HtmlView.php'
+      - 'admin/src/Model/DivisionModel.php'
+      - '.github/tests/joomla56_division_edit_project.php'
       - 'admin/tmpl/division/edit.php'
       - 'admin/src/View/Projects/HtmlView.php'
       - '.github/workflows/joomla5-6-site-admin-division-batch145.yml'
@@ -75,11 +79,19 @@ jobs:
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Division edit view.' "$native"
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Division edit layout.' "$layout"
 
-          grep -Fq 'use Joomla\CMS\Factory;' "$projects"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projects"
+          grep -Fq '$this->model->getSportsManagementDatabase()' "$projects"
+          grep -Fq '$model->getProjectForDivision($projectId)' "$native"
+          if grep -Fq -- '->getQuery(true)' "$native"; then
+            echo 'Division view uses the deprecated query factory.' >&2
+            exit 1
+          fi
           if grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projects"; then
             echo 'Projects view regressed to application container access.' >&2
             exit 1
           fi
 
+          php -l admin/src/Model/DivisionModel.php
+          php -l .github/tests/joomla56_division_edit_project.php
+          php .github/scripts/check-php-function-docs.php admin/src/View/Division/HtmlView.php .github/tests/joomla56_division_edit_project.php
+          php .github/tests/joomla56_division_edit_project.php
           echo 'Joomla 5/6 batch 145 contracts OK.'

@@ -14,12 +14,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Division;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionModel;
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 administrator edit view for a division. */
 final class HtmlView extends BaseHtmlView
@@ -30,28 +29,39 @@ final class HtmlView extends BaseHtmlView
     public ?object $project = null;
     public ?Form $extended = null;
 
+    /**
+     * Render the native division edit form and its parent project context.
+     *
+     * Verifies the MVC model before reading its form, item and state.
+     * Uses the model's selected database for project metadata and team
+     * counts so external database records are not mixed with local data.
+     *
+     * @param string|null $tpl Optional layout suffix.
+     * @return void
+     * @throws \RuntimeException If the model or form is unavailable.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
-
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
-        }
-
-        if (!$this->form) {
-            throw new \RuntimeException('Division form could not be loaded.', 500);
-        }
-
         $model = $this->getModel();
 
         if (!$model instanceof DivisionModel) {
             throw new \RuntimeException('Division view requires DivisionModel.', 500);
+        }
+
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
+
+        if ($errors = $model->getErrors()) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
+
+        if (!$this->form || !$this->item) {
+            throw new \RuntimeException('Division form could not be loaded.', 500);
         }
 
         $divisionId = (int) ($this->item->id ?? 0);
@@ -68,7 +78,7 @@ final class HtmlView extends BaseHtmlView
             $app->setUserState('com_sportsmanagement.pid', $projectId);
             $input->set('pid', $projectId);
             $this->form->setValue('project_id', null, $projectId);
-            $this->project = $this->loadProject($projectId);
+            $this->project = $model->getProjectForDivision($projectId);
         }
 
         $teamCount = $divisionId > 0 ? $model->count_teams_division($divisionId) : 0;
@@ -100,28 +110,16 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve the validated administrator application through the shared service.
+     *
+     * Keeps Joomla client and service-container checks in the component
+     * resolver rather than duplicating them in the division view.
+     *
+     * @return AdministratorApplication Active Joomla backend application.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement division view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
-    }
-
-    private function loadProject(int $projectId): ?object
-    {
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
-        $db->setQuery($query, 0, 1);
-
-        return $db->loadObject() ?: null;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 }

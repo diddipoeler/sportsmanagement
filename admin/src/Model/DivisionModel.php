@@ -47,6 +47,36 @@ final class DivisionModel extends SportsManagementAdminModel
     }
 
     /**
+     * Read a division's parent project using the model's selected connection.
+     *
+     * Uses a parameter-bound native Joomla query and rejects missing or
+     * malformed project records. Does not change project or division data.
+     * Keeping this lookup inside the model ensures the edit form and
+     * associated project metadata use the same database.
+     *
+     * @param int $projectId Positive project identifier.
+     * @return object|null Matching project record, or null when absent.
+     */
+    public function getProjectForDivision(int $projectId): ?object
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where($db->quoteName('id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
+        $db->setQuery($query, 0, 1);
+        $project = $db->loadObject();
+
+        return is_object($project) && (string) ($project->id ?? '') === (string) $projectId
+            ? $project : null;
+    }
+
+    /**
      * Transfer selected divisions to the requested project.
      * @return mixed
      */

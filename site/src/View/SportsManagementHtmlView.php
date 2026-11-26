@@ -28,19 +28,39 @@ abstract class SportsManagementHtmlView extends HtmlView
     public $uri;
     public int $databaseSelector = 0;
 
+    /**
+     * Resolve the active frontend application through the shared service.
+     * Rejects unsupported application clients before view initialization.
+     * @return CMSApplicationInterface Validated Joomla site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Obtain the native Joomla database service for frontend view helpers.
+     * Verifies the container result before passing the driver to services.
+     * @return DatabaseInterface Joomla default database connection.
+     * @throws \RuntimeException When the service is invalid.
+     */
     protected static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement site view database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Initialize view context without accessing a document before injection.
+     * Sets shared template paths, component configuration and the validated
+     * request database mode using the same interpretation as site models.
+     * @param array $config Joomla MVC view configuration.
+     */
     public function __construct($config = [])
     {
         $this->option = 'com_sportsmanagement';
@@ -51,7 +71,9 @@ abstract class SportsManagementHtmlView extends HtmlView
         $this->input = $this->app->getInput();
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();
-        $this->databaseSelector = $this->input->getInt('cfg_which_database', 0);
+        $raw = $this->input->get('cfg_which_database', 0, 'raw');
+        $this->databaseSelector = $raw === 1 || (is_string($raw) && strlen($raw) <= 64
+            && preg_match('/^0*1$/D', $raw) === 1) ? 1 : 0;
     }
 
     /**

@@ -6,6 +6,9 @@ on:
       - joomla5-6
     paths:
       - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_4_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
+      - 'admin/tmpl/listheader/default_4_start_menu.php'
       - 'admin/views/listheader/tmpl/default_5_start_menu.php'
       - 'admin/views/extensions/view.html.php'
       - 'admin/views/projects/view.html.php'
@@ -25,6 +28,9 @@ on:
       - master
     paths:
       - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_4_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
+      - 'admin/tmpl/listheader/default_4_start_menu.php'
       - 'admin/views/listheader/tmpl/default_5_start_menu.php'
       - 'admin/views/extensions/view.html.php'
       - 'admin/views/projects/view.html.php'
@@ -53,6 +59,9 @@ jobs:
 
           files=(
             admin/views/cpanel/tmpl/default_start_menu.php
+            admin/views/cpanel/tmpl/default_4_start_menu.php
+            admin/views/listheader/tmpl/default_4_start_menu.php
+            admin/tmpl/listheader/default_4_start_menu.php
             admin/views/listheader/tmpl/default_5_start_menu.php
             admin/views/extensions/view.html.php
             admin/views/projects/view.html.php
@@ -77,10 +86,12 @@ jobs:
           done
 
           wrapper='admin/views/cpanel/tmpl/default_start_menu.php'
-          grep -Fq 'default_5_start_menu.php' "$wrapper"
+          grep -Fq 'default_4_start_menu.php' "$wrapper"
+          grep -Fq 'views/listheader/tmpl/default_4_start_menu.php' admin/views/cpanel/tmpl/default_4_start_menu.php
+          grep -Fq 'tmpl/listheader/default_4_start_menu.php' admin/views/listheader/tmpl/default_4_start_menu.php
           grep -Fq 'is_file($startMenu)' "$wrapper"
 
-          menu='admin/views/listheader/tmpl/default_5_start_menu.php'
+          menu='admin/tmpl/listheader/default_4_start_menu.php'
           for view in extensions projects specialextensions predictiongames currentseasons jsmgcalendars; do
             grep -Fq "view=$view" "$menu"
           done
