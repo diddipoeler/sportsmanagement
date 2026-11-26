@@ -14,7 +14,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Position;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PositionModel;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -41,7 +43,8 @@ final class HtmlView extends BaseHtmlView
     /**
      * Render the position editor and its event/statistic assignment lists.
      *
-     * Load form, item and state through the MVC model, retrieve assigned
+     * Require the native PositionModel, read form, item and state directly,
+     * redact model errors, and retrieve assigned
      * and available events and statistics for the selected sport, and attach
      * JavaScript for the dual-list controls. Set an add/edit toolbar title
      * and expose the position controller's save and cancel commands.
@@ -55,28 +58,32 @@ final class HtmlView extends BaseHtmlView
         $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+        if (!$model instanceof PositionModel) {
+            throw new \RuntimeException('PositionModel is unavailable.', 500);
         }
 
-        if (!$this->form) {
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
+
+        if ($errors = $model->getErrors()) {
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
+        }
+
+        if (!$this->form instanceof Form || !is_object($this->item)) {
             throw new \RuntimeException('Position form could not be loaded.', 500);
         }
 
-        $model = $this->getModel();
         $positionId = (int) ($this->item->id ?? 0);
         $sportsTypeId = (int) ($this->item->sports_type_id ?? 0);
 
-        if ($model instanceof PositionModel) {
-            $this->assignedEvents = $model->getAssignedEvents($positionId);
-            $this->availableEvents = $model->getAvailableEvents($positionId, $sportsTypeId);
-            $this->assignedStatistics = $model->getAssignedStatistics($positionId);
-            $this->availableStatistics = $model->getAvailableStatistics($positionId);
-        }
+        $this->assignedEvents = $model->getAssignedEvents($positionId);
+        $this->availableEvents = $model->getAvailableEvents($positionId, $sportsTypeId);
+        $this->assignedStatistics = $model->getAssignedStatistics($positionId);
+        $this->availableStatistics = $model->getAvailableStatistics($positionId);
 
         $this->registerAssignmentScript();
 
@@ -198,21 +205,14 @@ JS);
     /**
      * Resolve the Joomla backend application for the position editor.
      *
-     * Retrieve AdministratorApplication from the Joomla dependency-injection
-     * container and verify the active client before accessing input state.
+     * Reuse the shared administrator application resolver to validate the
+     * backend client before accessing input state.
      *
      * @return AdministratorApplication Validated Joomla backend application.
      * @throws \RuntimeException If the current client is not administrator.
      */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement position view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 }

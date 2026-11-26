@@ -25,6 +25,7 @@ namespace {
     define('_JEXEC', 1);
 
     require_once dirname(__DIR__, 2) . '/site/src/Service/EditmatchLineupViewDataService.php';
+    require_once dirname(__DIR__, 2) . '/site/src/Service/EditmatchViewDataService.php';
 
     final class LineupQueryStub
     {
@@ -88,7 +89,7 @@ namespace {
         }
 
         /** Return an empty roster without needing database fixtures. */
-        public function loadObjectList(): array
+        public function loadObjectList(string $key = ''): array
         {
             return [];
         }
@@ -121,5 +122,21 @@ namespace {
         throw new \RuntimeException('Invalid exclusion inputs must not become selected player IDs.');
     }
 
-    echo "Joomla 5/6 frontend lineup excluded ID validation OK\n";
+    $read = new \Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService($db, $db);
+    $raw = [12, '0012', ' 3 ', true, false, [], null, '12garbage', '8.5', '-5', '0', PHP_INT_MAX . '0'];
+    $read->getMatchRelationsOptions(7, $raw);
+    if ($db->query->excluded !== [12, 3]
+        || !in_array('pt1.project_id = :projectId', $db->query->conditions, true)) {
+        throw new \RuntimeException('Match relation exclusions lost their project scope or accepted invalid IDs.');
+    }
+    $read->getProjectReferees($raw, 7);
+    if ($db->query->excluded !== [12, 3]
+        || !in_array('pref.project_id = :projectId', $db->query->conditions, true)) {
+        throw new \RuntimeException('Referee exclusions lost their project scope or accepted invalid IDs.');
+    }
+    $read->getProjectReferees([true, [], '-1', '1junk'], 7);
+    if ($db->query->exclusionCalls !== 0) {
+        throw new \RuntimeException('Malformed referee exclusions reached the query.');
+    }
+    echo "Joomla 5/6 frontend lineup, match and referee exclusions OK\n";
 }

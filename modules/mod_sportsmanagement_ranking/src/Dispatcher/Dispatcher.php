@@ -27,7 +27,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * the optional stylesheet when present, and fetches ranking data from
      * the helper. Validates the site client before changing the layout
      * settings. Missing results become an empty iterable list so the
-     * frontend template can render without PHP type errors.
+     * frontend template can render without PHP type errors. Optional helper
+     * failures are logged by exception class and leave the ranking empty.
      *
      * @return array|false Ranking template variables, or false if skipped.
      * @throws \RuntimeException If the dispatcher runs outside the site client.
@@ -65,11 +66,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $this->useRankingStylesheet($document, $moduleName, $style);
         }
 
-        $ranking = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
-            $data['params'],
-            $data['module'],
-            $app
-        );
+        try {
+            $ranking = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
+                $data['params'],
+                $data['module'],
+                $app
+            );
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $ranking = [];
+        }
 
         // A missing ranking must still be safe for Joomla 5/6 layouts to iterate.
         $data['list'] = is_array($ranking) ? $ranking : [];

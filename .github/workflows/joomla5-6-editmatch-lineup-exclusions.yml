@@ -5,12 +5,14 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Service/EditmatchLineupViewDataService.php'
+      - 'site/src/Service/EditmatchViewDataService.php'
       - '.github/tests/joomla56_editmatch_lineup_exclusions.php'
       - '.github/workflows/joomla5-6-editmatch-lineup-exclusions.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/src/Service/EditmatchLineupViewDataService.php'
+      - 'site/src/Service/EditmatchViewDataService.php'
       - '.github/tests/joomla56_editmatch_lineup_exclusions.php'
       - '.github/workflows/joomla5-6-editmatch-lineup-exclusions.yml'
 
@@ -35,6 +37,9 @@ jobs:
         run: |
           set -euo pipefail
           php -l site/src/Service/EditmatchLineupViewDataService.php
+          php -l site/src/Service/EditmatchViewDataService.php
+          php .github/scripts/check-php-headers.php site/src/Service/EditmatchViewDataService.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/EditmatchViewDataService.php
           php -l .github/tests/joomla56_editmatch_lineup_exclusions.php
           php .github/scripts/check-php-headers.php site/src/Service/EditmatchLineupViewDataService.php
           php .github/scripts/check-php-function-docs.php site/src/Service/EditmatchLineupViewDataService.php

@@ -66,10 +66,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
     }
     final class SeasonModel extends EditorFixture {}
     final class PredictiongroupModel extends EditorFixture {}
+    final class PositionModel extends EditorFixture {}
 }
 namespace {
     define('_JEXEC', 1);
-    foreach (['Season', 'Predictiongroup'] as $name) {
+    foreach (['Season', 'Predictiongroup', 'Position'] as $name) {
         require dirname(__DIR__, 2) . '/admin/src/View/' . $name . '/HtmlView.php';
         $viewClass = 'Diddipoeler\\Component\\SportsManagement\\Administrator\\View\\' . $name . '\\HtmlView';
         $modelClass = 'Diddipoeler\\Component\\SportsManagement\\Administrator\\Model\\' . $name . 'Model';
@@ -103,7 +104,7 @@ namespace {
         }
     }
     $entries = \Joomla\CMS\Log\Log::$entries;
-    if (count($entries) !== 2 || str_contains(implode(' ', $entries), 'PRIVATE_EDITOR_SECRET')) {
+    if (count($entries) !== 3 || str_contains(implode(' ', $entries), 'PRIVATE_EDITOR_SECRET')) {
         throw new \RuntimeException('Private editor details reached the log.');
     }
     echo "Native season and prediction group editor guards OK\n";

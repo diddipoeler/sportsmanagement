@@ -4,6 +4,8 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/src/View/Position/HtmlView.php'
+      - 'admin/src/Model/PositionModel.php'
       - 'admin/src/View/Predictiongroup/HtmlView.php'
       - '.github/tests/joomla56_native_season_predictiongroup_views.php'
       - '.github/workflows/joomla56-native-season-predictiongroup-views.yml'
@@ -11,6 +13,8 @@ on:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/src/View/Position/HtmlView.php'
+      - 'admin/src/Model/PositionModel.php'
       - 'admin/src/View/Predictiongroup/HtmlView.php'
       - '.github/tests/joomla56_native_season_predictiongroup_views.php'
       - '.github/workflows/joomla56-native-season-predictiongroup-views.yml'
@@ -32,7 +36,7 @@ jobs:
       - name: Verify editor source and native model failures
         run: |
           set -euo pipefail
-          for view in Season Predictiongroup; do
+          for view in Season Predictiongroup Position; do
             file="admin/src/View/$view/HtmlView.php"
             php -l "$file"
             if grep -Fq '$this->get(' "$file"; then
@@ -42,4 +46,5 @@ jobs:
           done
           php -l .github/tests/joomla56_native_season_predictiongroup_views.php
           php .github/tests/joomla56_native_season_predictiongroup_views.php
-          php .github/scripts/check-php-function-docs.php admin/src/View/Season/HtmlView.php admin/src/View/Predictiongroup/HtmlView.php
+          php -l admin/src/Model/PositionModel.php
+          php .github/scripts/check-php-function-docs.php admin/src/View/Season/HtmlView.php admin/src/View/Predictiongroup/HtmlView.php admin/src/View/Position/HtmlView.php admin/src/Model/PositionModel.php

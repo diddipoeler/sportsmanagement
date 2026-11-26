@@ -57,7 +57,12 @@ final class PositionModel extends SportsManagementAdminModel
         return $result;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load event types already assigned to the position in relation order.
+     * Includes translated event and sport labels for the assigned-list control.
+     * @param int $positionId Position identifier; zero represents a new record.
+     * @return array<int,object> Selection records for the position editor.
+     */
     public function getAssignedEvents(int $positionId): array
     {
         if ($positionId <= 0) {
@@ -95,7 +100,13 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /** @return array<int, object> */
+    /**
+     * List published event types not already assigned to this position.
+     * Restricts the available choices to the requested sport when supplied.
+     * @param int $positionId Existing position identifier or zero.
+     * @param int $sportsTypeId Sport identifier or zero for all sports.
+     * @return array<int,object> Selection records for the position editor.
+     */
     public function getAvailableEvents(int $positionId, int $sportsTypeId): array
     {
         $db = $this->getDatabase();
@@ -139,7 +150,12 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load the statistic definitions assigned to the position in relation order.
+     * Supplies translated statistic and sport labels to the editor.
+     * @param int $positionId Existing position identifier or zero.
+     * @return array<int,object> Selection records for the position editor.
+     */
     public function getAssignedStatistics(int $positionId): array
     {
         if ($positionId <= 0) {
@@ -177,7 +193,12 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load statistic definitions not yet linked to the selected position.
+     * Preserves the historical cross-sport choices and statistic ordering.
+     * @param int $positionId Existing position identifier or zero.
+     * @return array<int,object> Selection records for the position editor.
+     */
     public function getAvailableStatistics(int $positionId): array
     {
         $db = $this->getDatabase();

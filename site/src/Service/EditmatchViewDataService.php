@@ -23,12 +23,26 @@ use Joomla\Database\ParameterType;
  */
 final class EditmatchViewDataService
 {
+    /**
+     * Receive the two database connections required by historical match reads.
+     * Keeps the project context and default Joomla relation queries separate
+     * while avoiding any direct dependency on legacy administrator models.
+     * @param DatabaseInterface $joomlaDatabase Default Joomla connection.
+     * @param DatabaseInterface $sportsDatabase Selected SportsManagement connection.
+     */
     public function __construct(
         private readonly DatabaseInterface $joomlaDatabase,
         private readonly DatabaseInterface $sportsDatabase
     ) {
     }
 
+    /**
+     * Load the selected project's league, season, sport and round metadata.
+     * Provides the project slugs and sport-specific presentation name used
+     * by the frontend match editor.
+     * @param int $projectId Positive project identifier.
+     * @return object|null Project record or null when unavailable.
+     */
     public function getProjectContext(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -68,7 +82,7 @@ final class EditmatchViewDataService
 
         $project = $db->loadObject();
 
-        if (!$project) {
+        if (!is_object($project) || (string) ($project->id ?? '') !== (string) $projectId) {
             return null;
         }
 
@@ -79,6 +93,12 @@ final class EditmatchViewDataService
         return $project;
     }
 
+    /**
+     * Retrieve round metadata from the selected SportsManagement database.
+     * Rejects invalid round identifiers before constructing a bound query.
+     * @param int $roundId Positive round identifier.
+     * @return object|null Round record or null when unavailable.
+     */
     public function getRound(int $roundId): ?object
     {
         if ($roundId <= 0) {
@@ -98,10 +118,18 @@ final class EditmatchViewDataService
             ->bind(':roundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
-        return $db->loadObject() ?: null;
+        $round = $db->loadObject();
+        return is_object($round) && (string) ($round->id ?? '') === (string) $roundId ? $round : null;
     }
 
-    /** @return array<int,object> */
+    /**
+     * List published matches from the requested project for relation selection.
+     * Excludes valid existing relation IDs and orders matches by date and team.
+     * Uses the historical default Joomla database connection.
+     * @param int $projectId Positive project identifier.
+     * @param array $excludeMatchIds Existing match IDs to omit.
+     * @return array<int,object> Native editor selection records.
+     */
     public function getMatchRelationsOptions(int $projectId, array $excludeMatchIds = []): array
     {
         if ($projectId <= 0) {
@@ -133,7 +161,7 @@ final class EditmatchViewDataService
             ->order($db->quoteName('m.match_date') . ' DESC')
             ->order($db->quoteName('t1.short_name') . ' ASC');
 
-        $excludeMatchIds = array_values(array_filter(array_map('intval', $excludeMatchIds)));
+        $excludeMatchIds = self::positiveIds($excludeMatchIds);
 
         if ($excludeMatchIds !== []) {
             $query->whereNotIn($db->quoteName('m.id'), $excludeMatchIds, ParameterType::INTEGER);
@@ -147,7 +175,9 @@ final class EditmatchViewDataService
     /**
      * Preserve sportsmanagementModelMatch::getMatchPersons() for the remaining
      * Golf/Billard edit template without loading the administrator Match model.
-     *
+     * Retrieves published persons in the specified match and project team.
+     * @param int $projectTeamId Positive project-team identifier.
+     * @param int $matchId Positive match identifier.
      * @return array<int,object>
      */
     public function getMatchPersons(int $projectTeamId, int $matchId): array
@@ -209,7 +239,13 @@ final class EditmatchViewDataService
         return $rows;
     }
 
-    /** @return array<int,object> */
+    /**
+     * List project-specific positions for the requested person category.
+     * Returns the selection records indexed by project-position ID.
+     * @param int $projectId Positive project identifier.
+     * @param int $personType Person category used by the position definition.
+     * @return array<int,object> Native editor selection records.
+     */
     public function getProjectPositionsOptions(int $projectId, int $personType): array
     {
         if ($projectId <= 0) {
@@ -236,7 +272,13 @@ final class EditmatchViewDataService
         return $db->loadObjectList('value') ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * List published referee assignments available in the specified project.
+     * Excludes already selected project-referee IDs and adds display labels.
+     * @param array $alreadySelected Project-referee IDs to omit.
+     * @param int $projectId Positive project identifier.
+     * @return array<int,object> Native editor selection records.
+     */
     public function getProjectReferees(array $alreadySelected, int $projectId): array
     {
         if ($projectId <= 0) {
@@ -263,7 +305,7 @@ final class EditmatchViewDataService
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('pl.lastname') . ' ASC');
 
-        $alreadySelected = array_values(array_filter(array_map('intval', $alreadySelected)));
+        $alreadySelected = self::positiveIds($alreadySelected);
 
         if ($alreadySelected !== []) {
             $query->whereNotIn($db->quoteName('pref.id'), $alreadySelected, ParameterType::INTEGER);
@@ -279,7 +321,13 @@ final class EditmatchViewDataService
         return $rows;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Retrieve the referee assignments for a specific match in roster order.
+     * Optionally restricts the roster to one project-position identifier.
+     * @param int $projectPositionId Position identifier or zero for all positions.
+     * @param int $matchId Positive match identifier.
+     * @return array<int,object> Native editor selection records.
+     */
     public function getRefereeRoster(int $projectPositionId, int $matchId): array
     {
         if ($matchId <= 0) {
@@ -316,4 +364,35 @@ final class EditmatchViewDataService
 
         return $db->loadObjectList('value') ?: [];
     }
+
+    /**
+     * Normalize exclusion lists before passing them to Joomla's query builder.
+     * Accepts positive integers and bounded decimal strings, including leading
+     * zeros and surrounding whitespace, but rejects lossy casts, nested
+     * values, booleans and overflow. Removes duplicate IDs in input order.
+     * @param array $values Raw match or project-referee identifiers.
+     * @return array<int,int> Unique positive integer identifiers.
+     */
+    private static function positiveIds(array $values): array
+    {
+        $ids = [];
+        foreach ($values as $value) {
+            if (is_string($value)) {
+                if (strlen($value) > 128) {
+                    continue;
+                }
+                $value = trim($value);
+                if (preg_match('/^[0-9]+$/D', $value) !== 1) {
+                    continue;
+                }
+                $value = filter_var(ltrim($value, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            }
+            if (is_int($value) && $value > 0) {
+                $ids[$value] = $value;
+            }
+        }
+
+        return array_values($ids);
+    }
+
 }
