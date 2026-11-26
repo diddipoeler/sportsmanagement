@@ -19,6 +19,7 @@ use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\Http\HttpFactory;
+use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 model for installing SportsManagement image packages. */
 final class SmimageimportModel extends SportsManagementAdminModel
@@ -46,7 +47,9 @@ final class SmimageimportModel extends SportsManagementAdminModel
      *
      * Strictly validates and deduplicates selected image IDs and checks
      * configured archive destinations before writing to Joomla paths.
-     * Failed downloads/extractions produce generic administrator feedback;
+     * Uses a unique temporary ZIP for each download, accepts modern and legacy
+     * HTTP response APIs, removes temporary files on every exit and checks
+     * publication writes before reporting success. Failed downloads/extractions produce generic administrator feedback;
      * exception classes are logged privately without credentials or SQL.
      *
      * @return bool Whether the selected image import succeeded.
@@ -73,7 +76,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
             return false;
         }
 
-        $http = HttpFactory::getHttp([], ['curl', 'stream']);
+        $http = HttpFactory::getHttp(new Registry(), ['curl', 'stream']);
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
@@ -92,17 +95,34 @@ final class SmimageimportModel extends SportsManagementAdminModel
 
             $remoteUrl = rtrim(self::PACKAGE_SERVER, '/') . '/'
                 . $this->encodePath($folder) . '/' . rawurlencode($file);
-            $archivePath = $temporaryDirectory . '/' . $file;
+            $archivePath = null;
             $extractDirectory = JPATH_SITE . '/images/com_sportsmanagement/database/' . $directory;
 
             try {
                 $response = $http->get($remoteUrl);
-                $status = $response->getStatusCode();
-                $body = (string) $response->getBody();
+                $status = method_exists($response, 'getStatusCode')
+                    ? (int) $response->getStatusCode()
+                    : (int) ($response->code ?? 0);
+                $body = method_exists($response, 'getBody')
+                    ? (string) $response->getBody()
+                    : (string) ($response->body ?? '');
 
-                if ($status !== 200) {
+                if ($status !== 200 || $body === '') {
                     throw new \RuntimeException('HTTP ' . $status);
                 }
+
+                // Reserve a private temporary name rather than reusing a submitted filename.
+                $archivePath = tempnam($temporaryDirectory, 'jsm-image-');
+                if ($archivePath === false) {
+                    $archivePath = null;
+                    throw new \RuntimeException('Unable to reserve image archive path.');
+                }
+                // Joomla Archive selects its adapter from the filename extension.
+                $zipPath = $archivePath . '.zip';
+                if (!@rename($archivePath, $zipPath)) {
+                    throw new \RuntimeException('Unable to prepare image archive path.');
+                }
+                $archivePath = $zipPath;
 
                 if (!File::write($archivePath, $body)) {
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'));
@@ -118,24 +138,18 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'));
                 }
 
-                if (File::exists($archivePath)) {
-                    File::delete($archivePath);
-                }
-
-                $db->updateObject(
+                if (!$db->updateObject(
                     '#__sportsmanagement_pictures',
                     (object) ['id' => $id, 'published' => 1],
                     'id'
-                );
+                )) {
+                    throw new \RuntimeException('Unable to publish imported image record.');
+                }
                 $app->enqueueMessage(
                     Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name),
                     'message'
                 );
             } catch (\Throwable $e) {
-                if (File::exists($archivePath)) {
-                    File::delete($archivePath);
-                }
-
                 // Http, archive and database exceptions may contain private
                 // authentication, SQL or filesystem details.
                 Log::add(
@@ -146,6 +160,10 @@ final class SmimageimportModel extends SportsManagementAdminModel
                 $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
                 return false;
+            } finally {
+                if (is_string($archivePath) && is_file($archivePath)) {
+                    @unlink($archivePath);
+                }
             }
         }
 
