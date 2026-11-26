@@ -5,6 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/View/Clubplan/**'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'site/src/Model/ClubplanViewDataModel.php'
+      - '.github/tests/joomla56_clubplan_optional_data.php'
       - 'site/tmpl/clubplan/default.php'
       - 'site/tmpl/clubplan/default_datenav.php'
       - 'site/tmpl/clubplan/default_matches.php'
@@ -15,6 +18,9 @@ on:
     branches: [master]
     paths:
       - 'site/src/View/Clubplan/**'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'site/src/Model/ClubplanViewDataModel.php'
+      - '.github/tests/joomla56_clubplan_optional_data.php'
       - 'site/tmpl/clubplan/default.php'
       - 'site/tmpl/clubplan/default_datenav.php'
       - 'site/tmpl/clubplan/default_matches.php'
@@ -34,6 +40,10 @@ jobs:
         run: |
           set -euo pipefail
           php -l site/src/View/Clubplan/HtmlView.php
+          php -l site/src/Model/ClubplanModel.php
+          php -l site/src/Model/ClubplanViewDataModel.php
+          php -l .github/tests/joomla56_clubplan_optional_data.php
+          php .github/tests/joomla56_clubplan_optional_data.php
           php -l site/tmpl/clubplan/default.php
           php -l site/tmpl/clubplan/default_datenav.php
           php -l site/tmpl/clubplan/default_matches.php

@@ -25,7 +25,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare team statistics rankings for the frontend template.
      *
-     * Loads the component translations, registers the ranking stylesheet for HTML output and merges helper results without replacing Joomla-owned module or layout values.
+     * Loads translations and registers the shared stylesheet for HTML output.
+     * Isolates optional database and helper failures and supplies the full
+     * ranking payload with safe defaults, retaining Joomla-owned layout data.
      *
      * @return array|false Template context, or false when rendering is skipped.
      * @throws \RuntimeException When invoked outside Joomla's site client.
@@ -70,13 +72,23 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $assets->useStyle('mod_sportsmanagement_teamstats_ranking');
         }
 
-        $joomlaDatabase = $this->joomlaDatabase();
-        $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
+        try {
+            $joomlaDatabase = $this->joomlaDatabase();
+            $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
+            $payload = $helper->getData($data['params'], $joomlaDatabase);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $payload = [];
+        }
 
-        $payload = $helper->getData($data['params'], $joomlaDatabase);
-
-        // A failed or empty helper response must not break module rendering.
+        // A failed or incomplete helper response must still define every
+        // variable consumed by the template.
         $payload = is_array($payload) ? $payload : [];
+        $payload['project'] = is_object($payload['project'] ?? null) ? $payload['project'] : null;
+        $payload['stat'] = is_object($payload['stat'] ?? null) ? $payload['stat'] : null;
+        $payload['ranking'] = is_array($payload['ranking'] ?? null) ? $payload['ranking'] : [];
+        $payload['teams'] = is_array($payload['teams'] ?? null) ? $payload['teams'] : [];
+        $payload['databaseSelector'] = ($payload['databaseSelector'] ?? null) === 1 ? 1 : 0;
 
         // Preserve the framework-provided module context and selected layout.
         unset($payload['module'], $payload['params'], $payload['layout']);

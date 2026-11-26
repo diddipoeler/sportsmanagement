@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictionro
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictionroundsModel;
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -32,6 +32,17 @@ final class HtmlView extends BaseHtmlView
     public string $sortDirection = 'ASC';
     public string $sortColumn = 'roundcode';
 
+    /**
+     * Render the prediction-round administration list and its filters.
+     *
+     * Reads state, pagination and rows directly from the native list model,
+     * retrieves the selected prediction game and displays a translated
+     * notice for empty selections before registering toolbar actions.
+     *
+     * @param string|null $tpl Optional Joomla layout suffix.
+     * @return void
+     * @throws \RuntimeException If the model is unavailable or reports errors.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -41,18 +52,18 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('PredictionroundsModel is unavailable.', 500);
         }
 
-        $this->state = $this->get('State');
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->filterForm = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters') ?: [];
+        $this->state = $model->getState();
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->filterForm = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters() ?: [];
         $this->prediction_id = (int) $this->state->get('filter.prediction_id', 0);
         $this->pred_project = $model->getPredictionGame($this->prediction_id);
         $this->user = $app->getIdentity();
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 'roundcode');
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
@@ -77,18 +88,22 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve the active administrator client through the shared service.
+     * Keeps application validation consistent with other prediction views.
+     * @return AdministratorApplication Validated Joomla backend application.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement prediction rounds view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Configure prediction-round navigation and edit actions.
+     * Provides publication, bulk save, import and deletion tasks for the
+     * selected prediction game through Joomla's administrator toolbar.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_TITLE'), 'calendar');

@@ -53,7 +53,11 @@ final class ClubplanModel extends SportsManagementProjectModel
         self::$type = max(0, $input->getInt('type', 0));
         self::$teamprojectssel = max(0, $input->getInt('teamprojectssel', 0));
         self::$teamseasonssel = max(0, $input->getInt('teamseasonssel', 0));
-        self::$cfg_which_database = max(0, $input->getInt('cfg_which_database', 0));
+        // Match the native model's raw database-selector contract rather
+        // than reinterpreting partially numeric strings in route links.
+        $rawDatabase = $input->get('cfg_which_database', 0, 'raw');
+        self::$cfg_which_database = $rawDatabase === 1 || (is_string($rawDatabase)
+            && strlen($rawDatabase) <= 64 && preg_match('/^0*1$/D', $rawDatabase) === 1) ? 1 : 0;
 
         self::setStartDate($input->getString('startdate', ''));
         self::setEndDate($input->getString('enddate', ''));

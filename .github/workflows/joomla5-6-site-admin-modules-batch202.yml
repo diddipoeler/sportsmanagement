@@ -54,11 +54,15 @@ jobs:
           grep -Fq -- 'if ($this->document instanceof HtmlDocument)' site/views/resultsmatrix/view.html.php
 
           grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Predictionrounds/HtmlView.php
-          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Predictionrounds/HtmlView.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/View/Predictionrounds/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Predictionrounds/HtmlView.php
 
           grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
-          grep -Fq -- "if ($document instanceof HtmlDocument && $data['mode'] === 'BC')" modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          grep -Fq -- "if (\$document instanceof HtmlDocument && \$data['mode'] === 'BC')" modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
           ! grep -Fq -- '$app->getDocument()->getWebAssetManager()' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
 
+          if grep -Fq '$this->get(' admin/src/View/Predictionrounds/HtmlView.php; then
+            echo 'Prediction rounds uses the deprecated generic view getter.' >&2
+            exit 1
+          fi
           echo 'Joomla 5/6 batch 202 contracts OK.'

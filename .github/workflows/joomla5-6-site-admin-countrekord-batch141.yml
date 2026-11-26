@@ -73,7 +73,11 @@ jobs:
           grep -Fq 'SportsManagement native administrator Leagues view could not be loaded.' "$admin_bridge"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewLeagues')" "$admin_bridge"
 
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq '$app->isClient(' "$dispatcher"
+          if grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"; then
+            echo 'CountRekord must not require a concrete site application class.' >&2
+            exit 1
+          fi
           grep -Fq 'SportsManagement CountRekord requires the Joomla site application.' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 

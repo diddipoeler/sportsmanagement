@@ -69,6 +69,8 @@ jobs:
           grep -Fq 'if ($data === false)' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'catch (\Throwable $e)' "$dispatcher"
+          grep -Fq '$payload['"'ranking'"'] = is_array' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$bridge"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
           grep -Fq 'DatabaseInterface $fallbackDatabase' "$helper"
