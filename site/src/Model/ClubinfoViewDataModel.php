@@ -135,6 +135,13 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             )
             ->where($db->quoteName('st2.team_id') . ' = ' . $db->quoteName('t.id'));
 
+        /**
+         * Build a correlated lookup for the latest project-team field.
+         * Uses the current team's season assignments and a stable project
+         * and record ordering to select exactly one matching row.
+         * @param string $column Trusted project-team column.
+         * @return mixed Joomla database query.
+         */
         $latestProjectTeamSubquery = static function (string $column) use ($db) {
             return $db->createQuery()
                 ->select($db->quoteName($column))
@@ -242,7 +249,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($clubQuery, 0, 1);
-            $standard = (int) $db->loadResult();
+            $standard = $this->normaliseIds([$db->loadResult()])[0] ?? 0;
             if ($standard > 0) {
                 $ids[$standard] = $standard;
             }
@@ -252,7 +259,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
         $teamIds = [];
         foreach ($teams as $team) {
-            $teamId = (int) ($team->id ?? 0);
+            $teamId = is_object($team) ? ($this->normaliseIds([$team->id ?? null])[0] ?? 0) : 0;
             if ($teamId > 0) {
                 $teamIds[$teamId] = $teamId;
             }
@@ -275,7 +282,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         try {
             $db->setQuery($query);
             foreach ($db->loadColumn() ?: [] as $value) {
-                $id = (int) $value;
+                $id = $this->normaliseIds([$value])[0] ?? 0;
                 if ($id > 0) {
                     $ids[$id] = $id;
                 }
@@ -294,13 +301,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
      */
     public function getPlaygroundsByIds(array $stadiumIds): array
     {
-        $ids = [];
-        foreach ($stadiumIds as $value) {
-            $id = (int) $value;
-            if ($id > 0) {
-                $ids[$id] = $id;
-            }
-        }
+        $ids = $this->normaliseIds($stadiumIds);
         if ($ids === []) {
             return [];
         }
@@ -361,17 +362,34 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         return [];
     }
 
-    /** @return array<int, int> */
+    /**
+     * Normalize legacy season, team and playground identifiers for SQL binding.
+     *
+     * Accepts positive integers and decimal strings, including leading
+     * zeros and historical pipe/comma-separated lists. Rejects booleans,
+     * nested values, partial numbers and overflow without PHP integer
+     * coercion. Keeps each valid ID once, preserving selection order.
+     *
+     * @param mixed $value Raw selection or database result.
+     * @return array<int,int> Unique positive identifiers.
+     */
     private function normaliseIds(mixed $value): array
     {
-        $parts = is_array($value)
-            ? $value
-            : preg_split('/[|,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        $parts = is_string($value)
+            ? (preg_split('/[|,;\s]+/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [])
+            : (is_array($value) ? $value : [$value]);
         $ids = [];
-        foreach ($parts ?: [] as $part) {
-            $id = (int) $part;
-            if ($id > 0) {
-                $ids[$id] = $id;
+        foreach ($parts as $part) {
+            if (is_string($part)) {
+                if (strlen($part) > 128 || preg_match('/^[0-9]+$/D', $part) !== 1) {
+                    continue;
+                }
+
+                $part = filter_var(ltrim($part, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            }
+
+            if (is_int($part) && $part > 0) {
+                $ids[$part] = $part;
             }
         }
 

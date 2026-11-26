@@ -55,10 +55,11 @@ jobs:
           ! grep -Fq -- 'addCustomTag(' site/views/matchreport/view.html.php
 
           grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Predictiongames/HtmlView.php
-          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Predictiongames/HtmlView.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/View/Predictiongames/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Predictiongames/HtmlView.php
 
           grep -Fq -- "JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php'" modules/mod_sportsmanagement_teamstats_ranking/helper.php
-          grep -Fq -- 'SportsManagement SiteRouteHelper could not be loaded for Team Stats Ranking.' modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          grep -Fq -- 'SportsManagement Team Stats Ranking dependency could not be loaded:' modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          grep -Fq -- 'if (!class_exists($requiredClass))' modules/mod_sportsmanagement_teamstats_ranking/helper.php
 
           echo 'Joomla 5/6 batch 182 contracts OK.'

@@ -32,8 +32,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * template defaults. Enables Bootstrap carousel assets only for relevant
      * modes in an HTML document.
      *
+     * Optional database and helper failures are logged by exception class
+     * and return empty template records so the surrounding page stays usable.
+     *
      * @return array|false Birthday template variables, or false if skipped.
-     * @throws \RuntimeException Outside the site application or without a database.
+     * @throws \RuntimeException Outside the site application.
      */
     protected function getLayoutData(): array|false
     {
@@ -57,13 +60,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $database = $this->joomlaDatabase();
-        $result = $this->getHelperFactory()->getHelper('BirthdayHelper')->getData(
-            $data['params'],
-            ComponentHelper::getParams('com_sportsmanagement'),
-            $app,
-            $database
-        );
+        try {
+            $database = $this->joomlaDatabase();
+            $result = $this->getHelperFactory()->getHelper('BirthdayHelper')->getData(
+                $data['params'],
+                ComponentHelper::getParams('com_sportsmanagement'),
+                $app,
+                $database
+            );
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $result = [];
+        }
 
         // Keep rendering safe when a legacy helper supplies no result array.
         $result = is_array($result) ? $result : [];

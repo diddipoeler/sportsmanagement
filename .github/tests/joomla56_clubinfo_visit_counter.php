@@ -78,5 +78,21 @@ namespace {
     if ($model->getClubById(7, true) !== null || $db->writes !== 1) {
         throw new \RuntimeException('Club read construction failure was not isolated.');
     }
-    echo "Club visit counter guards OK\n";
+    $normalise = new \ReflectionMethod($model, 'normaliseIds');
+    foreach ([
+        [['0007', 7, 2, true, ['3'], '4junk', '99999999999999999999999999'], [7, 2]],
+        ['0004|5,6; 7', [4, 5, 6, 7]],
+        [false, []],
+        [new \stdClass(), []],
+    ] as [$raw, $expected]) {
+        if ($normalise->invoke($model, $raw) !== $expected) {
+            throw new \RuntimeException('Malformed club season or playground IDs were accepted.');
+        }
+    }
+    $queries = $db->queries;
+    if ($model->getPlaygroundsByIds([true, ['1'], '3junk']) !== []
+        || $db->queries !== $queries) {
+        throw new \RuntimeException('Malformed playground selection reached the database.');
+    }
+    echo "Club visit counter and identifier guards OK\n";
 }

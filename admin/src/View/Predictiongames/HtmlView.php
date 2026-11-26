@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictionga
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongamesModel;
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -109,19 +109,14 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::addNew('predictiongame.add');
     }
     /**
-     * Resolve and validate the Joomla administrator application.
-     * @return AdministratorApplication
+     * Resolve the Joomla administrator application through the shared service.
+     * Reuses the component's client and dependency validation for toolbar
+     * permissions and administrator notifications.
+     * @return AdministratorApplication Active backend application.
      */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement prediction games view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
 }

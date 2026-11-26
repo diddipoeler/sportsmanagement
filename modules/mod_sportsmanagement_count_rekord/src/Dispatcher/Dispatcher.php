@@ -27,8 +27,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Obtains the Joomla database, calls the module helper and guarantees an array for template iteration.
      *
+     * Optional database and helper failures are logged by exception class
+     * and return empty template records so the surrounding page stays usable.
+     *
      * @return array|false Layout data or false if rendering is skipped.
-     * @throws \RuntimeException If the site client or database is unavailable.
+     * @throws \RuntimeException If the site client is unavailable.
      */
     protected function getLayoutData(): array|false
     {
@@ -44,10 +47,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement CountRekord requires the Joomla site application.', 500);
         }
 
-        $database = $this->joomlaDatabase();
-        $records = $this->getHelperFactory()
-            ->getHelper('CountRekordHelper')
-            ->getData($data['params'], $data['module'], $database);
+        try {
+            $database = $this->joomlaDatabase();
+            $records = $this->getHelperFactory()
+                ->getHelper('CountRekordHelper')
+                ->getData($data['params'], $data['module'], $database);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $records = [];
+        }
 
         $data['list'] = is_array($records) ? $records : [];
 

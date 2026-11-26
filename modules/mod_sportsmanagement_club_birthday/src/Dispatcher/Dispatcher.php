@@ -25,8 +25,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Normalises optional club records and display mode, loads component translations and enables Bootstrap carousel only for the compatible birthday-carousel layout.
      *
+     * Optional database and helper failures are logged by exception class
+     * and return empty template records so the surrounding page stays usable.
+     *
      * @return array|false Layout variables, or false if Joomla skips rendering.
-     * @throws \RuntimeException When called outside the site or without a database.
+     * @throws \RuntimeException When called outside the site.
      */
     protected function getLayoutData(): array|false
     {
@@ -50,10 +53,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $database = $this->joomlaDatabase();
-        $result = $this->getHelperFactory()
-            ->getHelper('ClubBirthdayHelper')
-            ->getData($data['params'], $app, $database);
+        try {
+            $database = $this->joomlaDatabase();
+            $result = $this->getHelperFactory()
+                ->getHelper('ClubBirthdayHelper')
+                ->getData($data['params'], $app, $database);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $result = [];
+        }
 
         // Legacy helpers can return no result when club data is unavailable.
         $result = is_array($result) ? $result : [];
