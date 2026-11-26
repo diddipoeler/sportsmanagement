@@ -25,6 +25,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Loads the component language, normalises helper data, and reuses
      * CSS on HTML pages while enabling ticker JavaScript only in ticker mode.
+     * Optional helper failures leave the schedule empty and log only the
+     * exception class rather than exposing driver details.
      *
      * @return array|false Render variables, or false when skipped.
      * @throws \RuntimeException When the application is not the site client.
@@ -44,9 +46,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
-        $plan = $this->getHelperFactory()
-            ->getHelper('PlaygroundPlanHelper')
-            ->getData($data['params'], $app, $data['module']);
+        try {
+            $plan = $this->getHelperFactory()
+                ->getHelper('PlaygroundPlanHelper')
+                ->getData($data['params'], $app, $data['module']);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $plan = [];
+        }
         $data['list'] = is_array($plan) ? $plan : [];
 
         $document = $app->getDocument();

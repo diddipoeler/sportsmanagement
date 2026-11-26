@@ -55,10 +55,10 @@ jobs:
           ! grep -Fq -- "die('Restricted access')" site/views/rankingplayerbillard/view.html.php
 
           grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Predictiongroup/HtmlView.php
-          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Predictiongroup/HtmlView.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/View/Predictiongroup/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Predictiongroup/HtmlView.php
 
-          grep -Fq -- 'use Joomla\\CMS\\Application\\SiteApplication;' modules/mod_sportsmanagement_act_season/helper.php
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq -- 'use Joomla\CMS\Application\CMSApplicationInterface;' modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq -- "SportsManagementSiteApplicationResolver::resolve()" modules/mod_sportsmanagement_act_season/helper.php
 
           echo 'Joomla 5/6 batch 181 contracts OK.'

@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - '.github/tests/joomla56_modal_image_safe_urls.php'
       - '.github/tests/joomla56_site_document_assets.php'
@@ -14,6 +15,7 @@ on:
     branches: [master]
     paths:
       - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - '.github/tests/joomla56_modal_image_safe_urls.php'
       - '.github/tests/joomla56_site_document_assets.php'
@@ -32,6 +34,8 @@ jobs:
         run: |
           set -euo pipefail
           php -l site/src/View/SportsManagementHtmlView.php
+          php -l site/src/View/SportsManagementProjectHtmlView.php
+          php .github/scripts/check-php-function-docs.php site/src/View/SportsManagementProjectHtmlView.php
           php -l site/src/Helper/ModalImageHelper.php
           php -l .github/tests/joomla56_modal_image_safe_urls.php
           php .github/scripts/check-php-function-docs.php site/src/Helper/ModalImageHelper.php .github/tests/joomla56_modal_image_safe_urls.php

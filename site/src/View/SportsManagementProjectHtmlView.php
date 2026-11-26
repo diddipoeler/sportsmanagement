@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Uri\Uri;
 
 abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
@@ -34,7 +35,6 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public float $jsmseitenaufbau = 0.0;
 
     private bool $presentationDependenciesLoaded = false;
-    private bool $presentationAssetsLoaded = false;
 
     /**
      * Initialise the shared project view and add the common frontend template directory.
@@ -127,19 +127,20 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Register legacy presentation dependencies when requested, initialise shared debug and picture-server constants and activate common styles through the Web Asset Manager once per view instance.
+     * Initialize compatibility dependencies and shared presentation constants.
+     * Load legacy aliases once per view instance, preserving existing template
+     * overrides. Activate common styles only on the active HTML document and
+     * reuse definitions already registered by another project view.
      * @return void
      */
     private function loadPresentationDependencies(): void
     {
-        if ($this->presentationDependenciesLoaded) {
-            return;
-        }
+        if (!$this->presentationDependenciesLoaded) {
+            if ($this->requiresLegacyPresentationDependencies()) {
+                LegacyPresentationLoader::register();
+            }
 
-        $this->presentationDependenciesLoaded = true;
-
-        if ($this->requiresLegacyPresentationDependencies()) {
-            LegacyPresentationLoader::register();
+            $this->presentationDependenciesLoaded = true;
         }
 
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
@@ -150,32 +151,29 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
             \define('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $external ? (string) $this->params->get('cfg_which_database_server', '') : Uri::root());
         }
 
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
         $base = Uri::root(true);
-        $wa = $this->getDocument()->getWebAssetManager();
-        $wa->registerAndUseStyle(
-                'com_sportsmanagement.site.extended-base',
-                $base . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css'
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site.admin-style',
-                $base . '/administrator/components/com_sportsmanagement/assets/css/style.css'
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site.admin-stylebox',
-                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox.css'
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site.extended',
-                $base . '/administrator/components/com_sportsmanagement/assets/css/extended_4.css'
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site.stylebox',
-                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css'
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site.modalwithoutjs',
-                $base . '/components/com_sportsmanagement/assets/css/modalwithoutjs.css'
-            );
+        $wa = $document->getWebAssetManager();
+
+        foreach ([
+            'extended-base' => '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css',
+            'admin-style' => '/administrator/components/com_sportsmanagement/assets/css/style.css',
+            'admin-stylebox' => '/administrator/components/com_sportsmanagement/assets/css/stylebox.css',
+            'extended' => '/administrator/components/com_sportsmanagement/assets/css/extended_4.css',
+            'stylebox' => '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css',
+            'modalwithoutjs' => '/components/com_sportsmanagement/assets/css/modalwithoutjs.css',
+        ] as $suffix => $path) {
+            $name = 'com_sportsmanagement.site.' . $suffix;
+            if (!$wa->assetExists('style', $name)) {
+                $wa->registerStyle($name, $base . $path);
+            }
+            $wa->useStyle($name);
+        }
     }
 
     /**
@@ -198,17 +196,20 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     }
 
     /**
-     * Activate jQuery and the JCE MediaBox assets according to the concrete view's dependency requirements, avoiding duplicate registration within the view instance.
+     * Activate optional jQuery and JCE MediaBox assets on HTML documents.
+     * Reuses the document's registry across views and repeated renders,
+     * preserving the original script dependency and stylesheet paths.
      * @return void
      */
     private function loadPresentationAssets(): void
     {
-        if ($this->presentationAssetsLoaded) {
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
             return;
         }
 
-        $this->presentationAssetsLoaded = true;
-        $wa = $this->getDocument()->getWebAssetManager();
+        $wa = $document->getWebAssetManager();
 
         if ($this->requiresJquery()) {
             $wa->useScript('jquery');
@@ -219,16 +220,22 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         }
 
         $base = Uri::root(true);
-        $wa->registerAndUseStyle(
-                'com_sportsmanagement.site.jcemediabox',
-                $base . '/components/com_sportsmanagement/assets/css/jcemediabox.css'
-            )
-            ->registerAndUseScript(
-                'com_sportsmanagement.site.jcemediabox',
+        $name = 'com_sportsmanagement.site.jcemediabox';
+
+        if (!$wa->assetExists('style', $name)) {
+            $wa->registerStyle($name, $base . '/components/com_sportsmanagement/assets/css/jcemediabox.css');
+        }
+        if (!$wa->assetExists('script', $name)) {
+            $wa->registerScript(
+                $name,
                 $base . '/components/com_sportsmanagement/assets/js/jcemediabox.js',
                 [],
                 [],
                 ['jquery']
             );
+        }
+
+        $wa->useStyle($name);
+        $wa->useScript($name);
     }
 }

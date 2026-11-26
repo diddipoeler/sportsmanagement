@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Seasons;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonsModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -29,7 +30,7 @@ final class HtmlView extends BaseHtmlView
      * Populate and render the season administration list.
      *
      * Require the native SeasonsModel, collect rows, pagination, filter form
-     * and state, reject reported model errors and prepare the list toolbar.
+     * and state, redact reported model errors and prepare the list toolbar.
      * The inherited view then outputs the current Joomla administrator layout.
      *
      * @param string|null $tpl Optional template suffix.
@@ -51,7 +52,8 @@ final class HtmlView extends BaseHtmlView
         $this->activeFilters = $model->getActiveFilters() ?: [];
 
         if ($errors = $model->getErrors()) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
         }
 
         $this->addToolbar();

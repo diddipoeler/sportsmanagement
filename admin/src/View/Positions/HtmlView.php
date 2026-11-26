@@ -11,7 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Positions;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\PositionsModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -27,8 +29,8 @@ final class HtmlView extends BaseHtmlView
     /**
      * Prepare the administrator list of sports positions and assignments.
      *
-     * Load position records, list state and filters, obtain parent-position
-     * options for hierarchical ordering, and surface model errors. Set up
+     * Require the native PositionsModel and retrieve its records, state,
+     * filters and parent-position options directly. Redact internal errors. Set up
      * the native Joomla toolbar for save-short, publish, import, export and
      * other position-management tasks before rendering the list.
      *
@@ -38,16 +40,23 @@ final class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
-        $this->filterForm = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters') ?: [];
-        $this->parents = $this->getModel()->getParentsPositions();
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+        if (!$model instanceof PositionsModel) {
+            throw new \RuntimeException('PositionsModel is unavailable.', 500);
         }
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters() ?: [];
+        if ($errors = $model->getErrors()) {
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
+        }
+
+        $this->parents = $model->getParentsPositions();
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE'), 'list');
         ToolbarHelper::apply('positions.saveshort');

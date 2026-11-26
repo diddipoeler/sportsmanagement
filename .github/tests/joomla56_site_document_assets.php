@@ -35,6 +35,9 @@ namespace Joomla\CMS\MVC\View {
          * @return void
          */
         public function setDocument(\Joomla\CMS\Document\Document $document): void { $this->document = $document; }
+
+        /** Return the current response document. @return \Joomla\CMS\Document\Document|null Injected document. */
+        public function getDocument(): ?\Joomla\CMS\Document\Document { return $this->document; }
     }
 }
 namespace Joomla\CMS\Uri {
@@ -51,21 +54,36 @@ namespace Joomla\CMS\Uri {
 namespace {
     define('_JEXEC', 1);
     require dirname(__DIR__, 2) . '/site/src/View/SportsManagementHtmlView.php';
+    require dirname(__DIR__, 2) . '/site/src/View/SportsManagementProjectHtmlView.php';
     $assets = new class {
         public array $registered = [];
         public array $used = [];
+        public array $styles = [];
+        public array $usedStyles = [];
+        public array $dependencies = [];
         /** Check the registry for a named script. @param string $type Asset kind. @param string $name Identifier. @return bool Presence. */
-        public function assetExists(string $type, string $name): bool { return isset($this->registered[$name]); }
+        public function assetExists(string $type, string $name): bool { return $type === 'style' ? isset($this->styles[$name]) : isset($this->registered[$name]); }
         /** Record a unique script and its configuration. @param string $name Asset ID. @param string $url Script URI. @param array $options Cache options. @param array $attributes HTML attributes. @return void */
-        public function registerScript(string $name, string $url, array $options, array $attributes): void
+        public function registerScript(string $name, string $url, array $options, array $attributes, array $dependencies = []): void
         {
             if (isset($this->registered[$name])) {
                 throw new \RuntimeException('Duplicate asset registration.');
             }
             $this->registered[$name] = [$url, $options, $attributes];
+            $this->dependencies[$name] = $dependencies;
         }
         /** Activate a registered script. @param string $name Asset identifier. @return void */
         public function useScript(string $name): void { $this->used[] = $name; }
+        /** Register a stylesheet only once. @param string $name Asset identifier. @param string $url Source. @return void */
+        public function registerStyle(string $name, string $url): void
+        {
+            if (isset($this->styles[$name])) {
+                throw new \RuntimeException('Duplicate stylesheet registration.');
+            }
+            $this->styles[$name] = $url;
+        }
+        /** Activate the shared stylesheet. @param string $name Asset name. @return void */
+        public function useStyle(string $name): void { $this->usedStyles[] = $name; }
     };
     $view = new class extends \Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView {
         /** Bypass request initialization to isolate document injection. */
@@ -87,5 +105,38 @@ namespace {
         || $assets->used !== [$name, $name, $name]) {
         throw new \RuntimeException('Shared HTML assets were not registered and activated correctly.');
     }
-    echo "Native document injection and shared assets OK\n";
+    $projectView = new class extends \Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView {
+        /** Construct an isolated project view without a Joomla request. */
+        public function __construct()
+        {
+            $this->params = new class {
+                /** Supply default presentation settings. @param string $key Parameter name. @param mixed $default Fallback. @return mixed Value. */
+                public function get(string $key, mixed $default = null): mixed { return $default; }
+            };
+        }
+        /** Keep legacy helper loading out of this native asset test. @return bool Always false. */
+        protected function requiresLegacyPresentationDependencies(): bool { return false; }
+    };
+    $base = \Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView::class;
+    $common = new \ReflectionMethod($base, 'loadPresentationDependencies');
+    $optional = new \ReflectionMethod($base, 'loadPresentationAssets');
+    $projectView->setDocument($plain);
+    $common->invoke($projectView);
+    $optional->invoke($projectView);
+    if ($assets->styles !== []) {
+        throw new \RuntimeException('Non-HTML project view registered styles.');
+    }
+    $secondProjectView = clone $projectView;
+    foreach ([$projectView, $secondProjectView, $projectView] as $instance) {
+        $instance->setDocument($html);
+        $common->invoke($instance);
+        $optional->invoke($instance);
+    }
+    $jce = 'com_sportsmanagement.site.jcemediabox';
+    if (count($assets->styles) !== 7 || count($assets->registered) !== 2
+        || $assets->dependencies[$jce] !== ['jquery']
+        || count($assets->usedStyles) !== 21) {
+        throw new \RuntimeException('Project presentation assets were not reused across views.');
+    }
+    echo "Native document injection and shared project assets OK\n";
 }
