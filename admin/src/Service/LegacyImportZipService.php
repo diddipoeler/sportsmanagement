@@ -24,7 +24,16 @@ final class LegacyImportZipService
     private const MAX_ENTRIES = 100;
 
     /**
-     * @param string[] $extensions  Allowed data extensions, without a dot.
+     * Stage exactly one supported root-level ZIP entry into the import destination.
+     * Validates archive and entry sizes, rejects unsafe paths and non-regular
+     * Unix entries, and streams the selected data into a temporary file in
+     * the destination directory. The existing destination is replaced only
+     * after the complete payload has been written and the stream closed.
+     *
+     * @param string $archivePath Path to the uploaded ZIP archive.
+     * @param string $targetPath Destination for the validated import data.
+     * @param string[] $extensions Allowed data extensions, without a dot.
+     * @return bool Whether the import file was staged successfully.
      */
     public static function stage(string $archivePath, string $targetPath, array $extensions): bool
     {
@@ -96,6 +105,16 @@ final class LegacyImportZipService
                     return false;
                 }
 
+                // Unix archive metadata can mark a candidate as a symbolic link
+                // or special file. Accept only regular files or unspecified types.
+                if ($archive->getExternalAttributesIndex($i, $opsys, $attributes)
+                    && $opsys === \ZipArchive::OPSYS_UNIX) {
+                    $type = ($attributes >> 16) & 0170000;
+                    if ($type !== 0 && $type !== 0100000) {
+                        return false;
+                    }
+                }
+
                 $entry = $name;
                 $expectedBytes = $info['size'];
             }
@@ -110,9 +129,15 @@ final class LegacyImportZipService
                 return false;
             }
 
-            $stagedPath = tempnam(dirname($targetPath), 'jsm-zip-');
+            $stagedPath = @tempnam(dirname($targetPath), 'jsm-zip-');
 
             if ($stagedPath === false) {
+                return false;
+            }
+
+            // tempnam can fall back to the system temp folder. Do not stage
+            // across filesystems or outside the intended destination directory.
+            if (realpath(dirname($stagedPath)) !== realpath(dirname($targetPath))) {
                 return false;
             }
 
@@ -143,8 +168,13 @@ final class LegacyImportZipService
                 return false;
             }
 
-            fclose($output);
+            $flushed = fflush($output);
+            $closed = fclose($output);
             $output = null;
+
+            if (!$flushed || !$closed) {
+                return false;
+            }
 
             // An attacker must not replace a symlink with executable source.
             if (is_link($targetPath) || !@rename($stagedPath, $targetPath)) {
