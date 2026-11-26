@@ -27,10 +27,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Loads translations, selects the Joomla 5/6 native layout, queries the
      * project helper and determines whether the user can create articles.
-     * Adds the module CSS and JavaScript only for HTML documents.
+     * Adds the module CSS and JavaScript only for HTML documents. Optional
+     * service or permission-check failures yield empty results and disable
+     * article creation, logging the exception class without private details.
      *
      * @return array|false Render variables or false when rendering is skipped.
-     * @throws \RuntimeException Outside the site client or without a database.
+     * @throws \RuntimeException Outside the site client.
      */
     protected function getLayoutData(): array|false
     {
@@ -48,12 +50,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
         $data['params']->set('layout', 'native');
-        $database = $this->joomlaDatabase();
-        $projects = $helper->getData($data['params'], $app, $database);
-        $data['list'] = is_array($projects) ? $projects : [];
-        $data['canCreateArticles'] = (bool) $helper->canCreateArticles($data['params'], $app);
+        $data['list'] = [];
+        $data['canCreateArticles'] = false;
+
+        try {
+            $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
+            $database = $this->joomlaDatabase();
+            $projects = $helper->getData($data['params'], $app, $database);
+            $data['list'] = is_array($projects) ? $projects : [];
+            $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app) === true;
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+        }
 
         $document = $app->getDocument();
 

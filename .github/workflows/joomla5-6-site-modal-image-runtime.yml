@@ -7,6 +7,7 @@ on:
       - 'site/src/View/SportsManagementHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - '.github/tests/joomla56_modal_image_safe_urls.php'
+      - '.github/tests/joomla56_site_document_assets.php'
       - 'site/assets/js/modal-image-popup.js'
       - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
       - 'site/src/View/SportsManagementHtmlView.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - '.github/tests/joomla56_modal_image_safe_urls.php'
+      - '.github/tests/joomla56_site_document_assets.php'
       - 'site/assets/js/modal-image-popup.js'
       - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
 
@@ -34,6 +36,8 @@ jobs:
           php -l .github/tests/joomla56_modal_image_safe_urls.php
           php .github/scripts/check-php-function-docs.php site/src/Helper/ModalImageHelper.php .github/tests/joomla56_modal_image_safe_urls.php
           php .github/tests/joomla56_modal_image_safe_urls.php
+          php -l .github/tests/joomla56_site_document_assets.php
+          php .github/tests/joomla56_site_document_assets.php
           node --check site/assets/js/modal-image-popup.js
 
           python3 - <<'PY'

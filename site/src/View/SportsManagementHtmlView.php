@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Document\Document;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Uri\Uri;
@@ -77,18 +78,36 @@ abstract class SportsManagementHtmlView extends HtmlView
     }
 
     /**
-     * Joomla injects the active document after the MVC factory has created the view.
-     * Register shared assets only after that injection has happened.
+     * Accept the document injected by Joomla and activate shared HTML assets.
+     *
+     * Retains every document type in the parent MVC view, but avoids web
+     * asset access on feed, JSON and other non-HTML responses. Registers
+     * the popup script once per document so multiple component views can
+     * share its asset registry without replacing an existing definition.
+     *
+     * @param Document $document Joomla's active response document.
+     * @return void
      */
     public function setDocument(Document $document): void
     {
         parent::setDocument($document);
 
-        $document->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.site.modal-image-popup',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/modal-image-popup.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $assets = $document->getWebAssetManager();
+        $name = 'com_sportsmanagement.site.modal-image-popup';
+
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript(
+                $name,
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/modal-image-popup.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
+
+        $assets->useScript($name);
     }
 }

@@ -1,0 +1,45 @@
+name: Joomla 5/6 native season and prediction group editors
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/src/View/Predictiongroup/HtmlView.php'
+      - '.github/tests/joomla56_native_season_predictiongroup_views.php'
+      - '.github/workflows/joomla56-native-season-predictiongroup-views.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/src/View/Predictiongroup/HtmlView.php'
+      - '.github/tests/joomla56_native_season_predictiongroup_views.php'
+      - '.github/workflows/joomla56-native-season-predictiongroup-views.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-editors:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Verify editor source and native model failures
+        run: |
+          set -euo pipefail
+          for view in Season Predictiongroup; do
+            file="admin/src/View/$view/HtmlView.php"
+            php -l "$file"
+            if grep -Fq '$this->get(' "$file"; then
+              echo "$file still uses generic view getters"
+              exit 1
+            fi
+          done
+          php -l .github/tests/joomla56_native_season_predictiongroup_views.php
+          php .github/tests/joomla56_native_season_predictiongroup_views.php
+          php .github/scripts/check-php-function-docs.php admin/src/View/Season/HtmlView.php admin/src/View/Predictiongroup/HtmlView.php

@@ -13,7 +13,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongr
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongroupModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -29,8 +32,8 @@ final class HtmlView extends BaseHtmlView
      * Prepare and render the prediction-group editing interface.
      *
      * Resolve the Joomla administrator application, hide the main menu
-     * while editing, obtain the form, record and state from the MVC model,
-     * and report any loading errors. Enable the Joomla form-validation
+     * while editing, obtain the form, record and state directly from the
+     * native model, and report loading errors without disclosing SQL details. Enable the Joomla form-validation
      * asset on HTML documents, configure group actions in the toolbar
      * and delegate rendering to the base administrator view.
      *
@@ -43,15 +46,22 @@ final class HtmlView extends BaseHtmlView
         $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
-        $this->form = $this->get('Form');
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+        if (!$model instanceof PredictiongroupModel) {
+            throw new \RuntimeException('PredictiongroupModel is unavailable.', 500);
         }
 
-        if (!$this->form || !$this->item) {
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
+        $this->state = $model->getState();
+
+        if ($errors = $model->getErrors()) {
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
+        }
+
+        if (!$this->form instanceof Form || !is_object($this->item)) {
             throw new \RuntimeException('Prediction group form could not be loaded.', 500);
         }
 
@@ -90,8 +100,8 @@ final class HtmlView extends BaseHtmlView
     /**
      * Resolve and verify the currently active administrator application.
      *
-     * Use Joomla's dependency-injection container to obtain the concrete
-     * administrator client before accessing backend request and document
+     * Use the shared administrator application resolver to obtain the
+     * validated client before accessing backend request and document
      * state; reject execution from the site or another application client.
      *
      * @return AdministratorApplication Validated backend application.
@@ -99,14 +109,7 @@ final class HtmlView extends BaseHtmlView
      */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement prediction group view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
 }
