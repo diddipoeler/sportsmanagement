@@ -27,8 +27,8 @@ final class RandomPlayerHelper
      *
      * Validates the season, project and database selectors, refuses malformed explicit team filters, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing or non-string optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
      *
-     * Optional database failures return an empty result and log only the
-     * exception type so the surrounding frontend page remains available.
+     * Database, media and routing failures return an empty result and log only
+     * the exception type so the surrounding frontend page remains available.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -87,45 +87,44 @@ final class RandomPlayerHelper
             if (!$players) {
                 return [];
             }
+            $row = $players[random_int(0, count($players) - 1)];
+            $nameFormat = self::nonNegativeSelector($params->get('name_format', 0)) ?? 0;
+            $row->display_name = $this->formatName(
+                self::textValue($row->firstname ?? null),
+                self::textValue($row->nickname ?? null),
+                self::textValue($row->lastname ?? null),
+                $nameFormat
+            );
+            $row->project_slug = $row->project_id . ':' . self::textValue($row->project_alias ?? null);
+            $row->person_slug = $row->person_id . ':' . self::textValue($row->person_alias ?? null);
+            $row->team_slug = $row->team_id . ':' . self::textValue($row->team_alias ?? null);
+            // LEFT JOINs and older databases may omit optional images. A null
+            // team-player picture falls back to the person's own portrait rather
+            // than triggering undefined-property notices under PHP 8.
+            $row->picture_url = $this->picture(self::textValue($row->teamplayer_picture ?? null) ?: self::textValue($row->person_picture ?? null));
+            $row->team_picture_url = $this->mediaUrl(self::textValue($row->team_picture ?? null));
+            $row->flag_url = $this->mediaUrl(self::textValue($row->country_picture ?? null));
+
+            $base = [
+                'cfg_which_database' => $databaseSelector,
+                's' => (int) $row->season_id,
+                'p' => $row->project_slug,
+            ];
+            $row->player_url = $this->route(
+                'player',
+                $base + ['tid' => $row->team_slug, 'pid' => $row->person_slug]
+            );
+            $row->team_url = $this->route(
+                'teaminfo',
+                $base + ['tid' => $row->team_slug, 'ptid' => (int) $row->projectteam_id]
+            );
+
+            return ['player' => $row];
         } catch (\Throwable $e) {
             Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return [];
         }
-
-        $row = $players[random_int(0, count($players) - 1)];
-        $nameFormat = self::nonNegativeSelector($params->get('name_format', 0)) ?? 0;
-        $row->display_name = $this->formatName(
-            self::textValue($row->firstname ?? null),
-            self::textValue($row->nickname ?? null),
-            self::textValue($row->lastname ?? null),
-            $nameFormat
-        );
-        $row->project_slug = $row->project_id . ':' . self::textValue($row->project_alias ?? null);
-        $row->person_slug = $row->person_id . ':' . self::textValue($row->person_alias ?? null);
-        $row->team_slug = $row->team_id . ':' . self::textValue($row->team_alias ?? null);
-        // LEFT JOINs and older databases may omit optional images. A null
-        // team-player picture falls back to the person's own portrait rather
-        // than triggering undefined-property notices under PHP 8.
-        $row->picture_url = $this->picture(self::textValue($row->teamplayer_picture ?? null) ?: self::textValue($row->person_picture ?? null));
-        $row->team_picture_url = $this->mediaUrl(self::textValue($row->team_picture ?? null));
-        $row->flag_url = $this->mediaUrl(self::textValue($row->country_picture ?? null));
-
-        $base = [
-            'cfg_which_database' => $databaseSelector,
-            's' => (int) $row->season_id,
-            'p' => $row->project_slug,
-        ];
-        $row->player_url = $this->route(
-            'player',
-            $base + ['tid' => $row->team_slug, 'pid' => $row->person_slug]
-        );
-        $row->team_url = $this->route(
-            'teaminfo',
-            $base + ['tid' => $row->team_slug, 'ptid' => (int) $row->projectteam_id]
-        );
-
-        return ['player' => $row];
     }
 
     /**
