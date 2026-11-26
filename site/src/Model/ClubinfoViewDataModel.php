@@ -37,6 +37,8 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
     /**
      * Retrieve a club by ID and optionally increment its visit counter.
+     * Validates the returned record before counting a visit and isolates
+     * query construction as well as execution failures for optional hits.
      * @param int $clubId Selected club identifier.
      * @param bool $incrementHits Whether to increment the club's hit count.
      * @return object|null Club record or null if no matching club exists.
@@ -47,36 +49,41 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             return null;
         }
 
-        $db = $this->getDatabase();
-        if ($incrementHits) {
-            $query = $db->createQuery()
-                ->update($db->quoteName('#__sportsmanagement_club'))
-                ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
-                ->where($db->quoteName('id') . ' = :clubHitId')
-                ->bind(':clubHitId', $clubId, ParameterType::INTEGER);
-            try {
-                $db->setQuery($query);
-                $db->execute();
-            } catch (Throwable) {
-                // A hit counter must never prevent the club page from loading.
-            }
-        }
-
-        $query = $db->createQuery()
-            ->select($db->quoteName('c') . '.*')
-            ->select(
-                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('slug')
-            )
-            ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->where($db->quoteName('c.id') . ' = :clubId')
-            ->bind(':clubId', $clubId, ParameterType::INTEGER);
-
         try {
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('c') . '.*')
+                ->select(
+                    "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('slug')
+                )
+                ->from($db->quoteName('#__sportsmanagement_club', 'c'))
+                ->where($db->quoteName('c.id') . ' = :clubId')
+                ->bind(':clubId', $clubId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
-            return $db->loadObject() ?: null;
+            $club = $db->loadObject();
+
+            if (!is_object($club) || (string) ($club->id ?? '') !== (string) $clubId) {
+                return null;
+            }
         } catch (Throwable) {
             return null;
         }
+
+        if ($incrementHits) {
+            try {
+                $query = $db->createQuery()
+                    ->update($db->quoteName('#__sportsmanagement_club'))
+                    ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
+                    ->where($db->quoteName('id') . ' = :clubHitId')
+                    ->bind(':clubHitId', $clubId, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $db->execute();
+            } catch (Throwable) {
+                // Optional visit statistics must not interrupt the club profile.
+            }
+        }
+
+        return $club;
     }
 
     /**

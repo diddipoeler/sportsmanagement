@@ -50,7 +50,7 @@ final class HtmlView extends BaseHtmlView
         $this->pagination = $model->getPagination();
         $this->state = $model->getState();
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 

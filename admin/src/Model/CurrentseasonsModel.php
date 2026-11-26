@@ -108,25 +108,20 @@ final class CurrentseasonsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
             ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('p.checked_out'));
 
-        $currentSeasons = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
-
-        if (is_string($currentSeasons)) {
-            $currentSeasons = preg_split('/\s*,\s*/', trim($currentSeasons), -1, PREG_SPLIT_NO_EMPTY) ?: [];
-        } elseif (!is_array($currentSeasons)) {
-            $currentSeasons = $currentSeasons === null || $currentSeasons === '' ? [] : [$currentSeasons];
-        }
-
-        $currentSeasons = array_values(array_unique(array_filter(
-            array_map('intval', $currentSeasons),
-            static fn (int $id): bool => $id > 0
-        )));
+        $currentSeasons = self::normaliseSeasonIds(
+            ComponentHelper::getParams('com_sportsmanagement')->get('current_season', [])
+        );
 
         if ($currentSeasons) {
             $query->whereIn($db->quoteName('p.season_id'), $currentSeasons, ParameterType::INTEGER);
+        } else {
+            // No valid current season is not a request for all projects.
+            $query->where('1 = 0');
         }
 
         $ordering = $this->getState('list.ordering', 'p.name');
-        $direction = strtoupper((string) $this->getState('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+        $rawDirection = $this->getState('list.direction', 'ASC');
+        $direction = is_string($rawDirection) && strtoupper($rawDirection) === 'DESC' ? 'DESC' : 'ASC';
 
         $allowedOrdering = [
             'p.name' => $db->quoteName('p.name'),
@@ -136,8 +131,50 @@ final class CurrentseasonsModel extends SportsManagementListModel
             'sportstype' => $db->quoteName('st.name'),
         ];
 
-        $query->order(($allowedOrdering[$ordering] ?? $allowedOrdering['p.name']) . ' ' . $direction);
+        $column = is_string($ordering) ? ($allowedOrdering[$ordering] ?? $allowedOrdering['p.name']) : $allowedOrdering['p.name'];
+        $query->order($column . ' ' . $direction);
 
         return $query;
     }
+
+    /**
+     * Parse the configured current seasons without lossy integer casts.
+     *
+     * Accepts positive integer IDs and bounded decimal strings, including
+     * zero-padded historical selections. Deduplicates valid values and
+     * bounds the number of bound query parameters. A missing or invalid
+     * selection yields no IDs rather than an unrestricted project list.
+     *
+     * @param mixed $value Raw component season configuration.
+     * @return array<int,int> At most 200 unique positive season IDs.
+     */
+    private static function normaliseSeasonIds(mixed $value): array
+    {
+        if (is_string($value)) {
+            if (strlen($value) > 4096) {
+                return [];
+            }
+            $value = preg_split('/[\s,;]+/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        }
+
+        $ids = [];
+        foreach (array_slice(is_array($value) ? $value : [$value], 0, 1000) as $candidate) {
+            if (is_string($candidate)) {
+                if (strlen($candidate) > 128 || preg_match('/^[0-9]+$/D', $candidate) !== 1) {
+                    continue;
+                }
+                $candidate = filter_var(ltrim($candidate, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            }
+
+            if (is_int($candidate) && $candidate > 0) {
+                $ids[$candidate] = $candidate;
+                if (count($ids) >= 200) {
+                    break;
+                }
+            }
+        }
+
+        return array_values($ids);
+    }
+
 }

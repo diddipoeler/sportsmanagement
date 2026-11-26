@@ -26,10 +26,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Collect the current season's project, federation and country entries.
      *
-     * Reads the component's current-season configuration, loads the module helper and normalises absent result lists for the Joomla frontend template.
+     * Reads the component's current-season configuration, loads the module
+     * helper and normalises absent result lists for the frontend template.
+     * Optional service-resolution or helper failures are isolated from the
+     * surrounding page and logged without private driver diagnostics.
      *
      * @return array|false Layout data or false if rendering is skipped.
-     * @throws \RuntimeException If the site application or database is unavailable.
+     * @throws \RuntimeException If the application is not the Joomla site client.
      */
     protected function getLayoutData(): array|false
     {
@@ -56,10 +59,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         // The module manifest has no current_season field; use the component setting.
         $seasonIds = $componentParams->get('current_season', []);
-        $database = $this->joomlaDatabase();
-        $result = $this->getHelperFactory()
-            ->getHelper('ActSeasonHelper')
-            ->getData($seasonIds, $componentParams, $app, $database);
+        try {
+            $database = $this->joomlaDatabase();
+            $result = $this->getHelperFactory()
+                ->getHelper('ActSeasonHelper')
+                ->getData($seasonIds, $componentParams, $app, $database);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $result = [];
+        }
 
         $result = is_array($result) ? $result : [];
 

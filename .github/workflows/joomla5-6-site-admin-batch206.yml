@@ -43,6 +43,6 @@ jobs:
           set -euo pipefail
           grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' site/src/View/Clubplan/HtmlView.php
           grep -Fq -- 'if ($document instanceof HtmlDocument)' site/src/View/Clubplan/HtmlView.php
-          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Division/HtmlView.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/View/Division/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Division/HtmlView.php
           echo 'Joomla 5/6 batch 206 contracts OK.'

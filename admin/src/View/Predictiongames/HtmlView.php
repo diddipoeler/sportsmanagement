@@ -38,9 +38,12 @@ final class HtmlView extends BaseHtmlView
 
     /**
      * Render the administrator list of prediction games.
-     *
-     * @param mixed $tpl tpl value.
-     * @return mixed
+     * Reads list rows, filter state and pagination from the typed native
+     * model, prepares project and administrator counts, and supplies
+     * prediction-round relations for the selected game before rendering.
+     * @param string|null $tpl Optional layout suffix.
+     * @return void
+     * @throws \RuntimeException If the required model is unavailable or reports errors.
      */
     public function display($tpl = null)
     {
@@ -50,9 +53,9 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('PredictiongamesModel is unavailable.', 500);
         }
 
-        $this->state = $this->get('State');
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
+        $this->state = $model->getState();
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
         $this->prediction_id = (int) $this->state->get('filter.prediction_id', 0);
         $this->pred_project = $model->getPredictionGame($this->prediction_id);
         $this->predictionOptions = $model->getPredictionGames();
@@ -78,7 +81,7 @@ final class HtmlView extends BaseHtmlView
             }
         }
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 

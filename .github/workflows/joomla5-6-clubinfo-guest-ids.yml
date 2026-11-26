@@ -5,6 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Model/ClubinfoModel.php'
+      - 'site/src/Model/ClubinfoViewDataModel.php'
+      - 'site/src/View/Clubinfo/HtmlView.php'
+      - '.github/tests/joomla56_clubinfo_visit_counter.php'
       - '.github/tests/joomla56_clubinfo_guest_ids.php'
       - '.github/workflows/joomla5-6-clubinfo-guest-ids.yml'
   pull_request:
@@ -33,3 +36,9 @@ jobs:
           php -l .github/tests/joomla56_clubinfo_guest_ids.php
       - name: Check guest ACL and legacy selectors
         run: php .github/tests/joomla56_clubinfo_guest_ids.php
+
+      - name: Verify optional club visit counter
+        run: |
+          php -l site/src/Model/ClubinfoViewDataModel.php
+          php -l .github/tests/joomla56_clubinfo_visit_counter.php
+          php .github/tests/joomla56_clubinfo_visit_counter.php

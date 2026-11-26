@@ -134,7 +134,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->model = $model;
         $viewName = $this->input->getCmd('view', 'clubinfo');
         $clubId = max(0, $this->input->getInt('cid', 0));
-        $this->databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        // The shared view constructor has already validated the raw mode.
+        // Do not reinterpret it with Joomla's coercing integer filter.
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
 
@@ -175,7 +176,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $identity = $this->app->getIdentity();
-        $this->showediticon = $identity !== null && (
+        $this->showediticon = $identity !== null && (int) ($identity->id ?? 0) > 0 && (
             $identity->authorise('core.edit', 'com_sportsmanagement')
             || $identity->authorise('club.edit', 'com_sportsmanagement')
             || ((int) $identity->id > 0 && (int) ($this->club->admin ?? 0) === (int) $identity->id)

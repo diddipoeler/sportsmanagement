@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Model/CurrentseasonsModel.php'
+      - '.github/tests/joomla56_currentseasons_selection.php'
       - 'admin/src/View/Currentseasons/**'
       - 'admin/models/currentseasons.php'
       - 'admin/views/currentseasons/**'
@@ -14,6 +15,7 @@ on:
     branches: [master]
     paths:
       - 'admin/src/Model/CurrentseasonsModel.php'
+      - '.github/tests/joomla56_currentseasons_selection.php'
       - 'admin/src/View/Currentseasons/**'
       - 'admin/models/currentseasons.php'
       - 'admin/views/currentseasons/**'
@@ -92,3 +94,8 @@ jobs:
 
           print('Native administrator current seasons contracts OK')
           PY
+
+      - name: Verify bounded current-season selection
+        run: |
+          php -l .github/tests/joomla56_currentseasons_selection.php
+          php .github/tests/joomla56_currentseasons_selection.php
