@@ -1273,7 +1273,9 @@ class icaljsm
     }
 
     /**
-     * Processes recurrence rules
+     * Expand supported recurrence rules while preserving the original event when a rule is malformed.
+     * Rejects missing or unsupported frequencies, duplicate or incomplete rule parts,
+     * invalid positive counts and intervals, and invalid UNTIL dates before iteration.
      *
      * @return void
      */
@@ -1303,7 +1305,14 @@ class icaljsm
             // Separate the RRULE stanzas, and explode the values that are lists.
             $rrules = array();
             foreach (explode(';', $anEvent['RRULE']) as $s) {
-                list($k, $v) = explode('=', $s);
+                $parts = explode('=', $s, 2);
+                if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') {
+                    continue 2;
+                }
+                [$k, $v] = $parts;
+                if (isset($rrules[$k])) {
+                    continue 2;
+                }
                 if (in_array($k, array('BYSETPOS', 'BYDAY', 'BYMONTHDAY', 'BYMONTH'))) {
                     $rrules[$k] = explode(',', $v);
                 } else {
@@ -1312,7 +1321,21 @@ class icaljsm
             }
 
             // Get frequency
-            $frequency = $rrules['FREQ'];
+            $frequency = $rrules['FREQ'] ?? '';
+            if (!isset($this->frequencyConversion[$frequency])) {
+                continue;
+            }
+
+            foreach (['INTERVAL', 'COUNT'] as $positiveRule) {
+                if (isset($rrules[$positiveRule]) && filter_var($rrules[$positiveRule], FILTER_VALIDATE_INT,
+                    ['options' => ['min_range' => 1]]) === false) {
+                    continue 2;
+                }
+            }
+
+            if (isset($rrules['COUNT']) && (int) $rrules['COUNT'] === 1) {
+                continue;
+            }
 
             // Reject RRULE if BYDAY stanza is invalid:
             // > The BYDAY rule part MUST NOT be specified with a numeric value
@@ -1330,7 +1353,7 @@ class icaljsm
             }
 
             // Get Interval
-            $interval = (empty($rrules['INTERVAL'])) ? 1 : $rrules['INTERVAL'];
+            $interval = (int) ($rrules['INTERVAL'] ?? 1);
 
             // Throw an error if this isn't an integer.
             if (!is_int($this->defaultSpan)) {
@@ -1369,7 +1392,11 @@ class icaljsm
             $until      = date_create()->modify("{$this->defaultSpan} years")->setTime(23, 59, 59)->getTimestamp();
 
             if (isset($rrules['UNTIL'])) {
-                $until = min($until, $this->iCalDateToUnixTimestamp($rrules['UNTIL']));
+                try {
+                    $until = min($until, $this->iCalDateToUnixTimestamp($rrules['UNTIL']));
+                } catch (\InvalidArgumentException) {
+                    continue;
+                }
             }
 
             $eventRecurrences = array();
@@ -1515,7 +1542,7 @@ class icaljsm
                         return $exdate->getTimestamp() == $timestamp;
                     });
 
-                    if (isset($this->alteredRecurrenceInstances[$anEvent['UID']])) {
+                    if (isset($anEvent['UID'], $this->alteredRecurrenceInstances[$anEvent['UID']])) {
                         if (in_array($timestamp, $this->alteredRecurrenceInstances[$anEvent['UID']])) {
                             $isExcluded = true;
                         }
