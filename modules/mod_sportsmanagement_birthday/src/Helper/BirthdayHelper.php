@@ -38,7 +38,8 @@ final class BirthdayHelper
      * Malformed database choices cannot silently select the Joomla database.
      * Unexpected types for name format, sorting or display mode use safe
      * defaults rather than causing PHP 8 array-to-string conversion warnings.
-     * Non-array database results are treated as an empty list.
+     * Non-array database results are treated as an empty list. Boolean display
+     * and favourite-team settings are validated without loose PHP coercion.
      * Invalid age-group selectors and malformed birthday rows are rejected
      * before they can expand a filter or interrupt frontend rendering.
      * @param Registry $params Birthday module configuration.
@@ -64,7 +65,7 @@ final class BirthdayHelper
         $selectedProjects = $params->get('p', []);
         $projectIds = $this->normaliseIds($selectedProjects);
         $selectedTeams = $params->get('teams', []);
-        $favoriteTeams = (bool) $params->get('use_fav', 0);
+        $favoriteTeams = self::enabledOption($params->get('use_fav', 0));
 
         // A malformed configured filter must not turn into a query returning
         // birthdays from every project or team. Unset/zero means unfiltered.
@@ -204,8 +205,8 @@ final class BirthdayHelper
             $nameFormat = filter_var($rawNameFormat, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
             $row->display_name = $this->displayName($row, $nameFormat === false ? 0 : $nameFormat);
             $row->person_link = $this->personLink($row, $databaseSelector);
-            $row->picture_url = $this->pictureUrl($row, (bool) $params->get('show_picture', 1));
-            $row->flag_html = (bool) $params->get('show_player_flag', 0) ? $this->flagHtml($row, $componentParams) : '';
+            $row->picture_url = $this->pictureUrl($row, self::enabledOption($params->get('show_picture', 1)));
+            $row->flag_html = self::enabledOption($params->get('show_player_flag', 0)) ? $this->flagHtml($row, $componentParams) : '';
             $row->birthday_text = $this->birthdayText($row, $birthday, $birth, $params);
             $people[$key] = (array) $row;
         }
@@ -269,6 +270,21 @@ final class BirthdayHelper
             'mode' => is_string($configuredMode) ? strtoupper($configuredMode) : 'L',
             'pictureServer' => Uri::root(),
         ];
+    }
+
+    /**
+     * Interpret legacy boolean module settings without PHP truthiness coercion.
+     * Accepts true, integer one and zero-padded decimal representations of one.
+     * Invalid values cannot activate favourite-team filtering or image output.
+     *
+     * @param mixed $value Raw module or component setting.
+     * @return bool Whether the option is explicitly enabled.
+     */
+    private static function enabledOption(mixed $value): bool
+    {
+        return $value === true || $value === 1
+            || (is_string($value) && strlen($value) <= 64
+                && preg_match('/^0*1$/D', $value) === 1);
     }
 
     /**
@@ -410,7 +426,7 @@ final class BirthdayHelper
      */
     private function resolveTeamIds(DatabaseInterface $db, Registry $params, array $projectIds): array
     {
-        if (!(bool) $params->get('use_fav', 0)) {
+        if (!self::enabledOption($params->get('use_fav', 0))) {
             return $this->normaliseIds($params->get('teams', []));
         }
         if (!$projectIds) {
@@ -685,7 +701,7 @@ final class BirthdayHelper
         $alpha2 = strtolower(self::textValue($row->country_alpha2 ?? null));
         $alpha2 = preg_match('/^[a-z]{2}$/', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars($alpha3, ENT_QUOTES, 'UTF-8');
-        if ((int) $params->get('cfg_flags_css', 0) === 1) {
+        if (self::enabledOption($params->get('cfg_flags_css', 0))) {
             $css = match ($alpha3) { 'WAL' => 'gb-wls', 'SCO' => 'gb-sct', 'GBR' => 'gb-eng', default => $alpha2 };
             return $css !== '' ? '<span class="fi fi-' . htmlspecialchars($css, ENT_QUOTES, 'UTF-8') . '" title="' . $label . '"></span>' : '';
         }
