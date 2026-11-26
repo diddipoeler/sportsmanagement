@@ -15,6 +15,9 @@ namespace Joomla\CMS\Application {
     {
         public array $messages = [];
 
+        /** Confirm the fixture represents the site client. @param string $client Client name. @return bool Whether it is the site. */
+        public function isClient(string $client): bool { return $client === 'site'; }
+
         /**
          * Capture the public-facing message produced by a failed form load.
          *
@@ -49,6 +52,12 @@ namespace Joomla\CMS {
                  */
                 public function get(string $service): object
                 {
+                    if ($service === \Joomla\CMS\Form\FormFactoryInterface::class) {
+                        return $GLOBALS['smFixtureFormFactory'];
+                    }
+                    if (!empty($GLOBALS['smFixtureAppFailure'])) {
+                        throw new \RuntimeException('PRIVATE_CONFIGURATION_SECRET');
+                    }
                     return $GLOBALS['smFixtureApp'];
                 }
             };
@@ -60,11 +69,36 @@ namespace Joomla\CMS\Form {
     /** Named contract required by the site's Joomla 5/6 form helper. */
     class Form
     {
+        public array $definition = [];
+        public mixed $bound = null;
+        /** Record the XML path and load options. @param string $path Definition path. @param bool $reset Reset flag. @param string $xpath XML selection. @return bool Success. */
+        public function loadFile(string $path, bool $reset, string $xpath): bool
+        {
+            $this->definition = [$path, $reset, $xpath];
+            return true;
+        }
+        /** Record the bound registry and simulate a failed binding. @param object $registry Saved values. @return bool Success. */
+        public function bind(object $registry): bool
+        {
+            $this->bound = $registry;
+            return empty($GLOBALS['smFixtureBindFailure']);
+        }
     }
 
     /** Named form factory contract required by the site's use declaration. */
     interface FormFactoryInterface
     {
+    }
+
+    final class TestFormFactory implements FormFactoryInterface
+    {
+        public array $created = [];
+        /** Create a fresh native form and capture its ID and options. @param string $name Form name. @param array $options Control settings. @return Form New fixture. */
+        public function createForm(string $name, array $options): Form
+        {
+            $this->created[] = [$name, $options];
+            return new Form();
+        }
     }
 }
 
@@ -116,12 +150,17 @@ namespace Joomla\Registry {
          *
          * @param string $data Stored form configuration.
          * @return void
-         * @throws \RuntimeException Always, including a secret test marker.
+         * @throws \RuntimeException For malformed fixture values.
          */
         public function loadString(string $data): void
         {
-            throw new \RuntimeException('PRIVATE_CONFIGURATION_SECRET');
+            if ($data !== '{"value":7}') {
+                throw new \RuntimeException('PRIVATE_CONFIGURATION_SECRET');
+            }
+            $this->value = 7;
         }
+
+        public int $value = 0;
     }
 }
 
@@ -136,6 +175,7 @@ namespace {
     \define('JPATH_ADMINISTRATOR', $tmp);
 
     $GLOBALS['smFixtureApp'] = new \Joomla\CMS\Application\SiteApplication();
+    $GLOBALS['smFixtureFormFactory'] = new \Joomla\CMS\Form\TestFormFactory();
     require_once $root . '/site/src/Helper/ExtendedFormHelper.php';
 
     $helper = \Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper::class;
@@ -170,6 +210,34 @@ namespace {
         foreach (\Joomla\CMS\Log\Log::$messages as $message) {
             if (\str_contains($message, 'PRIVATE_CONFIGURATION_SECRET')) {
                 throw new \RuntimeException('Private error details leaked into log text.');
+            }
+        }
+
+        $form = $helper::load('{"value":7}', 'valid');
+        $other = $helper::load('', 'valid');
+        if (!$form instanceof \Joomla\CMS\Form\Form || !$other instanceof \Joomla\CMS\Form\Form
+            || $form === $other || $form->bound->value !== 7 || $other->bound->value !== 0
+            || $form->definition !== [realpath($formDir . '/valid.xml'), false, '/config']
+            || $GLOBALS['smFixtureFormFactory']->created[0] !== ['com_sportsmanagement.valid.extended', ['control' => 'extended']]) {
+            throw new \RuntimeException('Native form factory lost XML configuration or isolated form state.');
+        }
+        $GLOBALS['smFixtureBindFailure'] = true;
+        if ($helper::load('', 'valid') !== false) {
+            throw new \RuntimeException('Failed form binding returned a usable form.');
+        }
+        $GLOBALS['smFixtureBindFailure'] = false;
+        $GLOBALS['smFixtureAppFailure'] = true;
+        if ($helper::load('', 'valid') !== false) {
+            throw new \RuntimeException('Unavailable site application was not isolated.');
+        }
+        $GLOBALS['smFixtureAppFailure'] = false;
+        $GLOBALS['smFixtureFormFactory'] = new \stdClass();
+        if ($helper::load('', 'valid') !== false) {
+            throw new \RuntimeException('Invalid form factory was accepted.');
+        }
+        foreach (\Joomla\CMS\Log\Log::$messages as $message) {
+            if (str_contains($message, 'PRIVATE_CONFIGURATION_SECRET')) {
+                throw new \RuntimeException('Private service failure leaked into log.');
             }
         }
 

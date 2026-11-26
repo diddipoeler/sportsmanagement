@@ -59,7 +59,9 @@ jobs:
             echo 'Legacy timestamp Uri navigation remains'
             exit 1
           fi
-          grep -Fq -- 'form method="get" id="adminForm" action=""' admin/assets/updates/jsm_update_timestamp.php
+          grep -Fq -- 'form method="post" id="adminForm" action=""' admin/assets/updates/jsm_update_timestamp.php
+          grep -Fq -- '$app->checkToken(' admin/assets/updates/jsm_update_timestamp.php
+          grep -Fq -- "HTMLHelper::_('form.token')" admin/assets/updates/jsm_update_timestamp.php
 
           if grep -Fq -- 'DATE_FORMAT(' site/src/Model/ResultsDataModel.php; then
             echo 'MySQL DATE_FORMAT remains in ResultsDataModel'

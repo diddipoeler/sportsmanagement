@@ -33,7 +33,8 @@ final class ExtendedFormHelper
      * cannot be located or loaded. Rejects unsafe form identifiers, limits
      * resolution to the real extended XML directory and refuses symlinks
      * escaping that directory. Logs parser failures privately rather than
-     * exposing exception messages in site HTML.
+     * exposing exception messages in site HTML. Missing application or
+     * form services and unsuccessful bindings also return false.
      *
      * @param string $data Optional serialised form values.
      * @param string $file Extended form definition name, without .xml.
@@ -60,10 +61,14 @@ final class ExtendedFormHelper
             return false;
         }
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = null;
 
         try {
+            $candidate = Factory::getContainer()->get(SiteApplication::class);
+            if (!$candidate instanceof SiteApplication || !$candidate->isClient('site')) {
+                throw new \RuntimeException('SportsManagement site form application is unavailable.');
+            }
+            $app = $candidate;
             $registry = new Registry();
 
             if ($data !== '') {
@@ -71,25 +76,28 @@ final class ExtendedFormHelper
             }
 
             $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            if (!$factory instanceof FormFactoryInterface) {
+                throw new \RuntimeException('SportsManagement form factory is unavailable.');
+            }
             $form = $factory->createForm(
                 'com_sportsmanagement.' . $file . '.extended',
                 ['control' => 'extended']
             );
 
-            if (!$form->loadFile($xmlFile, false, '/config')) {
+            if (!$form instanceof Form || !$form->loadFile($xmlFile, false, '/config')) {
                 return false;
             }
 
-            $form->bind($registry);
-
-            return $form;
+            return $form->bind($registry) ? $form : false;
         } catch (\Throwable $e) {
             Log::add(
                 __METHOD__ . ': extended form loading failed (' . get_class($e) . ').',
                 Log::WARNING,
                 'com_sportsmanagement'
             );
-            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+            if ($app instanceof SiteApplication) {
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+            }
 
             return false;
         }

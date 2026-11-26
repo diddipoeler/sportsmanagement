@@ -29,7 +29,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * values before rendering inline styles. Registers the shared default
      * stylesheet only once when multiple module instances share a document.
      * Scopes configurable image dimensions and zoom to the instance's table
-     * so later modules cannot override earlier modules' settings.
+     * so later modules cannot override earlier modules' settings. Optional
+     * helper initialization failures return empty records and log only the
+     * exception class rather than interrupting the surrounding page.
      *
      * @return array|false Template context, or false when rendering is skipped.
      * @throws \RuntimeException When invoked outside Joomla's site client.
@@ -56,11 +58,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $result = $this->getHelperFactory()->getHelper('ClubiconsHelper')->getData(
-            $params,
-            $data['module'],
-            $app
-        );
+        try {
+            $result = $this->getHelperFactory()->getHelper('ClubiconsHelper')->getData(
+                $params,
+                $data['module'],
+                $app
+            );
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', \Joomla\CMS\Log\Log::ERROR, 'com_sportsmanagement');
+            $result = [];
+        }
 
         $result = is_array($result) ? $result : [];
 

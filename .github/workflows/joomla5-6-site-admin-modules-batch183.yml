@@ -55,10 +55,14 @@ jobs:
           ! grep -Fq -- "die('Restricted access')" site/views/billardlivegames/view.html.php
 
           grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Predictiongroups/HtmlView.php
-          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Predictiongroups/HtmlView.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/View/Predictiongroups/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Predictiongroups/HtmlView.php
 
-          grep -Fq -- 'use Joomla\\CMS\\Document\\HtmlDocument;' modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           grep -Fq -- 'if ($document instanceof HtmlDocument)' modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
 
+          if grep -Fq '$this->get(' admin/src/View/Predictiongroups/HtmlView.php; then
+            echo 'Prediction groups uses a deprecated generic view getter.' >&2
+            exit 1
+          fi
           echo 'Joomla 5/6 batch 183 contracts OK.'

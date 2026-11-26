@@ -12,7 +12,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongr
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongroupsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -32,7 +34,8 @@ final class HtmlView extends BaseHtmlView
     /**
      * Load and render the administrator prediction-groups overview.
      *
-     * Collect group records, pagination, filters and current identity,
+     * Requires the native prediction-groups model, reads records, pagination
+     * and filters directly, obtains the current identity,
      * resolve ordering from model state, report loading errors and show a
      * warning if no prediction groups exist. Configure the relevant list
      * toolbar before delegating output to Joomla's base HTML view.
@@ -43,17 +46,24 @@ final class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
-        $this->filterForm = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters') ?: [];
+        $model = $this->getModel();
+
+        if (!$model instanceof PredictiongroupsModel) {
+            throw new \RuntimeException('PredictiongroupsModel is unavailable.', 500);
+        }
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters() ?: [];
         $this->user = self::administratorApplication()->getIdentity();
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 's.name');
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+        if ($errors = $model->getErrors()) {
+            Log::add(__METHOD__ . ': model reported ' . count((array) $errors) . ' errors.', Log::ERROR, 'com_sportsmanagement');
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
         }
 
         if (!$this->items) {
@@ -86,8 +96,8 @@ final class HtmlView extends BaseHtmlView
     /**
      * Resolve the active Joomla backend application.
      *
-     * Obtain AdministratorApplication from Joomla's dependency-injection
-     * container and reject non-administrator execution before accessing
+     * Reuse the component's validated administrator application service
+     * and reject non-administrator execution before accessing
      * the user's identity and notification queue.
      *
      * @return AdministratorApplication Valid backend application.
@@ -95,14 +105,7 @@ final class HtmlView extends BaseHtmlView
      */
     private static function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement prediction groups view requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
 }
