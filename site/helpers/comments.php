@@ -74,7 +74,8 @@ class sportsmanagementModelComments
      * Build a human-readable forum subject for a specific match ID.
      *
      * Queries the home and away team names using a bound integer ID and falls back
-     * to the historical placeholder if the match is missing or the query fails.
+     * to the historical placeholder if the match ID is invalid, the match is missing,
+     * or database resolution, query creation or execution fails.
      *
      * @param int|string $match_id Identifier of the match used for the Kunena subject.
      * @return string Team pairing or a default subject when no names are available.
@@ -82,52 +83,54 @@ class sportsmanagementModelComments
     public static function getForumSubjectFromMatchID($match_id)
     {
         $fallback = 'Bitte Spielpaarung hier eingeben!';
-        $matchId = max(0, (int) $match_id);
-        if ($matchId <= 0) {
+        $matchId = (is_int($match_id) || is_string($match_id))
+            ? filter_var($match_id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
+        if ($matchId === false) {
             return $fallback;
         }
 
-        $db = self::database();
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('t1.name', 'home'),
-                $db->quoteName('t2.name', 'away'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_project_team', 'pt1')
-                . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
-                . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_team', 't1')
-                . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_project_team', 'pt2')
-                . ' ON ' . $db->quoteName('pt2.id') . ' = ' . $db->quoteName('m.projectteam2_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
-                . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_team', 't2')
-                . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id')
-            )
-            ->where($db->quoteName('m.id') . ' = :commentsMatchId')
-            ->bind(':commentsMatchId', $matchId, ParameterType::INTEGER);
-
         try {
+            $db = self::database();
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('t1.name', 'home'),
+                    $db->quoteName('t2.name', 'away'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_project_team', 'pt1')
+                    . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id')
+                )
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
+                    . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id')
+                )
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_team', 't1')
+                    . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id')
+                )
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_project_team', 'pt2')
+                    . ' ON ' . $db->quoteName('pt2.id') . ' = ' . $db->quoteName('m.projectteam2_id')
+                )
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
+                    . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id')
+                )
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_team', 't2')
+                    . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id')
+                )
+                ->where($db->quoteName('m.id') . ' = :commentsMatchId')
+                ->bind(':commentsMatchId', $matchId, ParameterType::INTEGER);
+
             $db->setQuery($query, 0, 1);
             $teams = $db->loadObject();
         } catch (Throwable) {
