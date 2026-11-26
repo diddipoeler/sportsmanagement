@@ -120,6 +120,8 @@ final class MatchCommentsHelper
 
     /**
      * Build a Kunena topic link and count for the current match.
+     * Rejects invalid category identifiers and normalises optional team names
+     * without coercing arrays or objects to strings under PHP 8.
      * @param object $match Current match.
      * @param object $homeTeam Home team record.
      * @param object $awayTeam Away team record.
@@ -129,15 +131,18 @@ final class MatchCommentsHelper
      */
     private static function renderKunena(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
     {
-        $categoryId = (int) ($project->sb_catid ?? 0);
-        if ($categoryId <= 0) {
+        $rawCategory = $project->sb_catid ?? null;
+        $categoryId = (is_int($rawCategory) || is_string($rawCategory))
+            ? filter_var($rawCategory, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
+        if ($categoryId === false) {
             return '';
         }
 
         $db = self::joomlaDatabase();
         $itemId = self::getKunenaItemId($db);
-        $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
-        $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
+        $homeName = trim(strip_tags(is_string($homeTeam->name ?? null) ? $homeTeam->name : ''));
+        $awayName = trim(strip_tags(is_string($awayTeam->name ?? null) ? $awayTeam->name : ''));
         $subject = trim($homeName . ' - ' . $awayName);
         $topicKey = $categoryId . ':' . $subject;
 
@@ -205,7 +210,7 @@ final class MatchCommentsHelper
     }
 
     /**
-     * Resolve and cache the Kunena Joomla menu item identifier.
+     * Resolve and cache the published frontend Kunena Joomla menu item identifier.
      * Cache the lookup only after a successful database read, including a
      * genuine missing menu item; a transient failure must not poison later
      * match comment rendering in the same request.
@@ -223,6 +228,8 @@ final class MatchCommentsHelper
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
             ->where($db->quoteName('link') . ' LIKE :menuLink')
+            ->where($db->quoteName('client_id') . ' = 0')
+            ->where($db->quoteName('published') . ' = 1')
             ->order($db->quoteName('id') . ' ASC')
             ->bind(':menuLink', $menuLink, ParameterType::STRING);
         $db->setQuery($menuQuery, 0, 1);
