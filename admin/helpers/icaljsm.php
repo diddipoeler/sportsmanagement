@@ -500,7 +500,7 @@ class icaljsm
     private $shouldFilterByWindow = false;
 
     /**
-     * Creates the ICal object
+     * Initialise parser options and optional calendar sources without changing global PHP line-ending settings.
      *
      * @param  mixed $files
      * @param  array $options
@@ -508,8 +508,6 @@ class icaljsm
      */
     public function __construct($files = false, array $options = array())
     {
-        ini_set('auto_detect_line_endings', '1');
-
         foreach ($options as $option => $value) {
             if (in_array($option, self::$configurableOptions)) {
                 $this->{$option} = $value;
@@ -615,8 +613,7 @@ class icaljsm
     }
 
     /**
-     * Initialises the parser using an array
-     * containing each line of iCal content
+     * Initialise the parser from calendar lines, accepting a UTF-8 BOM and ignoring empty or invalid opening markers.
      *
      * @param  array $lines
      * @return void
@@ -625,7 +622,11 @@ class icaljsm
     {
         $lines = $this->unfold($lines);
 
-        if (stristr($lines[0], 'BEGIN:VCALENDAR') !== false) {
+        if (isset($lines[0]) && str_starts_with($lines[0], "\xEF\xBB\xBF")) {
+            $lines[0] = substr($lines[0], 3);
+        }
+
+        if (isset($lines[0]) && strcasecmp(trim($lines[0]), 'BEGIN:VCALENDAR') === 0) {
             $component = '';
             foreach ($lines as $line) {
                 $line = rtrim($line); // Trim trailing whitespace
@@ -2260,18 +2261,19 @@ class icaljsm
     }
 
     /**
-     * Checks if a filename exists as a file or URL
+     * Check whether a nonempty string identifies a regular file or valid URL, rejecting invalid argument types and embedded null bytes.
      *
      * @param  string $filename
      * @return boolean
      */
     protected function isFileOrUrl($filename)
     {
-        return (file_exists($filename) || filter_var($filename, FILTER_VALIDATE_URL)) ?: false;
+        return is_string($filename) && $filename !== '' && !str_contains($filename, "\0")
+            && (is_file($filename) || filter_var($filename, FILTER_VALIDATE_URL) !== false);
     }
 
     /**
-     * Reads an entire file or URL into an array
+     * Read a calendar file or URL with the configured HTTP headers, normalise CRLF, LF and CR line endings locally, and report read failures without exposing source credentials.
      *
      * @param  string $filename
      * @return array
@@ -2279,6 +2281,10 @@ class icaljsm
      */
     protected function fileOrUrl($filename)
     {
+        if (!is_string($filename) || trim($filename) === '' || str_contains($filename, "\0")) {
+            throw new \InvalidArgumentException('Invalid calendar source.');
+        }
+
         $options = array();
         if (!empty($this->httpBasicAuth) || !empty($this->httpUserAgent) || !empty($this->httpAcceptLanguage)) {
             $options['http'] = array();
@@ -2304,11 +2310,13 @@ class icaljsm
         $context = stream_context_create($options);
 
         // phpcs:ignore CustomPHPCS.ControlStructures.AssignmentInCondition
-        if (($lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES, $context)) === false) {
-            throw new \Exception("The file path or URL '{$filename}' does not exist.");
+        $contents = @file_get_contents($filename, false, $context);
+        if ($contents === false) {
+            throw new \RuntimeException('The calendar source could not be read.');
         }
 
-        return $lines;
+        // Normalise line endings locally instead of changing a deprecated PHP ini setting.
+        return preg_split('/\r\n|\n\r|\r|\n/', $contents, -1, PREG_SPLIT_NO_EMPTY) ?: [];
     }
 
     /**
