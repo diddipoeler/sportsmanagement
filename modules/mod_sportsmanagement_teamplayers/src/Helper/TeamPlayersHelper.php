@@ -30,7 +30,7 @@ final class TeamPlayersHelper
     /**
      * Load a published project and its bounded player roster for the module.
      *
-     * Validates project, team and database selectors; loads a roster capped at 500 rows; optionally aggregates game minutes; prepares player links, flags, photographs and a displayed list capped at 100 players.
+     * Validates project, team and database selectors; loads a roster capped at 500 rows; optionally aggregates game minutes; prepares player links, flags, photographs and a displayed list capped at 100 players. Validates display switches and name formats before enabling optional queries or rendering.
      *
      * @param Registry $params Joomla module filters and display settings.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -59,7 +59,7 @@ final class TeamPlayersHelper
         $players = [];
         $roster = [];
         $limit = $this->displayLimit($params->get('limit', 24));
-        $showMinutes = (int) $params->get('show_mins_played', 1) === 1;
+        $showMinutes = self::enabledOption($params->get('show_mins_played', 1));
         $minutesByPlayer = $showMinutes
             ? $this->minutesPlayedByPlayer(
                 $db,
@@ -70,11 +70,11 @@ final class TeamPlayersHelper
             : [];
 
         foreach ($rosterRows as $row) {
-            $row->display_name = $this->formatName($row, (int) $params->get('name_format', 0));
-            $row->player_url = (int) $params->get('show_player_link', 1) === 1
+            $row->display_name = $this->formatName($row, self::nameFormatOption($params->get('name_format', 0)));
+            $row->player_url = self::enabledOption($params->get('show_player_link', 1))
                 ? $this->playerUrl($row, $project, $params)
                 : '';
-            $row->flag_html = (int) $params->get('show_player_flag', 1) === 1
+            $row->flag_html = self::enabledOption($params->get('show_player_flag', 1))
                 ? $this->flagHtml($row, $componentParams)
                 : '';
             $row->minutes_played = $showMinutes
@@ -89,7 +89,7 @@ final class TeamPlayersHelper
         }
 
         usort($players, static function (object $a, object $b) use ($params): int {
-            if ((int) $params->get('show_positions', 1) === 1) {
+            if (self::enabledOption($params->get('show_positions', 1))) {
                 $position = strcasecmp((string) ($b->position ?? ''), (string) ($a->position ?? ''));
 
                 if ($position !== 0) {
@@ -113,6 +113,44 @@ final class TeamPlayersHelper
             'players' => $players,
             'roster' => $roster,
         ];
+    }
+
+    /**
+     * Interpret a module display switch without coercing malformed settings.
+     * Accepts booleans and the legacy integer or decimal-string 0/1 values.
+     * Invalid settings cannot accidentally enable optional output or queries.
+     *
+     * @param mixed $value Raw module setting.
+     * @return bool Whether the option is explicitly enabled.
+     */
+    private static function enabledOption(mixed $value): bool
+    {
+        return $value === true || $value === 1
+            || (is_string($value) && strlen($value) <= 64
+                && preg_match('/^0*1$/D', $value) === 1);
+    }
+
+    /**
+     * Resolve a bounded legacy player name-format setting.
+     * Rejects nonnumeric values, nested settings and unsupported numbers
+     * instead of converting them into an unrelated display format.
+     *
+     * @param mixed $value Raw name-format setting.
+     * @return int Valid format number or the default zero.
+     */
+    private static function nameFormatOption(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = (string) $value;
+        if (strlen($raw) > 64 || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+        return strlen($digits) <= 2 && (int) $digits <= 18 ? (int) $digits : 0;
     }
 
     /**
