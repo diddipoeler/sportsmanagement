@@ -30,7 +30,7 @@ class sportsmanagementHelperTransifex
 
     /**
      * Download translated component and module language files into Joomla language folders.
-     * Creates missing administrator and site language directories, requests translations for completed resources and records per-file status for the caller. Rejects malformed language locale and resource identifiers to avoid writing outside the intended language directories.
+     * Creates missing administrator and site language directories, requests translations for completed resources and records per-file status for the caller. Failed or empty HTTP responses never overwrite existing translations, and failed filesystem writes retain the error status. Rejects malformed language locale and resource identifiers to avoid writing outside the intended language directories.
      * @param array<int,object>|null $data Transifex translation resource records to update.
      * @param string $folder Joomla language tag, such as fr-FR.
      * @return array<int,object>|null Updated resource records, or the unchanged input for unsupported locales.
@@ -110,7 +110,15 @@ class sportsmanagementHelperTransifex
 
                 try
                 {
-                    File::write($path, $content['data']);
+                    $status = (int) ($content['info']['http_code'] ?? 0);
+                    if ($status < 200 || $status >= 300 || !is_string($content['data'] ?? null)
+                        || trim($content['data']) === '') {
+                        continue;
+                    }
+
+                    if (!File::write($path, $content['data'])) {
+                        throw new \RuntimeException('Could not write translation file.');
+                    }
                     $value->images = 'ok.png';
                 }
                 catch (\Throwable $e)
@@ -130,7 +138,15 @@ class sportsmanagementHelperTransifex
 
                 try
                 {
-                    File::write($path, $content['data']);
+                    $status = (int) ($content['info']['http_code'] ?? 0);
+                    if ($status < 200 || $status >= 300 || !is_string($content['data'] ?? null)
+                        || trim($content['data']) === '') {
+                        continue;
+                    }
+
+                    if (!File::write($path, $content['data'])) {
+                        throw new \RuntimeException('Could not write translation file.');
+                    }
                     $value->images = 'ok.png';
                 }
                 catch (\Throwable $e)
@@ -150,7 +166,15 @@ class sportsmanagementHelperTransifex
 
                 try
                 {
-                    File::write($path, $content['data']);
+                    $status = (int) ($content['info']['http_code'] ?? 0);
+                    if ($status < 200 || $status >= 300 || !is_string($content['data'] ?? null)
+                        || trim($content['data']) === '') {
+                        continue;
+                    }
+
+                    if (!File::write($path, $content['data'])) {
+                        throw new \RuntimeException('Could not write translation file.');
+                    }
                     $value->images = 'ok.png';
                 }
                 catch (\Throwable $e)
