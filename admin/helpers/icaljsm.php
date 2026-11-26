@@ -1083,7 +1083,9 @@ class icaljsm
     }
 
     /**
-     * Returns a `DateTime` object from an iCal date time format
+     * Convert a complete iCalendar DATE or DATE-TIME into a DateTime object.
+     * Supports floating, UTC and TZID-prefixed values; rejects trailing data,
+     * impossible calendar dates and invalid time components instead of silently normalising them.
      *
      * @param  string $icalDate
      * @return \DateTime
@@ -1101,24 +1103,17 @@ class icaljsm
          * Use DateTime class objects to get around limitations with `mktime` and `gmmktime`.
          * Must have a local time zone set to process floating times.
          */
-        $pattern  = '/^(?:TZID=)?([^:]*|".*")'; // [1]: Time zone
-        $pattern .= ':?';                       //      Time zone delimiter
-        $pattern .= '([0-9]{8})';               // [2]: YYYYMMDD
-        $pattern .= 'T?';                       //      Time delimiter
-        $pattern .= '(?(?<=T)([0-9]{6}))';      // [3]: HHMMSS (filled if delimiter present)
-        $pattern .= '(Z?)/';                    // [4]: UTC flag
+        $pattern = '/^(?:(?:TZID=)?("[^"]+"|[^:]+):)?([0-9]{8})(?:T([0-9]{6})(Z?))?$/D';
 
-        preg_match($pattern, $icalDate, $date);
-
-        if (empty($date)) {
-            throw new \Exception('Invalid iCal date format.');
+        if (!is_string($icalDate) || preg_match($pattern, $icalDate, $date) !== 1) {
+            throw new \InvalidArgumentException('Invalid iCal date format.');
         }
 
         // A Unix timestamp usually cannot represent a date prior to 1 Jan 1970.
         // PHP, on the other hand, uses negative numbers for that. Thus we don't
         // need to special case them.
 
-        if ($date[4] === 'Z') {
+        if (($date[4] ?? '') === 'Z') {
             $dateTimeZone = new \DateTimeZone(self::TIME_ZONE_UTC);
         } elseif (!empty($date[1])) {
             $dateTimeZone = $this->timeZoneStringToDateTimeZone($date[1]);
@@ -1136,7 +1131,15 @@ class icaljsm
             $dateFormat .= '\THis';
         }
 
-        return \DateTime::createFromFormat($dateFormat, $dateBasic, $dateTimeZone);
+        $result = \DateTime::createFromFormat($dateFormat, $dateBasic, $dateTimeZone);
+        $errors = \DateTime::getLastErrors();
+
+        if ($result === false || (is_array($errors)
+            && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
+            throw new \InvalidArgumentException('Invalid iCal date value.');
+        }
+
+        return $result;
     }
 
     /**
@@ -1983,7 +1986,11 @@ class icaljsm
      */
     protected function isValidIanaTimeZoneId($timeZone)
     {
-        if (in_array($timeZone, $this->validIanaTimeZones)) {
+        if (!is_string($timeZone) || $timeZone === '') {
+            return false;
+        }
+
+        if (in_array($timeZone, $this->validIanaTimeZones, true)) {
             return true;
         }
 
@@ -2015,7 +2022,7 @@ class icaljsm
      */
     public function isValidCldrTimeZoneId($timeZone)
     {
-        return array_key_exists(html_entity_decode($timeZone), self::$cldrTimeZonesMap);
+        return is_string($timeZone) && array_key_exists(html_entity_decode($timeZone), self::$cldrTimeZonesMap);
     }
 
     /**
@@ -2026,7 +2033,7 @@ class icaljsm
      */
     public function isValidWindowsTimeZoneId($timeZone)
     {
-        return array_key_exists(html_entity_decode($timeZone), self::$windowsTimeZonesMap);
+        return is_string($timeZone) && array_key_exists(html_entity_decode($timeZone), self::$windowsTimeZonesMap);
     }
 
     /**
@@ -2239,7 +2246,7 @@ class icaljsm
     }
 
     /**
-     * Checks if a date string is a valid date
+     * Validate a nonempty date string using PHP DateTime, rejecting invalid types and dates that produce parser warnings.
      *
      * @param  string $value
      * @return boolean
@@ -2247,14 +2254,15 @@ class icaljsm
      */
     public function isValidDate($value)
     {
-        if (!$value) {
+        if (!is_string($value) || trim($value) === '') {
             return false;
         }
 
         try {
             new \DateTime($value);
+            $errors = \DateTime::getLastErrors();
 
-            return true;
+            return $errors === false || ($errors['warning_count'] === 0 && $errors['error_count'] === 0);
         } catch (\Exception $exception) {
             return false;
         }
