@@ -49,7 +49,8 @@ final class SmimageimportModel extends SportsManagementAdminModel
      * configured archive destinations before writing to Joomla paths.
      * Uses a unique temporary ZIP for each download, accepts modern and legacy
      * HTTP response APIs, removes temporary files on every exit and checks
-     * publication writes before reporting success. Failed downloads/extractions produce generic administrator feedback;
+     * publication writes before reporting success. Preflights ZIP entries and
+     * destination paths before extraction. Failed downloads/extractions produce generic administrator feedback;
      * exception classes are logged privately without credentials or SQL.
      *
      * @return bool Whether the selected image import succeeded.
@@ -128,8 +129,20 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'));
                 }
 
+                $current = JPATH_SITE;
+                foreach (explode('/', 'images/com_sportsmanagement/database/' . $directory) as $segment) {
+                    $current .= '/' . $segment;
+                    if (is_link($current)) {
+                        throw new \RuntimeException('Image destination contains a symbolic link.');
+                    }
+                }
+
                 if (!is_dir($extractDirectory) && !Folder::create($extractDirectory)) {
                     throw new \RuntimeException(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'));
+                }
+
+                if (!$this->validateImageArchive($archivePath, $extractDirectory)) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'));
                 }
 
                 $archive = new Archive();
@@ -287,6 +300,94 @@ final class SmimageimportModel extends SportsManagementAdminModel
             && !str_starts_with($path, '/')
             && !str_contains($path, "\0")
             && preg_match('#^[A-Za-z0-9._ /-]+$#', $path) === 1;
+    }
+
+    /**
+     * Validate every ZIP entry before Joomla extracts an image package.
+     * Rejects traversal, absolute paths, duplicate names, special Unix files
+     * and symbolic links in existing destination paths. Bounds the total
+     * expanded archive size and permits only recognised image extensions.
+     *
+     * @param string $archivePath Downloaded ZIP archive.
+     * @param string $destination Intended extraction directory.
+     * @return bool Whether all entries pass the preflight checks.
+     */
+    private function validateImageArchive(string $archivePath, string $destination): bool
+    {
+        if (!class_exists(\ZipArchive::class)) {
+            return false;
+        }
+
+        $zip = new \ZipArchive();
+        if ($zip->open($archivePath) !== true) {
+            return false;
+        }
+
+        try {
+            if ($zip->numFiles < 1 || $zip->numFiles > 50000) {
+                return false;
+            }
+
+            $total = 0;
+            $seen = [];
+            $images = 0;
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entry = $zip->statIndex($i);
+                $name = $entry['name'] ?? '';
+                if (!is_string($name) || $name === '' || strlen($name) > 1024
+                    || preg_match('/[\x00-\x1f\x7f]/', $name)
+                    || str_contains($name, '\\') || str_contains($name, ':')
+                    || str_starts_with($name, '/')) {
+                    return false;
+                }
+
+                $directory = str_ends_with($name, '/');
+                $relative = rtrim($name, '/');
+                $segments = explode('/', $relative);
+                $path = $destination;
+                foreach ($segments as $segment) {
+                    if ($segment === '' || $segment === '.' || $segment === '..') {
+                        return false;
+                    }
+                    $path .= '/' . $segment;
+                    if (is_link($path)) {
+                        return false;
+                    }
+                }
+
+                $key = strtolower($relative);
+                if (isset($seen[$key])) {
+                    return false;
+                }
+                $seen[$key] = true;
+
+                if ($zip->getExternalAttributesIndex($i, $system, $attributes)
+                    && $system === \ZipArchive::OPSYS_UNIX) {
+                    $type = ($attributes >> 16) & 0170000;
+                    if ($type !== 0 && $type !== ($directory ? 0040000 : 0100000)) {
+                        return false;
+                    }
+                }
+
+                if (!$directory) {
+                    if (!in_array(strtolower(pathinfo($relative, PATHINFO_EXTENSION)),
+                        ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'avif'], true)
+                        || !is_int($entry['size'] ?? null) || $entry['size'] < 1
+                        || $entry['size'] > 32 * 1024 * 1024) {
+                        return false;
+                    }
+                    $total += $entry['size'];
+                    $images++;
+                    if ($total > 512 * 1024 * 1024) {
+                        return false;
+                    }
+                }
+            }
+
+            return $images > 0;
+        } finally {
+            $zip->close();
+        }
     }
 
     /**
