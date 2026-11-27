@@ -32,6 +32,7 @@ final class SeasonTable extends SportsManagementTable
      * The Joomla media field can be empty; store that as SQL NULL. Reject
      * malformed picture input and values exceeding the new VARCHAR(250)
      * column rather than silently truncating a selected media reference.
+     * Rejects invalid UTF-8 and control bytes before database binding.
      *
      * @param array|object $src Record values supplied by the administrator.
      * @param array|string $ignore Fields excluded from binding.
@@ -54,6 +55,13 @@ final class SeasonTable extends SportsManagementTable
 
             if (is_string($picture) && strlen($picture) > 250) {
                 $this->setError('Season picture reference exceeds 250 bytes.');
+
+                return false;
+            }
+
+            if (is_string($picture) && (preg_match('//u', $picture) !== 1
+                || preg_match('/[\x00-\x1F\x7F]/', $picture) === 1)) {
+                $this->setError('Invalid season picture encoding or control characters.');
 
                 return false;
             }
