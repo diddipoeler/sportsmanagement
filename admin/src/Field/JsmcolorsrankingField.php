@@ -12,9 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
-use Joomla\CMS\Application\AdministratorApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -23,6 +22,12 @@ final class JsmcolorsrankingField extends FormField
 {
     protected $type = 'jsmcolorsranking';
 
+    /**
+     * Render ranking ranges with color and optional descriptive text controls.
+     * Preserves the existing submitted row structure, normalises malformed
+     * saved cell values and delegates select rendering to Joomla.
+     * @return string Ranking color configuration table and controls.
+     */
     protected function getInput(): string
     {
         $rankingTeams = max(0, (int) ($this->element['rankingteams'] ?? 0));
@@ -65,6 +70,11 @@ final class JsmcolorsrankingField extends FormField
                 ['von' => '', 'bis' => '', 'color' => '', 'text' => ''],
                 isset($values[$row]) && is_array($values[$row]) ? $values[$row] : []
             );
+            foreach (['von', 'bis', 'color', 'text'] as $key) {
+                if (!is_string($rowValue[$key]) && !is_int($rowValue[$key])) {
+                    $rowValue[$key] = '';
+                }
+            }
             $color = (string) $rowValue['color'];
             $pickerColor = preg_match('/^#?[0-9A-Fa-f]{6}$/', $color)
                 ? '#' . ltrim($color, '#')
@@ -129,13 +139,23 @@ final class JsmcolorsrankingField extends FormField
         return implode('', $html);
     }
 
+    /**
+     * Register the delegated ranking color synchronization script.
+     * Uses the administrator HTML document's native web asset manager and
+     * registers at most one listener per document, even with multiple fields.
+     * @return void
+     */
     private function registerColorPickerScript(): void
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-        $document = $app->getDocument();
+        static $registered = null;
+        $document = SportsManagementAdministratorApplicationResolver::resolve()->getDocument();
 
         if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $registered ??= new \WeakMap();
+        if (isset($registered[$document])) {
             return;
         }
 
@@ -175,5 +195,6 @@ document.addEventListener('input', (event) => {
     }
 });
 JS);
+        $registered[$document] = true;
     }
 }
