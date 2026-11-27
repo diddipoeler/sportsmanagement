@@ -244,14 +244,15 @@ final class TeamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Delete one stored team training entry.
+     * Delete one stored team training entry after validating its identifier.
      *
      * @param mixed $id id value.
      * @return bool
      */
     public function DeleteTrainigData($id)
     {
-        $trainingId = (int) $id;
+        $ids = self::normaliseSeasonIds([$id]);
+        $trainingId = $ids[0] ?? 0;
 
         if ($trainingId <= 0) {
             return false;
@@ -276,13 +277,20 @@ final class TeamModel extends SportsManagementAdminModel
 
     /**
      * Apply submitted changes to existing training entries.
+     * Rejects malformed or oversized identifier lists before writing any rows.
      *
      * @param mixed $post post value.
      * @return bool
      */
     public function UpdateTrainigData($post)
     {
-        $ids = array_values(array_filter(array_map('intval', (array) ($post['tdids'] ?? []))));
+        if (!is_array($post)) {
+            return false;
+        }
+        $ids = self::normaliseSeasonIds($post['tdids'] ?? []);
+        if ($ids === null) {
+            return false;
+        }
 
         if (!$ids) {
             return true;
@@ -383,14 +391,15 @@ final class TeamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Create a new training entry for the given team.
+     * Create a new training entry for a validated positive team identifier.
      *
      * @param int $team_id team id value.
      * @return bool
      */
     public function addNewTrainigData($team_id = 0)
     {
-        $teamId = (int) $team_id;
+        $ids = self::normaliseSeasonIds([$team_id]);
+        $teamId = $ids[0] ?? 0;
 
         if ($teamId <= 0) {
             return false;
@@ -540,7 +549,7 @@ final class TeamModel extends SportsManagementAdminModel
         $this->syncSeasons($data, $id);
 
         if (!empty($post['delete']) && is_array($post['delete'])) {
-            $this->DeleteTrainigData((int) reset($post['delete']));
+            $this->DeleteTrainigData(reset($post['delete']));
         }
 
         if (!empty($post['tdids']) && is_array($post['tdids'])) {
@@ -679,21 +688,18 @@ final class TeamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Convert a time string to a nonnegative second count.
+     * Convert a valid 24-hour clock value to seconds since midnight.
+     * Supports H:MM, HH:MM and optional seconds; invalid values return zero.
      *
      * @param string $time time value.
      * @return int
      */
     private static function timeToSeconds(string $time): int
     {
-        $parts = array_map('intval', explode(':', trim($time)));
-
-        if (count($parts) === 2) {
-            $parts[] = 0;
+        if (preg_match('/^([01]?[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?$/D', trim($time), $parts) !== 1) {
+            return 0;
         }
 
-        [$hours, $minutes, $seconds] = array_pad($parts, 3, 0);
-
-        return max(0, $hours) * 3600 + max(0, $minutes) * 60 + max(0, $seconds);
+        return (int) $parts[1] * 3600 + (int) $parts[2] * 60 + (int) ($parts[3] ?? 0);
     }
 }
