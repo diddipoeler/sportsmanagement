@@ -17,11 +17,24 @@ final class ExtensionradiobuttonField extends RadioField
 {
     protected $type = 'ExtensionRadioButton';
 
+    /**
+     * Render the historical extension radio control using Joomla's switcher layout.
+     * Temporarily selects the native radio type and layout, restoring the
+     * original field metadata even if the parent renderer fails.
+     * @return string Native Joomla radio-switcher markup.
+     */
     protected function getInput(): string
     {
+        $originalLayout = $this->layout;
+        $originalType = $this->type;
         $this->layout = 'joomla.form.field.radio.switcher';
         $this->type = 'radio';
 
-        return parent::getInput();
+        try {
+            return parent::getInput();
+        } finally {
+            $this->layout = $originalLayout;
+            $this->type = $originalType;
+        }
     }
 }
