@@ -15,6 +15,12 @@ final class TeamlistField extends SportsManagementListField
 {
     protected $type = 'Teamlist';
 
+    /**
+     * Load team identifiers and names in alphabetical order.
+     * Uses the configured SportsManagement database, skips malformed rows
+     * and appends valid choices to the inherited XML options.
+     * @return array Joomla list options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -29,7 +35,14 @@ final class TeamlistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
