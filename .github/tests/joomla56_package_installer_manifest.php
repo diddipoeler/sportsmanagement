@@ -12,6 +12,24 @@ declare(strict_types=1);
 namespace Joomla\CMS\Installer {
     interface InstallerScriptInterface {}
 }
+namespace Joomla\Filesystem {
+    final class Folder
+    {
+        public static bool $fail = false;
+        public static int $calls = 0;
+
+        /**
+         * Simulate Joomla directory creation or a failed operation.
+         * @param string $path Directory to create.
+         * @return bool Whether creation succeeded.
+         */
+        public static function create(string $path): bool
+        {
+            ++self::$calls;
+            return !self::$fail && mkdir($path, 0700, true);
+        }
+    }
+}
 namespace Joomla\Database {
     interface DatabaseInterface {}
 }
@@ -147,5 +165,32 @@ namespace {
         }
     }
 
-    echo "Package installer manifest regression passed.\n";
+    $directory = sys_get_temp_dir() . '/jsm-installer-' . bin2hex(random_bytes(12));
+    $ensure = new \ReflectionMethod($script, 'ensureDirectory');
+    try {
+        $ensure->invoke($script, $directory);
+        $ensure->invoke($script, $directory);
+        if (!is_dir($directory) || \Joomla\Filesystem\Folder::$calls !== 1) {
+            throw new \RuntimeException('Required directory creation is not idempotent.');
+        }
+
+        \Joomla\Filesystem\Folder::$fail = true;
+        try {
+            $ensure->invoke($script, $directory . '/missing');
+            throw new \LogicException('Failed directory creation was accepted.');
+        } catch (\RuntimeException $exception) {
+            if ($exception->getMessage() !== 'Could not create required SportsManagement image directory.') {
+                throw $exception;
+            }
+        }
+    } finally {
+        if (is_dir($directory . '/missing')) {
+            rmdir($directory . '/missing');
+        }
+        if (is_dir($directory)) {
+            rmdir($directory);
+        }
+    }
+
+    echo "Package installer manifest and directory regressions passed.\n";
 }
