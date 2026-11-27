@@ -32,6 +32,7 @@ final class PlaygroundPlanHelper
      * Retrieve the upcoming playground fixtures for the module.
      *
      * Selects projects and grounds, queries published upcoming matches,
+     * orders equal kickoff times by match ID for stable limited results,
      * discards malformed result rows, and validates project IDs, aliases and
      * logo fields before preparing venue links. Invalid database selectors
      * fail closed instead of querying the default database. Errors return an
@@ -124,7 +125,8 @@ final class PlaygroundPlanHelper
                 ->where('m.match_date > CURRENT_TIMESTAMP')
                 ->where('m.published = 1')
                 ->where('p.published = 1')
-                ->order('m.match_date ASC');
+                ->order('m.match_date ASC')
+                ->order('m.id ASC');
 
             if ($projectIds) {
                 $projectPlaceholders = $query->bindArray($projectIds, ParameterType::INTEGER);
