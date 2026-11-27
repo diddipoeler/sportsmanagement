@@ -19,6 +19,11 @@ final class TitleField extends FormField
 {
     protected $type = 'Title';
 
+    /**
+     * Render the translated display-only administrator heading and optional resources.
+     * Escapes the heading text and HTML attributes for the native form layout.
+     * @return string Administrator heading markup.
+     */
     protected function getLabel(): string
     {
         $title = trim((string) ($this->element['title'] ?? ''));
@@ -51,6 +56,10 @@ final class TitleField extends FormField
         return $html . '</div>';
     }
 
+    /**
+     * Suppress an editable input for this display-only field.
+     * @return string Empty input markup.
+     */
     protected function getInput(): string
     {
         return '';
