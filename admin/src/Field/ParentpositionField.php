@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 
@@ -21,11 +23,17 @@ final class ParentpositionField extends SportsManagementListField
 {
     protected $type = 'parentposition';
 
+    /**
+     * Load root positions eligible for selection as a parent.
+     * Excludes the current record, translates position names and retains the
+     * explicit root option for positions without a parent.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
         $currentId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -35,7 +43,8 @@ final class ParentpositionField extends SportsManagementListField
             ->order($db->quoteName('ordering') . ' ASC');
 
         if ($currentId > 0) {
-            $query->where($db->quoteName('id') . ' <> ' . $currentId);
+            $query->where($db->quoteName('id') . ' <> :currentId')
+                ->bind(':currentId', $currentId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
