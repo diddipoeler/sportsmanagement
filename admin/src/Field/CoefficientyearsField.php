@@ -11,14 +11,18 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 final class CoefficientyearsField extends SportsManagementListField
 {
     protected $type = 'coefficientyears';
 
+    /**
+     * Load distinct coefficient seasons in descending order.
+     * Retains inherited options when the optional coefficient table cannot
+     * be queried and logs the exception class without exposing SQL details.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -32,18 +36,16 @@ final class CoefficientyearsField extends SportsManagementListField
             $db->setQuery($query);
             $seasons = $db->loadColumn() ?: [];
         } catch (\Throwable $e) {
-            /** @var AdministratorApplication $app */
-            $app = Factory::getContainer()->get(AdministratorApplication::class);
-            $app->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'error'
-            );
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             $seasons = [];
         }
 
         $options = [];
 
-        foreach ($seasons as $season) {
+        foreach (is_array($seasons) ? $seasons : [] as $season) {
+            if (!is_string($season) && !is_int($season)) {
+                continue;
+            }
             $season = (string) $season;
             $options[] = (object) [
                 'value' => $season,
