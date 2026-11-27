@@ -47,6 +47,8 @@ final class XmlTeamImportService
 
     /**
      * Import selected teams and their club/playground dependencies from XML.
+     * Resets the external club mapping for every import. Skips malformed
+     * explicit local team/club IDs and nonexistent selected clubs.
      * Resolves imported venues and clubs first, maps external relation IDs to local values, reuses matching teams and inserts only selected new team rows with escaped messages.
      *
      * @param array<string,mixed> $post Administrator selections and team/club overrides.
@@ -56,6 +58,7 @@ final class XmlTeamImportService
     public function import(array $post, array $parsedData): array
     {
         $messages = [];
+        $this->clubIdMap = [];
 
         if (!empty($parsedData['playground'])) {
             $messages += (new XmlPlaygroundImportService($this->database, $this->geocoder))
@@ -72,15 +75,28 @@ final class XmlTeamImportService
             }
 
             $oldClubId = (int) ($source->club_id ?? 0);
-            $databaseClubId = (int) ($post['dbClubID_' . $key] ?? 0);
+            $rawClubId = $post['dbClubID_' . $key] ?? 0;
+            $rawTeamId = $post['dbTeamID_' . $key] ?? 0;
+            $databaseClubId = is_int($rawClubId) || is_string($rawClubId)
+                ? filter_var($rawClubId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+            $databaseTeamId = is_int($rawTeamId) || is_string($rawTeamId)
+                ? filter_var($rawTeamId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+
+            if ($databaseClubId === false || $databaseTeamId === false) {
+                continue;
+            }
 
             if ($databaseClubId > 0) {
                 $clubId = $databaseClubId;
                 $existingClub = $this->findClubById($clubId);
 
-                if ($existingClub !== null) {
-                    $clubMessage .= $this->existingClubMessage((string) $existingClub->name);
+                if ($existingClub === null) {
+                    continue;
                 }
+
+                $clubMessage .= $this->existingClubMessage((string) $existingClub->name);
             } else {
                 [$clubId, $resolvedClubMessage] = $this->resolveImportedClub(
                     $key,
@@ -95,8 +111,6 @@ final class XmlTeamImportService
             if ($oldClubId > 0 && $clubId > 0) {
                 $this->clubIdMap[$oldClubId] = $clubId;
             }
-
-            $databaseTeamId = (int) ($post['dbTeamID_' . $key] ?? 0);
 
             if ($databaseTeamId > 0) {
                 $existingTeam = $this->findTeamById($databaseTeamId);
