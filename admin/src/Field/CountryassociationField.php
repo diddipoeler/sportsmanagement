@@ -12,29 +12,36 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Log\Log;
 
 final class CountryassociationField extends SportsManagementListField
 {
     protected $type = 'countryassociation';
 
+    /**
+     * Load associations sharing the country of the selected record.
+     * Validates the configured table identifier and request ID, binds the ID
+     * to the native query and preserves inherited options on lookup failure.
+     * @return array Joomla selection options for the matching country.
+     */
     protected function getOptions(): array
     {
         $varname = trim((string) ($this->element['varname'] ?? ''));
-        $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
+        $targetTable = (string) ($this->element['targettable'] ?? '');
 
-        if ($varname === '' || $targetTable === '') {
+        if ($varname === '' || strlen($targetTable) > 64 || preg_match('/^[A-Za-z0-9_]+$/D', $targetTable) !== 1) {
             return parent::getOptions();
         }
 
         $selectedId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->get($varname, null, 'raw');
 
         if (is_array($selectedId)) {
-            $selectedId = reset($selectedId) ?: 0;
+            $selectedId = array_is_list($selectedId) && count($selectedId) === 1 ? $selectedId[0] : null;
         }
 
-        $selectedId = (int) $selectedId;
+        $selectedId = (is_int($selectedId) || is_string($selectedId))
+            ? filter_var($selectedId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
 
         if ($selectedId <= 0) {
             return parent::getOptions();
@@ -53,23 +60,28 @@ final class CountryassociationField extends SportsManagementListField
                 $db->quoteName($target, 'wt')
                 . ' ON ' . $db->quoteName('wt.country') . ' = ' . $db->quoteName('t.country')
             )
-            ->where($db->quoteName('wt.id') . ' = ' . $selectedId)
+            ->where($db->quoteName('wt.id') . ' = :selectedId')
+            ->bind(':selectedId', $selectedId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name'));
 
         try {
             $db->setQuery($query);
             $items = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'notice'
-            );
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::NOTICE, 'jsmerror');
+            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage('SportsManagement country associations could not be loaded.', 'notice');
             $items = [];
         }
 
         $options = [];
 
-        foreach ($items as $item) {
+        foreach (is_array($items) ? $items : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
