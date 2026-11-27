@@ -91,7 +91,10 @@ class Router extends RouterBase
             $rawItemId = 0;
         }
 
-        $currentItemId = ctype_digit((string) $rawItemId) ? (int) $rawItemId : 0;
+        $currentItemId = self::menuId($rawItemId);
+        if ($currentItemId === 0) {
+            unset($query['Itemid']);
+        }
 
         if ($currentItemId > 0) {
             $currentItem = $this->menu->getItem($currentItemId);
@@ -361,9 +364,33 @@ class Router extends RouterBase
     }
 
     /**
+     * Validate a positive Joomla menu identifier without integer saturation.
+     *
+     * Accepts integers and bounded decimal strings including leading zeros.
+     * Rejects oversized numbers, unsupported types and nonpositive values.
+     * @param mixed $value Raw menu identifier.
+     * @return int Positive menu identifier, or zero when invalid.
+     */
+    private static function menuId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+
+        if (!is_string($value) || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $id = filter_var(ltrim($value, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
      * Resolve the selected Joomla menu item from a validated Itemid.
      *
-     * Rejects arrays, partial numeric strings and non-positive identifiers,
+     * Rejects arrays, partial numeric strings, overflow and non-positive identifiers,
      * then returns only menu entries belonging to com_sportsmanagement.
      *
      * @param array $query URL query variables including an optional Itemid.
@@ -380,7 +407,7 @@ class Router extends RouterBase
             return null;
         }
 
-        $itemId = (int) $rawItemId;
+        $itemId = self::menuId($rawItemId);
 
         if ($itemId <= 0) {
             return null;
@@ -424,10 +451,7 @@ class Router extends RouterBase
         $best = null;
         $bestScore = PHP_INT_MIN;
         $rawItemId = $query['Itemid'] ?? 0;
-        $currentItemId = (is_int($rawItemId) || is_string($rawItemId))
-            && ctype_digit((string) $rawItemId)
-            ? (int) $rawItemId
-            : 0;
+        $currentItemId = self::menuId($rawItemId);
 
         foreach ($items as $item) {
             if (!$this->isSportsManagementMenuItem($item)) {
@@ -436,11 +460,8 @@ class Router extends RouterBase
 
             // The selected item becomes query['Itemid'] in preprocess().
             // Never select an item whose identifier cannot be used as an ID.
-            $candidateId = $item->id ?? null;
-            if ((!is_int($candidateId) && !is_string($candidateId))
-                || !ctype_digit((string) $candidateId)
-                || (int) $candidateId <= 0
-            ) {
+            $candidateId = self::menuId($item->id ?? null);
+            if ($candidateId === 0) {
                 continue;
             }
 
@@ -498,11 +519,7 @@ class Router extends RouterBase
                 continue;
             }
 
-            if (($currentItemId > 0)
-                && (is_int($candidateId) || is_string($candidateId))
-                && ctype_digit((string) $candidateId)
-                && (int) $candidateId === $currentItemId
-            ) {
+            if ($currentItemId > 0 && $candidateId === $currentItemId) {
                 ++$score;
             }
 
