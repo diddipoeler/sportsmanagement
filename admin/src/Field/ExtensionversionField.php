@@ -32,6 +32,8 @@ final class ExtensionversionField extends FormField
      */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
+        $this->version = '';
+
         $result = parent::setup($element, $value, $group);
 
         if ($result) {
