@@ -219,7 +219,8 @@ final class TopTipperHelper
      * Rejects non-string values, absolute paths, traversal segments, encoded
      * path tricks, URL parameters, backslashes and control characters. Allows
      * regular image formats in nested Joomla media folders, including Unicode
-     * and spaces in legacy filenames.
+     * and spaces in legacy filenames. Checks raw control bytes and UTF-8
+     * validity before trimming so malformed input cannot become a valid path.
      *
      * @param mixed $value Untrusted avatar path.
      * @return string Safe relative image path, or empty string for invalid data.
@@ -227,6 +228,10 @@ final class TopTipperHelper
     private static function safeAvatarPath(mixed $value): string
     {
         if (!is_string($value)) {
+            return '';
+        }
+
+        if (preg_match('/[\x00-\x1F\x7F]/', $value) === 1 || preg_match('//u', $value) !== 1) {
             return '';
         }
 
