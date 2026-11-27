@@ -17,6 +17,13 @@ final class UserfieldsField extends SportsManagementListField
 {
     protected $type = 'userfields';
 
+    /**
+     * Configure the field selector to submit changes to the administrator form.
+     * @param \SimpleXMLElement $element Field definition.
+     * @param mixed $value Saved selection.
+     * @param string|null $group Optional form group.
+     * @return bool Parent setup result.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['class'] = 'form-select';
@@ -27,6 +34,11 @@ final class UserfieldsField extends SportsManagementListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Load extra fields matching the active project or team editor context.
+     * Preserves inherited XML options and alphabetical ordering.
+     * @return array Joomla extra field options.
+     */
     protected function getOptions(): array
     {
         $view = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getCmd('view');
