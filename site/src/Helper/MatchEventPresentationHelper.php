@@ -24,7 +24,8 @@ final class MatchEventPresentationHelper
      *
      * Discards malformed non-object records before tab grouping or column
      * rendering, so corrupt legacy query results cannot cause a PHP 8 type
-     * error. Maps strictly validated positive event type and team IDs,
+     * error. Normalises malformed optional display fields before formatting.
+     * Maps strictly validated positive event type and team IDs,
      * rejecting malformed imported identifiers before grouping or rendering.
      *
      * @param object $game Match row containing the home and away team IDs.
@@ -224,7 +225,7 @@ final class MatchEventPresentationHelper
                 if (!empty($config['show_events_with_icons'])) {
                     $output .= self::eventIcon($eventType);
                 } else {
-                    $output .= self::escape(Text::_((string) ($eventType->name ?? ''))) . ' ';
+                    $output .= self::escape(Text::_(self::textValue($eventType->name ?? null))) . ' ';
                 }
             }
 
@@ -234,9 +235,9 @@ final class MatchEventPresentationHelper
 
             $name = PersonNameFormatter::format(
                 null,
-                (string) ($event->firstname1 ?? ''),
-                (string) ($event->nickname1 ?? ''),
-                (string) ($event->lastname1 ?? ''),
+                self::textValue($event->firstname1 ?? null),
+                self::textValue($event->nickname1 ?? null),
+                self::textValue($event->lastname1 ?? null),
                 $config['name_format'] ?? 0
             );
             $output .= $name !== '' ? $name : self::escape(Text::_('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON'));
@@ -245,7 +246,7 @@ final class MatchEventPresentationHelper
             if (!empty($config['show_event_sum']) && (float) ($event->event_sum ?? 0) > 0) {
                 $details[] = self::escape((string) $event->event_sum);
             }
-            if (!empty($config['show_event_notice']) && trim((string) ($event->notice ?? '')) !== '') {
+            if (!empty($config['show_event_notice']) && trim(self::textValue($event->notice ?? null)) !== '') {
                 $details[] = self::escape((string) $event->notice);
             }
             if ($details) {
@@ -311,26 +312,26 @@ final class MatchEventPresentationHelper
 
             $incoming = PersonNameFormatter::format(
                 null,
-                (string) ($substitution->firstname ?? ''),
-                (string) ($substitution->nickname ?? ''),
-                (string) ($substitution->lastname ?? ''),
+                self::textValue($substitution->firstname ?? null),
+                self::textValue($substitution->nickname ?? null),
+                self::textValue($substitution->lastname ?? null),
                 $config['name_format'] ?? 0
             );
             $outgoing = PersonNameFormatter::format(
                 null,
-                (string) ($substitution->out_firstname ?? ''),
-                (string) ($substitution->out_nickname ?? ''),
-                (string) ($substitution->out_lastname ?? ''),
+                self::textValue($substitution->out_firstname ?? null),
+                self::textValue($substitution->out_nickname ?? null),
+                self::textValue($substitution->out_lastname ?? null),
                 $config['name_format'] ?? 0
             );
 
             $output .= '<li class="mb-2">'
-                . '<strong>' . self::escape((string) ($substitution->in_out_time ?? '')) . '. '
+                . '<strong>' . self::escape(self::textValue($substitution->in_out_time ?? null)) . '. '
                 . self::escape(Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')) . '</strong><br>'
                 . '<span aria-hidden="true">↓</span> ' . ($outgoing !== '' ? $outgoing : self::escape(Text::_('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON')))
-                . self::position((string) ($substitution->out_position ?? '')) . '<br>'
+                . self::position(self::textValue($substitution->out_position ?? null)) . '<br>'
                 . '<span aria-hidden="true">↑</span> ' . ($incoming !== '' ? $incoming : self::escape(Text::_('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON')))
-                . self::position((string) ($substitution->in_position ?? ''))
+                . self::position(self::textValue($substitution->in_position ?? null))
                 . '</li>';
         }
 
@@ -350,10 +351,10 @@ final class MatchEventPresentationHelper
     private static function eventLabel(object $eventType, array $config): string
     {
         if (!empty($config['show_events_with_icons'])) {
-            return self::eventIcon($eventType) . ' ' . self::escape(Text::_((string) ($eventType->name ?? '')));
+            return self::eventIcon($eventType) . ' ' . self::escape(Text::_(self::textValue($eventType->name ?? null)));
         }
 
-        return self::escape(Text::_((string) ($eventType->name ?? '')));
+        return self::escape(Text::_(self::textValue($eventType->name ?? null)));
     }
 
     /**
@@ -377,7 +378,7 @@ final class MatchEventPresentationHelper
             : rtrim(Uri::root(), '/') . '/' . ltrim($icon, '/');
 
         return '<img src="' . self::escape($url) . '" alt="'
-            . self::escape(Text::_((string) ($eventType->name ?? ''))) . '" width="20" height="20">';
+            . self::escape(Text::_(self::textValue($eventType->name ?? null))) . '" width="20" height="20">';
     }
 
     /**
@@ -420,6 +421,17 @@ final class MatchEventPresentationHelper
     }
 
     /**
+     * Normalise optional legacy display fields without unsafe string casts.
+     * Accepts text and numeric values; structured values become empty text.
+     * @param mixed $value Imported display field.
+     * @return string Safe scalar text for further formatting.
+     */
+    private static function textValue(mixed $value): string
+    {
+        return is_string($value) || is_int($value) || is_float($value) ? (string) $value : '';
+    }
+
+    /**
      * Escape display values for safe inclusion in match report HTML.
      *
      * Encodes double/single quotes and markup delimiters using UTF-8 so
@@ -430,6 +442,6 @@ final class MatchEventPresentationHelper
      */
     private static function escape(mixed $value): string
     {
-        return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(self::textValue($value), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
