@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
 
 /**
  * Joomla 5/6-native replacement for the historical federationslist field.
@@ -70,7 +69,7 @@ final class FederationslistField extends SportsManagementListField
     private function getTopLevelOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -82,7 +81,14 @@ final class FederationslistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
@@ -105,7 +111,7 @@ final class FederationslistField extends SportsManagementListField
     private function getTreeOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('parent_id'),
@@ -120,7 +126,11 @@ final class FederationslistField extends SportsManagementListField
 
         $children = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item) || !is_string($item->name ?? null)) {
+                continue;
+            }
             $id = self::recordId($item->id ?? null);
             $parent = self::recordId($item->parent_id ?? null, true);
 
