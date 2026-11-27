@@ -59,6 +59,8 @@ final class HitlistModel extends SportsManagementModel
      * Validates the selected table and result cap without lossy PHP casts.
      * Database failures are logged by exception class and return an empty
      * result for the selected entity rather than aborting public rendering.
+     * Person labels are assembled in PHP to avoid a database-specific
+     * CONCAT_WS expression while preserving its null-skipping behaviour.
      *
      * @param array $config Reserved legacy query configuration.
      * @param mixed $max_hits Maximum hit-list rows (0 retains the legacy unlimited mode).
@@ -91,7 +93,8 @@ final class HitlistModel extends SportsManagementModel
 
             if ($table === 'person') {
                 $query->select([
-                    "CONCAT_WS(' - ', " . $db->quoteName('firstname') . ', ' . $db->quoteName('lastname') . ') AS ' . $db->quoteName('name'),
+                    $db->quoteName('firstname'),
+                    $db->quoteName('lastname'),
                     $db->quoteName('hits'),
                 ]);
             } else {
@@ -107,9 +110,29 @@ final class HitlistModel extends SportsManagementModel
 
             $db->setQuery($query, 0, $limit);
             $records = $db->loadObjectList();
-            self::$_success_text[$label] = is_array($records)
-                ? array_values(array_filter($records, 'is_object'))
-                : [];
+            $rows = [];
+
+            foreach (is_array($records) ? $records : [] as $record) {
+                if (!is_object($record)) {
+                    continue;
+                }
+
+                if ($table === 'person') {
+                    $parts = [];
+                    foreach (['firstname', 'lastname'] as $field) {
+                        $value = $record->{$field} ?? null;
+                        if (is_string($value)) {
+                            $parts[] = $value;
+                        }
+                    }
+                    $record->name = implode(' - ', $parts);
+                    unset($record->firstname, $record->lastname);
+                }
+
+                $rows[] = $record;
+            }
+
+            self::$_success_text[$label] = $rows;
         } catch (\Throwable $error) {
             Log::add(
                 __METHOD__ . ': hit list database query failed (' . get_class($error) . ').',
