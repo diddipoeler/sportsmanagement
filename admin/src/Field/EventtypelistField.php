@@ -53,7 +53,13 @@ final class EventtypelistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($items as $item) {
+        foreach (is_array($items) ? $items : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => Text::_((string) $item->text),
