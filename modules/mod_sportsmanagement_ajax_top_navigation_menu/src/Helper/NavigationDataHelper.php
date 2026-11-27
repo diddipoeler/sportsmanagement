@@ -177,6 +177,7 @@ final class NavigationDataHelper
     public $_round_id = null;
 
     private int $selectedProjectId = 0;
+    private int $selectedDatabase = 0;
     private array $countryFederations = [];
 
     protected Registry $_params;
@@ -225,7 +226,7 @@ final class NavigationDataHelper
         }
 
         $joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);
-        $input->set('cfg_which_database', $selector);
+        $this->selectedDatabase = $selector;
         $this->_db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
         $this->selectedProjectId = self::nonNegativeSelector($input->get('p', 0, 'raw')) ?? 0;
@@ -548,7 +549,7 @@ final class NavigationDataHelper
     /**
      * Collect current route parameters from Joomla request input.
      *
-     * Returns the allowed component view and numeric navigation identifiers for legacy route building.
+     * Returns the allowed component view and numeric navigation identifiers for legacy route building. The database selector belongs to this instance.
      *
      * @return array<string,int|string> Sanitised request query fields.
      */
@@ -559,7 +560,7 @@ final class NavigationDataHelper
         return [
             'option' => $input->getCmd('option', ''),
             'view' => $input->getCmd('view', ''),
-            'cfg_which_database' => $input->getInt('cfg_which_database', 0),
+            'cfg_which_database' => $this->selectedDatabase,
             's' => $input->getInt('s', 0),
             'p' => $input->getInt('p', 0),
             'division' => $input->getInt('division', 0),
@@ -1310,7 +1311,8 @@ final class NavigationDataHelper
     /**
      * Construct common database, season and project routing parameters.
      *
-     * Reads the already validated database selection and current project route slug.
+     * Uses this instance's validated database selection and current project
+     * route slug, even if another module modifies the shared request.
      *
      * @return array<string,int|string> Base Joomla route parameters.
      */
@@ -1319,7 +1321,7 @@ final class NavigationDataHelper
         $input = $this->_app->getInput();
 
         return [
-            'cfg_which_database' => self::nonNegativeSelector($input->get('cfg_which_database', 0, 'RAW')) ?? 0,
+            'cfg_which_database' => $this->selectedDatabase,
             's' => $input->getInt('s', 0),
             'p' => $this->_project_slug,
         ];
