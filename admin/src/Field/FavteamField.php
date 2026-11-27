@@ -11,28 +11,30 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\Database\ParameterType;
 
 final class FavteamField extends SportsManagementListField
 {
     protected $type = 'Favteam';
 
+    /**
+     * Load teams participating in the active project for favourite-team selection.
+     * Resolves the administrator project context and validates the ID before
+     * joining season and project memberships through a bound query.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
-        }
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
 
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
-        $projectId = $input->getCmd('layout') === 'edit'
+        $rawId = $input->getCmd('layout') === 'edit'
             ? $input->getInt('id', 0)
-            : (int) $app->getUserState($option . '.pid', 0);
+            : $app->getUserState($option . '.pid', 0);
+        $projectId = (is_int($rawId) || is_string($rawId))
+            ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
 
         if ($projectId <= 0) {
             return parent::getOptions();
