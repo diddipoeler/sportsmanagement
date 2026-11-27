@@ -11,16 +11,26 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 final class PersonagegroupField extends SportsManagementListField
 {
     protected $type = 'personagegroup';
 
+    /**
+     * Load age groups matching the sport of the selected record.
+     * Validates the configured table suffix and record ID, binds the ID
+     * and formats age boundaries and deadline information for the selector.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
-        $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
-        $selectedId = (int) $this->form->getValue('id');
+        $targetTable = (string) ($this->element['targettable'] ?? '');
+        $rawId = $this->form->getValue('id');
+        $selectedId = (is_int($rawId) || is_string($rawId))
+            ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
 
-        if ($targetTable === '' || $selectedId <= 0) {
+        if (strlen($targetTable) > 64 || preg_match('/^[A-Za-z0-9_]+$/D', $targetTable) !== 1 || $selectedId === false) {
             return parent::getOptions();
         }
 
@@ -40,7 +50,8 @@ final class PersonagegroupField extends SportsManagementListField
                 $db->quoteName($target, 't')
                 . ' ON ' . $db->quoteName('t.sports_type_id') . ' = ' . $db->quoteName('a.sportstype_id')
             )
-            ->where($db->quoteName('t.id') . ' = ' . $selectedId)
+            ->where($db->quoteName('t.id') . ' = :selectedId')
+            ->bind(':selectedId', $selectedId, ParameterType::INTEGER)
             ->order($db->quoteName('a.name'));
         $db->setQuery($query);
 
