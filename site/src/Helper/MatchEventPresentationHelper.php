@@ -24,7 +24,8 @@ final class MatchEventPresentationHelper
      *
      * Discards malformed non-object records before tab grouping or column
      * rendering, so corrupt legacy query results cannot cause a PHP 8 type
-     * error. Maps positive event type IDs and selects the configured layout.
+     * error. Maps strictly validated positive event type and team IDs,
+     * rejecting malformed imported identifiers before grouping or rendering.
      *
      * @param object $game Match row containing the home and away team IDs.
      * @param array<int,mixed> $projectEvents Available project event types.
@@ -55,7 +56,7 @@ final class MatchEventPresentationHelper
                 continue;
             }
 
-            $eventTypeId = (int) ($eventType->id ?? 0);
+            $eventTypeId = self::positiveId($eventType->id ?? null);
 
             if ($eventTypeId > 0) {
                 $eventTypes[$eventTypeId] = $eventType;
@@ -95,7 +96,7 @@ final class MatchEventPresentationHelper
         foreach ($eventTypes as $eventTypeId => $eventType) {
             $events = array_values(array_filter(
                 $matchEvents,
-                static fn (object $event): bool => (int) ($event->event_type_id ?? 0) === $eventTypeId
+                static fn (object $event): bool => self::positiveId($event->event_type_id ?? null) === $eventTypeId
             ));
 
             if (!$events) {
@@ -171,8 +172,8 @@ final class MatchEventPresentationHelper
         array $config,
         bool $showEventInfo
     ): string {
-        $homeId = (int) ($game->projectteam1_id ?? 0);
-        $awayId = (int) ($game->projectteam2_id ?? 0);
+        $homeId = self::positiveId($game->projectteam1_id ?? null);
+        $awayId = self::positiveId($game->projectteam2_id ?? null);
 
         return '<table class="matchreport table table-borderless mb-0"><tr>'
             . '<td class="list-left"><ul class="list-inline mb-0">'
@@ -212,11 +213,11 @@ final class MatchEventPresentationHelper
         }
 
         foreach ($events as $event) {
-            if ((int) ($event->ptid ?? 0) !== $projectTeamId) {
+            if (self::positiveId($event->ptid ?? null) !== $projectTeamId) {
                 continue;
             }
 
-            $eventType = $eventTypes[(int) ($event->event_type_id ?? 0)] ?? null;
+            $eventType = $eventTypes[self::positiveId($event->event_type_id ?? null)] ?? null;
             $output .= '<li class="list-inline-item d-block">';
 
             if ($showEventInfo && $eventType) {
@@ -270,8 +271,8 @@ final class MatchEventPresentationHelper
      */
     private static function renderSubstitutionColumns(object $game, array $substitutions, array $config): string
     {
-        $homeId = (int) ($game->projectteam1_id ?? 0);
-        $awayId = (int) ($game->projectteam2_id ?? 0);
+        $homeId = self::positiveId($game->projectteam1_id ?? null);
+        $awayId = self::positiveId($game->projectteam2_id ?? null);
 
         return '<table class="matchreport table table-borderless mb-0"><tr>'
             . '<td class="list"><ul class="list-unstyled mb-0">'
@@ -304,7 +305,7 @@ final class MatchEventPresentationHelper
         }
 
         foreach ($substitutions as $substitution) {
-            if ((int) ($substitution->ptid ?? 0) !== $projectTeamId) {
+            if (self::positiveId($substitution->ptid ?? null) !== $projectTeamId) {
                 continue;
             }
 
@@ -392,6 +393,30 @@ final class MatchEventPresentationHelper
         $position = trim($position);
 
         return $position !== '' ? ' (' . self::escape(Text::_($position)) . ')' : '';
+    }
+
+    /**
+     * Validate a complete positive decimal identifier from a legacy record.
+     *
+     * Accepts zero-padded numeric strings and integers without converting
+     * malformed strings, booleans or arrays into another team's identifier.
+     * @param mixed $value Raw event or project-team identifier.
+     * @return int Positive ID, or zero for invalid input.
+     */
+    private static function positiveId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+
+        if (!is_string($value) || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $id = filter_var(ltrim($value, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
