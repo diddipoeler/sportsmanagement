@@ -34,6 +34,7 @@ final class RankingEngine
      *
      * Loads project, team, match and display settings through RankingDataLoader,
      * calculates the ordered team rows and returns an empty result for missing projects.
+     * Invalid project IDs and negative filters are rejected before database access.
      *
      * @param int $projectId Project whose table is requested.
      * @param int $divisionId Optional division filter, zero for all divisions.
@@ -47,6 +48,10 @@ final class RankingEngine
         int $fromRoundId = 0,
         int $toRoundId = 0
     ): array {
+        if ($projectId <= 0 || $divisionId < 0 || $fromRoundId < 0 || $toRoundId < 0) {
+            return ['project' => (object) [], 'ranking' => [], 'config' => [], 'colors' => [], 'matches' => 0];
+        }
+
         $loader = new RankingDataLoader($this->db);
         $data = $loader->load($projectId, $divisionId, $fromRoundId, $toRoundId);
         if (!$data['project']) {
