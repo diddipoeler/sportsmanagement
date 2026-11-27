@@ -84,8 +84,15 @@ final class RoundsField extends SportsManagementListField
                 ->order($db->quoteName('roundcode') . ' ' . $direction);
             $db->setQuery($query);
 
-            foreach ($db->loadObjectList() ?: [] as $round) {
-                $name = trim((string) $round->name);
+            $rows = $db->loadObjectList();
+            foreach (is_array($rows) ? $rows : [] as $round) {
+                if (!is_object($round)
+                    || (!is_int($round->id ?? null) && !is_string($round->id ?? null))
+                    || !is_string($round->name ?? '')) {
+                    continue;
+                }
+
+                $name = trim($round->name ?? '');
 
                 if ($name === '') {
                     $name = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME') . ' ' . (int) $round->id;
