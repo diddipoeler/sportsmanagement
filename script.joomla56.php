@@ -625,7 +625,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     /**
      * Remove bundled extensions selected by the component removal settings.
-     * Resolves installed module or plugin IDs from manifest entries and Joomla's extension registry, then requests the native installer to remove them.
+     * Resolves installed module or plugin IDs from manifest entries and Joomla's extension registry.
+     * Only positive integer IDs reach the native installer; individual removal failures
+     * are reported without preventing cleanup of the remaining bundled extensions.
      * @param InstallerAdapter $adapter Component manifest containing bundled dependencies.
      * @param string $xpath Manifest path identifying modules or plugins.
      * @param string $type Joomla extension type to uninstall.
@@ -661,8 +663,31 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
             $db->setQuery($query);
 
-            foreach ($db->loadColumn() ?: [] as $extensionId) {
-                $installer->uninstall($type, (int) $extensionId);
+            $extensionIds = $db->loadColumn();
+
+            if (!is_array($extensionIds)) {
+                $this->logInstallerWarning('Unable to read bundled extension IDs for ' . $element);
+                continue;
+            }
+
+            foreach ($extensionIds as $extensionId) {
+                if (!is_int($extensionId) && !is_string($extensionId)) {
+                    continue;
+                }
+
+                $id = filter_var($extensionId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id === false) {
+                    continue;
+                }
+
+                try {
+                    if (!$installer->uninstall($type, $id)) {
+                        $this->logInstallerWarning('Bundled extension removal failed: ' . $element);
+                    }
+                } catch (\Throwable $exception) {
+                    $this->logInstallerWarning('Bundled extension removal failed: ' . $element . ' (' . get_class($exception) . ')');
+                }
             }
         }
     }
