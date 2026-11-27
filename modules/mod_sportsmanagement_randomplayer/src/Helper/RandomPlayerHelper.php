@@ -386,7 +386,7 @@ final class RandomPlayerHelper
     /**
      * Build a validated URL for a Random Player image.
      *
-     * Accepts credential-free HTTP(S) URLs or local media paths without traversal, encoded escapes or query components. Encodes each local path segment under Joomla's installation root.
+     * Accepts credential-free HTTP(S) URLs or local media paths without traversal, encoded escapes or query components. Encodes each local path segment under Joomla's installation root. Rejects root-only and directory-style local paths because they cannot identify an image.
      *
      * @param string $path Relative image path or absolute HTTP(S) URL.
      * @return string Safe media URL or an empty string.
@@ -400,7 +400,6 @@ final class RandomPlayerHelper
         $path = trim($path);
 
         if ($path === ''
-            || preg_match('/[\\x00-\\x1F\\x7F]/', $path)
             || str_contains($path, '\\')
             || str_starts_with($path, '//')) {
             return '';
@@ -420,7 +419,8 @@ final class RandomPlayerHelper
         // Reject alternate URI schemes, encoded traversal and query strings.
         // Encode local path segments under the Joomla installation root.
         $relativePath = ltrim($path, '/');
-        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $relativePath)
+        if ($relativePath === '' || str_ends_with($relativePath, '/')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $relativePath)
             || str_contains($relativePath, ':')
             || str_contains($relativePath, '%')
             || strpbrk($relativePath, '?#') !== false
