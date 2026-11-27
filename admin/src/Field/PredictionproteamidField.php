@@ -79,7 +79,7 @@ final class PredictionproteamidField extends SportsManagementListField
 
         if ($predictionId > 0) {
             $db = $this->getSportsManagementDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('tl.id'),
                     $db->quoteName('t.name', 'teamname'),
