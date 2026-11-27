@@ -31,11 +31,11 @@ final class DependsqlField extends SportsManagementListField
     {
         $element['class'] = 'form-select';
 
-        if (trim((string) ($element['multiple'] ?? '')) !== '') {
+        if (isset($element['multiple'])) {
             // Legacy XML often uses multiple="multiple" instead of Joomla's
             // native boolean form. Preserve that behaviour before ListField
             // interprets the attribute.
-            $element['multiple'] = 'true';
+            $element['multiple'] = in_array(strtolower(trim((string) $element['multiple'])), ['true', '1', 'multiple'], true) ? 'true' : 'false';
         }
 
         if (trim((string) ($element['depends'] ?? '')) === 'search_nation') {
@@ -285,9 +285,11 @@ final class DependsqlField extends SportsManagementListField
 
     const countryElement = () => byId('jform_country') || byId('jform_request_country');
 
+    let requestVersion = 0;
     const update = async () => {
         const target = byId(config.targetId);
         if (!target) return;
+        const version = ++requestVersion;
 
         const params = new URLSearchParams({
             option: 'com_sportsmanagement',
@@ -321,6 +323,7 @@ final class DependsqlField extends SportsManagementListField
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const payload = await response.json();
+            if (version !== requestVersion || payload?.success === false) return;
             const rows = Array.isArray(payload)
                 ? payload
                 : Array.isArray(payload?.data)
@@ -332,7 +335,8 @@ final class DependsqlField extends SportsManagementListField
             while (target.options.length) target.remove(0);
 
             for (const row of rows) {
-                target.add(new Option(row.text ?? '', row.value ?? ''));
+                if (!row || !['string', 'number'].includes(typeof row.value) || typeof row.text !== 'string') continue;
+                target.add(new Option(row.text, String(row.value)));
             }
 
             if (payload?.messages && window.Joomla?.renderMessages) {
