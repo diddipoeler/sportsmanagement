@@ -61,7 +61,7 @@ final class RankingHelper
      * for the frontend template. Incomplete legacy team records are skipped
      * during formatting and missing preferred-name fields fall back to the
      * ordinary team name without raising PHP 8 property warnings. Discards
-     * malformed ranking rows before generating the final module output.
+     * malformed ranking rows and invalid team IDs before generating the final module output.
      * @param Registry $params Ranking module configuration.
      * @param object $module Current Joomla module record.
      * @param CMSApplicationInterface $app Active site application.
@@ -103,7 +103,8 @@ final class RankingHelper
         $rawRanking = $rankingResult['ranking'] ?? [];
         $list = [];
         foreach (is_array($rawRanking) ? $rawRanking : [] as $rankingRow) {
-            if (is_object($rankingRow) && is_object($rankingRow->team ?? null)) {
+            if (is_object($rankingRow) && is_object($rankingRow->team ?? null)
+                && (self::nonNegativeOption($rankingRow->team->id ?? null) ?? 0) > 0) {
                 $list[] = $rankingRow;
             }
         }
@@ -381,6 +382,7 @@ final class RankingHelper
      * Choose a team's visual marker according to module display settings.
      * Supports country flags or one of the configured club logo sizes
      * and passes the selected image through the safe media URL helper.
+     * Non-string imported country and image fields are ignored.
      * @param object $team Team row with logo paths.
      * @param int $type Requested marker type.
      * @param array $flags Resolved country flag URLs.
@@ -389,19 +391,21 @@ final class RankingHelper
     private function logoUrl(object $team, int $type, array $flags): string
     {
         if ($type === 2) {
-            return $flags[strtoupper((string) ($team->country ?? ''))] ?? '';
+            $country = $team->country ?? null;
+
+            return is_string($country) ? ($flags[strtoupper($country)] ?? '') : '';
         }
 
         $path = match ($type) {
-            1 => (string) ($team->logo_small ?? ''),
-            3 => (string) ($team->logo_middle ?? ''),
-            4 => (string) ($team->logo_big ?? ''),
-            5 => (string) ($team->trikot_home ?? ''),
-            6 => (string) ($team->trikot_away ?? ''),
+            1 => ($team->logo_small ?? ''),
+            3 => ($team->logo_middle ?? ''),
+            4 => ($team->logo_big ?? ''),
+            5 => ($team->trikot_home ?? ''),
+            6 => ($team->trikot_away ?? ''),
             default => '',
         };
 
-        return $this->mediaUrl($path);
+        return $this->mediaUrl(is_string($path) ? $path : '');
     }
 
     /**
@@ -460,7 +464,7 @@ final class RankingHelper
     private function shrinkAroundTeam(array $ranking, int $teamId, int $limit): array
     {
         foreach ($ranking as $index => $item) {
-            if ((int) ($item->team->id ?? 0) !== $teamId) {
+            if (self::nonNegativeOption($item->team->id ?? null) !== $teamId) {
                 continue;
             }
 
