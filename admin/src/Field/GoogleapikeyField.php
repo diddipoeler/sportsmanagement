@@ -19,11 +19,25 @@ final class GoogleapikeyField extends TextField
 {
     protected $type = 'GoogleApiKey';
 
+    /**
+     * Initialise the Google API key field from saved component settings.
+     * Uses the component default only when neither a saved field value nor
+     * an explicit XML default is present. Rejects malformed structured values
+     * before handing the key to Joomla's native text-field implementation.
+     * @param SimpleXMLElement $element Field definition.
+     * @param mixed $value Saved field value.
+     * @param string|null $group Optional form group.
+     * @return bool Whether Joomla accepted field setup.
+     */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
         if (($value === null || $value === '') && !isset($element['default'])) {
-            $value = (string) ComponentHelper::getParams('com_sportsmanagement')
+            $value = ComponentHelper::getParams('com_sportsmanagement')
                 ->get('google_api_developerkey', '');
+        }
+
+        if ($value !== null && !is_string($value)) {
+            $value = '';
         }
 
         return parent::setup($element, $value, $group);
