@@ -81,7 +81,7 @@ final class DatetimechooserField extends FormField
             case 'SERVER_UTC':
                 if ((string) $this->value !== '' && (string) $this->value !== '0') {
                     $date = Factory::getDate($this->value, 'UTC');
-                    $date->setTimezone(self::validatedTimezone((string) $config->get('offset', 'UTC')));
+                    $date->setTimezone(self::validatedTimezone($config->get('offset', 'UTC')));
                     $this->value = $date->format('Y-m-d H:i:s', true, false);
                 }
                 break;
@@ -89,7 +89,7 @@ final class DatetimechooserField extends FormField
             case 'USER_UTC':
                 if ((string) $this->value !== '' && (string) $this->value !== '0') {
                     $date = Factory::getDate($this->value, 'UTC');
-                    $date->setTimezone(self::validatedTimezone((string) $identity->getParam('timezone', $config->get('offset', 'UTC'))));
+                    $date->setTimezone(self::validatedTimezone($identity?->getParam('timezone', $config->get('offset', 'UTC')) ?? $config->get('offset', 'UTC')));
                     $this->value = $date->format('Y-m-d H:i:s', true, false);
 
                     if ((string) ($this->element['all_day'] ?? '') === '1') {
@@ -111,14 +111,15 @@ final class DatetimechooserField extends FormField
      *
      * Malformed timezone identifiers must not interrupt the administrator
      * form; UTC retains a predictable calendar value in that situation.
+     * Non-string settings are rejected before reaching PHP's timezone parser.
      *
-     * @param string $name Site or user timezone preference.
+     * @param mixed $name Site or user timezone preference, including malformed saved values.
      * @return DateTimeZone Valid timezone, or UTC when invalid.
      */
-    private static function validatedTimezone(string $name): DateTimeZone
+    private static function validatedTimezone(mixed $name): DateTimeZone
     {
         try {
-            return new DateTimeZone($name !== '' ? $name : 'UTC');
+            return new DateTimeZone(is_string($name) && $name !== '' ? $name : 'UTC');
         } catch (\Throwable) {
             return new DateTimeZone('UTC');
         }
