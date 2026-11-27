@@ -249,7 +249,7 @@ namespace {
         }
 
         /**
-         * Record the validated selector used by downstream routes.
+         * Record any request mutation so database isolation can be verified.
          *
          * @param string $key Input field.
          * @param mixed $value Validated value.
@@ -303,8 +303,8 @@ namespace {
     $helper = new $class(new \Joomla\Registry\Registry(),
         new NavigationAppStub($input), $db);
     if ($resolver::$calls !== 1 || $resolver::$selector !== 1
-        || ($input->settings['cfg_which_database'] ?? null) !== 1) {
-        throw new \RuntimeException('Valid database selector was not reused consistently.');
+        || array_key_exists('cfg_which_database', $input->settings)) {
+        throw new \RuntimeException('Valid database selector was not resolved without mutating shared input.');
     }
 
     $db->favorite = '0002, 2, 4junk, 0003, 0, -1';
