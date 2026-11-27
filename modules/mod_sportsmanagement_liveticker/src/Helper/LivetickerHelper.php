@@ -79,6 +79,9 @@ final class LivetickerHelper
      * Read-only module refresh for Joomla com_ajax.
      *
      * Endpoint: index.php?option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw
+     * Resolves the requested module and database in the site application.
+     * @param DatabaseInterface|null $database Optional injected database connection.
+     * @return string Refreshed ticker markup, or empty text for an unavailable module.
      */
     public function refreshAjax(?DatabaseInterface $database = null): string
     {
@@ -153,7 +156,7 @@ final class LivetickerHelper
 
     /**
      * Load a bounded set of commentary entries for displayed live matches.
-     * Validates and deduplicates up to one hundred match IDs, queries at most one thousand recent commentary rows and groups them under their match identifiers.
+     * Validates and deduplicates up to one hundred match IDs, queries at most one thousand recent commentary rows and groups them under their match identifiers. Ignores malformed results and rows outside the requested match set.
      *
      * @param array<int,object> $list Live match rows whose commentary should be shown.
      * @param DatabaseInterface $db Selected sports database driver.
@@ -197,10 +200,18 @@ final class LivetickerHelper
 
         $matches = [];
 
-        foreach ($db->loadObjectList() ?: [] as $row) {
-            $matchId = (int) ($row->match_id ?? 0);
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
 
-            if ($matchId > 0) {
+            $rawId = $row->match_id ?? null;
+            $matchId = is_int($rawId) || is_string($rawId)
+                ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($matchId !== false && isset($matchIds[$matchId])) {
                 $matches[$matchId][] = $row;
             }
         }
