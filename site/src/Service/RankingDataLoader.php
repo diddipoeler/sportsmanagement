@@ -36,6 +36,7 @@ final class RankingDataLoader
 
     /**
      * Assemble the complete data set for a project's native ranking table.
+     * Rejects invalid project IDs and negative filters before database access.
      * Loads the project, inherited ranking template settings, eligible teams, published scored matches and optional round-range filters, then parses colour rules for display.
      *
      * @param int $projectId Ranking project identifier.
@@ -46,6 +47,10 @@ final class RankingDataLoader
      */
     public function load(int $projectId, int $divisionId = 0, int $fromRoundId = 0, int $toRoundId = 0): array
     {
+        if ($projectId <= 0 || $divisionId < 0 || $fromRoundId < 0 || $toRoundId < 0) {
+            return ['project' => null, 'teams' => [], 'matches' => [], 'config' => [], 'colors' => []];
+        }
+
         $project = $this->loadProject($projectId);
         if (!$project) {
             return ['project' => null, 'teams' => [], 'matches' => [], 'config' => [], 'colors' => []];
@@ -79,7 +84,7 @@ final class RankingDataLoader
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('st.id', 'sport_type_id'),
@@ -150,7 +155,7 @@ final class RankingDataLoader
     private function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
             ->where($db->quoteName('template') . ' = :template')
@@ -335,7 +340,7 @@ final class RankingDataLoader
     private function queryProjectTeams(int $projectId, int $divisionId, bool $divisionFinal): array
     {
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . implode(', ', $this->projectTeamSelect($divisionFinal)))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -377,7 +382,7 @@ final class RankingDataLoader
     private function queryFinalProjectTeams(int $projectId): array
     {
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($this->projectTeamSelect(false))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -406,7 +411,7 @@ final class RankingDataLoader
     private function loadMatches(int $projectId, int $divisionId, string $sportType): array
     {
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'), $db->quoteName('m.projectteam1_id'), $db->quoteName('m.projectteam2_id'),
                 $db->quoteName('m.team1_result', 'home_score'), $db->quoteName('m.team2_result', 'away_score'),
@@ -486,7 +491,7 @@ final class RankingDataLoader
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('roundcode')])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = :projectId')
