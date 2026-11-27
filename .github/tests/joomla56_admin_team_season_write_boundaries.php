@@ -156,5 +156,28 @@ namespace {
         'Missing season checkbox prevented an ordinary team save');
     teamSeasonAssert(1, $model->saves, 'Missing season selection skipped parent save');
 
-    echo "Joomla 5/6 team season save and cleanup boundaries: OK\n";
+    // Missing owner context must fail before SQL or application resolution.
+    $model = new TeamModel();
+    teamSeasonAssert(false, $model->DeleteTrainigData(12),
+        'Training deletion without owner context must fail');
+    teamSeasonAssert(false, $model->UpdateTrainigData(['tdids' => [12]]),
+        'Training update without owner context must fail');
+    teamSeasonAssert(false, $model->DeleteTrainigData(12, 0),
+        'Zero team owner must fail');
+    teamSeasonAssert(false, $model->addNewTrainigData('12junk'),
+        'Malformed training team ID must fail');
+    teamSeasonAssert(0, $model->databaseCalls,
+        'Invalid training context reached SQL');
+
+    $clock = new \ReflectionMethod(TeamModel::class, 'timeToSeconds');
+    foreach ([
+        ['00:00', 0], ['9:30', 34200], ['18:30:45', 66645],
+        ['23:59:59', 86399], ['25:00', 0], ['12:75', 0],
+        ['12:30:60', 0], ['abc', 0],
+    ] as [$raw, $expected]) {
+        teamSeasonAssert($expected, $clock->invoke(null, $raw),
+            'Training clock conversion failed');
+    }
+
+    echo "Joomla 5/6 team season and training input boundaries: OK\n";
 }
