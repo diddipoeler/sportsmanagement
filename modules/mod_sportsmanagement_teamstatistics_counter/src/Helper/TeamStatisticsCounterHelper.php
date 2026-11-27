@@ -232,7 +232,8 @@ final class TeamStatisticsCounterHelper
      * Load one team and build its portable Joomla ID:alias slug.
      *
      * Uses a parameterised query and assembles the slug in PHP rather than
-     * relying on database-specific string concatenation.
+     * relying on database-specific string concatenation. Rejects mismatched
+     * result IDs and ignores non-string aliases.
      *
      * @param DatabaseInterface $db Component database.
      * @param int $teamId Team identifier.
@@ -253,10 +254,11 @@ final class TeamStatisticsCounterHelper
 
         $team = $db->loadObject() ?: null;
 
-        if ($team !== null) {
-            // Avoid the MySQL-only CONCAT_WS expression in Joomla database queries.
-            $team->slug = (int) ($team->id ?? 0) . ':' . (string) ($team->alias ?? '');
+        if (!is_object($team) || self::positiveId($team->id ?? null) !== $teamId) {
+            return null;
         }
+
+        $team->slug = $teamId . ':' . (is_string($team->alias ?? null) ? $team->alias : '');
 
         return $team;
     }
@@ -265,7 +267,8 @@ final class TeamStatisticsCounterHelper
      * Load one project and construct its portable Joomla ID:alias slug.
      *
      * Queries the selected record with a bound integer and returns null
-     * for missing projects without relying on MySQL-only functions.
+     * for missing or mismatched projects without relying on MySQL-only
+     * functions. Non-string aliases are treated as empty text.
      *
      * @param DatabaseInterface $db Component database.
      * @param int $projectId Project identifier.
@@ -286,9 +289,11 @@ final class TeamStatisticsCounterHelper
 
         $project = $db->loadObject() ?: null;
 
-        if ($project !== null) {
-            $project->slug = (int) ($project->id ?? 0) . ':' . (string) ($project->alias ?? '');
+        if (!is_object($project) || self::positiveId($project->id ?? null) !== $projectId) {
+            return null;
         }
+
+        $project->slug = $projectId . ':' . (is_string($project->alias ?? null) ? $project->alias : '');
 
         return $project;
     }
