@@ -11,18 +11,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 
 final class CountrylistField extends SportsManagementListField
 {
     protected $type = 'countrylist';
 
+    /**
+     * Render the country selector with automatic submission in list filters.
+     * Preserves explicitly configured change handlers and only enables the
+     * historical submit behaviour for supported administrator list views.
+     * @return string Native Joomla list input markup.
+     */
     protected function getInput(): string
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $view = $app->getInput()->getCmd('view', '');
         $autoSubmitViews = [
             'clubs',
@@ -40,6 +44,12 @@ final class CountrylistField extends SportsManagementListField
         return parent::getInput();
     }
 
+    /**
+     * Load country codes and translated country names.
+     * Uses the configured SportsManagement database and appends valid country
+     * records to the inherited XML options.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -54,7 +64,14 @@ final class CountrylistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => Text::_((string) $item->text),
