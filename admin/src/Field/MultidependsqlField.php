@@ -208,8 +208,11 @@ final class MultidependsqlField extends FormField
         return null;
     };
 
+    let initialSelection = true;
+    let requestVersion = 0;
     const refresh = async () => {
         if (!config.task || !config.depends.length) return;
+        const version = ++requestVersion;
 
         const params = new URLSearchParams({
             option: 'com_sportsmanagement',
@@ -223,7 +226,6 @@ final class MultidependsqlField extends FormField
             params.set(name, dependency?.value ?? '');
         }
 
-        const keepSelected = new Set(selectedValues().length ? selectedValues() : config.selected.map(String));
 
         try {
             const response = await fetch(`index.php?${params.toString()}`, {
@@ -233,13 +235,17 @@ final class MultidependsqlField extends FormField
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const payload = await response.json();
+            if (version !== requestVersion || payload?.success === false) return;
+            const keepSelected = new Set(initialSelection ? config.selected.map(String) : selectedValues());
             const rows = Array.isArray(payload?.data)
                 ? payload.data
                 : (Array.isArray(payload) ? payload : []);
 
+            initialSelection = false;
             select.replaceChildren();
             for (const row of rows) {
-                const value = String(row?.value ?? '');
+                if (!row || !['string', 'number'].includes(typeof row.value) || !['string', 'number'].includes(typeof row.text)) continue;
+                const value = String(row.value);
                 const option = new Option(String(row?.text ?? ''), value, false, keepSelected.has(value));
                 select.add(option);
             }
@@ -254,15 +260,18 @@ final class MultidependsqlField extends FormField
         }
     };
 
-    select.addEventListener('change', syncHidden);
+    select.addEventListener('change', () => {
+        initialSelection = false;
+        syncHidden();
+    });
 
     for (const name of config.depends) {
         const dependency = findDependency(name);
         if (dependency) dependency.addEventListener('change', refresh);
     }
 
-    syncHidden();
     if (config.task && config.depends.length) refresh();
+    else syncHidden();
 })();
 JS;
 
