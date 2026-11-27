@@ -12,23 +12,33 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\Database\ParameterType;
 
 final class ProjectteamlistField extends SportsManagementListField
 {
     protected $type = 'projectteamlist';
 
+    /**
+     * Load teams belonging to the currently selected administrator project.
+     * Resolves the saved project identifier, joins season and project team
+     * records and preserves XML options when no valid project is selected.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
-        $projectId = (int) $app->getUserState($option . '.pid', 0);
+        $rawProjectId = $app->getUserState($option . '.pid', 0);
+        $projectId = (is_int($rawProjectId) || is_string($rawProjectId))
+            ? filter_var($rawProjectId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
 
         if ($projectId <= 0) {
             return parent::getOptions();
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -44,13 +54,21 @@ final class ProjectteamlistField extends SportsManagementListField
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name'));
         $db->setQuery($query);
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
