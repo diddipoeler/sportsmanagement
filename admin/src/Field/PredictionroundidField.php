@@ -82,7 +82,7 @@ final class PredictionroundidField extends SportsManagementListField
 
         if ($predictionId > 0) {
             $db = $this->getSportsManagementDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('r.id', 'value'),
                     $db->quoteName('r.name', 'text'),
