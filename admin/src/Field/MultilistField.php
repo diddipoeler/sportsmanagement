@@ -18,6 +18,13 @@ final class MultilistField extends ListField
 {
     protected $type = 'multilist';
 
+    /**
+     * Render the native Joomla list with historical comma-separated selections.
+     * Temporarily converts saved comma-separated values to individual options,
+     * discards unsupported structured selection entries and restores the original
+     * field value even if Joomla's renderer throws an exception.
+     * @return string Rendered list field markup.
+     */
     protected function getInput(): string
     {
         $originalValue = $this->value;
@@ -27,6 +34,15 @@ final class MultilistField extends ListField
                 array_map('trim', explode(',', $this->value)),
                 static fn (string $value): bool => $value !== ''
             ));
+        }
+
+        if (is_array($this->value)) {
+            $this->value = array_values(array_filter(
+                $this->value,
+                static fn (mixed $value): bool => is_string($value) || is_int($value)
+            ));
+        } elseif (!is_string($this->value) && !is_int($this->value) && $this->value !== null) {
+            $this->value = null;
         }
 
         try {
