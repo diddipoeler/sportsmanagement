@@ -15,6 +15,12 @@ final class ProjectlistField extends SportsManagementListField
 {
     protected $type = 'projectlist';
 
+    /**
+     * Load project identifiers and names in alphabetical order.
+     * Uses the configured SportsManagement database and appends valid records
+     * to the options declared in the XML field definition.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -29,7 +35,14 @@ final class ProjectlistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
