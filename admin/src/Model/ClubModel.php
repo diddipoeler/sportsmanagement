@@ -290,6 +290,8 @@ final class ClubModel extends SportsManagementAdminModel
 
     /**
      * Normalise club fields, media and extended data before saving.
+     * Accepts string media paths and uses configured placeholder logos when
+     * submitted values are empty or malformed.
      *
      * @param array $data data value.
      * @return array
@@ -308,7 +310,7 @@ final class ClubModel extends SportsManagementAdminModel
             }
         }
 
-        if (!empty($data['link_logo_big'])) {
+        if (is_string($data['link_logo_big'] ?? null) && trim($data['link_logo_big']) !== '') {
             $downloaded = $this->downloadClubLogo((string) $data['link_logo_big']);
 
             if ($downloaded !== '') {
@@ -323,7 +325,7 @@ final class ClubModel extends SportsManagementAdminModel
         ];
 
         foreach ($defaults as $fieldName => $defaultValue) {
-            if (empty($data[$fieldName])) {
+            if (!is_string($data[$fieldName] ?? null) || trim($data[$fieldName]) === '') {
                 $data[$fieldName] = $defaultValue;
             } else {
                 $data[$fieldName] = MediaHelper::getCleanMediaFieldValue((string) $data[$fieldName]);
@@ -331,7 +333,7 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         foreach (['trikot_home', 'trikot_away'] as $fieldName) {
-            if (!empty($data[$fieldName])) {
+            if (is_string($data[$fieldName] ?? null) && trim($data[$fieldName]) !== '') {
                 $data[$fieldName] = MediaHelper::getCleanMediaFieldValue((string) $data[$fieldName]);
             }
         }
@@ -474,6 +476,8 @@ final class ClubModel extends SportsManagementAdminModel
 
     /**
      * Normalise a club date field to the database format.
+     * Rejects structured values and null bytes; clearing a date also clears
+     * its derived year and timestamp to prevent stale metadata.
      *
      * @param array $data data value.
      * @param string $field field value.
@@ -481,10 +485,16 @@ final class ClubModel extends SportsManagementAdminModel
      */
     private function normaliseClubDate(array $data, string $field): array
     {
-        $value = trim((string) ($data[$field] ?? ''));
+        $rawValue = $data[$field] ?? '';
+        if (!is_string($rawValue) || str_contains($rawValue, chr(0))) {
+            $rawValue = '';
+        }
+        $value = trim($rawValue);
 
         if ($value === '' || $value === '0000-00-00') {
             $data[$field] = '0000-00-00';
+            $data[$field . '_year'] = '';
+            $data[$field . '_timestamp'] = 0;
             return $data;
         }
 
