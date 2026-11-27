@@ -176,6 +176,9 @@ final class NavigationDataHelper
     public $_tnid = 0;
     public $_round_id = null;
 
+    private int $selectedProjectId = 0;
+    private array $countryFederations = [];
+
     protected Registry $_params;
     protected DatabaseInterface $_db;
     protected $_query;
@@ -225,11 +228,13 @@ final class NavigationDataHelper
         $input->set('cfg_which_database', $selector);
         $this->_db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
-        if (self::$_project_id) {
+        $this->selectedProjectId = self::nonNegativeSelector($input->get('p', 0, 'raw')) ?? 0;
+
+        if ($this->selectedProjectId) {
             $input = $this->_app->getInput();
             $input->set('jlamtopseason', $this->getSeasonId());
             $input->set('jlamtopleague', $this->getLeagueId());
-            $input->set('jlamtopproject', self::$_project_id);
+            $input->set('jlamtopproject', $this->selectedProjectId);
             $input->set('jlamtopteam', $this->_team_id);
             $input->set('jlamtopdivisionid', $this->_division_id);
         }
@@ -262,12 +267,12 @@ final class NavigationDataHelper
             return $this->_project;
         }
 
-        if (!self::$_project_id && !$league_id) {
+        if (!$this->selectedProjectId && !$league_id) {
             return false;
         }
 
         $leagueId = (int) $league_id;
-        $projectId = (int) self::$_project_id;
+        $projectId = (int) $this->selectedProjectId;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select([
@@ -297,13 +302,14 @@ final class NavigationDataHelper
 
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject();
-        if (!$project) {
+        if (!is_object($project)) {
             return false;
         }
 
         $this->_project = $project;
         $this->project_type = (string) $project->project_type;
-        self::$_project_id = (int) $project->id;
+        $this->selectedProjectId = (int) $project->id;
+        self::$_project_id = $this->selectedProjectId;
         $this->_project_slug = (string) $project->project_slug;
         $this->_season_slug = (string) $project->season_slug;
         $this->_league_slug = (string) $project->league_slug;
@@ -315,7 +321,9 @@ final class NavigationDataHelper
     /**
      * Select a project and update navigation request values.
      *
-     * Resets cached project/team options, loads the active project and round, and publishes IDs into Joomla's request input.
+     * Resets cached project/team options and route metadata, validates IDs,
+     * loads the active project and round, and publishes IDs into Joomla's request input.
+     * Uses instance-local project state; the public static ID remains a legacy mirror.
      *
      * @param int|string $project_id Selected project identifier.
      * @param int|string $team_id Selected team identifier.
@@ -324,18 +332,23 @@ final class NavigationDataHelper
      */
     public function setProject($project_id, $team_id, $division_id): void
     {
-        self::$_project_id = (int) $project_id;
-        $this->_team_id = (int) $team_id;
-        $this->_division_id = (int) $division_id;
+        $this->selectedProjectId = self::nonNegativeSelector($project_id) ?? 0;
+        $this->_team_id = self::nonNegativeSelector($team_id) ?? 0;
+        $this->_division_id = self::nonNegativeSelector($division_id) ?? 0;
+        $this->_project_slug = $this->_league_slug = $this->_round_slug = $this->_season_slug = '';
+        $this->_team_slug = $this->_club_slug = $this->_division_slug = '';
+        $this->_league_id = $this->_club_id = 0;
+        $this->project_type = 'SIMPLE_LEAGUE';
         $this->_project = null;
         $this->_teamoptions = null;
         $this->_project = $this->getProject();
         $this->_round_id = $this->getCurrentRoundId();
+        self::$_project_id = $this->selectedProjectId;
 
         $input = $this->_app->getInput();
         $input->set('jlamtopseason', $this->getSeasonId());
         $input->set('jlamtopleague', $this->getLeagueId());
-        $input->set('jlamtopproject', self::$_project_id);
+        $input->set('jlamtopproject', $this->selectedProjectId);
         $input->set('jlamtopteam', $this->_team_id);
         $input->set('jlamtopdivisionid', $this->_division_id);
     }
@@ -504,6 +517,7 @@ final class NavigationDataHelper
 
         $res = ArrayHelper::sortObjects($res, 'text', 1);
         foreach ($res as $row) {
+            $this->countryFederations[$row->value] = (string) $federation;
             self::$_country_fed[$row->value] = (string) $federation;
         }
 
@@ -516,18 +530,19 @@ final class NavigationDataHelper
     /**
      * Look up the cached federation for a country.
      *
-     * Uses the mapping populated by the federation select query.
+     * Uses only this instance's mapping populated by the federation select query,
+     * not the public static compatibility mirror.
      *
      * @param string|int $country_id Country identifier to resolve.
      * @return string|false Associated federation or false when unknown.
      */
     public function getCountryFederation($country_id)
     {
-        if (!$country_id) {
+        if ((!is_string($country_id) && !is_int($country_id)) || !$country_id) {
             return false;
         }
 
-        return self::$_country_fed[$country_id] ?? false;
+        return $this->countryFederations[$country_id] ?? false;
     }
 
     /**
@@ -1092,7 +1107,7 @@ final class NavigationDataHelper
      */
     public function getLink($view)
     {
-        if (!self::$_project_id) {
+        if (!$this->selectedProjectId) {
             return false;
         }
 
