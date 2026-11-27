@@ -20,22 +20,30 @@ final class Categorylistk2Field extends ListField
 {
     protected $type = 'categorylistk2';
 
+    /**
+     * Load non-trashed categories from the optional K2 database table.
+     * Uses the primary Joomla database and retains inherited XML choices
+     * when K2 is absent or the database service or query is unavailable.
+     * @return array<int,object> Valid category selection options.
+     */
     protected function getOptions(): array
     {
         SportsManagementAdministratorApplicationResolver::resolve();
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('id', 'value'),
-                $db->quoteName('name', 'text'),
-            ])
-            ->from($db->quoteName('#__k2_categories'))
-            ->where($db->quoteName('trash') . ' = 0')
-            ->order($db->quoteName('name'));
-
         try {
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            if (!$db instanceof DatabaseInterface) {
+                return parent::getOptions();
+            }
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('id', 'value'),
+                    $db->quoteName('name', 'text'),
+                ])
+                ->from($db->quoteName('#__k2_categories'))
+                ->where($db->quoteName('trash') . ' = 0')
+                ->order($db->quoteName('name'));
+
             $db->setQuery($query);
             $items = $db->loadObjectList() ?: [];
         } catch (\Throwable) {
@@ -44,7 +52,11 @@ final class Categorylistk2Field extends ListField
 
         $options = [];
 
-        foreach ($items as $item) {
+        foreach (is_array($items) ? $items : [] as $item) {
+            if (!is_object($item) || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
