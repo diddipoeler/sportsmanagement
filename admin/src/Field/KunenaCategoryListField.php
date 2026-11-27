@@ -24,17 +24,23 @@ final class KunenaCategoryListField extends ListField
 {
     protected $type = 'KunenaCategoryList';
 
+    /**
+     * Render the optional Kunena category selector through its public API.
+     * Displays an installation notice if the compatibility API is unavailable
+     * and honours the native Joomla multiple-selection field property.
+     * @return string Kunena category control or installation notice.
+     */
     protected function getInput(): string
     {
         if (
             !class_exists('KunenaForum')
-            || !method_exists('KunenaForum', 'installed')
+            || !is_callable(['KunenaForum', 'installed'])
             || !\KunenaForum::installed()
         ) {
             return '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';
         }
 
-        if (class_exists('KunenaFactory') && method_exists('KunenaFactory', 'loadLanguage')) {
+        if (class_exists('KunenaFactory') && is_callable(['KunenaFactory', 'loadLanguage'])) {
             \KunenaFactory::loadLanguage('com_kunena');
         }
 
@@ -48,7 +54,7 @@ final class KunenaCategoryListField extends ListField
 
         $attributes[] = 'class="' . htmlspecialchars($class, ENT_QUOTES, 'UTF-8') . '"';
 
-        if (!empty($this->element['multiple'])) {
+        if ($this->multiple) {
             $attributes[] = 'multiple="multiple"';
         }
 
