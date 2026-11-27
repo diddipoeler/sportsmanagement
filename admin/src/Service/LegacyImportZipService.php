@@ -25,7 +25,8 @@ final class LegacyImportZipService
 
     /**
      * Stage exactly one supported root-level ZIP entry into the import destination.
-     * Validates archive and entry sizes, rejects unsafe paths and non-regular
+     * Validates archive and entry sizes, rejects NUL-containing input paths,
+     * control characters in entry names, unsafe paths and non-regular
      * Unix entries, and streams the selected data into a temporary file in
      * the destination directory. The existing destination is replaced only
      * after the complete payload has been written and the stream closed.
@@ -38,6 +39,8 @@ final class LegacyImportZipService
     public static function stage(string $archivePath, string $targetPath, array $extensions): bool
     {
         if (!class_exists(\ZipArchive::class)
+            || str_contains($archivePath, "\0")
+            || str_contains($targetPath, "\0")
             || !is_file($archivePath)
             || is_link($archivePath)
             || filesize($archivePath) === false
@@ -76,7 +79,7 @@ final class LegacyImportZipService
                 // Reject traversal/absolute paths even when that entry is not
                 // selected as the import file. Never extract archive contents.
                 if ($name === ''
-                    || str_contains($name, "\0")
+                    || preg_match('/[\x00-\x1F\x7F]/', $name) === 1
                     || str_contains($name, '\\')
                     || str_starts_with($name, '/')
                     || preg_match('#(?:^|/)\.\.(?:/|$)#', $name)
