@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 
@@ -18,11 +20,19 @@ final class ProjectpositionlistField extends SportsManagementListField
 {
     protected $type = 'projectpositionlist';
 
+    /**
+     * Load project-specific positions using the saved project and person type.
+     * Validates both filters, binds them to the native query and retains
+     * translated position names and inherited XML options.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
-        $projectId = (int) $app->getUserState($option . '.pid', 0);
+        $rawProjectId = $app->getUserState($option . '.pid', 0);
+        $projectId = (is_int($rawProjectId) || is_string($rawProjectId))
+            ? filter_var($rawProjectId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
         $personType = $app->getUserState($option . '.persontype', 0);
 
         if ($projectId <= 0) {
@@ -30,7 +40,7 @@ final class ProjectpositionlistField extends SportsManagementListField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pp.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -51,10 +61,17 @@ final class ProjectpositionlistField extends SportsManagementListField
                 $db->quoteName('#__sportsmanagement_person_project_position', 'ppp')
                 . ' ON ' . $db->quoteName('pp.project_id') . ' = ' . $db->quoteName('ppp.project_id')
             )
-            ->where($db->quoteName('pp.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('pp.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($personType !== null && $personType !== '') {
-            $query->where($db->quoteName('pos.persontype') . ' = ' . (int) $personType);
+            $personType = (is_int($personType) || is_string($personType))
+                ? filter_var($personType, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) : false;
+            if ($personType === false) {
+                return parent::getOptions();
+            }
+            $query->where($db->quoteName('pos.persontype') . ' = :personType')
+                ->bind(':personType', $personType, ParameterType::INTEGER);
         }
 
         $query->group([
@@ -70,13 +87,19 @@ final class ProjectpositionlistField extends SportsManagementListField
         try {
             $items = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage('SportsManagement project positions could not be loaded.', 'warning');
             $items = [];
         }
 
         $options = [];
 
-        foreach ($items as $item) {
+        foreach (is_array($items) ? $items : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => Text::_((string) $item->text),
