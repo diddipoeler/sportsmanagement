@@ -17,9 +17,15 @@ final class SerialnumberField extends FormField
 {
     protected $type = 'serialnumber';
 
+    /**
+     * Render the serial number input with an existing or generated value.
+     * Generates a new serial only when the current value is empty or invalid
+     * and escapes the field attributes before returning the HTML.
+     * @return string Serial number input markup.
+     */
     protected function getInput(): string
     {
-        $value = trim((string) $this->value);
+        $value = is_string($this->value) ? trim($this->value) : '';
 
         if ($value === '') {
             $value = $this->generateSerialNumber();
@@ -35,6 +41,11 @@ final class SerialnumberField extends FormField
             . '" />';
     }
 
+    /**
+     * Generate a random serial using the historical letter and digit pattern.
+     * Uses PHP's secure random integer generator for each variable character.
+     * @return string Newly generated formatted serial number.
+     */
     private function generateSerialNumber(): string
     {
         $template = 'XX99-XX99-99XX-99XX-XXXX-99XX';
