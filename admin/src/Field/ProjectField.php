@@ -18,6 +18,12 @@ final class ProjectField extends SportsManagementListField
 {
     protected $type = 'project';
 
+    /**
+     * Load published projects with their league and season labels.
+     * Keeps the translated placeholder and historical project ordering,
+     * accepting absent optional joined names without coercing invalid data.
+     * @return array Joomla project selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -42,10 +48,16 @@ final class ProjectField extends SportsManagementListField
             ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $project) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $project) {
+            if (!is_object($project) || (!is_int($project->id ?? null) && !is_string($project->id ?? null))
+                || !is_string($project->name ?? null) || !is_string($project->league_name ?? '')
+                || !is_string($project->season_name ?? '')) {
+                continue;
+            }
             $label = (string) $project->name
-                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . (string) $project->league_name . ')'
-                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . (string) $project->season_name . ' )';
+                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . ($project->league_name ?? '') . ')'
+                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . ($project->season_name ?? '') . ' )';
             $options[] = (object) [
                 'value' => (string) $project->id,
                 'text' => $label,
