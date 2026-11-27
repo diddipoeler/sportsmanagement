@@ -79,6 +79,8 @@ final class MatchesHelper
      * Rejects non-site applications before entering the recoverable query
      * error handler so administrator execution is never silently accepted.
      * Validates legacy display options and avoids logging sensitive SQL text.
+     * Skips fixture rows with missing, non-string or NUL-containing dates
+     * before invoking Joomla's date formatter.
      * Treats the optional legacy-update flag as a strict boolean or 0/1
      * setting so malformed nonempty arrays cannot activate it.
      *
@@ -137,6 +139,12 @@ final class MatchesHelper
             $rows = [];
 
             foreach ($matches as $match) {
+                if (!is_string($match->match_date ?? null)
+                    || trim($match->match_date) === ''
+                    || str_contains($match->match_date, "\0")) {
+                    continue;
+                }
+
                 $this->applyStatus($match);
                 $matchId = (int) $match->match_id;
                 $row = [
