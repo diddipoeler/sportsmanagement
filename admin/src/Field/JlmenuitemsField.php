@@ -23,7 +23,8 @@ final class JlmenuitemsField extends ListField
      *
      * Preserves historic route values while resolving user-facing labels via
      * Joomla's language service, then appends them to the core ListField
-     * options so existing navigation settings remain editable.
+     * options so existing navigation settings remain editable. XML-defined
+     * choices take precedence over matching built-in values.
      *
      * @return array<int,object> Translated navigation-target selector options.
      */
@@ -57,15 +58,27 @@ final class JlmenuitemsField extends ListField
             'jlallprojectrounds' => 'MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS',
             'jlxmlexports' => 'MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT',
         ];
-        $options = [];
+        $options = parent::getOptions();
+        $seen = [];
+
+        foreach ($options as $option) {
+            $value = is_object($option) ? ($option->value ?? null) : null;
+            if (is_string($value) || is_int($value)) {
+                $seen[(string) $value] = true;
+            }
+        }
 
         foreach ($items as $value => $label) {
+            if (isset($seen[(string) $value])) {
+                continue;
+            }
+            $seen[(string) $value] = true;
             $options[] = (object) [
                 'value' => (string) $value,
                 'text' => Text::_($label),
             ];
         }
 
-        return array_merge(parent::getOptions(), $options);
+        return $options;
     }
 }
