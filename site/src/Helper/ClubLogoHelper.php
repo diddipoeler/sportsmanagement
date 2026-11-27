@@ -29,6 +29,7 @@ final class ClubLogoHelper
      * HTML height attributes in Joomla 5/6 templates. Refuses unsafe
      * local paths and unsupported remote URL schemes before rendering HTML.
      * Examines raw logo and placeholder text before trimming control bytes.
+     * Uses the configured fallback when a nonempty logo fails URL validation.
      *
      * @param string $logoSmall Optional club logo path.
      * @param string $country Country code used when rendering a flag.
@@ -57,7 +58,7 @@ final class ClubLogoHelper
         }
 
         $logo = trim($logoSmall);
-        if ($logo === '') {
+        if ($logo === '' || PersonImageHelper::url($logo) === '') {
             $fallback = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small', '');
             $logo = is_string($fallback)
                 && preg_match('/[\\x00-\\x1F\\x7F]/', $fallback) !== 1
