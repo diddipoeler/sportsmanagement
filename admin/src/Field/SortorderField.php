@@ -18,10 +18,20 @@ final class SortorderField extends ListField
 {
     protected $type = 'sortorder';
 
+    /**
+     * Generate numeric ordering choices from the component configuration.
+     * Rejects malformed settings and bounds the option count to prevent
+     * excessive allocation from corrupted configuration values.
+     * @return array<int,object> Inherited and numeric ordering options.
+     */
     protected function getOptions(): array
     {
         $options = [];
-        $maximum = max(0, (int) ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0));
+        $rawMaximum = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0);
+        $maximum = (is_int($rawMaximum) || is_string($rawMaximum))
+            ? filter_var($rawMaximum, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+            : false;
+        $maximum = $maximum === false ? 0 : min(10000, $maximum);
 
         for ($order = 1; $order <= $maximum; ++$order) {
             $options[] = (object) [
