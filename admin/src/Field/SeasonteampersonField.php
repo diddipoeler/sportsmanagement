@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,6 +24,12 @@ final class SeasonteampersonField extends FormField
 
     protected $type = 'checkboxes';
 
+    /**
+     * Render existing season and team memberships of the selected record.
+     * Reads the configured relation, binds the record identifier and displays
+     * escaped season and team names with their associated club image.
+     * @return string Membership table or translated empty-state markup.
+     */
     protected function getInput(): string
     {
         $selectedId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
@@ -33,7 +41,7 @@ final class SeasonteampersonField extends FormField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('stp.season_id'),
                 $db->quoteName('stp.team_id'),
@@ -57,7 +65,8 @@ final class SeasonteampersonField extends FormField
                 $db->quoteName('#__sportsmanagement_season', 's')
                 . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('stp.season_id')
             )
-            ->where($db->quoteName('stp.' . $targetId) . ' = ' . $selectedId)
+            ->where($db->quoteName('stp.' . $targetId) . ' = :selectedId')
+            ->bind(':selectedId', $selectedId, ParameterType::INTEGER)
             ->order($db->quoteName('s.name'));
         $db->setQuery($query);
         $items = $db->loadObjectList() ?: [];
@@ -80,6 +89,10 @@ final class SeasonteampersonField extends FormField
         return $html . '</table>';
     }
 
+    /**
+     * Render Joomla's translated empty-state notification.
+     * @return string Alert markup when no membership records are available.
+     */
     private function renderNoResults(): string
     {
         return '<div class="alert alert-no-items">'
