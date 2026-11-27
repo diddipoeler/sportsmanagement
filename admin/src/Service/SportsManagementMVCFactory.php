@@ -158,7 +158,7 @@ final class SportsManagementMVCFactory extends MVCFactory
      * Validate a legacy MVC class or filesystem path segment.
      *
      * Allows only a leading ASCII letter followed by letters, digits or
-     * underscores; rejects empty names, traversal and suffix injection before
+     * underscores; rejects empty or oversized names, traversal and suffix injection before
      * legacy PHP files can be resolved.
      *
      * @param string $name Untrusted controller, view, model or type name.
@@ -167,7 +167,7 @@ final class SportsManagementMVCFactory extends MVCFactory
     private function validLegacyName(string $name): bool
     {
         // Names become filesystem path segments when resolving legacy MVC files.
-        return $name !== '' && preg_match('/^[a-zA-Z][a-zA-Z0-9_]*$/D', $name) === 1;
+        return $name !== '' && strlen($name) <= 128 && preg_match('/^[a-zA-Z][a-zA-Z0-9_]*$/D', $name) === 1;
     }
 
     /**
@@ -439,11 +439,15 @@ final class SportsManagementMVCFactory extends MVCFactory
      * model dbo constructor option.
      *
      * @return DatabaseInterface Database service provided by Joomla.
+     * @throws \RuntimeException If the container does not provide a database driver.
      */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement MVC database service is unavailable.', 500);
+        }
 
         return $database;
     }
