@@ -176,7 +176,7 @@ class NavigationMenuHelper
             return $raw === 0 || $raw === 1 ? $raw : null;
         }
 
-        if (!is_string($raw) || !preg_match('/^0*([01])$/D', $raw, $matches)) {
+        if (!is_string($raw) || strlen($raw) > 64 || !preg_match('/^0*([01])$/D', $raw, $matches)) {
             return null;
         }
 
@@ -187,12 +187,13 @@ class NavigationMenuHelper
      * Read the active project, division, league and team selection.
      * Combines the module's configured defaults with Joomla frontend
      * request parameters, normalising the identifiers used by select menus.
+     * Rejects malformed configured default project IDs without loose casts.
      * @return void
      */
     private function initialiseState(): void
     {
         $input = $this->app->getInput();
-        $defaultProject = max(0, (int) $this->params->get('default_project_id', 0));
+        $defaultProject = self::normaliseMenuItemId($this->params->get('default_project_id', 0));
         $this->projectId = $input->getCmd('option') === 'com_sportsmanagement'
             ? max(0, $input->getInt('p', $defaultProject))
             : $defaultProject;
@@ -207,6 +208,7 @@ class NavigationMenuHelper
      * Load the selected project and cache its navigation metadata.
      * Returns false when no valid project was selected; otherwise
      * retrieves the current project context needed by related selectors.
+     * Rejects malformed or mismatched database result records.
      * @return object|false Selected project record or false.
      */
     public function getProject(): object|false
@@ -238,7 +240,9 @@ class NavigationMenuHelper
             ->where($this->db->quoteName('p.id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
-        $this->project = $this->db->loadObject() ?: null;
+        $project = $this->db->loadObject();
+        $this->project = is_object($project) && self::normaliseMenuItemId($project->id ?? null) === $projectId
+            ? $project : null;
 
         if ($this->project !== null) {
             // Preserve the historical id:alias fields without MySQL-specific
