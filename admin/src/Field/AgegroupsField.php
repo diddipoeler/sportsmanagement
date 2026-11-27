@@ -11,8 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\ParameterType;
 
@@ -34,8 +33,7 @@ final class AgegroupsField extends SportsManagementListField
     protected function getOptions(): array
     {
         $options = parent::getOptions();
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $teamId = $app->getInput()->getInt('id', 0);
 
         if ($teamId <= 0) {
@@ -50,6 +48,9 @@ final class AgegroupsField extends SportsManagementListField
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($teamQuery, 0, 1);
         $rawSportsTypeId = $db->loadResult();
+        if (!is_int($rawSportsTypeId) && !is_string($rawSportsTypeId)) {
+            return $options;
+        }
         $sportsTypeId = filter_var(
             $rawSportsTypeId,
             FILTER_VALIDATE_INT,
@@ -72,7 +73,14 @@ final class AgegroupsField extends SportsManagementListField
             ->order($db->quoteName('name'));
         $db->setQuery($query);
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => "\u{00A0}" . Text::_((string) $item->text) . ' (' . (int) $item->value . ')',
