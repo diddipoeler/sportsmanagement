@@ -20,12 +20,22 @@ final class UserlistField extends ListField
 {
     protected $type = 'userlist';
 
+    /**
+     * Load Joomla user IDs and names from the primary Joomla database.
+     * Uses the container database rather than an alternate sports database
+     * and combines valid user rows with inherited XML options.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         SportsManagementAdministratorApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
         $db = Factory::getContainer()->get(DatabaseInterface::class);
+        if (!$db instanceof DatabaseInterface) {
+            return parent::getOptions();
+        }
+
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
@@ -37,7 +47,14 @@ final class UserlistField extends ListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
