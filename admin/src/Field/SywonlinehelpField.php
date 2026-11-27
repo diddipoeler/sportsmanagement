@@ -19,6 +19,11 @@ final class SywonlinehelpField extends FormField
 {
     protected $type = 'SYWOnlineHelp';
 
+    /**
+     * Render the translated display-only administrator heading and optional resources.
+     * Escapes the heading text and HTML attributes for the native form layout.
+     * @return string Administrator heading markup.
+     */
     protected function getLabel(): string
     {
         HTMLHelper::_('stylesheet', 'syw/fonts-min.css', ['version' => 'auto', 'relative' => true]);
@@ -50,6 +55,10 @@ final class SywonlinehelpField extends FormField
         return $html . '</div></div>';
     }
 
+    /**
+     * Suppress an editable input for this display-only field.
+     * @return string Empty input markup.
+     */
     protected function getInput(): string
     {
         return '';
