@@ -246,15 +246,16 @@ final class TeamModel extends SportsManagementAdminModel
     /**
      * Delete one stored team training entry after validating its identifier.
      *
-     * @param mixed $id id value.
+     * @param mixed $id Training record identifier.
+     * @param int|null $teamId Persisted owning team; required for writes.
      * @return bool
      */
-    public function DeleteTrainigData($id)
+    public function DeleteTrainigData($id, ?int $teamId = null)
     {
         $ids = self::normaliseSeasonIds([$id]);
         $trainingId = $ids[0] ?? 0;
 
-        if ($trainingId <= 0) {
+        if ($trainingId <= 0 || !$this->canEditTrainingTeam($teamId)) {
             return false;
         }
 
@@ -262,7 +263,9 @@ final class TeamModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_team_trainingdata'))
             ->where($db->quoteName('id') . ' = :trainingId')
-            ->bind(':trainingId', $trainingId, ParameterType::INTEGER);
+            ->bind(':trainingId', $trainingId, ParameterType::INTEGER)
+            ->where($db->quoteName('team_id') . ' = :trainingOwner')
+            ->bind(':trainingOwner', $teamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
@@ -279,12 +282,13 @@ final class TeamModel extends SportsManagementAdminModel
      * Apply submitted changes to existing training entries.
      * Rejects malformed or oversized identifier lists before writing any rows.
      *
-     * @param mixed $post post value.
+     * @param mixed $post Submitted training rows.
+     * @param int|null $teamId Persisted owning team; required for writes.
      * @return bool
      */
-    public function UpdateTrainigData($post)
+    public function UpdateTrainigData($post, ?int $teamId = null)
     {
-        if (!is_array($post)) {
+        if (!is_array($post) || !$this->canEditTrainingTeam($teamId)) {
             return false;
         }
         $ids = self::normaliseSeasonIds($post['tdids'] ?? []);
@@ -310,11 +314,13 @@ final class TeamModel extends SportsManagementAdminModel
                     ])
                     ->from($db->quoteName('#__sportsmanagement_team_trainingdata'))
                     ->where($db->quoteName('id') . ' = :trainingUpdateId')
-                    ->bind(':trainingUpdateId', $id, ParameterType::INTEGER);
+                    ->bind(':trainingUpdateId', $id, ParameterType::INTEGER)
+                    ->where($db->quoteName('team_id') . ' = :trainingOwner')
+                    ->bind(':trainingOwner', $teamId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $current = $db->loadObject();
 
-                if (!$current) {
+                if (!is_object($current)) {
                     continue;
                 }
 
@@ -401,7 +407,7 @@ final class TeamModel extends SportsManagementAdminModel
         $ids = self::normaliseSeasonIds([$team_id]);
         $teamId = $ids[0] ?? 0;
 
-        if ($teamId <= 0) {
+        if (!$this->canEditTrainingTeam($teamId)) {
             return false;
         }
 
@@ -549,11 +555,11 @@ final class TeamModel extends SportsManagementAdminModel
         $this->syncSeasons($data, $id);
 
         if (!empty($post['delete']) && is_array($post['delete'])) {
-            $this->DeleteTrainigData(reset($post['delete']));
+            $this->DeleteTrainigData(reset($post['delete']), $id);
         }
 
         if (!empty($post['tdids']) && is_array($post['tdids'])) {
-            $this->UpdateTrainigData($post);
+            $this->UpdateTrainigData($post, $id);
         }
 
         if (!empty($post['add_trainingData'])) {
@@ -649,6 +655,24 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db->setQuery($query)->execute();
+    }
+
+    /**
+     * Require an authenticated administrator with edit access to the team.
+     * The owner must be supplied by the saved team context, not a training ID.
+     * @param int|null $teamId Persisted team identifier.
+     * @return bool Whether training records may be changed.
+     */
+    private function canEditTrainingTeam(?int $teamId): bool
+    {
+        if ($teamId === null || $teamId <= 0) {
+            return false;
+        }
+
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
     }
 
     /**
