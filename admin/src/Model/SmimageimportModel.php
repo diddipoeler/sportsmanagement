@@ -49,7 +49,8 @@ final class SmimageimportModel extends SportsManagementAdminModel
      * configured archive destinations before writing to Joomla paths.
      * Uses a unique temporary ZIP for each download, accepts modern and legacy
      * HTTP response APIs, removes temporary files on every exit and checks
-     * publication writes before reporting success. Preflights ZIP entries and
+     * publication writes before reporting success. Rejects downloaded archives
+     * exceeding 128 MiB before writing to disk. Preflights ZIP entries and
      * destination paths before extraction. Failed downloads/extractions produce generic administrator feedback;
      * exception classes are logged privately without credentials or SQL.
      *
@@ -108,7 +109,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     ? (string) $response->getBody()
                     : (string) ($response->body ?? '');
 
-                if ($status !== 200 || $body === '') {
+                if ($status !== 200 || $body === '' || strlen($body) > 128 * 1024 * 1024) {
                     throw new \RuntimeException('HTTP ' . $status);
                 }
 
@@ -305,7 +306,8 @@ final class SmimageimportModel extends SportsManagementAdminModel
     /**
      * Validate every ZIP entry before Joomla extracts an image package.
      * Rejects traversal, absolute paths, duplicate names, special Unix files
-     * and symbolic links in existing destination paths. Bounds the total
+     * and symbolic links or incompatible file/directory types in existing
+     * destination paths. Bounds the total
      * expanded archive size and permits only recognised image extensions.
      *
      * @param string $archivePath Downloaded ZIP archive.
@@ -350,9 +352,15 @@ final class SmimageimportModel extends SportsManagementAdminModel
                         return false;
                     }
                     $path .= '/' . $segment;
-                    if (is_link($path)) {
+                    if (is_link($path) || (file_exists($path)
+                        && ($path !== $destination . '/' . $relative || $directory)
+                        && !is_dir($path))) {
                         return false;
                     }
+                }
+
+                if (!$directory && is_dir($path)) {
+                    return false;
                 }
 
                 $key = strtolower($relative);
