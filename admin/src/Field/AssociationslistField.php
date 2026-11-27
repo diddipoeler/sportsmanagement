@@ -40,7 +40,11 @@ final class AssociationslistField extends SportsManagementListField
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $filter = $input->post->get('filter', [], 'array');
 
-        $country = trim((string) ($filter['search_nation'] ?? ''));
+        $rawCountry = is_array($filter) ? ($filter['search_nation'] ?? '') : null;
+        if (!is_string($rawCountry)) {
+            return parent::getOptions();
+        }
+        $country = trim($rawCountry);
 
         if ($view === 'projects') {
             $country = $country !== ''
@@ -61,10 +65,14 @@ final class AssociationslistField extends SportsManagementListField
         $selectedId = $input->get('id', 0, 'raw');
 
         if (is_array($selectedId)) {
-            $selectedId = reset($selectedId) ?: 0;
+            $selectedId = array_is_list($selectedId) && count($selectedId) === 1 ? $selectedId[0] : null;
         }
 
-        $selectedId = (int) $selectedId;
+        $selectedId = (is_int($selectedId) || is_string($selectedId))
+            ? filter_var($selectedId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) : false;
+        if ($selectedId === false) {
+            return parent::getOptions();
+        }
 
         if ($selectedId <= 0) {
             if ($view !== 'jlextassociation') {
