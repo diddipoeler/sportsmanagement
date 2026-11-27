@@ -11,8 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\ParameterType;
 
@@ -40,8 +39,7 @@ final class ActeventtypeField extends SportsManagementListField
             || preg_match('/^[A-Za-z0-9_]+$/D', $targetTable) !== 1) {
             return parent::getOptions();
         }
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $selectedId = $app->getInput()->getInt('id', 0);
 
         if ($selectedId <= 0) {
@@ -68,7 +66,14 @@ final class ActeventtypeField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => Text::_((string) $item->text),
