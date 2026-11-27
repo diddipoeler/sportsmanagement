@@ -37,6 +37,10 @@ final class LanguagecharacterField extends ListField
         $options = [];
 
         for ($codepoint = $start; $codepoint <= $end; $codepoint++) {
+            // U+03A2 is unassigned and is not a Greek capital letter.
+            if ($codepoint === 0x03A2) {
+                continue;
+            }
             $character = html_entity_decode('&#' . $codepoint . ';', ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $options[] = (object) [
                 'value' => (string) $codepoint,
