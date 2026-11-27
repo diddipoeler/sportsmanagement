@@ -27,13 +27,18 @@ final class RankingcolumnsField extends ListField
         'TADMIN', 'GFA', 'GAA', 'PPG', 'PPP', 'LASTGAMES', 'BALLS', 'BALLS_DIFF',
     ];
 
+    /**
+     * Initialise the ordered ranking column multi-select.
+     * Accepts historical comma-separated strings and arrays of column names,
+     * removes malformed entries and delegates field setup to Joomla.
+     * @param \SimpleXMLElement $element Field definition.
+     * @param mixed $value Stored column selection.
+     * @param string|null $group Optional form group.
+     * @return bool Whether Joomla accepted setup.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        if (!is_array($value)) {
-            $value = array_values(array_filter(array_map('trim', explode(',', (string) $value))));
-        } else {
-            $value = array_values(array_map('strval', $value));
-        }
+        $value = self::normaliseColumns($value);
 
         $element['multiple'] = 'true';
         $element['size'] = '10';
@@ -42,11 +47,15 @@ final class RankingcolumnsField extends ListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Build translated column options for the configured selector mode.
+     * Preserves the order of stored custom column names when showing only
+     * selected columns, or uses the complete built-in column catalogue.
+     * @return array<int,object> Ranking column options.
+     */
     protected function getOptions(): array
     {
-        $selected = is_array($this->value)
-            ? array_values(array_map('strval', $this->value))
-            : [];
+        $selected = self::normaliseColumns($this->value);
         $showAll = (bool) (int) ($this->element['selrankingcol'] ?? 0);
         $columns = $showAll ? self::COLUMNS : $selected;
         $options = [];
@@ -63,5 +72,23 @@ final class RankingcolumnsField extends ListField
         }
 
         return $options;
+    }
+    /**
+     * Normalise legacy column selections without coercing nested values.
+     * Keeps nonempty string identifiers in their original order.
+     * @param mixed $value Comma-separated string or saved array.
+     * @return array<int,string> Valid column identifiers.
+     */
+    private static function normaliseColumns(mixed $value): array
+    {
+        $columns = is_string($value) ? explode(',', $value) : (is_array($value) ? $value : []);
+        $result = [];
+        foreach ($columns as $column) {
+            if (is_string($column) && trim($column) !== '') {
+                $result[] = trim($column);
+            }
+        }
+
+        return $result;
     }
 }
