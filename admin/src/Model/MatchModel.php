@@ -124,7 +124,7 @@ final class MatchModel extends SportsManagementAdminModel
             return null;
         }
 
-        if (!$match) {
+        if (!is_object($match) || self::normaliseSelectionIds([$match->id ?? null]) !== [$matchId]) {
             return null;
         }
 
@@ -137,7 +137,13 @@ final class MatchModel extends SportsManagementAdminModel
         return $match;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load published match choices for the given project.
+     * Excludes validated match IDs and formats the fixture date and team names.
+     * @param int $projectId Project identifier.
+     * @param array $excludeMatchIds Match identifiers to omit.
+     * @return array<int,object> Match selection options.
+     */
     public function getMatchRelationsOptions(int $projectId, array $excludeMatchIds = []): array
     {
         if ($projectId <= 0) {
@@ -145,7 +151,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $excludeMatchIds = array_values(array_unique(array_filter(array_map('intval', $excludeMatchIds), static fn (int $id): bool => $id > 0)));
+        $excludeMatchIds = self::normaliseSelectionIds($excludeMatchIds);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'value'),
@@ -178,16 +184,24 @@ final class MatchModel extends SportsManagementAdminModel
             return [];
         }
 
+        $matches = is_array($matches) ? array_values(array_filter($matches, 'is_object')) : [];
         foreach ($matches as $match) {
-            $timestamp = strtotime((string) ($match->match_date ?? ''));
+            $rawDate = $match->match_date ?? '';
+            $timestamp = is_string($rawDate) && !str_contains($rawDate, chr(0)) ? strtotime($rawDate) : false;
             $date = $timestamp === false ? '' : date('d.m.Y H:i', $timestamp);
-            $match->text = '(' . $date . ') - ' . (string) ($match->t1_name ?? '') . ' - ' . (string) ($match->t2_name ?? '');
+            $home = is_string($match->t1_name ?? null) ? $match->t1_name : '';
+            $away = is_string($match->t2_name ?? null) ? $match->t2_name : '';
+            $match->text = '(' . $date . ') - ' . $home . ' - ' . $away;
         }
 
         return $matches;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load the project's round identifiers, codes and opening dates in round order.
+     * @param int $projectId Project identifier.
+     * @return array<int,object> Project round records.
+     */
     public function getProjectRoundCodes(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -207,10 +221,16 @@ final class MatchModel extends SportsManagementAdminModel
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList();
+
+        return is_array($rows) ? array_values(array_filter($rows, 'is_object')) : [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load fixture identifiers, participants and dates for a single round.
+     * @param int $roundId Round identifier.
+     * @return array<int,object> Match records ordered by identifier.
+     */
     public function getRoundMatches(int $roundId): array
     {
         if ($roundId <= 0) {
@@ -232,10 +252,16 @@ final class MatchModel extends SportsManagementAdminModel
             ->bind(':roundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList();
+
+        return is_array($rows) ? array_values(array_filter($rows, 'is_object')) : [];
     }
 
-    /** @return array<int,object> keyed by project-position id */
+    /**
+     * Load translated referee positions for the given project.
+     * @param int $projectId Project identifier.
+     * @return array<int,object> Positions keyed by project-position identifier.
+     */
     public function getRefereePositions(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -258,14 +284,25 @@ final class MatchModel extends SportsManagementAdminModel
         $db->setQuery($query);
         $positions = $db->loadObjectList('value') ?: [];
 
-        foreach ($positions as $position) {
-            $position->text = Text::_((string) $position->text);
+        $positions = is_array($positions) ? $positions : [];
+        foreach ($positions as $key => $position) {
+            if (!is_object($position) || !is_string($position->text ?? null)) {
+                unset($positions[$key]);
+                continue;
+            }
+            $position->text = Text::_($position->text);
         }
 
         return $positions;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load eligible project referees or teams not yet assigned to the fixture.
+     * @param int $projectId Project identifier.
+     * @param int $matchId Match identifier, or zero for a new fixture.
+     * @param bool $teamsAsReferees Whether teams officiate instead of people.
+     * @return array<int,object> Available referee choices.
+     */
     public function getAvailableRefereeOptions(int $projectId, int $matchId, bool $teamsAsReferees = false): array
     {
         if ($projectId <= 0) {
@@ -332,7 +369,14 @@ final class MatchModel extends SportsManagementAdminModel
         return $options;
     }
 
-    /** @return array<int,array<int,object>> keyed by project-position id */
+    /**
+     * Load the existing referee assignments grouped by project position.
+     * Supports individual referees and teams while retaining legacy position IDs.
+     * @param int $projectId Project identifier.
+     * @param int $matchId Match identifier.
+     * @param bool $teamsAsReferees Whether teams officiate instead of people.
+     * @return array<int,array<int,object>> Assigned referees keyed by project position.
+     */
     public function getAssignedReferees(int $projectId, int $matchId, bool $teamsAsReferees = false): array
     {
         if ($projectId <= 0 || $matchId <= 0) {
@@ -408,7 +452,11 @@ final class MatchModel extends SportsManagementAdminModel
         return $assigned;
     }
 
-    /** @return array<int,int> */
+    /**
+     * Load validated referee identifiers already assigned to a fixture.
+     * @param int $matchId Match identifier.
+     * @return array<int,int> Distinct positive referee identifiers.
+     */
     private function getAssignedRefereeIds(int $matchId): array
     {
         if ($matchId <= 0) {
@@ -423,7 +471,9 @@ final class MatchModel extends SportsManagementAdminModel
             ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return array_values(array_unique(array_filter(array_map('intval', $db->loadColumn() ?: []))));
+        $rows = $db->loadColumn();
+
+        return self::normaliseSelectionIds(is_array($rows) ? $rows : []);
     }
 
     /**
