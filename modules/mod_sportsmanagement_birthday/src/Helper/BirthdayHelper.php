@@ -350,14 +350,14 @@ final class BirthdayHelper
      * Parse the optional days filter without silently turning invalid input into zero.
      *
      * Empty or malformed limits mean no filter. Zero explicitly means today only.
-     * Rejects non-scalar input and values beyond the platform integer range.
+     * Rejects booleans, floats, non-scalar input and values beyond the platform integer range.
      *
      * @param mixed $value Raw configured days-ahead limit.
      * @return int|null Nonnegative days limit, or null when unspecified or invalid.
      */
     private static function normaliseDaysLimit(mixed $value): ?int
     {
-        if (!is_scalar($value)) {
+        if (!is_int($value) && !is_string($value)) {
             return null;
         }
 
@@ -492,14 +492,16 @@ final class BirthdayHelper
 
     /**
      * Return the current calendar day using Joomla's configured timezone.
-     * Falls back to UTC when a stored site timezone cannot be constructed.
+     * Falls back to UTC when a stored site timezone is not a nonempty string
+     * or cannot be constructed, without casting malformed configuration.
      * @param CMSApplicationInterface $app Application supplying the timezone offset.
      * @return \DateTimeImmutable Midnight today in the selected timezone.
      */
     private function today(CMSApplicationInterface $app): \DateTimeImmutable
     {
         try {
-            $timezone = new \DateTimeZone((string) $app->get('offset', 'UTC'));
+            $offset = $app->get('offset', 'UTC');
+            $timezone = new \DateTimeZone(is_string($offset) && $offset !== '' ? $offset : 'UTC');
         } catch (\Throwable) {
             $timezone = new \DateTimeZone('UTC');
         }
@@ -510,18 +512,24 @@ final class BirthdayHelper
      * Parse a birthday or other database date without accepting rollovers.
      * Requires a valid year-month-day value in the supplied timezone and
      * returns null for malformed dates instead of silently normalising them.
+     * Requires exact ASCII date syntax before invoking PHP's date parser,
+     * preventing embedded NUL bytes or surrounding control characters.
      * @param string $value Date stored in Y-m-d format.
      * @param \DateTimeZone $timezone Timezone used for date creation.
      * @return \DateTimeImmutable|null Valid date, or null on failure.
      */
     private function date(string $value, \DateTimeZone $timezone): ?\DateTimeImmutable
     {
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', trim($value), $timezone);
+        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/D', $value) !== 1) {
+            return null;
+        }
+
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value, $timezone);
         // PHP normalises invalid calendar dates (for example 2025-02-31).
         // Reject those instead of displaying a birthday on the wrong day.
         return $date instanceof \DateTimeImmutable
             && (int) $date->format('Y') > 0
-            && $date->format('Y-m-d') === trim($value)
+            && $date->format('Y-m-d') === $value
             ? $date
             : null;
     }
