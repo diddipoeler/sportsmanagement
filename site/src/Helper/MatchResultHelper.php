@@ -27,7 +27,8 @@ final class MatchResultHelper
      * must be complete positive decimal values: malformed imported strings,
      * arrays, booleans and integer overflows must never cast to a related
      * team. Unrelated teams, nonnumeric results and nonfinite scores have
-     * no known outcome. Rejects records where the requested team occupies
+     * no known outcome. Both participants must have valid identifiers.
+     * Rejects records where the requested team occupies
      * both home and away slots rather than inventing a result.
      *
      * @param object $game Match row with results and project team IDs.
@@ -50,7 +51,9 @@ final class MatchResultHelper
         // A corrupted fixture containing the same project team on both
         // sides has no unambiguous home/away result for that team.
         // A third-party team must not receive a draw for an unrelated match.
-        if ((!$isHomeTeam && !$isAwayTeam) || ($isHomeTeam && $isAwayTeam)) {
+        if (self::projectTeamId($game->projectteam1_id ?? null) === 0
+            || self::projectTeamId($game->projectteam2_id ?? null) === 0
+            || (!$isHomeTeam && !$isAwayTeam) || ($isHomeTeam && $isAwayTeam)) {
             return false;
         }
 
