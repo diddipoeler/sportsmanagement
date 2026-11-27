@@ -19,6 +19,14 @@ final class PredictionmatchidField extends SportsManagementListField
 {
     protected $type = 'predictionmatchid';
 
+    /**
+     * Configure the match selector as a native multiple-selection field.
+     * Preserves the saved match identifiers and delegates XML setup to Joomla.
+     * @param \SimpleXMLElement $element Field definition.
+     * @param mixed $value Saved selection.
+     * @param string|null $group Optional form group.
+     * @return bool Whether parent setup succeeds.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['multiple'] = 'true';
@@ -28,15 +36,23 @@ final class PredictionmatchidField extends SportsManagementListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Load matches belonging to projects assigned to the active prediction game.
+     * Validates the saved game identifier before binding it to the query and
+     * formats the match date, round and participating teams as option labels.
+     * @return array<int,object> Match selection options.
+     */
     protected function getOptions(): array
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
-        $predictionId = (int) $app->getUserState('com_sportsmanagement.prediction_id', 0);
+        $rawId = $app->getUserState('com_sportsmanagement.prediction_id', 0);
+        $predictionId = (is_int($rawId) || is_string($rawId))
+            ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
         $options = [];
 
         if ($predictionId > 0) {
             $db = $this->getSportsManagementDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('m.id'),
                     $db->quoteName('m.match_date'),
