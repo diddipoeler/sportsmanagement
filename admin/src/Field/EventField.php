@@ -37,7 +37,7 @@ final class EventField extends SportsManagementListField
                 ? $rawPrefix : 'sportsmanagement';
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('e.id', 'value'),
                 $db->quoteName('e.name', 'text'),
@@ -55,7 +55,14 @@ final class EventField extends SportsManagementListField
             ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => Text::_((string) $item->text) . ' (' . $item->value . ')',
