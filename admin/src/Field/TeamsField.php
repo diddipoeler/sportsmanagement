@@ -19,6 +19,15 @@ final class TeamsField extends SportsManagementListField
 {
     protected $type = 'teams';
 
+    /**
+     * Initialise the native multiple-selection field for the administrator form.
+     * Applies the historical ten-row display and Bootstrap styling before
+     * delegating saved selection handling to Joomla's parent field.
+     * @param \SimpleXMLElement $element Field definition.
+     * @param mixed $value Saved selection.
+     * @param string|null $group Optional form group.
+     * @return bool Whether Joomla accepted field setup.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['multiple'] = 'true';
@@ -28,6 +37,12 @@ final class TeamsField extends SportsManagementListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Load the available teams for the multiple-selection control.
+     * Preserves alphabetical ordering, the translated empty option and
+     * the historical labels containing team names and identifiers.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -47,7 +62,14 @@ final class TeamsField extends SportsManagementListField
             ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $team) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $team) {
+            if (!is_object($team)
+                || (!is_int($team->value ?? null) && !is_string($team->value ?? null))
+                || !is_string($team->text ?? null)) {
+                continue;
+            }
+
             $options[] = (object) [
                 'value' => (string) $team->value,
                 'text' => "\u{00A0}" . (string) $team->text . ' (' . (int) $team->value . ')',
