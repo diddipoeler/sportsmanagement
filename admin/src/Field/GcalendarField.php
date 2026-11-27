@@ -13,6 +13,12 @@ final class GcalendarField extends SportsManagementListField
 {
     protected $type = 'GCalendar';
 
+    /**
+     * Load configured Google calendars in alphabetical order.
+     * Appends valid calendar identifiers and names to inherited XML options
+     * while ignoring malformed database result rows.
+     * @return array<int,object> Calendar selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -27,7 +33,12 @@ final class GcalendarField extends SportsManagementListField
 
         $options = parent::getOptions();
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item) || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
