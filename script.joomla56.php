@@ -810,6 +810,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     /**
      * Merge one packaged media directory into a component image directory.
      * Traverses the source tree, creates needed target directories and preserves existing destination files instead of overwriting user assets.
+     * Reports unsuccessful file copies through the installer warning channel.
      * @param string $source Source folder to merge.
      * @param string $target Destination folder for media assets.
      * @return void
@@ -834,7 +835,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
             if ($item->isFile() && !is_file($destination)) {
                 $this->ensureDirectory(dirname($destination));
-                File::copy($item->getPathname(), $destination);
+                if (!File::copy($item->getPathname(), $destination)) {
+                    $this->logInstallerWarning('Could not migrate media file: ' . $relative);
+                }
             }
         }
     }
@@ -842,6 +845,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     /**
      * Populate missing person and general-purpose image placeholders.
      * Copies the standard placeholder files into the appropriate SportsManagement directories without replacing installed customized images.
+     * Reports both unsuccessful return values and thrown copy failures.
      * @param string $base Root images/com_sportsmanagement database directory.
      * @return void
      */
@@ -890,7 +894,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
                 }
 
                 try {
-                    File::copy($source, $destination);
+                    if (!File::copy($source, $destination)) {
+                        $this->logInstallerWarning(sprintf('Could not copy placeholder %s to %s.', $file, $folder));
+                    }
                 } catch (\Throwable $exception) {
                     $this->logInstallerWarning(
                         sprintf('Could not copy placeholder %s to %s: %s', $file, $folder, $exception->getMessage())
@@ -903,6 +909,8 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     /**
      * Ensure a required component image directory exists.
      * Uses Joomla's Filesystem Folder service to create the directory only when it is not already available.
+     * Verifies the resulting directory before dependent operations continue.
+     * @throws \RuntimeException If the required directory cannot be created.
      * @param string $path Absolute directory path to create.
      * @return void
      */
@@ -910,12 +918,17 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     {
         if (!is_dir($path)) {
             Folder::create($path);
+
+            if (!is_dir($path)) {
+                throw new \RuntimeException('Could not create required SportsManagement image directory.');
+            }
         }
     }
 
     /**
      * Add an index.html access placeholder to a component image directory.
      * Copies Joomla's standard index file into directories where no index file exists, reducing casual directory browsing.
+     * Reports an unsuccessful copy as an installer warning.
      * @param string $targetDirectory Destination directory to protect.
      * @return void
      */
@@ -925,13 +938,16 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         $target = $targetDirectory . '/index.html';
 
         if (is_file($source) && !is_file($target)) {
-            File::copy($source, $target);
+            if (!File::copy($source, $target)) {
+                $this->logInstallerWarning('Could not copy image directory index file.');
+            }
         }
     }
 
     /**
      * Delete obsolete temporary archive files after component installation.
      * Removes recognised SportsManagement package archives and stale temporary artifacts without affecting unrelated files.
+     * Reports unsuccessful deletion results as well as exceptions.
      * @return void
      */
     private function deleteInstallFiles(): void
@@ -945,7 +961,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             }
 
             try {
-                File::delete($file);
+                if (!File::delete($file)) {
+                    $this->logInstallerWarning('Could not remove temporary file: ' . basename($file));
+                }
             } catch (\Throwable $exception) {
                 $this->logInstallerWarning('Could not remove temporary file ' . $file . ': ' . $exception->getMessage());
             }
@@ -955,7 +973,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
         if (is_dir($folder)) {
             try {
-                Folder::delete($folder);
+                if (!Folder::delete($folder)) {
+                    $this->logInstallerWarning('Could not remove temporary SportsManagement folder.');
+                }
             } catch (\Throwable $exception) {
                 $this->logInstallerWarning('Could not remove temporary folder ' . $folder . ': ' . $exception->getMessage());
             }
