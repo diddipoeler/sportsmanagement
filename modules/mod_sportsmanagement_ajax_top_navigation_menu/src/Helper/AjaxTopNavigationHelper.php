@@ -60,10 +60,8 @@ final class AjaxTopNavigationHelper
             return [];
         }
 
-        // The legacy data helper still reads the Joomla Input object.
-        // Set the already validated selector before constructing it.
-        $input->set('cfg_which_database', $databaseSelector);
-
+        // Both helpers validate the same request and configuration. Do not
+        // write a module-specific database choice into the shared input.
         $database = self::joomlaDatabase();
 
         $legacyHelper = new NavigationDataHelper($params, $app, $database);
