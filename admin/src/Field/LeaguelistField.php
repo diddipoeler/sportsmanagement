@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
@@ -69,9 +71,11 @@ final class LeaguelistField extends SportsManagementListField
                     $db->quoteName('#__sportsmanagement_project', 'p')
                     . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
                 )
-                ->where($db->quoteName('p.id') . ' = ' . (int) $projectId);
+                ->where($db->quoteName('p.id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($query);
-            $country = (string) ($db->loadResult() ?: '');
+            $rawCountry = $db->loadResult();
+            $country = is_string($rawCountry) ? $rawCountry : '';
         } elseif ($view === 'projects') {
             $post = $input->post->getArray();
             $country = self::postedCountry($post['filter'] ?? null);
@@ -93,7 +97,8 @@ final class LeaguelistField extends SportsManagementListField
             ->from($db->quoteName('#__sportsmanagement_league'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('country') . ' = :country')
+                ->bind(':country', $country, ParameterType::STRING);
         }
 
         $query->order($db->quoteName('name'));
