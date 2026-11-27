@@ -38,6 +38,7 @@ final class XmlClubImportService
 
     /**
      * Import standalone club records from a parsed XML document.
+     * Rejects malformed explicit club IDs and structured form name/country values.
      * Matches explicitly selected or existing clubs, validates names and countries, filters unknown database columns, resets foreign playground references and records created clubs with escaped status messages.
      *
      * @param array<string,mixed> $post Administrator form selections and club overrides.
@@ -53,7 +54,14 @@ final class XmlClubImportService
                 continue;
             }
 
-            $databaseId = (int) ($post['dbClubID_' . $key] ?? 0);
+            $rawDatabaseId = $post['dbClubID_' . $key] ?? 0;
+            $databaseId = is_int($rawDatabaseId) || is_string($rawDatabaseId)
+                ? filter_var($rawDatabaseId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+
+            if ($databaseId === false) {
+                continue;
+            }
 
             if ($databaseId > 0) {
                 $existing = $this->findById($databaseId);
@@ -68,10 +76,14 @@ final class XmlClubImportService
             // The historical standalone-club form reuses the combined
             // club/team controls and may leave clubName_* empty. Prefer an
             // explicitly submitted value, but fall back to the XML record.
-            $name = trim((string) ($post['clubName_' . $key] ?? ''));
+            $rawName = $post['clubName_' . $key] ?? '';
+            if (!is_string($rawName)) {
+                continue;
+            }
+            $name = trim($rawName);
 
             if ($name === '') {
-                $name = trim((string) ($source->name ?? ''));
+                $name = is_string($source->name ?? null) ? trim($source->name) : '';
             }
 
             $name = substr($name, 0, 100);
@@ -80,7 +92,11 @@ final class XmlClubImportService
                 continue;
             }
 
-            $country = trim((string) ($post['clubCountry_' . $key] ?? ''));
+            $rawCountry = $post['clubCountry_' . $key] ?? '';
+            if (!is_string($rawCountry) && !is_int($rawCountry)) {
+                continue;
+            }
+            $country = trim((string) $rawCountry);
 
             if ($country === '') {
                 $country = trim((string) ($source->country ?? ''));
