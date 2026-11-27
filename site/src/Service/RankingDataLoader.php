@@ -72,7 +72,8 @@ final class RankingDataLoader
 
     /**
      * Read a ranking project's sport, season, league and active round metadata.
-     * Joins the project to its sport type and optional season, league and round, generating the ID:alias slugs required by frontend links.
+     * Joins the project to its sport type and optional season, league and round,
+     * assembling the ID:alias slugs in PHP for database-independent frontend links.
      *
      * @param int $projectId Requested SportsManagement project ID.
      * @return object|null Project metadata with routing slugs, or null.
@@ -92,10 +93,12 @@ final class RankingDataLoader
                 $db->quoteName('s.name', 'season_name'),
                 $db->quoteName('l.name', 'league_name'),
                 $db->quoteName('l.country', 'league_country'),
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
-                "CONCAT_WS(':', s.id, s.alias) AS season_slug",
-                "CONCAT_WS(':', l.id, l.alias) AS league_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('s.id', 'joined_season_id'),
+                $db->quoteName('s.alias', 'season_alias'),
+                $db->quoteName('l.id', 'joined_league_id'),
+                $db->quoteName('l.alias', 'league_alias'),
+                $db->quoteName('r.id', 'joined_round_id'),
+                $db->quoteName('r.alias', 'round_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
@@ -105,7 +108,17 @@ final class RankingDataLoader
             ->where($db->quoteName('p.id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
-        return $db->loadObject() ?: null;
+        $project = $db->loadObject();
+        if (!is_object($project)) {
+            return null;
+        }
+
+        $project->slug = self::routeSlug($project->id ?? null, $project->alias ?? null);
+        $project->season_slug = self::routeSlug($project->joined_season_id ?? null, $project->season_alias ?? null);
+        $project->league_slug = self::routeSlug($project->joined_league_id ?? null, $project->league_alias ?? null);
+        $project->round_slug = self::routeSlug($project->joined_round_id ?? null, $project->round_alias ?? null);
+
+        return $project;
     }
 
     /**
@@ -240,6 +253,11 @@ final class RankingDataLoader
                 continue;
             }
 
+            $record->team_slug = self::routeSlug($record->id ?? null, $record->team_alias ?? null);
+            $record->projectteam_slug = self::routeSlug($ptid, $record->team_alias ?? null);
+            $record->division_slug = self::routeSlug($record->joined_division_id ?? null, $record->division_alias ?? null);
+            $record->club_slug = self::routeSlug($record->joined_club_id ?? null, $record->club_alias ?? null);
+
             $row = new RankingRow($ptid);
             $row->teamid = (int) ($record->id ?? 0);
             $row->divisionid = (int) ($record->division_id ?? 0);
@@ -277,8 +295,31 @@ final class RankingDataLoader
     }
 
     /**
+     * Assemble a route slug from raw database identifiers and aliases.
+     *
+     * Skips null join values as the historical SQL concatenation did,
+     * and ignores malformed structured fields without string-cast warnings.
+     * @param mixed $id Database record identifier or null.
+     * @param mixed $alias Optional routing alias.
+     * @return string Portable ID:alias slug or empty string.
+     */
+    private static function routeSlug(mixed $id, mixed $alias): string
+    {
+        $parts = [];
+        if (is_int($id) || (is_string($id) && preg_match('/^[0-9]+$/D', $id) === 1)) {
+            $parts[] = (string) $id;
+        }
+        if (is_string($alias)) {
+            $parts[] = $alias;
+        }
+
+        return implode(':', $parts);
+    }
+
+    /**
      * Build a consistent field selection for ranking team and final-division queries.
-     * Chooses which score and division relation supplies the standings values, while including team, club, logo and route slug metadata.
+     * Chooses which score and division relation supplies the standings values,
+     * including the raw identifiers and aliases used to build route slugs in PHP.
      *
      * @param bool $divisionRelation Whether final-division values come from the division relation.
      * @return array<int,string> Quoted SQL selection columns and aliases.
@@ -321,10 +362,11 @@ final class RankingDataLoader
             $db->quoteName('c.country'),
             $db->quoteName('c.trikot_home'),
             $db->quoteName('c.trikot_away'),
-            "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-            "CONCAT_WS(':', pt.id, t.alias) AS projectteam_slug",
-            "CONCAT_WS(':', d.id, d.alias) AS division_slug",
-            "CONCAT_WS(':', c.id, c.alias) AS club_slug",
+            $db->quoteName('t.alias', 'team_alias'),
+            $db->quoteName('d.id', 'joined_division_id'),
+            $db->quoteName('d.alias', 'division_alias'),
+            $db->quoteName('c.id', 'joined_club_id'),
+            $db->quoteName('c.alias', 'club_alias'),
         ];
     }
 
