@@ -36,6 +36,9 @@ final class ExtensionmessageField extends FormField
      */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
+        $this->messageType = 'info';
+        $this->message = '';
+
         $result = parent::setup($element, $value, $group);
 
         if ($result) {
