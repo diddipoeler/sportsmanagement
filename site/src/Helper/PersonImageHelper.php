@@ -107,6 +107,8 @@ final class PersonImageHelper
      * array-to-string conversion warning. Validates raw picture text before
      * trim() can hide control characters. Rejects invalid UTF-8 and encoded
      * URL schemes at each decoding layer and validates configured media hosts.
+     * Root-only and directory-style local paths, including encoded trailing
+     * slashes, are rejected because they do not identify an image.
      *
      * @param string $picture Candidate URL or relative picture path.
      * @return string Validated image URL or an empty string if unsafe.
@@ -147,6 +149,9 @@ final class PersonImageHelper
         }
 
         $path = ltrim($picture, '/');
+        if ($path === '' || str_ends_with($path, '/')) {
+            return '';
+        }
         $decoded = $path;
 
         // A proxy or web server may decode more than one layer of escaping.
@@ -177,7 +182,8 @@ final class PersonImageHelper
 
         // Nested percent escapes remaining after eight rounds could be
         // interpreted by a proxy or server in a subsequent decoding pass.
-        if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
+        if (str_ends_with($decoded, '/')
+            || preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
             || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
             || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
