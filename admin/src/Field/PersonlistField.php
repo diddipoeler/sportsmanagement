@@ -15,6 +15,12 @@ final class PersonlistField extends SportsManagementListField
 {
     protected $type = 'personlist';
 
+    /**
+     * Load person identifiers and formatted surname/first-name labels.
+     * Orders records by surname and first name and skips malformed records
+     * before combining them with the options declared in the XML field.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -33,8 +39,16 @@ final class PersonlistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
-            $label = trim((string) $item->lastname . ' - ' . (string) $item->firstname, " -\t\n\r\0\x0B");
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->id ?? null) && !is_string($item->id ?? null))
+                || !is_string($item->lastname ?? '')
+                || !is_string($item->firstname ?? '')) {
+                continue;
+            }
+
+            $label = trim(($item->lastname ?? '') . ' - ' . ($item->firstname ?? ''), " -\t\n\r\0\x0B");
             $options[] = (object) [
                 'value' => (string) $item->id,
                 'text' => $label,
