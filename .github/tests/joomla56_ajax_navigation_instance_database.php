@@ -99,5 +99,20 @@ namespace {
         }
     }
 
-    echo "AJAX navigation instance database regression passed.\n";
+    $slug = $class->getMethod('routeSlug');
+    foreach ([
+        [12, 'verein', '12:verein'],
+        ['12', '', '12:'],
+        [12, null, '12'],
+        [null, null, ''],
+        [null, 'alias', 'alias'],
+        [12, ['invalid'], '12'],
+        [['invalid'], null, ''],
+    ] as [$id, $alias, $expected]) {
+        if ($slug->invoke(null, $id, $alias) !== $expected) {
+            throw new RuntimeException('Navigation route slug regression.');
+        }
+    }
+
+    echo "AJAX navigation instance database and route slug regressions passed.\n";
 }
