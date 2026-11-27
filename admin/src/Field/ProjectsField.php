@@ -44,8 +44,8 @@ final class ProjectsField extends SportsManagementListField
         $rawTablePrefix = ComponentHelper::getParams('com_sportsmanagement')
             ->get('cfg_which_database_table', 'sportsmanagement');
         $tablePrefix = is_string($rawTablePrefix) && strlen($rawTablePrefix) <= 64
-            ? (preg_replace('/[^A-Za-z0-9_]/', '', $rawTablePrefix) ?? '')
-            : '';
+            && preg_match('/^[A-Za-z0-9_]+$/D', $rawTablePrefix) === 1
+            ? $rawTablePrefix : '';
 
         if ($tablePrefix === '') {
             $tablePrefix = 'sportsmanagement';
@@ -54,7 +54,7 @@ final class ProjectsField extends SportsManagementListField
         $projectTable = '#__' . $tablePrefix . '_project';
         $seasonTable = '#__' . $tablePrefix . '_season';
         $leagueTable = '#__' . $tablePrefix . '_league';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
@@ -81,10 +81,19 @@ final class ProjectsField extends SportsManagementListField
             ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $project) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $project) {
+            if (!is_object($project)
+                || (!is_int($project->id ?? null) && !is_string($project->id ?? null))
+                || !is_string($project->name ?? null)
+                || !is_string($project->league_name ?? '')
+                || !is_string($project->season_name ?? '')) {
+                continue;
+            }
+
             $label = (string) $project->name
-                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . (string) $project->league_name . ')'
-                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . (string) $project->season_name . ' )';
+                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . ($project->league_name ?? '') . ')'
+                . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . ($project->season_name ?? '') . ' )';
             $options[] = (object) [
                 'value' => (string) $project->id,
                 'text' => "\u{00A0}\u{00A0}\u{00A0}" . $label,
