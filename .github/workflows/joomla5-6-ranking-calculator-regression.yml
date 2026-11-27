@@ -6,6 +6,9 @@ on:
     paths:
       - 'site/src/Service/RankingCalculator.php'
       - 'site/src/Service/RankingRow.php'
+      - 'site/src/Service/RankingDataLoader.php'
+      - 'site/src/Service/RankingEngine.php'
+      - '.github/tests/joomla56_ranking_loader_routes.php'
       - '.github/tests/joomla56_ranking_calculator_pure.php'
       - '.github/workflows/joomla5-6-ranking-calculator-regression.yml'
   pull_request:
@@ -13,6 +16,9 @@ on:
     paths:
       - 'site/src/Service/RankingCalculator.php'
       - 'site/src/Service/RankingRow.php'
+      - 'site/src/Service/RankingDataLoader.php'
+      - 'site/src/Service/RankingEngine.php'
+      - '.github/tests/joomla56_ranking_loader_routes.php'
       - '.github/tests/joomla56_ranking_calculator_pure.php'
       - '.github/workflows/joomla5-6-ranking-calculator-regression.yml'
 
@@ -38,8 +44,13 @@ jobs:
           set -euo pipefail
           php -l site/src/Service/RankingCalculator.php
           php -l site/src/Service/RankingRow.php
+          php -l site/src/Service/RankingDataLoader.php
+          php -l site/src/Service/RankingEngine.php
+          php -l .github/tests/joomla56_ranking_loader_routes.php
           php -l .github/tests/joomla56_ranking_calculator_pure.php
-          php .github/scripts/check-php-headers.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php
-          php .github/scripts/check-php-function-docs.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php
+          php .github/scripts/check-php-headers.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php site/src/Service/RankingDataLoader.php site/src/Service/RankingEngine.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php site/src/Service/RankingDataLoader.php site/src/Service/RankingEngine.php
       - name: Pure in-memory standings regression
         run: php .github/tests/joomla56_ranking_calculator_pure.php
+      - name: Ranking loader route and filter regression
+        run: php .github/tests/joomla56_ranking_loader_routes.php
