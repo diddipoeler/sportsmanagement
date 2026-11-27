@@ -20,10 +20,15 @@ final class SportsmanagementField extends SportsManagementListField
 {
     protected $type = 'sportsmanagement';
 
+    /**
+     * Load historical greeting records and their optional category labels.
+     * Uses the native query builder and preserves inherited XML options.
+     * @return array Joomla record selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id'),
                 $db->quoteName('s.greeting'),
