@@ -18,6 +18,11 @@ final class FinaltablerankField extends ListField
 {
     protected $type = 'finaltablerank';
 
+    /**
+     * Generate the historical final-table ranking options from 1 to 40.
+     * Translates the ranking label and appends the fixed choices to XML options.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $options = [];
