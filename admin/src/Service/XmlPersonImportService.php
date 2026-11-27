@@ -38,6 +38,8 @@ final class XmlPersonImportService
 
     /**
      * Import selected people from a legacy SportsManagement XML document.
+     * Rejects invalid season selectors before importing and skips rows with
+     * malformed age-group or explicit local person IDs.
      * Reuses or creates person records, applies name and age-group overrides, avoids duplicate identities, normalises country/location data and ensures optional season-person relations.
      *
      * @param array<string,mixed> $post Administrator form selections, overrides and season.
@@ -47,18 +49,32 @@ final class XmlPersonImportService
     public function import(array $post, array $parsedData): array
     {
         $message = '';
-        $seasonId = max(0, (int) ($post['filter_season'] ?? 0));
+        $rawSeason = $post['filter_season'] ?? 0;
+        $seasonId = is_int($rawSeason) || is_string($rawSeason)
+            ? filter_var($rawSeason, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+            : false;
+
+        if ($seasonId === false) {
+            return ['Importing person data:' => $message];
+        }
 
         foreach (array_values((array) ($parsedData['person'] ?? [])) as $key => $source) {
             if (!is_object($source)) {
                 continue;
             }
 
-            $ageGroupId = max(
-                0,
-                (int) ($post['personAgeGroup_' . $key] ?? ($source->agegroup_id ?? 0))
-            );
-            $databaseId = (int) ($post['dbPersonID_' . $key] ?? 0);
+            $rawAgeGroup = $post['personAgeGroup_' . $key] ?? ($source->agegroup_id ?? 0);
+            $rawDatabaseId = $post['dbPersonID_' . $key] ?? 0;
+            $ageGroupId = is_int($rawAgeGroup) || is_string($rawAgeGroup)
+                ? filter_var($rawAgeGroup, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+            $databaseId = is_int($rawDatabaseId) || is_string($rawDatabaseId)
+                ? filter_var($rawDatabaseId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+
+            if ($ageGroupId === false || $databaseId === false) {
+                continue;
+            }
 
             if ($databaseId > 0) {
                 $existing = $this->findById($databaseId);
