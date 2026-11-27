@@ -57,7 +57,8 @@ final class MatchesSliderHelper
      *
      * Validates database, season and project selectors before constructing
      * queries, applies project-specific favorite-team filters and prepares
-     * Joomla routes and safely normalised team-logo URLs.
+     * Joomla routes and safely normalised team-logo URLs. Malformed explicit
+     * team selections cannot remove the filter; match ID breaks ordering ties.
      *
      * @param Registry $params Joomla module options.
      * @param object $module Current Joomla module record.
@@ -239,8 +240,8 @@ final class MatchesSliderHelper
         $selectionRequested = array_filter(
             is_array($selectedTeams) ? $selectedTeams : [$selectedTeams],
             static fn (mixed $value): bool => $value !== null
-                && trim((string) (is_scalar($value) ? $value : '')) !== ''
-                && trim((string) (is_scalar($value) ? $value : '')) !== '0'
+                && $value !== 0
+                && (!is_string($value) || !in_array(trim($value), ['', '0'], true))
         );
 
         // An explicitly selected but invalid team must not disable the filter
@@ -267,6 +268,7 @@ final class MatchesSliderHelper
         $query->order([
             $db->quoteName('m.match_date') . ' ASC',
             $db->quoteName('m.match_number') . ' ASC',
+            $db->quoteName('m.id') . ' ASC',
         ]);
         // An old slider configuration can reference years of matches. Bound
         // each module render to a reasonable number of current rows.
