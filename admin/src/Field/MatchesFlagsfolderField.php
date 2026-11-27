@@ -11,8 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -23,6 +22,12 @@ final class MatchesFlagsfolderField extends FormField
 {
     protected $type = 'MatchesFlagsfolder';
 
+    /**
+     * Render the available flag folders beneath Joomla images and media.
+     * Converts discovered folders to site-relative paths, sorts them and
+     * preserves the translated empty selection for the matches module.
+     * @return string Native Joomla folder selection markup.
+     */
     protected function getInput(): string
     {
         $folders = [];
@@ -34,8 +39,12 @@ final class MatchesFlagsfolderField extends FormField
                 continue;
             }
 
-            foreach (Folder::folders($base, '', true, true, ['system']) ?: [] as $folder) {
-                $relative = ltrim(str_replace(JPATH_ROOT, '', $folder), '/\\');
+            $entries = Folder::folders($base, '', true, true, ['system']);
+            foreach (is_array($entries) ? $entries : [] as $folder) {
+                if (!is_string($folder) || !str_starts_with($folder, $base . DIRECTORY_SEPARATOR)) {
+                    continue;
+                }
+                $relative = ltrim(substr($folder, strlen(JPATH_ROOT)), '/\\');
 
                 if ($relative !== '') {
                     $folders[$relative] = $relative;
@@ -45,8 +54,7 @@ final class MatchesFlagsfolderField extends FormField
 
         ksort($folders, SORT_NATURAL | SORT_FLAG_CASE);
 
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         $options = [
