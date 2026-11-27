@@ -41,10 +41,17 @@ final class AgegroupField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item)
+                || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
+
             $label = Text::_((string) $item->text);
 
-            if (!empty($item->country)) {
+            if (is_string($item->country ?? null) && $item->country !== '') {
                 $label .= ' (' . (string) $item->country . ')';
             }
 
