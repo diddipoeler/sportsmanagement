@@ -517,7 +517,8 @@ final class MatchModel extends SportsManagementAdminModel
     /**
      * Delete matches and their linked events, rosters and statistics.
      * Rejects malformed match selections, starts a database transaction,
-     * removes available relation-table rows and delegates match-row
+     * verifies native record-level deletion permissions before removing
+     * any relation-table rows and delegates match-row
      * deletion to Joomla's native parent model, rolling back on errors.
      * @param mixed $pks Selected match identifiers, by reference.
      * @return bool True when the deletion succeeds or nothing is selected.
@@ -545,6 +546,15 @@ final class MatchModel extends SportsManagementAdminModel
 
         try {
             $db->transactionStart();
+
+            // Joomla's parent delete may skip records denied by canDelete.
+            // Check every selected record before touching its dependent data.
+            $matchTable = $this->getTable();
+            foreach ($ids as $id) {
+                if (!$matchTable->load($id) || !$this->canDelete($matchTable)) {
+                    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'));
+                }
+            }
 
             foreach ($childTables as $table) {
                 $resolved = $db->replacePrefix($table);
