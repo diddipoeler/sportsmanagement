@@ -94,14 +94,23 @@ final class RoundTable extends SportsManagementTable
 
     /**
      * Derive a safe URL alias from the round's name when none is present.
+     * Rejects non-string names and aliases before invoking Joomla's output
+     * filter, avoiding PHP 8 conversion warnings.
      *
      * @return bool Whether the round record passes the table check.
      */
     public function check()
     {
-        $this->alias = OutputFilter::stringURLSafe(
-            empty($this->alias) ? (string) $this->name : (string) $this->alias
-        );
+        $alias = $this->alias ?? '';
+        $name = $this->name ?? '';
+
+        if (!is_string($alias) || !is_string($name)) {
+            $this->setError('Invalid round name or alias.');
+
+            return false;
+        }
+
+        $this->alias = OutputFilter::stringURLSafe(trim($alias) === '' ? $name : $alias);
 
         return true;
     }
