@@ -189,7 +189,7 @@ final class PlayerModel extends SportsManagementAdminModel
                 foreach (['birthday', 'deathday'] as $field) {
                     $raw = trim((string) ($post[$field . $id] ?? ''));
 
-                    if ($raw === '' || str_starts_with($raw, '0000-00-00')) {
+                    if ($raw === '' || str_contains($raw, chr(0)) || str_starts_with($raw, '0000-00-00')) {
                         continue;
                     }
 
@@ -752,6 +752,8 @@ final class PlayerModel extends SportsManagementAdminModel
 
     /**
      * Normalise an imported date and timestamp pair.
+     * Rejects embedded null bytes and invalid calendar dates rather than
+     * accepting PHP's automatic rollover into another month.
      *
      * @param string $raw raw value.
      * @return array{0:string|null,1:int}
@@ -768,6 +770,10 @@ final class PlayerModel extends SportsManagementAdminModel
             $date = \DateTimeImmutable::createFromFormat($format, $raw);
 
             if ($date instanceof \DateTimeImmutable) {
+                $errors = \DateTimeImmutable::getLastErrors();
+                if ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) {
+                    return [null, 0];
+                }
                 return [$date->format('Y-m-d'), $date->getTimestamp()];
             }
         }
@@ -778,13 +784,36 @@ final class PlayerModel extends SportsManagementAdminModel
     }
 
     /**
-     * Normalise the list of selected player IDs.
+     * Normalise selected player IDs without lossy conversion.
+     * Accepts positive integers and decimal strings, including zero-padded
+     * values, and rejects nested values, partial numbers and overflow.
      *
      * @param array $ids ids value.
      * @return array<int>
      */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
+        $result = [];
+
+        foreach ($ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            if (is_string($value)) {
+                $value = trim($value);
+                if (strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                    continue;
+                }
+                $value = ltrim($value, '0');
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id !== false) {
+                $result[$id] = $id;
+            }
+        }
+
+        return array_values($result);
     }
 }
