@@ -264,7 +264,7 @@ final class TeamStatsRankingHelper
     /**
      * Combine base and specific statistic parameters.
      *
-     * Loads the base parameters first, then merges statistic-specific overrides while ignoring malformed registry data.
+     * Loads the base parameters first, then merges statistic-specific overrides while ignoring malformed registry data and non-string values.
      * @param object $stat Statistic record containing JSON parameter strings.
      * @return Registry Combined Joomla statistic settings.
      */
@@ -272,8 +272,8 @@ final class TeamStatsRankingHelper
     {
         $params = new Registry();
 
-        foreach ([(string) ($stat->baseparams ?? ''), (string) ($stat->params ?? '')] as $encoded) {
-            if ($encoded === '') {
+        foreach ([$stat->baseparams ?? null, $stat->params ?? null] as $encoded) {
+            if (!is_string($encoded) || $encoded === '') {
                 continue;
             }
 
@@ -292,7 +292,7 @@ final class TeamStatsRankingHelper
     /**
      * Calculate ordered team rankings for a statistic class.
      *
-     * Supports direct statistics, event sums, ratios, differences and weighted totals, then formats ranked values and ties.
+     * Supports direct statistics, event sums, ratios, differences and weighted totals, then formats ranked values and ties. Non-string class metadata uses the historical basic statistic fallback.
      * @param DatabaseInterface $db Selected SportsManagement database.
      * @param int $projectId Positive project identifier.
      * @param object $stat Selected statistic definition.
@@ -309,7 +309,8 @@ final class TeamStatsRankingHelper
         string $order,
         int $limit
     ): array {
-        $class = strtolower((string) ($stat->class ?? 'basic'));
+        $rawClass = $stat->class ?? null;
+        $class = is_string($rawClass) ? strtolower($rawClass) : 'basic';
         $precision = self::rankingPrecision($statParams->get('precision', 2));
         $percentage = false;
         $values = [];
