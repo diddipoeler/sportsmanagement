@@ -47,16 +47,15 @@ final class AvatarfromcomponentField extends ListField
 
         SportsManagementAdministratorApplicationResolver::resolve();
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.');
-        }
-
         $installed = [];
 
         try {
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$db instanceof DatabaseInterface) {
+                return array_merge(parent::getOptions(), $options);
+            }
+
             $query = $db->createQuery()
                 ->select($db->quoteName('element'))
                 ->from($db->quoteName('#__extensions'))
@@ -67,7 +66,12 @@ final class AvatarfromcomponentField extends ListField
                     . ')'
                 );
             $db->setQuery($query);
-            $installed = array_fill_keys($db->loadColumn() ?: [], true);
+            $rows = $db->loadColumn();
+            foreach (is_array($rows) ? $rows : [] as $element) {
+                if (is_string($element) && isset($providers[$element])) {
+                    $installed[$element] = true;
+                }
+            }
         } catch (\Throwable) {
             // Keep the Joomla user avatar option available even if extension discovery fails.
         }
