@@ -51,6 +51,7 @@ final class RoundPaginationHelper
      * Rejects malformed project IDs and external database settings before
      * loading a model. Skips imported rounds with invalid positive sequence
      * codes instead of loosely casting them into visible matchday labels.
+     * Rejects non-array model results and non-object round records.
      * Deduplicates corrupted round records by ID so navigation never links
      * a round back to a duplicate of itself. Parses imported current-round
      * defaults strictly rather than accepting partial numeric strings.
@@ -77,7 +78,7 @@ final class RoundPaginationHelper
         $model = self::createResultsDataModel($project, $databaseSelector);
         $rounds = $model->getRounds('ASC', true);
 
-        if (!$rounds) {
+        if (!is_array($rounds) || !$rounds) {
             self::$prevlink = '';
             self::$nextlink = '';
             return '';
@@ -95,6 +96,10 @@ final class RoundPaginationHelper
         $normalised = [];
         $seenRoundIds = [];
         foreach ($rounds as $round) {
+            if (!is_object($round)) {
+                continue;
+            }
+
             $value = self::roundIdAndSlug($round->id ?? null);
             $roundCode = self::positiveProjectId($round->roundcode ?? null);
 
@@ -191,6 +196,7 @@ final class RoundPaginationHelper
      * division, sorting and current menu context in routed option URLs, and
      * selects the option matching the current request round. Invalid or
      * non-scalar imported round labels fall back to the canonical slug.
+     * Non-array model results and non-object rows are ignored.
      * Repeated imported IDs are included only once in the dropdown.
      * Malformed default current-round IDs cannot select another matchday.
      * Missing or deleted current rounds select the first valid option instead
@@ -218,7 +224,7 @@ final class RoundPaginationHelper
 
         $model = self::createResultsDataModel($project, $cfgWhichDatabase);
         $rounds = $model->getRoundOptions('ASC');
-        if (!$rounds) {
+        if (!is_array($rounds) || !$rounds) {
             return '';
         }
 
@@ -241,6 +247,10 @@ final class RoundPaginationHelper
         $seenRoundIds = [];
 
         foreach ($rounds as $round) {
+            if (!is_object($round)) {
+                continue;
+            }
+
             $value = self::roundIdAndSlug($round->slug ?? $round->value ?? null);
             if ($value === null || isset($seenRoundIds[$value['id']])) {
                 continue;
