@@ -15,10 +15,16 @@ final class TemplatelistField extends SportsManagementListField
 {
     protected $type = 'templatelist';
 
+    /**
+     * Load projects eligible as master-template sources.
+     * Selects projects with no master template in alphabetical order and
+     * preserves inherited form options while skipping malformed rows.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -30,7 +36,12 @@ final class TemplatelistField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item) || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
