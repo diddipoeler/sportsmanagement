@@ -166,10 +166,17 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
      * Resolve Joomla's main database through dependency injection.
      * The installer must use the same connection as the extension registry and the SportsManagement sports-type tables.
      * @return DatabaseInterface Active Joomla database connection.
+     * @throws \RuntimeException If the container does not provide a database driver.
      */
     private function getDatabase(): DatabaseInterface
     {
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement installer database service is unavailable.');
+        }
+
+        return $database;
     }
 
     /**
@@ -187,21 +194,28 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     /**
      * Read the installed SportsManagement component release number.
-     * Looks up the component entry in Joomla's extension registry and extracts the version from its JSON manifest cache.
+     * Looks up the component entry in Joomla's extension registry using a native query.
+     * Extracts a textual version from its JSON manifest cache and ignores malformed or non-string cache values.
      * @return string Existing component version or empty string.
      */
     private function getInstalledVersion(): string
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('manifest_cache'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote('component'))
             ->where($db->quoteName('element') . ' = ' . $db->quote('com_sportsmanagement'));
         $db->setQuery($query);
-        $manifest = json_decode((string) $db->loadResult(), true);
+        $cache = $db->loadResult();
+        if (!is_string($cache) || $cache === '') {
+            return '';
+        }
 
-        return is_array($manifest) ? (string) ($manifest['version'] ?? '') : '';
+        $manifest = json_decode($cache, true);
+        $version = is_array($manifest) ? ($manifest['version'] ?? null) : null;
+
+        return is_string($version) ? trim($version) : '';
     }
 
     /**
@@ -262,7 +276,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             }
 
             if ($position !== '') {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__modules'))
                     ->set($db->quoteName('position') . ' = ' . $db->quote($position))
                     ->set($db->quoteName('ordering') . ' = ' . ($clientId === 1 ? 1 : 99))
@@ -568,7 +582,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     private function setPluginEnabled(string $folder, string $element, bool $enabled): void
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__extensions'))
             ->set($db->quoteName('enabled') . ' = ' . (int) $enabled)
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
@@ -586,7 +600,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
     private function ensureAdministratorModuleAssignment(string $moduleName): void
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__modules'))
             ->where($db->quoteName('module') . ' = ' . $db->quote($moduleName))
@@ -598,7 +612,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             return;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__modules_menu'))
             ->where($db->quoteName('moduleid') . ' = ' . $moduleId);
@@ -632,7 +646,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
                 ? (string) $item['module']
                 : ((string) $item['element'] ?: (string) $item['plugin']);
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('extension_id'))
                 ->from($db->quoteName('#__extensions'))
                 ->where($db->quoteName('type') . ' = ' . $db->quote($type))
@@ -663,7 +677,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         $db = $this->getDatabase();
         $extension = 'com_sportsmanagement';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__action_logs_extensions'))
             ->where($db->quoteName('extension') . ' = ' . $db->quote($extension));
@@ -677,7 +691,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             ['club', '#__sportsmanagement_club'],
             ['league', '#__sportsmanagement_league'],
         ] as [$title, $table]) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__action_log_config'))
                 ->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension))
