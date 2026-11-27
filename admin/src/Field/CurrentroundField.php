@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\ParameterType;
 
@@ -56,10 +55,15 @@ final class CurrentroundField extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
-            $name = trim((string) $item->name);
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item) || (!is_int($item->id ?? null) && !is_string($item->id ?? null))
+                || !is_string($item->name ?? '') || !is_string($item->round_date_first ?? '')) {
+                continue;
+            }
+            $name = trim($item->name ?? '');
             $label = $name !== ''
-                ? $name . ' (' . (string) $item->round_date_first . ')'
+                ? $name . ' (' . ($item->round_date_first ?? '') . ')'
                 : Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME') . ' ' . (int) $item->id;
             $options[] = (object) [
                 'value' => (string) $item->id,
