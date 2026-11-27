@@ -13,6 +13,11 @@ final class Playgroundlist2Field extends SportsManagementListField
 {
     protected $type = 'playgroundlist2';
 
+    /**
+     * Load venue IDs and names in alphabetical order.
+     * Uses the configured database and retains inherited XML choices.
+     * @return array Joomla selection options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
@@ -27,7 +32,12 @@ final class Playgroundlist2Field extends SportsManagementListField
 
         $options = [];
 
-        foreach ($db->loadObjectList() ?: [] as $item) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $item) {
+            if (!is_object($item) || (!is_int($item->value ?? null) && !is_string($item->value ?? null))
+                || !is_string($item->text ?? null)) {
+                continue;
+            }
             $options[] = (object) [
                 'value' => (string) $item->value,
                 'text' => (string) $item->text,
