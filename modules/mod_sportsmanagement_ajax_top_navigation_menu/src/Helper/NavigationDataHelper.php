@@ -257,7 +257,8 @@ final class NavigationDataHelper
     /**
      * Load and cache the currently selected project and route slugs.
      *
-     * Uses bound project or league IDs to load its season, league and round metadata, and updates the legacy navigation state.
+     * Uses bound project or league IDs to load its season, league and round metadata,
+     * assembles portable route slugs in PHP and updates the legacy navigation state.
      *
      * @param int|string $league_id Optional league selector overriding the project ID.
      * @return object|false Project metadata or false when no project exists.
@@ -281,10 +282,13 @@ final class NavigationDataHelper
                 'p.name',
                 'p.league_id',
                 'p.project_type',
-                "CONCAT_WS(':',p.id,p.alias) AS project_slug",
-                "CONCAT_WS(':',s.id,s.alias) AS season_slug",
-                "CONCAT_WS(':',l.id,l.alias) AS league_slug",
-                "CONCAT_WS(':',r.id,r.alias) AS round_slug",
+                'p.alias AS project_alias',
+                's.id AS joined_season_id',
+                's.alias AS season_alias',
+                'l.id AS joined_league_id',
+                'l.alias AS league_alias',
+                'r.id AS joined_round_id',
+                'r.alias AS round_alias',
                 'p.season_id',
                 'p.current_round',
             ])
@@ -306,6 +310,11 @@ final class NavigationDataHelper
         if (!is_object($project)) {
             return false;
         }
+
+        $project->project_slug = self::routeSlug($project->id ?? null, $project->project_alias ?? null);
+        $project->season_slug = self::routeSlug($project->joined_season_id ?? null, $project->season_alias ?? null);
+        $project->league_slug = self::routeSlug($project->joined_league_id ?? null, $project->league_alias ?? null);
+        $project->round_slug = self::routeSlug($project->joined_round_id ?? null, $project->round_alias ?? null);
 
         $this->_project = $project;
         $this->project_type = (string) $project->project_type;
@@ -1079,8 +1088,10 @@ final class NavigationDataHelper
         $query = $db->createQuery()
             ->select([
                 't.club_id',
-                "CONCAT_WS(':',t.id,t.alias) AS team_slug",
-                "CONCAT_WS(':',c.id,c.alias) AS club_slug",
+                't.id AS joined_team_id',
+                't.alias AS team_alias',
+                'c.id AS joined_club_id',
+                'c.alias AS club_alias',
             ])
             ->from('#__sportsmanagement_team AS t')
             ->join('INNER', '#__sportsmanagement_club AS c ON t.club_id = c.id')
@@ -1093,8 +1104,8 @@ final class NavigationDataHelper
         }
 
         $this->_club_id = (int) $res->club_id;
-        $this->_club_slug = (string) $res->club_slug;
-        $this->_team_slug = (string) $res->team_slug;
+        $this->_club_slug = self::routeSlug($res->joined_club_id ?? null, $res->club_alias ?? null);
+        $this->_team_slug = self::routeSlug($res->joined_team_id ?? null, $res->team_alias ?? null);
         return $this->_club_id;
     }
 
@@ -1306,6 +1317,29 @@ final class NavigationDataHelper
                     'division' => $this->_division_id,
                 ]);
         }
+    }
+
+    /**
+     * Assemble a portable ID:alias route slug from selected database columns.
+     *
+     * Preserves the historical separator behaviour for null joined fields
+     * without relying on a database-specific concatenation function.
+     * @param mixed $id Selected record ID, or null for a missing join.
+     * @param mixed $alias Optional record alias.
+     * @return string Route slug assembled from valid scalar fields.
+     */
+    private static function routeSlug(mixed $id, mixed $alias): string
+    {
+        $parts = [];
+        $number = self::nonNegativeSelector($id);
+        if ($number !== null) {
+            $parts[] = (string) $number;
+        }
+        if (is_string($alias)) {
+            $parts[] = $alias;
+        }
+
+        return implode(':', $parts);
     }
 
     /**
