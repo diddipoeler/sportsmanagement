@@ -30,6 +30,12 @@ final class MultidependsqlField extends FormField
 
     protected $type = 'multidependsql';
 
+    /**
+     * Render a native multiple-selection list and its historical hidden value.
+     * Loads initial SQL options, preserves the pipe-separated storage format
+     * and registers dependency refresh behaviour using Joomla web assets.
+     * @return string Rendered select and hidden input markup.
+     */
     protected function getInput(): string
     {
         $keyField = trim((string) ($this->element['key_field'] ?? 'value')) ?: 'value';
@@ -66,10 +72,21 @@ final class MultidependsqlField extends FormField
         return $html;
     }
 
+    /**
+     * Normalise the stored selection without coercing structured values.
+     * Accepts the historical single wrapped value and pipe or comma separators,
+     * removes empty entries and retains the original order of unique values.
+     * @param mixed $value Persisted field value.
+     * @return array<int,string> Selected option values.
+     */
     private function normaliseSelectedValues(mixed $value): array
     {
         if (is_array($value)) {
             $value = reset($value);
+        }
+
+        if (!is_string($value) && !is_int($value)) {
+            return [];
         }
 
         $parts = preg_split('/[|,]/', (string) $value) ?: [];
@@ -80,37 +97,68 @@ final class MultidependsqlField extends FormField
         )));
     }
 
+    /**
+     * Load initial selection options from the configured XML query.
+     * Ignores unavailable query results and malformed rows without converting
+     * arrays or objects into option labels or values.
+     * @param string $query Trusted field-definition SQL.
+     * @param string $keyField Result column containing the option value.
+     * @param string $valueField Result column containing the option label.
+     * @return array<int,object> Joomla value/text option objects.
+     */
     private function loadQueryOptions(string $query, string $keyField, string $valueField): array
     {
         if ($query === '') {
             return [];
         }
 
-        $db = $this->getSportsManagementDatabase();
-
         try {
+            $db = $this->getSportsManagementDatabase();
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (\Throwable) {
             return [];
         }
 
+        if (!is_array($rows)) {
+            return [];
+        }
+
         $options = [];
 
         foreach ($rows as $row) {
-            if (!isset($row->{$keyField}) && !property_exists($row, $keyField)) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $key = $row->{$keyField} ?? null;
+            $label = $row->{$valueField} ?? $key;
+
+            if ((!is_string($key) && !is_int($key))
+                || (!is_string($label) && !is_int($label))) {
                 continue;
             }
 
             $options[] = (object) [
-                'value' => (string) $row->{$keyField},
-                'text' => (string) ($row->{$valueField} ?? $row->{$keyField}),
+                'value' => (string) $key,
+                'text' => (string) $label,
             ];
         }
 
         return $options;
     }
 
+    /**
+     * Register dependency listeners and asynchronous option updates.
+     * Encodes configuration for inline JavaScript and uses the HTML document's
+     * native WebAssetManager while keeping the hidden selection synchronized.
+     * @param string $visibleId Visible select identifier.
+     * @param string $hiddenId Persisted hidden input identifier.
+     * @param string $task Configured AJAX task.
+     * @param array $depends Dependency field names.
+     * @param array $selected Initial selected values.
+     * @return void
+     */
     private function registerScript(
         string $visibleId,
         string $hiddenId,
