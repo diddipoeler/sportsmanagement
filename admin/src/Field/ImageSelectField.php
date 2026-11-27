@@ -16,9 +16,6 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
 
 /**
- * Native Joomla 5/6 administrator field backed by the shared site image selector helper.
- */
-/**
  * Administrator form field implementing the Joomla 5/6 image-select control.
  *
  * Delegates rendering to the shared helper, which selects the currently active
@@ -34,7 +31,8 @@ final class ImageSelectField extends FormField
      * Loads the namespaced helper when the legacy bridge has not loaded it
      * yet, builds upload and image-browser controls for this field's target
      * folder, and appends the preview and original-value inputs used by Joomla
-     * league and other administrator forms.
+     * league and other administrator forms. Invalid structured image values
+     * are rendered as an empty selection rather than converted to strings.
      *
      * @return string Rendered input, preview and modal markup.
      */
@@ -52,13 +50,13 @@ final class ImageSelectField extends FormField
             return '';
         }
 
-        $default = (string) $this->value;
+        $default = is_string($this->value) ? $this->value : '';
         $targetFolder = (string) ($this->element['targetfolder'] ?? '');
         $output = ImageSelectHelper::getSelector(
             $this->name,
             $this->name . '_preview',
             $targetFolder,
-            $this->value,
+            $default,
             $default,
             $this->name,
             $this->id
@@ -71,10 +69,10 @@ final class ImageSelectField extends FormField
             . '" alt="Preview" title="Preview" />';
         $output .= '<input type="hidden" id="original_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
             . '" name="original_' . htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8')
-            . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
+            . '" value="' . htmlspecialchars($default, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />';
         $output .= '<input type="hidden" id="copy_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
             . '" name="copy_' . htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8')
-            . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
+            . '" value="' . htmlspecialchars($default, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />';
 
         return $output;
     }
