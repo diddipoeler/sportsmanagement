@@ -627,11 +627,16 @@ final class TeamPlayersHelper
      *
      * Allows credential-free HTTPS/HTTP absolute URLs and encodes relative Joomla image paths; rejects traversal, encoded paths, non-HTTP schemes and control characters.
      *
+     * Rejects raw control bytes, invalid UTF-8 and directory-only local paths.
      * @param string $path Raw configured image path or URL.
      * @return string Valid media URL or an empty string.
      */
     private function imageUrl(string $path): string
     {
+        if (preg_match('/[\x00-\x1F\x7F]/', $path) === 1 || preg_match('//u', $path) !== 1) {
+            return '';
+        }
+
         $path = trim($path);
 
         if ($path === ''
@@ -658,7 +663,8 @@ final class TeamPlayersHelper
                 : '';
         }
 
-        if (str_starts_with($path, '//')
+        if ($path === '/' || str_ends_with($path, '/')
+            || str_starts_with($path, '//')
             || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
             || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
             || str_contains($path, '%')
@@ -675,35 +681,23 @@ final class TeamPlayersHelper
     /**
      * Validate an external database selector without unsafe integer casts.
      *
-     * Accepts a nonnegative integer or zero-padded decimal string within PHP's integer range and rejects malformed selectors.
+     * Accepts only supported database modes zero and one, including bounded zero-padded decimal strings. Rejects unsupported modes before resolving a connection.
      *
      * @param mixed $value Raw Joomla database selection.
-     * @return int|null Valid selector or null when invalid.
+     * @return int|null Valid zero/one selector or null when invalid.
      */
     private function databaseSelector(mixed $value): ?int
     {
         if (is_int($value)) {
-            return $value >= 0 ? $value : null;
+            return $value === 0 || $value === 1 ? $value : null;
         }
 
-        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
             return null;
         }
 
-        $digits = ltrim($value, '0');
-
-        if ($digits === '') {
-            return 0;
-        }
-
-        $max = (string) PHP_INT_MAX;
-
-        if (strlen($digits) > strlen($max)
-            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
-            return null;
-        }
-
-        return (int) $digits;
+        return (int) $matches[1];
     }
 
     /**
