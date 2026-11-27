@@ -35,6 +35,8 @@ final class ExtensiontranslatorsField extends FormField
      */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
+        $this->translators = '';
+
         $result = parent::setup($element, $value, $group);
 
         if ($result) {
