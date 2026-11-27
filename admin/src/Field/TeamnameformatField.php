@@ -19,6 +19,11 @@ final class TeamnameformatField extends ListField
 {
     protected $type = 'teamnameformat';
 
+    /**
+     * Provide translated short, medium and full team name formats.
+     * Retains stable numeric values used by existing module configurations.
+     * @return array Joomla team name format options.
+     */
     protected function getOptions(): array
     {
         $options = [
