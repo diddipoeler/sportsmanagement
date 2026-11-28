@@ -16,11 +16,24 @@ use Joomla\Database\DatabaseInterface;
 /** Joomla 5/6 table for an individual match row. */
 final class MatchSingleTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native individual-match table with the selected database service.
+     * Registers the component storage table and its primary key with the shared table base.
+     *
+     * @param DatabaseInterface $db Active database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_match_single', 'id', $db);
     }
 
+    /**
+     * Normalise optional decision scores before the individual match is stored.
+     * Retains numeric values and converts missing or nonnumeric values to null,
+     * distinguishing an unrecorded decision from a recorded zero score.
+     *
+     * @return bool True after normalisation.
+     */
     public function check(): bool
     {
         if (!is_numeric($this->team1_result_decision ?? null)) {
