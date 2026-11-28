@@ -29,7 +29,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
     public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'positionstatistic') === 0) {
-            return new PositionstatisticTable($this->getDatabase());
+            return new PositionstatisticTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -178,7 +178,9 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                     'statistic_id' => $statisticId,
                     'ordering' => (int) $ordering,
                 ];
-                $db->insertObject('#__sportsmanagement_position_statistic', $record);
+                if (!$db->insertObject('#__sportsmanagement_position_statistic', $record)) {
+                    throw new \RuntimeException('Position relation insert failed.');
+                }
             }
 
             if ($transactionStarted) {
