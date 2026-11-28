@@ -23,6 +23,9 @@ final class ParentpositionField extends SportsManagementListField
 {
     protected $type = 'parentposition';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load root positions eligible for selection as a parent.
      * Excludes the current record, translates position names and retains the
