@@ -20,9 +20,10 @@ final class PredictionroundTable extends SportsManagementTable
      * Registers the storage table and primary key with the shared table
      * implementation using the injected Joomla database driver.
      * @param DatabaseInterface $db Active SportsManagement database connection.
+     * @param bool $resolved Whether the supplied connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_prediction_tippround', 'id', $db);
+        parent::__construct('#__sportsmanagement_prediction_tippround', 'id', $db, $resolved);
     }
 }
