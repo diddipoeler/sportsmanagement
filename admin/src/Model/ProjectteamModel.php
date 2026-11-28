@@ -399,10 +399,13 @@ final class ProjectteamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Add or remove selected season teams in the current project.
+     * Synchronise selected season-team assignments for an existing project.
+     * Validates the project's season and all selected membership IDs before
+     * inserting relations. Removals and their dependent match cleanup share
+     * the same transaction, so an unsuccessful operation rolls back inserts.
      *
-     * @param mixed $post post value.
-     * @return bool
+     * @param array|null $post Submitted assignment data or null to read POST.
+     * @return bool Whether all assignment changes succeeded.
      */
     public function storeAssign($post = null): bool
     {
@@ -410,77 +413,143 @@ final class ProjectteamModel extends SportsManagementAdminModel
             return false;
         }
 
-        $input = $this->administratorApplication()->getInput();
-        $data = is_array($post) ? $post : $input->post->getArray();
+        if ($post !== null && !is_array($post)) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+
+        $data = $post ?? $this->administratorApplication()->getInput()->post->getArray();
         $projectIds = $this->normaliseIds([$data['project_id'] ?? null]);
-        if (count($projectIds) !== 1) {
+        $assignedSeasonTeamIds = $this->assignmentIds($data['project_teamslist'] ?? []);
+        $deleteTeamIds = $this->assignmentIds($data['teamslist'] ?? []);
+
+        if (count($projectIds) !== 1 || $assignedSeasonTeamIds === null || $deleteTeamIds === null) {
             $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
             return false;
         }
 
         $projectId = $projectIds[0];
-        $assignedSeasonTeamIds = $this->normaliseIds($data['project_teamslist'] ?? []);
-        $deleteTeamIds = $this->normaliseIds($data['teamslist'] ?? []);
         $db = $this->getDatabase();
-        $deleteProjectTeamIds = [];
+        $transactionStarted = false;
 
-        if ($deleteTeamIds) {
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
             $query = $db->createQuery()
-                ->select($db->quoteName('pt.id'))
-                ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_season_team_id', 'st')
-                    . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
-                )
-                ->where($db->quoteName('pt.project_id') . ' = :assignProjectId')
-                ->bind(':assignProjectId', $projectId, ParameterType::INTEGER)
-                ->whereIn($db->quoteName('st.team_id'), $deleteTeamIds, ParameterType::INTEGER);
+                ->select($db->quoteName('season_id'))
+                ->from($db->quoteName('#__sportsmanagement_project'))
+                ->where($db->quoteName('id') . ' = :assignmentProjectId')
+                ->bind(':assignmentProjectId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($query);
+            $seasonId = (int) $db->loadResult();
 
-            try {
-                $db->setQuery($query);
-                $deleteProjectTeamIds = array_map('intval', $db->loadColumn() ?: []);
-            } catch (\Throwable $e) {
-                $this->setError($e->getMessage());
-
-                return false;
+            if ($seasonId <= 0) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
             }
-        }
 
-        foreach ($assignedSeasonTeamIds as $seasonTeamId) {
-            $query = $db->createQuery()
-                ->select('COUNT(*)')
-                ->from($db->quoteName('#__sportsmanagement_project_team'))
-                ->where($db->quoteName('team_id') . ' = :assignSeasonTeamId')
-                ->bind(':assignSeasonTeamId', $seasonTeamId, ParameterType::INTEGER)
-                ->where($db->quoteName('project_id') . ' = :assignExistingProjectId')
-                ->bind(':assignExistingProjectId', $projectId, ParameterType::INTEGER);
-
-            try {
+            if ($assignedSeasonTeamIds) {
+                $query = $db->createQuery()
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__sportsmanagement_season_team_id'))
+                    ->where($db->quoteName('season_id') . ' = :assignmentSeasonId')
+                    ->bind(':assignmentSeasonId', $seasonId, ParameterType::INTEGER)
+                    ->whereIn($db->quoteName('id'), $assignedSeasonTeamIds, ParameterType::INTEGER);
                 $db->setQuery($query);
+                $eligible = $this->assignmentIds($db->loadColumn());
 
-                if ((int) $db->loadResult() === 0) {
-                    $projectTeamAssignment = (object) [
-                        'project_id' => $projectId,
-                        'team_id' => $seasonTeamId,
-                    ];
-
-                    if (!$db->insertObject('#__sportsmanagement_project_team', $projectTeamAssignment)) {
-                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
-                    }
+                if ($eligible === null || array_diff($assignedSeasonTeamIds, $eligible)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
-            } catch (\Throwable $e) {
-                $this->setError($e->getMessage());
-
-                return false;
             }
+
+            $deleteProjectTeamIds = [];
+            if ($deleteTeamIds) {
+                $query = $db->createQuery()
+                    ->select($db->quoteName('pt.id'))
+                    ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+                    ->join(
+                        'INNER',
+                        $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                        . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+                    )
+                    ->where($db->quoteName('pt.project_id') . ' = :assignProjectId')
+                    ->bind(':assignProjectId', $projectId, ParameterType::INTEGER)
+                    ->whereIn($db->quoteName('st.team_id'), $deleteTeamIds, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $deleteProjectTeamIds = $this->assignmentIds($db->loadColumn());
+
+                if ($deleteProjectTeamIds === null) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+            }
+
+            foreach ($assignedSeasonTeamIds as $seasonTeamId) {
+                $query = $db->createQuery()
+                    ->select('COUNT(*)')
+                    ->from($db->quoteName('#__sportsmanagement_project_team'))
+                    ->where($db->quoteName('team_id') . ' = :assignSeasonTeamId')
+                    ->bind(':assignSeasonTeamId', $seasonTeamId, ParameterType::INTEGER)
+                    ->where($db->quoteName('project_id') . ' = :assignExistingProjectId')
+                    ->bind(':assignExistingProjectId', $projectId, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $count = $db->loadResult();
+
+                if (!is_numeric($count)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+
+                if ((int) $count === 0 && !$db->insertObject(
+                    '#__sportsmanagement_project_team',
+                    (object) ['project_id' => $projectId, 'team_id' => $seasonTeamId]
+                )) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+            }
+
+            if ($deleteProjectTeamIds && !$this->delete($deleteProjectTeamIds, false)) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+
+            $db->transactionCommit();
+            return true;
+        } catch (\Throwable $error) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original assignment error.
+                }
+            }
+
+            $this->setError($error->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Validate a complete assignment selection without silently dropping IDs.
+     * An explicit empty array is valid. Reject malformed or overflowing values
+     * and retain only unique positive integer identifiers.
+     *
+     * @param mixed $values Submitted or database-returned identifiers.
+     * @return array<int>|null Valid selection or null on malformed input.
+     */
+    private function assignmentIds(mixed $values): ?array
+    {
+        if (!is_array($values)) {
+            return null;
         }
 
-        if ($deleteProjectTeamIds) {
-            return $this->delete($deleteProjectTeamIds);
+        $ids = [];
+        foreach ($values as $value) {
+            $normalised = $this->normaliseIds([$value]);
+            if (count($normalised) !== 1) {
+                return null;
+            }
+            $ids[$normalised[0]] = $normalised[0];
         }
 
-        return true;
+        return array_values($ids);
     }
 
     /**
@@ -490,9 +559,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      * clean dependent match data, within the outer database transaction.
      *
      * @param mixed $pks Selected project-team identifiers by reference.
+     * @param bool $manageTransaction Whether to own the transaction or use the caller's active transaction.
      * @return bool Whether all selected records were deleted.
      */
-    public function delete(&$pks)
+    public function delete(&$pks, bool $manageTransaction = true)
     {
         $ids = $this->normaliseIds($pks);
 
@@ -504,8 +574,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $transactionStarted = false;
 
         try {
-            $db->transactionStart();
-            $transactionStarted = true;
+            if ($manageTransaction) {
+                $db->transactionStart();
+                $transactionStarted = true;
+            }
             $table = $this->getTable();
 
             foreach ($ids as $id) {
@@ -545,7 +617,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
             }
 
-            $db->transactionCommit();
+            if ($transactionStarted) {
+                $db->transactionCommit();
+            }
             return true;
         } catch (\Throwable $error) {
             if ($transactionStarted) {
