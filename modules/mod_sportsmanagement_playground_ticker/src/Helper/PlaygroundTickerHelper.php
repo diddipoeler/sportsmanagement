@@ -286,7 +286,7 @@ final class PlaygroundTickerHelper
     /**
      * Determine which database the legacy playground ticker should use.
      *
-     * Reads the module setting before the request fallback and accepts only
+     * Reads the module setting before the unfiltered request fallback and accepts only
      * database IDs zero and one, including zero-padded decimal strings.
      * Invalid selections return null rather than silently selecting database zero.
      *
@@ -298,7 +298,7 @@ final class PlaygroundTickerHelper
     {
         $raw = $params->get(
             'cfg_which_database',
-            $app->getInput()->getInt('cfg_which_database', 0)
+            $app->getInput()->get('cfg_which_database', 0, 'raw')
         );
 
         if (is_int($raw)) {
