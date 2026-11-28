@@ -64,7 +64,9 @@
         const items = unwrap(payload);
         if (payload?.success === false || !Array.isArray(items)) return;
 
-        const placeholder = select.options.length ? select.options[0].cloneNode(true) : null;
+        // Choices may rebuild the native select with only the selected item.
+        // Cache the real initial placeholder instead of treating a selected project as one.
+        const placeholder = select.jsmPlaceholder?.cloneNode(true) ?? null;
         const includeSeason = Number(form.elements.include_season?.value ?? 0);
         const fragment = document.createDocumentFragment();
 
@@ -72,10 +74,15 @@
             fragment.appendChild(placeholder);
         }
 
+        const seen = new Set(placeholder ? [placeholder.value] : []);
+        let validCount = 0;
         items.forEach((item) => {
             if (!item || !['string', 'number'].includes(typeof item.value) || typeof item.text !== 'string') return;
             const option = document.createElement('option');
-            option.value = String(item.value ?? '');
+            option.value = String(item.value);
+            validCount++;
+            if (seen.has(option.value)) return;
+            seen.add(option.value);
             const text = String(item.text ?? '');
             const season = String(item.season_name ?? '');
             option.textContent = includeSeason === 2
@@ -85,6 +92,8 @@
                     : text;
             fragment.appendChild(option);
         });
+
+        if (items.length && !validCount) return;
 
         const choices = select.closest('joomla-field-fancy-select')?.choicesInstance;
         if (choices && typeof choices.clearStore === 'function' && typeof choices.setChoices === 'function') {
@@ -122,6 +131,11 @@
             return;
         }
 
+        const projectSelect = form.elements.p;
+        if (projectSelect) {
+            const first = Array.from(projectSelect.options).find(option => option.value === '' || option.value === '0');
+            projectSelect.jsmPlaceholder = first?.cloneNode(true) ?? null;
+        }
         let projectRequestVersion = 0;
         root.querySelectorAll('.jlnav-select').forEach((select) => {
             select.addEventListener('change', async () => {
