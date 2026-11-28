@@ -104,7 +104,11 @@ namespace {
     // An already resolved connection must survive table construction unchanged.
     $resolver = \Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::class;
     $resolver::$replacement = new class implements \Joomla\Database\DatabaseInterface {};
-    foreach (['ProjectteamTable', 'MatchTable', 'PositioneventtypeTable', 'PositionstatisticTable'] as $name) {
+    foreach ([
+        'ProjectteamTable', 'MatchTable', 'PositioneventtypeTable', 'PositionstatisticTable',
+        'TeamTable', 'TeamTrainingDataTable', 'PersonTable', 'ClubTable', 'LeagueTable',
+        'ProjectTable', 'SeasonTable', 'RoundTable', 'DivisionTable', 'EventtypeTable', 'StatisticTable',
+    ] as $name) {
         $class = $prefix . $name;
         $before = $resolver::$calls;
         $resolved = new $class($db, true);
