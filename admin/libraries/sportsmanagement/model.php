@@ -23,7 +23,6 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Helper\MediaHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
@@ -1468,8 +1467,17 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					{
 						if ($data['id'])
 						{
-							$mdl = BaseDatabaseModel::getInstance("positioneventtype", "sportsmanagementModel");
-							$mdl->store($post, $data['id']);
+							$mdl = $this->jsmapp->bootComponent('com_sportsmanagement')->getMVCFactory()
+                                ->createModel('Positioneventtype', 'Administrator', ['ignore_request' => true]);
+                            if (!$mdl instanceof \Diddipoeler\Component\SportsManagement\Administrator\Model\PositioneventtypeModel) {
+                                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                                return false;
+                            }
+                            $mdl->setDatabase($this->jsmdb);
+                            if (!$mdl->store($post, $data['id'])) {
+                                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                                return false;
+                            }
 						}
 					}
 
@@ -1478,8 +1486,17 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					{
 						if ($data['id'])
 						{
-							$mdl = BaseDatabaseModel::getInstance("positionstatistic", "sportsmanagementModel");
-							$mdl->store($post, $data['id']);
+							$mdl = $this->jsmapp->bootComponent('com_sportsmanagement')->getMVCFactory()
+                                ->createModel('Positionstatistic', 'Administrator', ['ignore_request' => true]);
+                            if (!$mdl instanceof \Diddipoeler\Component\SportsManagement\Administrator\Model\PositionstatisticModel) {
+                                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                                return false;
+                            }
+                            $mdl->setDatabase($this->jsmdb);
+                            if (!$mdl->store($post, $data['id'])) {
+                                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                                return false;
+                            }
 						}
 					}
 					break;
@@ -2107,7 +2124,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+					Log::add(__METHOD__ . ': table store failed.', Log::ERROR, 'com_sportsmanagement');
 
 					return Text::_('JGLOBAL_SAVE_SORT_NO');
 				}
@@ -2123,7 +2140,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 						if (!$row->store())
 						{
-							sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+							Log::add(__METHOD__ . ': table store failed.', Log::ERROR, 'com_sportsmanagement');
 
 							return Text::_('JGLOBAL_SAVE_SORT_NO');
 						}
@@ -2232,7 +2249,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Delegate record editing permissions to Joomla's native model.
+     * Rejects unauthenticated users and does not consult unrelated message assets.
 	 *
 	 * @param   array   $data  An array of input data.
 	 * @param   string  $key   The name of the key for the primary key.
@@ -2242,8 +2260,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return $this->jsmapp->getIdentity()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+        $identity = $this->jsmapp->getIdentity();
+        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
 	}
 
 }
