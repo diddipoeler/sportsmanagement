@@ -11,6 +11,12 @@
 
 use Joomla\CMS\Language\Text;
 
+Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+$this->getDocument()->getWebAssetManager()
+    ->usePreset('choicesjs')
+    ->useScript('webcomponent.field-fancy-select');
+
 $assets = $this->getDocument()->getWebAssetManager();
 $assets->useScript('keepalive');
 $assets->registerAndUseScript(
@@ -45,9 +51,15 @@ $assets->registerAndUseScript(
                     <span class="icon-remove" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
                 </button>
 
-                <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
-                <?php echo $this->lists['leagues'] . '&nbsp;&nbsp;'; ?>
-                <?php echo $this->lists['seasons'] . '&nbsp;&nbsp;'; ?>
+                <joomla-field-fancy-select search-placeholder="<?php echo $this->escape(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')); ?>">
+                    <?php echo $this->lists['nation2']; ?>
+                </joomla-field-fancy-select>
+                <joomla-field-fancy-select search-placeholder="<?php echo $this->escape(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')); ?>">
+                    <?php echo $this->lists['leagues']; ?>
+                </joomla-field-fancy-select>
+                <joomla-field-fancy-select search-placeholder="<?php echo $this->escape(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')); ?>">
+                    <?php echo $this->lists['seasons']; ?>
+                </joomla-field-fancy-select>
             </div>
 
             <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->sortColumn); ?>">
