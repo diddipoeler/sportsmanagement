@@ -4,6 +4,9 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - '.github/tests/joomla56-navigation-search.cjs'
+      - 'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js'
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
       - '.github/tests/joomla56_ajax_navigation_data_inputs.php'
       - '.github/tests/joomla56_ajax_navigation_instance_database.php'
@@ -12,6 +15,9 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - '.github/tests/joomla56-navigation-search.cjs'
+      - 'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js'
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
       - '.github/tests/joomla56_ajax_navigation_data_inputs.php'
       - '.github/tests/joomla56_ajax_navigation_instance_database.php'
@@ -28,6 +34,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Navigation search regressions
+        run: node .github/tests/joomla56-navigation-search.cjs
 
       - uses: shivammathur/setup-php@v2
         with:
