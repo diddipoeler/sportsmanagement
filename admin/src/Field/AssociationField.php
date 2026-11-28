@@ -15,6 +15,9 @@ final class AssociationField extends SportsManagementListField
 {
     protected $type = 'Association';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Build ordered association options for Joomla administrator forms.
      *
