@@ -301,7 +301,7 @@ final class PositionModel extends SportsManagementAdminModel
                     throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
 
-                $model->setDatabase($db);
+                $model->useResolvedDatabase($db);
 
                 if (!$model->store(
                     ['position_eventslist' => array_key_exists('position_eventslist', $post) ? $post['position_eventslist'] : []],
@@ -323,7 +323,7 @@ final class PositionModel extends SportsManagementAdminModel
                     throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
 
-                $model->setDatabase($db);
+                $model->useResolvedDatabase($db);
 
                 if (!$model->store(
                     ['position_statistic' => array_key_exists('position_statistic', $post) ? $post['position_statistic'] : []],
