@@ -20,6 +20,9 @@ final class AgegroupsField extends SportsManagementListField
 {
     protected $type = 'agegroups';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Restrict age-group choices to the edited team's configured sport.
      *
