@@ -23,10 +23,11 @@ final class JlextassociationTable extends SportsManagementTable
      * Initialise the native Joomla association table on the selected database.
      *
      * @param DatabaseInterface $db Shared SportsManagement database.
+     * @param bool $resolved Whether the supplied connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_associations', 'id', $db);
+        parent::__construct('#__sportsmanagement_associations', 'id', $db, $resolved);
     }
 
     /**
