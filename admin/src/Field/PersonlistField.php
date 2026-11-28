@@ -15,6 +15,9 @@ final class PersonlistField extends SportsManagementListField
 {
     protected $type = 'personlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load person identifiers and formatted surname/first-name labels.
      * Orders records by surname and first name and skips malformed records
