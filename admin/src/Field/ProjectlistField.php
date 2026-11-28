@@ -15,6 +15,9 @@ final class ProjectlistField extends SportsManagementListField
 {
     protected $type = 'projectlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load project identifiers and names in alphabetical order.
      * Uses the configured SportsManagement database and appends valid records
