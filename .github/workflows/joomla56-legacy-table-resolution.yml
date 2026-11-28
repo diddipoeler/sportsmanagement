@@ -5,6 +5,12 @@ on:
     paths:
       - 'admin/libraries/sportsmanagement/model.php'
       - 'admin/src/Table/**'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'admin/src/Helper/LegacyModelDatabaseHelper.php'
+      - 'admin/src/Model/SportsManagement*Model.php'
+      - 'site/src/Model/SportsManagement*Model.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/tests/joomla56_mvc_factory_database.php'
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/tests/joomla56_legacy_table_resolution.php'
       - '.github/workflows/joomla56-legacy-table-resolution.yml'
@@ -12,6 +18,12 @@ on:
     paths:
       - 'admin/libraries/sportsmanagement/model.php'
       - 'admin/src/Table/**'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'admin/src/Helper/LegacyModelDatabaseHelper.php'
+      - 'admin/src/Model/SportsManagement*Model.php'
+      - 'site/src/Model/SportsManagement*Model.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/tests/joomla56_mvc_factory_database.php'
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/tests/joomla56_legacy_table_resolution.php'
       - '.github/workflows/joomla56-legacy-table-resolution.yml'
@@ -37,12 +49,16 @@ jobs:
           set -euo pipefail
           php -l admin/libraries/sportsmanagement/model.php
           php -l .github/tests/joomla56_legacy_table_resolution.php
+          php -l admin/src/Service/SportsManagementMVCFactory.php
+          php -l .github/tests/joomla56_mvc_factory_database.php
           for table in Person Jsmgcalendar MatchSingle TeamTrainingData SportsManagement; do
             php -l "admin/src/Table/${table}Table.php"
           done
       - name: Regression tests
         run: php .github/tests/joomla56_legacy_table_resolution.php
+      - name: MVC factory database regression
+        run: php .github/tests/joomla56_mvc_factory_database.php
       - name: Documentation checks
         run: |
-          php .github/scripts/check-php-headers.php admin/src/Table/PersonTable.php .github/tests/joomla56_legacy_table_resolution.php
-          php .github/scripts/check-php-function-docs.php admin/src/Table/PersonTable.php .github/tests/joomla56_legacy_table_resolution.php
+          php .github/scripts/check-php-headers.php admin/src/Table/PersonTable.php .github/tests/joomla56_legacy_table_resolution.php admin/src/Service/SportsManagementMVCFactory.php .github/tests/joomla56_mvc_factory_database.php
+          php .github/scripts/check-php-function-docs.php admin/src/Table/PersonTable.php .github/tests/joomla56_legacy_table_resolution.php admin/src/Service/SportsManagementMVCFactory.php .github/tests/joomla56_mvc_factory_database.php
