@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 
-function harness(field, multi) {
+function harness(field, multi, enhanced = false) {
     const source = fs.readFileSync('admin/src/Field/' + field + '.php', 'utf8');
     const script = source.match(/<<<'JS'\r?\n([\s\S]*?)\r?\nJS;/)[1];
     const pending = [];
@@ -25,6 +25,24 @@ function harness(field, multi) {
         dispatchEvent() {}
     }
     const select = new Select();
+    const calls = [];
+    const choices = {
+        clearStore() {
+            calls.push('clearStore');
+            select.replaceChildren();
+        },
+        setChoices(options, valueKey, labelKey, replace) {
+            assert.equal(valueKey, 'value');
+            assert.equal(labelKey, 'label');
+            assert.equal(replace, true);
+            calls.push('setChoices');
+            for (const option of options) {
+                select.add({value: option.value, text: option.label, selected: option.selected});
+            }
+        }
+    };
+    select.closest = selector => enhanced && selector === 'joomla-field-fancy-select'
+        ? {choicesInstance: choices} : null;
     const config = multi
         ? {visibleId:'list', hiddenId:'hidden', task:'teams', depends:['project'], selected:['1','2']}
         : {targetId:'list', task:'teams', depends:'project', group:'', view:'', database:'0', slug:''};
@@ -44,7 +62,7 @@ function harness(field, multi) {
         fetch: () => new Promise(resolve => pending.push(resolve))
     };
     vm.runInNewContext(script.replace('__CONFIG__', JSON.stringify(config)), context);
-    return {select, hidden, listeners, pending};
+    return {select, hidden, listeners, pending, calls};
 }
 
 function respond(resolve, data) {
@@ -53,7 +71,8 @@ function respond(resolve, data) {
 
 async function main() {
     const rows = [{value:'1',text:'One'},{value:'2',text:'Two'}];
-    const multi = harness('MultidependsqlField', true);
+    for (const enhanced of [false, true]) {
+    const multi = harness('MultidependsqlField', true, enhanced);
     assert.equal(multi.hidden.value, '1|2', 'Initial pending request must not erase saved values');
     const initial = multi.pending.shift();
     const latest = multi.listeners.dependency();
@@ -74,7 +93,7 @@ async function main() {
     await failure;
     assert.equal(multi.select.options.length,2);
 
-    const single = harness('DependsqlField', false);
+    const single = harness('DependsqlField', false, enhanced);
     const old = single.listeners.dependency();
     const current = single.listeners.dependency();
     respond(single.pending.pop(), {data:rows});
@@ -82,6 +101,39 @@ async function main() {
     respond(single.pending.shift(), {data:[{value:'9',text:'Stale'}]});
     await old;
     assert.deepEqual(single.select.options.map(o=>o.value), ['1','2']);
-    console.log('Dependent field AJAX regressions passed.');
+    // A malformed response must leave the current options and selection intact.
+    for (const fixture of [single, multi]) {
+        const before = fixture.select.options.map(o => o.value);
+        const invalid = fixture.listeners.dependency();
+        respond(fixture.pending.shift(), {data:{unexpected:true}});
+        await invalid;
+        assert.deepEqual(fixture.select.options.map(o => o.value), before);
+        const malformed = fixture.listeners.dependency();
+        respond(fixture.pending.shift(), {data:[{value:{bad:true},text:'Invalid'}]});
+        await malformed;
+        assert.deepEqual(fixture.select.options.map(o => o.value), before);
+        const nested = fixture.listeners.dependency();
+        respond(fixture.pending.shift(), {data:{data:[{value:'2',text:'Two'},{value:'2',text:'Duplicate'},{value:'3',text:'Three'}]}});
+        await nested;
+        assert.deepEqual(fixture.select.options.map(o => o.value), ['2','3']);
+        if (enhanced) {
+            assert.ok(fixture.calls.length >= 4);
+            assert.equal(fixture.calls.length % 2, 0);
+            for (let i = 0; i < fixture.calls.length; i += 2) {
+                assert.deepEqual(fixture.calls.slice(i,i+2), ['clearStore','setChoices']);
+            }
+        } else {
+            assert.equal(fixture.calls.length, 0);
+        }
+    }
+    assert.equal(single.select.selectedOptions[0].value, '2');
+    assert.equal(multi.hidden.value, '');
+    const empty = multi.listeners.dependency();
+    respond(multi.pending.shift(), {data:[]});
+    await empty;
+    assert.equal(multi.select.options.length, 0);
+    assert.equal(multi.hidden.value, '');
+    }
+    console.log('Dependent field AJAX regressions passed (native and simulated Choices).');
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
