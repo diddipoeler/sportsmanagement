@@ -20,6 +20,9 @@ final class UserlistField extends ListField
 {
     protected $type = 'userlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load Joomla user IDs and names from the primary Joomla database.
      * Uses the container database rather than an alternate sports database
