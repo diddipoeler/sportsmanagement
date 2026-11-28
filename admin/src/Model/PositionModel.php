@@ -258,6 +258,10 @@ final class PositionModel extends SportsManagementAdminModel
 
     /**
      * Synchronise position events and statistics after saving.
+     * Only explicit form synchronisation flags enable relation writes.
+     * An absent multi-select represents an empty selection when its flag
+     * is present; submitted malformed values reach the relation validator
+     * unchanged so the shared transaction can roll back.
      *
      * @param array $data data value.
      * @param int $id id value.
@@ -271,8 +275,8 @@ final class PositionModel extends SportsManagementAdminModel
         }
 
         $post = $this->administratorApplication()->getInput()->post->getArray();
-        $syncEvents = (int) ($post['sync_position_events'] ?? 0) === 1;
-        $syncStatistics = (int) ($post['sync_position_statistics'] ?? 0) === 1;
+        $syncEvents = in_array($post['sync_position_events'] ?? null, [1, '1'], true);
+        $syncStatistics = in_array($post['sync_position_statistics'] ?? null, [1, '1'], true);
 
         if (!$syncEvents && !$syncStatistics) {
             parent::afterSportsManagementSave($data, $id, $isNew);
@@ -300,7 +304,7 @@ final class PositionModel extends SportsManagementAdminModel
                 $model->setDatabase($db);
 
                 if (!$model->store(
-                    ['position_eventslist' => (array) ($post['position_eventslist'] ?? [])],
+                    ['position_eventslist' => array_key_exists('position_eventslist', $post) ? $post['position_eventslist'] : []],
                     $id,
                     false
                 )) {
@@ -322,7 +326,7 @@ final class PositionModel extends SportsManagementAdminModel
                 $model->setDatabase($db);
 
                 if (!$model->store(
-                    ['position_statistic' => (array) ($post['position_statistic'] ?? [])],
+                    ['position_statistic' => array_key_exists('position_statistic', $post) ? $post['position_statistic'] : []],
                     $id,
                     false
                 )) {
