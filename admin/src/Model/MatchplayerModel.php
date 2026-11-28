@@ -412,7 +412,11 @@ final class MatchplayerModel extends SportsManagementAdminModel
     public function getTable($type = 'matchplayer', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchplayer') === 0) {
-            return new MatchplayerTable($this->getDatabase());
+            $table = new MatchplayerTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
