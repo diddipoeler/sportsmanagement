@@ -18,6 +18,9 @@ final class StatstypelistField extends ListField
 {
     protected $type = 'statstypelist';
 
+    /** Native searchable selection of installed statistics implementations. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Discover available statistics implementations in the installed component.
      * Lists PHP filenames without the extension, excludes the base class
@@ -27,44 +30,23 @@ final class StatstypelistField extends ListField
     protected function getOptions(): array
     {
         $options = [];
-        $directory = JPATH_COMPONENT_ADMINISTRATOR . '/statistics';
+        $directory = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics';
         if (!is_dir($directory)) {
             return parent::getOptions();
         }
-        $files = Folder::files($directory, '\\.php
+        $files = Folder::files($directory, '\\.php$');
 
         foreach (is_array($files) ? $files : [] as $file) {
             if (!is_string($file)) {
                 continue;
             }
-            $name = pathinfo($file, PATHINFO_FILENAME);
 
+            $name = pathinfo($file, PATHINFO_FILENAME);
             if ($name === '' || $name === 'base') {
                 continue;
             }
 
-            $options[] = (object) [
-                'value' => (string) $name,
-                'text' => (string) $name,
-            ];
-        }
-
-        return array_merge(parent::getOptions(), $options);
-    }
-}
-);
-
-        foreach ($files as $file) {
-            $name = pathinfo($file, PATHINFO_FILENAME);
-
-            if ($name === '' || $name === 'base') {
-                continue;
-            }
-
-            $options[] = (object) [
-                'value' => (string) $name,
-                'text' => (string) $name,
-            ];
+            $options[] = (object) ['value' => $name, 'text' => $name];
         }
 
         return array_merge(parent::getOptions(), $options);
