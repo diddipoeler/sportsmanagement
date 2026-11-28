@@ -17,6 +17,9 @@ final class PersonagegroupField extends SportsManagementListField
 {
     protected $type = 'personagegroup';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load age groups matching the sport of the selected record.
      * Validates the configured table suffix and record ID, binds the ID
