@@ -18,6 +18,9 @@ final class SportstypelistField extends SportsManagementListField
 {
     protected $type = 'sportstypelist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Render the sport-type filter with an optional form submit handler.
      *
@@ -38,7 +41,7 @@ final class SportstypelistField extends SportsManagementListField
             ? (string) $onchange : '';
 
         if ($view !== 'league' && trim($onchange) === '') {
-            $this->element['onchange'] = 'this.form.submit();';
+            $this->onchange = 'this.form.submit();';
         }
 
         return parent::getInput();
