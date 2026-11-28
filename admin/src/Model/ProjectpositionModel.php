@@ -21,6 +21,25 @@ use Joomla\Utilities\ArrayHelper;
 final class ProjectpositionModel extends SportsManagementAdminModel
 {
     /**
+     * Return the native table on the model's already resolved connection.
+     * Retain Joomla's MVC factory for custom table names and configurations.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Projectposition') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            return $this->createResolvedTable(\Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectpositionTable::class);
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Synchronise project-to-position assignments in a transaction.
      * Deletes obsolete links, inserts missing records and rolls back
      * all changes when a database operation fails.
@@ -98,20 +117,19 @@ final class ProjectpositionModel extends SportsManagementAdminModel
 
     /**
      * Determine whether the administrator may edit a project position.
-     * Uses record-specific permission or standard model ACL fallback.
+     * Uses Joomla's record-specific ACL inheritance and rejects unauthenticated identities.
      * @param array $data Current assignment record.
      * @param string $key Identifier field.
      * @return bool Whether editing is permitted.
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
+        if ($identity === null || (int) $identity->id <= 0) {
+            return false;
+        }
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.projectposition.' . $id
-        )) || parent::allowEdit($data, $key);
+        $id = (int) ($data[$key] ?? 0);
+        return $identity->authorise('core.edit', 'com_sportsmanagement.projectposition.' . $id);
     }
 }
