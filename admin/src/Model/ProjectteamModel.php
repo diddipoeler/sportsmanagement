@@ -65,6 +65,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function set_playground_match($post = null): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
         $ids = $this->normaliseIds($data['cid'] ?? $input->post->get('cid', [], 'array'));
@@ -138,6 +142,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function set_playground($post = null): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
         $ids = $this->normaliseIds($data['cid'] ?? $input->post->get('cid', [], 'array'));
@@ -153,7 +161,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
             $record = (object) ['id' => $projectTeamId, 'standard_playground' => $playgroundId];
 
             try {
-                $db->updateObject('#__sportsmanagement_project_team', $record, 'id');
+                if (!$db->updateObject('#__sportsmanagement_project_team', $record, 'id')) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
 
@@ -170,6 +180,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function saveshort(): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $app = $this->administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
@@ -219,7 +233,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 : (int) ($post['new_project_id' . $id] ?? $projectId);
 
             try {
-                $db->updateObject('#__sportsmanagement_project_team', $record, 'id');
+                if (!$db->updateObject('#__sportsmanagement_project_team', $record, 'id')) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
                 $result = false;
@@ -245,7 +261,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 }
 
                 try {
-                    $db->updateObject('#__sportsmanagement_club', $club, 'id');
+                    if (!$db->updateObject('#__sportsmanagement_club', $club, 'id')) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
                 } catch (\Throwable $e) {
                     $this->setError($e->getMessage());
                     $result = false;
@@ -263,7 +281,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 ];
 
                 try {
-                    $db->updateObject('#__sportsmanagement_team', $teamUpdate, 'id');
+                    if (!$db->updateObject('#__sportsmanagement_team', $teamUpdate, 'id')) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
                 } catch (\Throwable $e) {
                     $this->setError($e->getMessage());
                     $result = false;
@@ -286,6 +306,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function setseasonid(): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $input = $this->administratorApplication()->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
         $seasonId = $input->post->getInt('season_id');
@@ -304,7 +328,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
             ];
 
             try {
-                $db->updateObject('#__sportsmanagement_season_team_id', $seasonTeamUpdate, 'id');
+                if (!$db->updateObject('#__sportsmanagement_season_team_id', $seasonTeamUpdate, 'id')) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
 
@@ -343,6 +369,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function matchgroups(): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $input = $this->administratorApplication()->getInput();
         $post = $input->post->getArray();
         $ids = $this->normaliseIds($post['cid'] ?? []);
@@ -376,9 +406,19 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     public function storeAssign($post = null): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
-        $projectId = (int) ($data['project_id'] ?? 0);
+        $projectIds = $this->normaliseIds([$data['project_id'] ?? null]);
+        if (count($projectIds) !== 1) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+
+        $projectId = $projectIds[0];
         $assignedSeasonTeamIds = $this->normaliseIds($data['project_teamslist'] ?? []);
         $deleteTeamIds = $this->normaliseIds($data['teamslist'] ?? []);
         $db = $this->getDatabase();
@@ -425,7 +465,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
                         'team_id' => $seasonTeamId,
                     ];
 
-                    $db->insertObject('#__sportsmanagement_project_team', $projectTeamAssignment);
+                    if (!$db->insertObject('#__sportsmanagement_project_team', $projectTeamAssignment)) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
                 }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
@@ -560,6 +602,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
      */
     private function updateSelectedProjectTeams(string $field, int $value): bool
     {
+        if (!$this->canEditProjectTeams()) {
+            return false;
+        }
+
         if (!in_array($field, ['is_in_score', 'use_finally'], true)) {
             return false;
         }
@@ -571,7 +617,9 @@ final class ProjectteamModel extends SportsManagementAdminModel
             $projectTeamUpdate = (object) ['id' => $id, $field => $value];
 
             try {
-                $db->updateObject('#__sportsmanagement_project_team', $projectTeamUpdate, 'id');
+                if (!$db->updateObject('#__sportsmanagement_project_team', $projectTeamUpdate, 'id')) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
 
@@ -786,7 +834,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
         try {
             $db->setQuery($query);
-            $db->execute();
+            if (!$db->execute()) {
+                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                return false;
+            }
 
             return true;
         } catch (\Throwable $e) {
@@ -794,6 +845,24 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
             return false;
         }
+    }
+
+    /**
+     * Require an authenticated administrator with component edit permission.
+     * Protects direct model write calls as well as controller-driven requests.
+     * @return bool Whether the current identity may edit project teams.
+     */
+    private function canEditProjectTeams(): bool
+    {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || (int) $identity->id <= 0
+            || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+            return false;
+        }
+
+        return true;
     }
 
     /** Reject non-decimal, negative or overflowing project-team record IDs. */
