@@ -15,6 +15,9 @@ final class TeamField extends SportsManagementListField
 {
     protected $type = 'team';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load team identifiers and names in alphabetical order.
      * Preserves the translated empty choice, numeric identifier suffixes
