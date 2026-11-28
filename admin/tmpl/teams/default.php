@@ -31,6 +31,9 @@ $renderOptions = static function (array $options, $selected): string {
 };
 
 $assets = $this->getDocument()->getWebAssetManager();
+Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+$assets->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 $assets->registerAndUseScript(
     'com_sportsmanagement.admin.teams',
     'administrator/components/com_sportsmanagement/assets/js/teams.js',
@@ -82,10 +85,10 @@ $assets->registerAndUseScript(
                         <td><?php echo $item->clubname !== null && $item->clubname !== '' ? $this->escape($item->clubname) : '<span class="text-danger">' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>'; ?></td>
                         <td><?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?></td>
                         <td>
-                            <select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>" data-jsm-mark-row="<?php echo (int) $i; ?>">
+                            <joomla-field-fancy-select search-placeholder="<?php echo htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"><select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>" data-jsm-mark-row="<?php echo (int) $i; ?>">
                                 <option value="0"></option>
                                 <?php echo $renderOptions($this->inlineOptions['agegroups'], $item->agegroup_id); ?>
-                            </select>
+                            </select></joomla-field-fancy-select>
                         </td>
                         <td>
                             <select class="form-select form-select-sm" name="sportstype<?php echo (int) $item->id; ?>" data-jsm-mark-row="<?php echo (int) $i; ?>">
