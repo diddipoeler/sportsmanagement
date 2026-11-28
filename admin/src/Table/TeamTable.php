@@ -17,11 +17,20 @@ use Joomla\Database\DatabaseInterface;
 
 final class TeamTable extends SportsManagementTable
 {
-    public function __construct(DatabaseInterface $db)
+    /**
+     * Initialise the native team table with the selected database service.
+     * @param DatabaseInterface $db Active database connection.
+     * @param bool $resolved Whether the caller has already resolved the connection.
+     */
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_team', 'id', $db);
+        parent::__construct('#__sportsmanagement_team', 'id', $db, $resolved);
     }
 
+    /**
+     * Validate the team name, derive missing short names and generate its URL alias.
+     * @return bool Whether the record passes table validation.
+     */
     public function check()
     {
         $this->name = trim((string) $this->name);
