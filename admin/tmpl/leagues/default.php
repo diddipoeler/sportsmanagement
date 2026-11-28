@@ -30,6 +30,51 @@ $renderOptions = static function (array $options, $selected): string {
 
     return $html;
 };
+
+/**
+ * Render the saved country even when its catalogue entry is missing.
+ * Match historical case and whitespace variants without changing the saved
+ * value on a quick save. Translate catalogue labels and escape all markup.
+ *
+ * @param array $options Country catalogue options.
+ * @param mixed $selected Stored league country code.
+ * @return string Country option markup.
+ */
+$renderCountryOptions = static function (array $options, $selected): string {
+    $stored = is_string($selected) ? $selected : '';
+    $normalised = strtoupper(trim($stored));
+    $seen = [];
+    $html = '';
+    $matched = false;
+
+    foreach ($options as $option) {
+        if (!is_object($option) || !is_string($option->value ?? null)) {
+            continue;
+        }
+
+        $code = strtoupper(trim($option->value));
+        if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+            continue;
+        }
+
+        $seen[$code] = true;
+        $isSelected = $normalised === $code;
+        $matched = $matched || $isSelected;
+        $value = $isSelected ? $stored : $option->value;
+        $label = is_string($option->text ?? null) && trim($option->text) !== ''
+            ? Text::_($option->text) : $code;
+        $html .= '<option value="' . htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"'
+            . ($isSelected ? ' selected' : '') . '>'
+            . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</option>';
+    }
+
+    if (!$matched && $stored !== '') {
+        $escaped = htmlspecialchars($stored, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $html = '<option value="' . $escaped . '" selected>' . $escaped . '</option>' . $html;
+    }
+
+    return $html;
+};
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=leagues'); ?>" method="post" name="adminForm" id="adminForm">
   <?php if ($this->filterForm) echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
@@ -61,7 +106,7 @@ $renderOptions = static function (array $options, $selected): string {
               <?php endif; ?>
               <div class="small text-muted"><?php echo $this->escape($item->short_name); ?> · <?php echo $this->escape(Text::_($item->sportstype)); ?></div>
             </td>
-            <td><select class="form-select form-select-sm" name="country<?php echo (int) $item->id; ?>"><option value=""></option><?php echo $renderOptions($this->inlineOptions['countries'], $item->country); ?></select></td>
+            <td><select class="form-select form-select-sm" name="country<?php echo (int) $item->id; ?>"><option value=""></option><?php echo $renderCountryOptions($this->inlineOptions['countries'] ?? [], $item->country ?? ''); ?></select></td>
             <td><select class="form-select form-select-sm" name="association<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['associations'], $item->associations); ?></select></td>
             <td><select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['agegroups'], $item->agegroup_id); ?></select></td>
             <td class="text-center"><select class="form-select form-select-sm" name="published_act_season<?php echo (int) $item->id; ?>"><option value="0"<?php echo (int) $item->published_act_season === 0 ? ' selected' : ''; ?>><?php echo Text::_('JNO'); ?></option><option value="1"<?php echo (int) $item->published_act_season === 1 ? ' selected' : ''; ?>><?php echo Text::_('JYES'); ?></option></select></td>
