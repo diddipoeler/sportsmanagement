@@ -17,6 +17,29 @@ use Joomla\CMS\Component\ComponentHelper;
 final class StatisticModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native statistic table using this model's active database.
+     * Retain Joomla's MVC factory for custom table names and configurations.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Statistic') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\StatisticTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Configure the Joomla 5/6 statistic editor's icon media field.
      * Loads the inherited form and applies validated media tool, directory
      * and default icon options from the component configuration.
