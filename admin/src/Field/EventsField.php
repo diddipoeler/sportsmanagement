@@ -18,25 +18,31 @@ final class EventsField extends SportsManagementListField
 {
     protected $type = 'events';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
-     * Render the published events field as a multiple-selection control.
+     * Configure the published events field as a searchable multiple-selection control.
      *
      * Preserves the legacy ten-row display but permits custom form XML
      * sizes only when they are valid integers between one and fifty.
-     * Joomla's parent field handles the final input HTML.
+     * Configure multiplicity before Joomla initialises the input name and value.
      *
-     * @return string Joomla event multi-select HTML.
+     * @param \SimpleXMLElement $element Field XML definition.
+     * @param mixed $value Current selection.
+     * @param string|null $group Optional form group.
+     * @return bool Whether Joomla initialised the field successfully.
      */
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        $this->element['multiple'] = 'true';
-        $rawSize = $this->element['size'] ?? '10';
+        $element['multiple'] = 'true';
+        $rawSize = $element['size'] ?? '10';
         $size = is_string($rawSize) || $rawSize instanceof \Stringable
             ? (string) $rawSize : '';
-        $this->element['size'] = preg_match('/^[1-9][0-9]?$/D', $size) === 1
+        $element['size'] = preg_match('/^[1-9][0-9]?$/D', $size) === 1
             && (int) $size <= 50 ? $size : '10';
 
-        return parent::getInput();
+        return parent::setup($element, $value, $group);
     }
 
     /**
