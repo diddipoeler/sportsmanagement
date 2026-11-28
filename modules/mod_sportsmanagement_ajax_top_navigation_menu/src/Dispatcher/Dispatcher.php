@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Dispatch
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -95,7 +96,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
     /**
-     * Enable AJAX navigation Bootstrap tabs, two styles and native script.
+     * Enable AJAX navigation Bootstrap tabs, searchable selectors, styles and native script.
      *
      * Reuse Joomla's shared HTML WebAssetManager across module instances
      * without repeating registrations. Preserve the original asset sources,
@@ -108,6 +109,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     {
         $assets = $document->getWebAssetManager();
         $assets->useScript('bootstrap.tab');
+        Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+        Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+        $assets->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
         $style = 'mod_sportsmanagement_ajax_top_navigation_menu';
         if (!$assets->assetExists('style', $style)) {
             $assets->registerStyle($style,
