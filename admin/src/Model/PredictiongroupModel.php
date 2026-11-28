@@ -29,7 +29,11 @@ final class PredictiongroupModel extends SportsManagementAdminModel
     public function getTable($type = 'predictiongroup', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictiongroup') === 0) {
-            return new PredictiongroupTable($this->getDatabase());
+            $table = new PredictiongroupTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
