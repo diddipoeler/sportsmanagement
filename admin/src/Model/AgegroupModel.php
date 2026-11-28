@@ -22,6 +22,29 @@ use Joomla\CMS\Language\Text;
 class AgegroupModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native agegroup table on the model's active database connection.
+     * Preserve Joomla's factory for custom table names, prefixes and options.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Agegroup') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\AgegroupTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Import configured age groups for the selected sports and countries.
      *
      * Resolves the native database and control-panel models before
