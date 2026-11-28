@@ -24,6 +24,25 @@ use Joomla\Database\ParameterType;
 final class ClubModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native club table on this model's active database connection.
+     * Other table types continue through Joomla's MVC table factory.
+     * @param string $type Requested table type.
+     * @param string $prefix Table class prefix.
+     * @param array $config Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($type = 'Club', $prefix = 'Administrator', $config = [])
+    {
+        if (is_string($type) && strcasecmp($type, 'Club') === 0
+            && in_array(strtolower((string) $prefix), ['administrator', 'sportsmanagementtable'], true)
+            && $config === []) {
+            return new \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable($this->getDatabase(), true);
+        }
+
+        return parent::getTable($type, $prefix, $config);
+    }
+
+    /**
      * Load the club edit form and configure permitted image directories.
      *
      * Both Joomla media and SportsManagement's custom image selector can
