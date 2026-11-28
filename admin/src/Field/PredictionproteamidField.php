@@ -19,6 +19,9 @@ final class PredictionproteamidField extends SportsManagementListField
 {
     protected $type = 'predictionproteamid';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     private ?array $teamOptions = null;
 
     /**
