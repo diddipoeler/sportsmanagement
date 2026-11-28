@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * Joomla 5/6 replacement for the historical dependent multi-select field.
@@ -32,7 +33,7 @@ final class MultidependsqlField extends FormField
 
     /**
      * Render a native multiple-selection list and its historical hidden value.
-     * Loads initial SQL options, preserves the pipe-separated storage format
+     * Adds native Joomla search, loads initial SQL options and preserves the pipe-separated storage format
      * and registers dependency refresh behaviour using Joomla web assets.
      * @return string Rendered select and hidden input markup.
      */
@@ -62,6 +63,9 @@ final class MultidependsqlField extends FormField
             $selected,
             $visibleId
         );
+        $html = '<joomla-field-fancy-select search-placeholder="'
+            . htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '">' . $html . '</joomla-field-fancy-select>';
         $html .= '<input type="hidden" name="'
             . htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8')
             . '" id="' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
@@ -184,6 +188,7 @@ final class MultidependsqlField extends FormField
         $script = <<<'JS'
 (() => {
     const config = __CONFIG__;
+    const bind = () => {
     const select = document.getElementById(config.visibleId);
     const hidden = document.getElementById(config.hiddenId);
     if (!select || !hidden) return;
@@ -237,17 +242,36 @@ final class MultidependsqlField extends FormField
             const payload = await response.json();
             if (version !== requestVersion || payload?.success === false) return;
             const keepSelected = new Set(initialSelection ? config.selected.map(String) : selectedValues());
-            const rows = Array.isArray(payload?.data)
-                ? payload.data
-                : (Array.isArray(payload) ? payload : []);
+            const rows = Array.isArray(payload)
+                ? payload
+                : Array.isArray(payload?.data)
+                    ? payload.data
+                    : Array.isArray(payload?.data?.data)
+                        ? payload.data.data
+                        : null;
+            if (rows === null) return;
 
-            initialSelection = false;
-            select.replaceChildren();
+            const options = [];
+            const seen = new Set();
             for (const row of rows) {
                 if (!row || !['string', 'number'].includes(typeof row.value) || !['string', 'number'].includes(typeof row.text)) continue;
                 const value = String(row.value);
-                const option = new Option(String(row?.text ?? ''), value, false, keepSelected.has(value));
-                select.add(option);
+                if (seen.has(value)) continue;
+                seen.add(value);
+                options.push({value, label: String(row.text), selected: keepSelected.has(value)});
+            }
+            if (rows.length && !options.length) return;
+
+            initialSelection = false;
+            const choices = select.closest?.('joomla-field-fancy-select')?.choicesInstance;
+            if (choices && typeof choices.clearStore === 'function' && typeof choices.setChoices === 'function') {
+                choices.clearStore();
+                choices.setChoices(options, 'value', 'label', true);
+            } else {
+                select.replaceChildren();
+                for (const option of options) {
+                    select.add(new Option(option.label, option.value, false, option.selected));
+                }
             }
 
             if (payload?.messages && window.Joomla?.renderMessages) {
@@ -272,13 +296,24 @@ final class MultidependsqlField extends FormField
 
     if (config.task && config.depends.length) refresh();
     else syncHidden();
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bind, {once: true});
+    } else {
+        bind();
+    }
 })();
 JS;
 
         $document = SportsManagementAdministratorApplicationResolver::resolve()->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->addInlineScript(
+            Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+            Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+            $document->getWebAssetManager()
+                ->usePreset('choicesjs')
+                ->useScript('webcomponent.field-fancy-select')
+                ->addInlineScript(
                 str_replace('__CONFIG__', $config, $script)
             );
         }
