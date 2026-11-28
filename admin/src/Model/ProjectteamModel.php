@@ -51,7 +51,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
     public function getTable($type = 'Projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Projectteam') === 0) {
-            return new ProjectteamTable($this->getDatabase());
+            return new ProjectteamTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -672,7 +672,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 if (!$model instanceof MatchModel) {
                     throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
-                $model->setDatabase($db);
+                $model->useResolvedDatabase($db);
                 if (!$model->delete($matchIds, false)) {
                     throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
@@ -862,7 +862,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
             }
 
-            $model->setDatabase($db);
+            $model->useResolvedDatabase($db);
             if (!empty($post['delete']) && (!is_array($post['delete'])
                 || !$model->DeleteTrainigData(reset($post['delete']), $teamId))) {
                 throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
