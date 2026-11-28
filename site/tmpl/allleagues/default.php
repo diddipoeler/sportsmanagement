@@ -11,6 +11,12 @@
 
 use Joomla\CMS\Language\Text;
 
+Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+$this->getDocument()->getWebAssetManager()
+    ->usePreset('choicesjs')
+    ->useScript('webcomponent.field-fancy-select');
+
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive');
 $wa->registerAndUseScript(
@@ -42,7 +48,9 @@ $endRange   = (int) $this->params->get('character_filter_end_hex', 0);
                     <span class="icon-remove" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
                 </button>
 
-                <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
+                <joomla-field-fancy-select search-placeholder="<?php echo $this->escape(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')); ?>">
+                    <?php echo $this->lists['nation2']; ?>
+                </joomla-field-fancy-select>
                 <?php for ($i = $startRange; $i <= $endRange; $i++) : ?>
                     <?php $character = html_entity_decode('&#' . $i . ';', ENT_QUOTES | ENT_HTML5, 'UTF-8'); ?>
                     <button
