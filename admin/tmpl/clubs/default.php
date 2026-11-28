@@ -105,7 +105,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                                             <div class="small text-muted"><?php echo htmlspecialchars((string) $item->unique_id, ENT_QUOTES, 'UTF-8'); ?></div>
                                         <?php endif; ?>
                                     </td>
-                                    <td><?php echo htmlspecialchars((string) $item->country, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?></td>
                                     <td><?php echo htmlspecialchars(trim((string) $item->zipcode . ' ' . (string) $item->location), ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td>
                                         <?php if ((int) $item->published === 1) : ?>
