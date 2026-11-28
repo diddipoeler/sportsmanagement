@@ -185,6 +185,62 @@ final class CountryOptionsHelper
             return '';
         }
 
+        return self::renderFlag($countryCode, $country);
+    }
+
+    /**
+     * Load translated labels and safe flag markup for a complete list page.
+     * Uses one catalogue query, avoiding a separate country lookup per row.
+     * Missing or unavailable catalogue entries retain their stored codes.
+     * @param DatabaseInterface $db Active list-model database.
+     * @return array<string,string> Escaped country presentation by ISO code.
+     */
+    public static function getListPresentation(DatabaseInterface $db): array
+    {
+        try {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('alpha3'),
+                    $db->quoteName('alpha2'),
+                    $db->quoteName('name'),
+                    $db->quoteName('picture'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_countries'));
+            $db->setQuery($query);
+            $rows = $db->loadObjectList();
+            $result = [];
+
+            foreach (is_array($rows) ? $rows : [] as $row) {
+                if (!is_object($row) || !is_string($row->alpha3 ?? null)) {
+                    continue;
+                }
+
+                $code = strtoupper(trim($row->alpha3));
+                if (!preg_match('/^[A-Z]{3}$/D', $code) || isset($result[$code])) {
+                    continue;
+                }
+
+                $name = is_string($row->name ?? null) && trim($row->name) !== '' ? $row->name : $code;
+                $flag = self::renderFlag($code, $row);
+                $result[$code] = ($flag === '' ? '' : $flag . ' ') . self::escape(Text::_($name));
+            }
+
+            return $result;
+        } catch (\Throwable $e) {
+            self::reportDatabaseError($e);
+            return [];
+        }
+    }
+
+    /**
+     * Render an already loaded country record using the configured flag mode.
+     * Shares URL validation and escaping between single and bulk lookups.
+     * @param string $countryCode Validated ISO alpha-3 identifier.
+     * @param object $country Country catalogue record.
+     * @return string Safe flag markup or an empty string.
+     */
+    private static function renderFlag(string $countryCode, object $country): string
+    {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $rawAlpha2 = $country->alpha2 ?? '';
         $alpha2 = is_string($rawAlpha2) ? strtolower(trim($rawAlpha2)) : '';
