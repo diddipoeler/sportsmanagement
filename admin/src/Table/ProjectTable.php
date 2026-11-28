@@ -16,11 +16,23 @@ use Joomla\Database\DatabaseInterface;
 
 final class ProjectTable extends SportsManagementTable
 {
-    public function __construct(DatabaseInterface $db)
+    /**
+     * Initialise project storage on the supplied database connection.
+     * @param DatabaseInterface $db Active database service.
+     * @param bool $resolved Whether the caller has already resolved the connection.
+     */
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_project', 'id', $db);
+        parent::__construct('#__sportsmanagement_project', 'id', $db, $resolved);
     }
 
+    /**
+     * Normalise optional project dates and selection identifiers before binding.
+     * Empty dates become null and empty optional identifiers become zero.
+     * @param array|object $src Submitted project data.
+     * @param array|string $ignore Fields excluded from binding.
+     * @return bool Whether Joomla accepted the record data.
+     */
     public function bind($src, $ignore = [])
     {
         if (is_object($src)) {
@@ -61,6 +73,10 @@ final class ProjectTable extends SportsManagementTable
         return parent::bind($src, $ignore);
     }
 
+    /**
+     * Generate the project URL alias and delegate remaining table validation.
+     * @return bool Whether the project passes validation.
+     */
     public function check()
     {
         $this->alias = OutputFilter::stringURLSafe((string) $this->name);
