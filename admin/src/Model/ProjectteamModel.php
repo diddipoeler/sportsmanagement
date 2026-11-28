@@ -586,6 +586,63 @@ final class ProjectteamModel extends SportsManagementAdminModel
     }
 
     /**
+     * Persist training controls submitted by the project-team editor.
+     * Resolves the owning team through the saved project-team relation,
+     * rather than trusting a submitted team identifier. Delegates writes
+     * to the native Team model on the selected component connection.
+     *
+     * @param array $data Saved project-team form values.
+     * @param int $id Persisted project-team identifier.
+     * @param bool $isNew Whether the project-team row was inserted.
+     * @return void
+     * @throws \RuntimeException If the training operation cannot be completed.
+     */
+    protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
+    {
+        $post = $this->administratorApplication()->getInput()->post->getArray();
+
+        if (!empty($post['delete']) || !empty($post['tdids']) || !empty($post['add_trainingData'])) {
+            if ($id <= 0) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('st.team_id'))
+                ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                    . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+                ->where($db->quoteName('pt.id') . ' = :trainingProjectTeamId')
+                ->bind(':trainingProjectTeamId', $id, ParameterType::INTEGER);
+            $db->setQuery($query);
+            $teamId = (int) $db->loadResult();
+
+            if ($teamId <= 0) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+
+            $model = $this->getMVCFactory()->createModel('Team', 'Administrator', ['ignore_request' => true]);
+            if (!$model instanceof TeamModel) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+
+            $model->setDatabase($db);
+            if (!empty($post['delete']) && (!is_array($post['delete'])
+                || !$model->DeleteTrainigData(reset($post['delete']), $teamId))) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+            if (!empty($post['tdids']) && !$model->UpdateTrainigData($post, $teamId)) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+            if (!empty($post['add_trainingData']) && !$model->addNewTrainigData($teamId)) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+        }
+
+        parent::afterSportsManagementSave($data, $id, $isNew);
+    }
+
+    /**
      * Find the season-team link for a selected project team.
      *
      * @param int $projectTeamId projectTeamId value.
