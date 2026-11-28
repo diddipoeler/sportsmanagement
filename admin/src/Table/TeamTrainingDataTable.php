@@ -15,6 +15,12 @@ use Joomla\Database\DatabaseInterface;
 
 final class TeamTrainingDataTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native team training data table with the selected database service.
+     * Registers the component storage table and its primary key with the shared table base.
+     *
+     * @param DatabaseInterface $db Active database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_team_trainingdata', 'id', $db);
