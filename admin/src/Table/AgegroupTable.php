@@ -25,10 +25,11 @@ class AgegroupTable extends SportsManagementTable
      * Registers the storage table and its primary key with the shared table
      * implementation using the injected Joomla database connection.
      * @param DatabaseInterface $db Active SportsManagement database driver.
+     * @param bool $resolved Whether the caller has already resolved the connection.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_agegroup', 'id', $db);
+        parent::__construct('#__sportsmanagement_agegroup', 'id', $db, $resolved);
     }
 
     /**
