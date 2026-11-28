@@ -18,6 +18,9 @@ final class PlaygroundsField extends SportsManagementListField
 {
     protected $type = 'playgrounds';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Initialise the native multiple-selection field for the administrator form.
      * Applies the historical ten-row display and Bootstrap styling before
