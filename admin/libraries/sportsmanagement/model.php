@@ -1507,7 +1507,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
                                 $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                                 return false;
                             }
-                            $mdl->setDatabase($this->jsmdb);
+                            $mdl->useResolvedDatabase($this->jsmdb);
                             if (!$mdl->store($post, $data['id'])) {
                                 $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                                 return false;
@@ -1526,7 +1526,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
                                 $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                                 return false;
                             }
-                            $mdl->setDatabase($this->jsmdb);
+                            $mdl->useResolvedDatabase($this->jsmdb);
                             if (!$mdl->store($post, $data['id'])) {
                                 $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                                 return false;
@@ -2247,7 +2247,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
             if (!$model instanceof \Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel) {
                 throw new \RuntimeException('Native team model unavailable.');
             }
-            $model->setDatabase($this->jsmdb);
+            $model->useResolvedDatabase($this->jsmdb);
 
             if (!empty($post['delete']) && (!is_array($post['delete'])
                 || !$model->DeleteTrainigData(reset($post['delete']), $teamId))) {
