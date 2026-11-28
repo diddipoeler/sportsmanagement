@@ -103,7 +103,7 @@ $assets->registerAndUseScript(
                     <td><input<?php echo $disabled; ?> class="form-control form-control-sm" type="text" name="knvbnr<?php echo $id; ?>" value="<?php echo $this->escape((string) ($item->knvbnr ?? '')); ?>" data-jsm-mark-row="<?php echo $i; ?>"></td>
                 <?php endif; ?>
                 <?php if ($showAgegroup) : ?>
-                    <td><?php echo HTMLHelper::_('select.genericlist', $this->agegroupOptions, 'agegroup' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', (int) ($item->agegroup_id ?? 0)); ?></td>
+                    <td><joomla-field-fancy-select search-placeholder="<?php echo htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"><?php echo HTMLHelper::_('select.genericlist', $this->agegroupOptions, 'agegroup' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', (int) ($item->agegroup_id ?? 0)); ?></joomla-field-fancy-select></td>
                 <?php endif; ?>
                 <td>
                     <?php if (!$showAgegroup) : ?><input type="hidden" name="agegroup<?php echo $id; ?>" value="<?php echo (int) ($item->agegroup_id ?? 0); ?>"><?php endif; ?>
