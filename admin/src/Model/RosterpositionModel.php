@@ -15,6 +15,25 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 final class RosterpositionModel extends SportsManagementAdminModel
 {
     /**
+     * Return the native table on the model's already resolved connection.
+     * Retain Joomla's MVC factory for custom table names and configurations.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Rosterposition') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            return $this->createResolvedTable(\Diddipoeler\Component\SportsManagement\Administrator\Table\RosterpositionTable::class);
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Clamp roster position size and normalise home or away aliases.
      *
      * @param array $data data value.
