@@ -34,6 +34,7 @@ namespace {
     final class LeagueLayoutFixture {
         public array $items = [];
         public array $inlineOptions = [];
+        public array $countryPresentation = [];
         public mixed $filterForm = null;
         public object $state;
         public object $pagination;
@@ -99,6 +100,16 @@ namespace {
         ['', $options, '<option value=""></option>'],
     ] as [$stored, $catalogue, $expected]) {
         $markup = $view->render($stored, $catalogue);
+        // The native web component enhances the existing select without
+        // replacing its submitted name or allowing free-form country codes.
+        $searchable = $stored === trim($stored);
+        if (str_contains($markup, '<joomla-field-fancy-select search-placeholder=') !== $searchable
+            || str_contains($markup, '</joomla-field-fancy-select>') !== $searchable
+            || str_contains($markup, 'allow-custom')
+            || substr_count($markup, 'name="country7"') !== 1
+            || !str_contains($markup, 'id="league-country-7"')) {
+            throw new \RuntimeException('Country search wrapper altered the existing league input.');
+        }
         if (!preg_match('~<select[^>]*name="country7"[^>]*>(.*?)</select>~s', $markup, $matches)
             || !str_contains($matches[1], $expected)
             || substr_count($matches[1], ' selected') !== ($stored === '' ? 0 : 1)
