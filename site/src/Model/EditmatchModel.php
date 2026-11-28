@@ -435,6 +435,7 @@ final class EditmatchModel extends AdminModel
     }
 
     /**
+     * Preserve the already selected site database connection for table writes.
      * Instantiate the native match table with the active model database for the historical match table name, otherwise defer to Joomla's table factory.
      * @param string $type Requested table type.
      * @param string $prefix Legacy table namespace.
@@ -444,7 +445,7 @@ final class EditmatchModel extends AdminModel
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'match') === 0) {
-            return new MatchTable($this->database());
+            return new MatchTable($this->database(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
