@@ -31,7 +31,11 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
     public function getTable($type = 'ProjectReferee', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'ProjectReferee') === 0) {
-            return new ProjectrefereeTable($this->getDatabase());
+            $table = new ProjectrefereeTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
