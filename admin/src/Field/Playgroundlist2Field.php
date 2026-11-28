@@ -13,6 +13,9 @@ final class Playgroundlist2Field extends SportsManagementListField
 {
     protected $type = 'playgroundlist2';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load venue IDs and names in alphabetical order.
      * Uses the configured database and retains inherited XML choices.
