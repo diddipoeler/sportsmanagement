@@ -2301,7 +2301,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	}
 
 	/**
-	 * Delegate record editing permissions to Joomla's native model.
+	 * Check component-level Joomla edit permission for legacy model callers.
      * Rejects unauthenticated users and does not consult unrelated message assets.
 	 *
 	 * @param   array   $data  An array of input data.
@@ -2313,7 +2313,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	protected function allowEdit($data = array(), $key = 'id')
 	{
         $identity = $this->jsmapp->getIdentity();
-        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
 	}
 
 }
