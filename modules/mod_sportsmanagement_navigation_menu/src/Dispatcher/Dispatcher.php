@@ -17,6 +17,7 @@ use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -124,7 +125,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $database;
     }
     /**
-     * Activate Navigation Menu CSS and its deferred native script.
+     * Activate Navigation Menu CSS, searchable selectors and its deferred native script.
      *
      * Reuse Joomla's shared HTML WebAssetManager across module instances
      * without repeating registrations. Preserve the original asset sources,
@@ -136,6 +137,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     private function useMenuAssets(HtmlDocument $document): void
     {
         $assets = $document->getWebAssetManager();
+        Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+        Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+        $assets->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
         $name = 'mod_sportsmanagement_navigation_menu';
         if (!$assets->assetExists('style', $name)) {
             $assets->registerStyle($name,
