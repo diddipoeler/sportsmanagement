@@ -207,7 +207,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
     }
 
     /**
-     * Check record-specific or fallback Joomla edit permission.
+     * Check component-level Joomla edit permission for statistic relations.
      * @param array $data Current relation data.
      * @param string $key Relation ID field.
      * @return bool Whether editing is allowed.
@@ -216,6 +216,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
     {
         $identity = $this->administratorApplication()->getIdentity();
 
-        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
     }
 }
