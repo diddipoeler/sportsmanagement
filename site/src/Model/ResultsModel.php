@@ -283,6 +283,8 @@ final class ResultsModel extends SportsManagementListModel
 
     /**
      * Resolve the native Joomla match table.
+     * Preserve the model's already selected connection for match edits and
+     * avoid resolving the administrator database configuration a second time.
      * @param string $type Requested table name.
      * @param string $prefix Legacy table prefix.
      * @param array $config Table options.
@@ -296,7 +298,7 @@ final class ResultsModel extends SportsManagementListModel
                 require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchTable.php';
             }
 
-            return new MatchTable($this->getDatabase());
+            return new MatchTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
