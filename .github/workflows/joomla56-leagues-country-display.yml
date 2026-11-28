@@ -6,6 +6,10 @@ on:
       - 'admin/tmpl/leagues/default.php'
       - 'admin/src/View/Leagues/HtmlView.php'
       - 'admin/src/Model/LeaguesModel.php'
+      - 'admin/src/Field/CountryField.php'
+      - 'admin/src/Field/CountrylistField.php'
+      - 'admin/src/View/Clubs/HtmlView.php'
+      - 'admin/tmpl/players/default_data.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
       - '.github/tests/joomla56_admin_country_options_guards.php'
       - '.github/tests/joomla56_leagues_country_display.php'
@@ -15,6 +19,10 @@ on:
       - 'admin/tmpl/leagues/default.php'
       - 'admin/src/View/Leagues/HtmlView.php'
       - 'admin/src/Model/LeaguesModel.php'
+      - 'admin/src/Field/CountryField.php'
+      - 'admin/src/Field/CountrylistField.php'
+      - 'admin/src/View/Clubs/HtmlView.php'
+      - 'admin/tmpl/players/default_data.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
       - '.github/tests/joomla56_admin_country_options_guards.php'
       - '.github/tests/joomla56_leagues_country_display.php'
@@ -40,6 +48,10 @@ jobs:
           php -l admin/tmpl/leagues/default.php
           php -l admin/src/View/Leagues/HtmlView.php
           php -l admin/src/Model/LeaguesModel.php
+          php -l admin/src/Field/CountryField.php
+          php -l admin/src/Field/CountrylistField.php
+          php -l admin/src/View/Clubs/HtmlView.php
+          php -l admin/tmpl/players/default_data.php
           php -l .github/tests/joomla56_leagues_country_display.php
           php -l admin/src/Helper/CountryOptionsHelper.php
           php -l .github/tests/joomla56_admin_country_options_guards.php
