@@ -15,6 +15,11 @@ use Joomla\Database\DatabaseInterface;
 
 final class ProjectteamTable extends SportsManagementTable
 {
+    /**
+     * Initialise the project-team membership table on the selected database.
+     * Registers the project-team storage table and its primary identifier.
+     * @param DatabaseInterface $db Active SportsManagement database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_project_team', 'id', $db);
