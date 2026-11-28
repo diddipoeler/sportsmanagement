@@ -18,6 +18,9 @@ final class SeasonlistField extends SportsManagementListField
 {
     protected $type = 'seasonlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Configure season selection for the current administrator view.
      * Enables multiple selection for supported edit forms and preserves
