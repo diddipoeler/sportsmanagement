@@ -145,7 +145,11 @@ final class MatchstaffstatisticModel extends SportsManagementAdminModel
     public function getTable($type = 'matchstaffstatistic', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchstaffstatistic') === 0) {
-            return new MatchstaffstatisticTable($this->getDatabase());
+            $table = new MatchstaffstatisticTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
