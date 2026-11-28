@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 $moduleId = (int) $module->id;
 ?>
@@ -22,19 +23,19 @@ $moduleId = (int) $module->id;
         <ul class="nav menu<?= htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8') ?>">
             <?php if ((string) $params->get('show_project_dropdown') === 'season') : ?>
                 <?php if ($seasonselect) : ?>
-                    <li class="season-select"><?= $seasonselect ?></li>
+                    <li class="season-select"><joomla-field-fancy-select search-placeholder="<?= htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?= $seasonselect ?></joomla-field-fancy-select></li>
                 <?php endif; ?>
                 <?php if ($leagueselect) : ?>
-                    <li class="league-select"><?= $leagueselect ?></li>
+                    <li class="league-select"><joomla-field-fancy-select search-placeholder="<?= htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?= $leagueselect ?></joomla-field-fancy-select></li>
                 <?php endif; ?>
             <?php endif; ?>
 
             <?php if ($params->get('show_project_dropdown') && $projectselect) : ?>
-                <li class="project-select"><?= $projectselect ?></li>
+                <li class="project-select"><joomla-field-fancy-select search-placeholder="<?= htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?= $projectselect ?></joomla-field-fancy-select></li>
             <?php endif; ?>
 
             <?php if ($params->get('show_division_dropdown') && $divisionselect) : ?>
-                <li class="division-select"><?= $divisionselect ?></li>
+                <li class="division-select"><joomla-field-fancy-select search-placeholder="<?= htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?= $divisionselect ?></joomla-field-fancy-select></li>
             <?php endif; ?>
 
             <?php if ($params->get('show_teams_dropdown') && $teamselect) : ?>
@@ -42,7 +43,7 @@ $moduleId = (int) $module->id;
                     <?php if ($heading = trim((string) $params->get('heading_teams_dropdown', ''))) : ?>
                         <span class="label"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></span>
                     <?php endif; ?>
-                    <?= $teamselect ?>
+                    <joomla-field-fancy-select search-placeholder="<?= htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?= $teamselect ?></joomla-field-fancy-select>
                 </li>
             <?php endif; ?>
 
