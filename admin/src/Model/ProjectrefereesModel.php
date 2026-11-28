@@ -331,6 +331,8 @@ final class ProjectrefereesModel extends SportsManagementListModel
 
     /**
      * Build the filtered database query for project referees.
+     * Restricts results to the project, optional season, nationality,
+     * position, publication state and name search using bound parameters.
      * @return mixed
      */
     protected function getListQuery()
@@ -376,6 +378,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         if ($this->season_id > 0) {
             $query->where($db->quoteName('tp.season_id') . ' = :listSeasonId')
                 ->bind(':listSeasonId', $this->season_id, ParameterType::INTEGER);
+        }
+
+        $country = trim((string) $this->getState('filter.search_nation', ''));
+        if ($country !== '' && $country !== '0') {
+            $query->where($db->quoteName('p.country') . ' = :refereeCountry')
+                ->bind(':refereeCountry', $country, ParameterType::STRING);
         }
 
         $positionId = (int) $this->getState('filter.project_position_id');
@@ -443,6 +451,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
 
     /**
      * Build a cache key from the current referee list state.
+     * Includes nationality and other filters to prevent reuse of unrelated rows.
      *
      * @param mixed $id id value.
      * @return mixed
@@ -454,6 +463,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
         $id .= ':' . (string) $this->getState('filter.search');
         $id .= ':' . (string) $this->getState('filter.state');
         $id .= ':' . (string) $this->getState('filter.project_position_id');
+        $id .= ':' . (string) $this->getState('filter.search_nation');
 
         return parent::getStoreId($id);
     }
