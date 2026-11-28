@@ -15,6 +15,9 @@ final class ActseasonField extends SportsManagementListField
 {
     protected $type = 'actseason';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Return sorted season IDs and names for active season selection.
      *
