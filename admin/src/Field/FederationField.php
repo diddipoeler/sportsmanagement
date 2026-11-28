@@ -15,6 +15,9 @@ final class FederationField extends SportsManagementListField
 {
     protected $type = 'Federation';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Query root-level federations for a Joomla administrator field.
      *
