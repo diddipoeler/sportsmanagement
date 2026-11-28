@@ -18,6 +18,9 @@ final class FavteamField extends SportsManagementListField
 {
     protected $type = 'Favteam';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load teams participating in the active project for favourite-team selection.
      * Resolves the administrator project context and validates the ID before
