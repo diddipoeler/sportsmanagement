@@ -145,7 +145,7 @@ $divisionStatFields = [
                             <?php if (!$this->individualProject && !empty($item->clubname)) : ?>
                                 <div class="small text-muted">
                                     <?php echo $this->escape((string) $item->clubname); ?>
-                                    <?php if (!empty($item->country)) : ?> · <?php echo $this->escape((string) $item->country); ?><?php endif; ?>
+                                    <?php if (!empty($item->country)) : ?> · <?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?><?php endif; ?>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($item->editor)) : ?>
