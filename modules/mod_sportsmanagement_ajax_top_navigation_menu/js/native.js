@@ -11,7 +11,7 @@
         if (payload?.data && Array.isArray(payload.data.data)) {
             return payload.data.data;
         }
-        return [];
+        return null;
     };
 
     const linkData = (payload) => {
@@ -72,24 +72,43 @@
 
     const selectValue = (root, id) => root.querySelector(`#${CSS.escape(id)}`)?.value ?? '';
 
+    // Keep Choices' internal catalogue and the submitted native select in sync.
     const replaceOptions = (select, payload) => {
-        if (!select) {
-            return;
+        if (!select) return;
+        const rows = optionData(payload);
+        if (!rows) return;
+        const options = [];
+        const seen = new Set();
+        for (const item of rows) {
+            const rawValue = item?.value ?? item?.id;
+            const rawLabel = item?.text ?? item?.name ?? rawValue;
+            if (!['string', 'number'].includes(typeof rawValue)
+                || !['string', 'number'].includes(typeof rawLabel)) continue;
+            const value = String(rawValue);
+            if (seen.has(value)) continue;
+            seen.add(value);
+            options.push({
+                value, label: String(rawLabel),
+                selected: options.length === 0,
+                projectType: typeof item.project_type === 'string' ? item.project_type : '',
+            });
         }
+        if (rows.length && !options.length) return;
 
-        const fragment = document.createDocumentFragment();
-        optionData(payload).forEach((item) => {
-            const option = document.createElement('option');
-            const value = item?.value ?? item?.id ?? '';
-            const text = item?.text ?? item?.name ?? value;
-            option.value = String(value);
-            option.textContent = String(text);
-            if (item?.project_type) {
-                option.dataset.projectType = String(item.project_type);
+        const choices = select.closest('joomla-field-fancy-select')?.choicesInstance;
+        if (choices && typeof choices.clearStore === 'function' && typeof choices.setChoices === 'function') {
+            choices.clearStore();
+            choices.setChoices(options.map(({value, label, selected}) => ({value, label, selected})), 'value', 'label', true);
+        } else {
+            const fragment = document.createDocumentFragment();
+            for (const row of options) {
+                fragment.appendChild(new Option(row.label, row.value, false, row.selected));
             }
-            fragment.appendChild(option);
-        });
-        select.replaceChildren(fragment);
+            select.replaceChildren(fragment);
+        }
+        // Choices versions may rebuild native options on selection. Keep the
+        // project-type metadata separately rather than relying on data attributes.
+        select.jsmProjectTypes = new Map(options.map(row => [row.value, row.projectType]));
         select.dispatchEvent(new Event('change:options', { bubbles: true }));
     };
 
@@ -117,7 +136,7 @@
         ids.forEach((id) => {
             const element = root.querySelector(`#${CSS.escape(id)}`);
             if (element) {
-                element.replaceChildren();
+                replaceOptions(element, []);
             }
         });
     };
@@ -236,7 +255,7 @@
     const projectNavigation = (config, projectSelect) => {
         const views = [...(config.navpoint || [])];
         const labels = [...(config.navpointLabel || [])];
-        const selectedProjectType = projectSelect?.selectedOptions?.[0]?.dataset?.projectType || config.projectType || '';
+        const selectedProjectType = projectSelect?.jsmProjectTypes?.get(projectSelect.value) ?? (projectSelect?.selectedOptions?.[0]?.dataset?.projectType || config.projectType || '');
 
         if (config.showTournamentNavLinks || selectedProjectType === 'TOURNAMENT_MODE') {
             views.push('tournamentbracket');
@@ -394,7 +413,7 @@
                 const teams = await request(config, 'getProjectTeams', { project_id: value });
                 if (!isCurrent(token)()) return;
                 replaceOptions(element('team'), teams);
-                config.projectType = element('project')?.selectedOptions?.[0]?.dataset?.projectType || '';
+                config.projectType = element('project')?.jsmProjectTypes?.get(value) ?? (element('project')?.selectedOptions?.[0]?.dataset?.projectType || '');
                 const navigation = projectNavigation(config, element('project'));
                 await renderLinks(
                     projectList(), root, config, navigation.views, navigation.labels,
