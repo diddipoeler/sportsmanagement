@@ -18,6 +18,9 @@ final class ProjectteamlistField extends SportsManagementListField
 {
     protected $type = 'projectteamlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load teams belonging to the currently selected administrator project.
      * Resolves the saved project identifier, joins season and project team
