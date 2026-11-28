@@ -106,6 +106,7 @@ final class EditpersonModel extends AdminModel
     }
 
     /**
+     * Preserve the already selected site database connection for table writes.
      * Resolve the native person table for the edit form.
      * @param string $type Table identifier.
      * @param string $prefix Legacy table prefix.
@@ -115,7 +116,7 @@ final class EditpersonModel extends AdminModel
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
-            return new PersonTable($this->getDatabase());
+            return new PersonTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
