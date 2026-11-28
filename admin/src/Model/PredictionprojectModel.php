@@ -125,7 +125,11 @@ final class PredictionprojectModel extends SportsManagementAdminModel
     public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionproject') === 0) {
-            return new PredictionprojectTable($this->getDatabase());
+            $table = new PredictionprojectTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -159,21 +163,17 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
     /**
      * Verify the current identity's permission to edit a prediction project.
-     * Preserves standard Joomla ACL as a fallback for record-specific rights.
+     * Uses component edit permission and rejects unauthenticated identities.
      * @param array $data Prediction project record.
      * @param string $key Record identifier property.
      * @return bool Whether edit access is granted.
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        )) || parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
     }
 
     /**
