@@ -521,9 +521,10 @@ final class MatchModel extends SportsManagementAdminModel
      * any relation-table rows and delegates match-row
      * deletion to Joomla's native parent model, rolling back on errors.
      * @param mixed $pks Selected match identifiers, by reference.
+     * @param bool $manageTransaction Whether to own the transaction; false only within a caller-managed transaction.
      * @return bool True when the deletion succeeds or nothing is selected.
      */
-    public function delete(&$pks)
+    public function delete(&$pks, bool $manageTransaction = true)
     {
         $ids = self::normaliseSelectionIds($pks);
 
@@ -544,8 +545,12 @@ final class MatchModel extends SportsManagementAdminModel
             '#__sportsmanagement_match_single',
         ];
 
+        $transactionStarted = false;
         try {
-            $db->transactionStart();
+            if ($manageTransaction) {
+                $db->transactionStart();
+                $transactionStarted = true;
+            }
 
             // Joomla's parent delete may skip records denied by canDelete.
             // Check every selected record before touching its dependent data.
@@ -575,12 +580,16 @@ final class MatchModel extends SportsManagementAdminModel
                 throw new \RuntimeException((string) $this->getError());
             }
 
-            $db->transactionCommit();
+            if ($transactionStarted) {
+                $db->transactionCommit();
+            }
             return true;
         } catch (\Throwable $e) {
-            try {
-                $db->transactionRollback();
-            } catch (\Throwable) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                }
             }
 
             $this->setError($e->getMessage());
