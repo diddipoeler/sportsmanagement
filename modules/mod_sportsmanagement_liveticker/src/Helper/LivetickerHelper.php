@@ -627,7 +627,7 @@ final class LivetickerHelper
             return $value === 0 || $value === 1 ? $value : null;
         }
 
-        if (!is_string($value) || !preg_match('/^0*([01])$/D', $value, $matches)) {
+        if (!is_string($value) || strlen($value) > 64 || !preg_match('/^0*([01])$/D', $value, $matches)) {
             return null;
         }
 
