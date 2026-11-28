@@ -106,6 +106,21 @@ abstract class SportsManagementAdminModel extends AdminModel
     }
 
     /**
+     * Adopt the already resolved connection of a trusted parent model.
+     *
+     * Internal callers must pass their active database object, not a request
+     * parameter or a new connection. This preserves transaction identity
+     * without resolving the external database configuration a second time.
+     *
+     * @param DatabaseInterface $db Parent model's active connection.
+     * @return void
+     */
+    final public function useResolvedDatabase(DatabaseInterface $db): void
+    {
+        parent::setDatabase($db);
+    }
+
+    /**
      * Validate the database preference without Joomla's lossy getInt().
      *
      * Accept zero and one, as well as zero-padded legacy radio-field values.
