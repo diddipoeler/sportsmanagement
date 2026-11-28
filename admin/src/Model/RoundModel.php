@@ -57,7 +57,7 @@ final class RoundModel extends SportsManagementAdminModel
     public function getTable($type = 'Round', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Round') === 0) {
-            return new RoundTable($this->getDatabase());
+            return new RoundTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
