@@ -106,7 +106,13 @@ $renderCountryOptions = static function (array $options, $selected): string {
               <?php endif; ?>
               <div class="small text-muted"><?php echo $this->escape($item->short_name); ?> · <?php echo $this->escape(Text::_($item->sportstype)); ?></div>
             </td>
-            <td><select class="form-select form-select-sm" name="country<?php echo (int) $item->id; ?>"><option value=""></option><?php echo $renderCountryOptions($this->inlineOptions['countries'] ?? [], $item->country ?? ''); ?></select></td>
+            <td>
+              <?php $countryCode = strtoupper(trim((string) ($item->country ?? ''))); ?>
+              <?php if (isset($this->countryPresentation[$countryCode])) : ?>
+                <div class="small mb-1"><?php echo $this->countryPresentation[$countryCode]; ?></div>
+              <?php endif; ?>
+              <select class="form-select form-select-sm" name="country<?php echo (int) $item->id; ?>"><option value=""></option><?php echo $renderCountryOptions($this->inlineOptions['countries'] ?? [], $item->country ?? ''); ?></select>
+            </td>
             <td><select class="form-select form-select-sm" name="association<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['associations'], $item->associations); ?></select></td>
             <td><select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['agegroups'], $item->agegroup_id); ?></select></td>
             <td class="text-center"><select class="form-select form-select-sm" name="published_act_season<?php echo (int) $item->id; ?>"><option value="0"<?php echo (int) $item->published_act_season === 0 ? ' selected' : ''; ?>><?php echo Text::_('JNO'); ?></option><option value="1"<?php echo (int) $item->published_act_season === 1 ? ' selected' : ''; ?>><?php echo Text::_('JYES'); ?></option></select></td>
