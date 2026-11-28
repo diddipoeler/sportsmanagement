@@ -442,10 +442,13 @@ final class ProjectteamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Delete project teams and their dependent match assignments.
+     * Delete project teams and their dependent match assignments atomically.
+     * Checks every selected project team and match using the native Joomla
+     * deletion permission before removing any records. Uses MatchModel to
+     * clean dependent match data, within the outer database transaction.
      *
-     * @param mixed $pks pks value.
-     * @return mixed
+     * @param mixed $pks Selected project-team identifiers by reference.
+     * @return bool Whether all selected records were deleted.
      */
     public function delete(&$pks)
     {
@@ -456,18 +459,64 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
+        $transactionStarted = false;
 
-        foreach (['projectteam1_id', 'projectteam2_id'] as $field) {
-            $query = $db->createQuery()
-                ->delete($db->quoteName('#__sportsmanagement_match'))
-                ->whereIn($db->quoteName($field), $ids, ParameterType::INTEGER);
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
+            $table = $this->getTable();
 
-            if (!$this->execute($query)) {
-                return false;
+            foreach ($ids as $id) {
+                if (!$table->load($id) || !$this->canDelete($table)) {
+                    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'));
+                }
             }
-        }
 
-        return parent::delete($ids);
+            // Collect both home and away matches without deleting any data yet.
+            $matchIds = [];
+            foreach (['projectteam1_id', 'projectteam2_id'] as $field) {
+                $query = $db->createQuery()
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__sportsmanagement_match'))
+                    ->whereIn($db->quoteName($field), $ids, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $rows = $db->loadColumn();
+                if (!is_array($rows)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+                $matchIds = array_merge($matchIds, $rows);
+            }
+
+            $matchIds = $this->normaliseIds($matchIds);
+            if ($matchIds) {
+                $model = $this->getMVCFactory()->createModel('Match', 'Administrator', ['ignore_request' => true]);
+                if (!$model instanceof MatchModel) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+                $model->setDatabase($db);
+                if (!$model->delete($matchIds, false)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+            }
+
+            if (!parent::delete($ids)) {
+                throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            }
+
+            $db->transactionCommit();
+            return true;
+        } catch (\Throwable $error) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original deletion failure.
+                }
+            }
+
+            $this->setError($error->getMessage());
+            return false;
+        }
     }
 
     /**
