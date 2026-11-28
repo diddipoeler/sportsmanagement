@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teams;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamsModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -19,6 +20,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class HtmlView extends BaseHtmlView
 {
     public $items = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
     public $pagination;
     public $state;
     public $filterForm;
@@ -46,6 +49,7 @@ final class HtmlView extends BaseHtmlView
         $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters() ?: [];
         $this->inlineOptions = $model->getInlineOptions();
+        $this->countryPresentation = CountryOptionsHelper::getListPresentation($model->getSportsManagementDatabase());
         $this->clubId = (int) $this->state->get('filter.club_id');
 
         if ($errors = $model->getErrors()) {
