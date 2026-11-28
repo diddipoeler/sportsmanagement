@@ -77,6 +77,7 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
      * Synchronise event types assigned to a selected playing position.
      * Deletes removed links and inserts or reorders current selections
      * within the optionally managed database transaction.
+     * Rejects malformed selections before deleting links; an explicit empty array clears them.
      * @param array $data Selected position event-type values.
      * @param int $position_id Parent position identifier.
      * @param bool $manageTransaction Whether to manage the transaction here.
@@ -100,10 +101,35 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         }
 
         $positionId = (int) $position_id;
-        $eventIds = isset($data['position_eventslist']) && is_array($data['position_eventslist'])
-            ? $data['position_eventslist']
-            : [];
-        $eventIds = array_values(array_unique(array_filter(array_map('intval', $eventIds), static fn (int $id): bool => $id > 0)));
+        if (!is_array($data) || !array_key_exists('position_eventslist', $data) || !is_array($data['position_eventslist'])) {
+            $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+
+        $eventIds = [];
+        foreach ($data['position_eventslist'] as $raw) {
+            if ($raw === '' || $raw === 0 || $raw === '0') {
+                continue;
+            }
+
+            if (is_string($raw) && strlen($raw) <= 64 && preg_match('/^[0-9]+$/D', $raw) === 1) {
+                $raw = ltrim($raw, '0');
+                if ($raw === '') {
+                    continue;
+                }
+            } elseif (!is_int($raw)) {
+                $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                return false;
+            }
+
+            $id = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id === false) {
+                $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                return false;
+            }
+            $eventIds[$id] = $id;
+        }
+        $eventIds = array_values($eventIds);
         $db = $this->getDatabase();
         $transactionStarted = false;
 
@@ -188,13 +214,8 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        )) || parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
     }
 }
