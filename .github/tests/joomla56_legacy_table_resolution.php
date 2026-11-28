@@ -111,6 +111,9 @@ namespace {
         'ProjectrefereeTable', 'TeamplayerTable', 'PlaygroundTable', 'SportstypeTable', 'AgegroupTable',
         'MatcheventTable', 'MatchplayerTable', 'MatchrefereeTable', 'MatchstaffTable',
         'MatchstaffstatisticTable', 'MatchstatisticTable', 'MatchcommentaryTable',
+        'PredictionadminTable', 'PredictionentryTable', 'PredictiongameTable',
+        'PredictiongroupTable', 'PredictionmemberTable', 'PredictionprojectTable',
+        'PredictionresultTable', 'PredictionroundTable', 'PredictiontemplateTable',
     ] as $name) {
         $class = $prefix . $name;
         $before = $resolver::$calls;
