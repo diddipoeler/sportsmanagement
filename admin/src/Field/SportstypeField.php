@@ -15,6 +15,9 @@ final class SportstypeField extends SportsManagementListField
 {
     protected $type = 'Sportstype';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load sport types with translated names in alphabetical order.
      * Uses the configured SportsManagement database and appends valid
