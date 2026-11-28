@@ -19,6 +19,9 @@ final class ActeventtypeField extends SportsManagementListField
 {
     protected $type = 'acteventtype';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Select event types for the current record's sport in an admin form.
      *
