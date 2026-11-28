@@ -17,11 +17,22 @@ use Joomla\Database\DatabaseInterface;
 
 final class PersonTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native person table on the selected database connection.
+     * Registers the person storage table and its ID as the primary key.
+     * @param DatabaseInterface $db Active SportsManagement database driver.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_person', 'id', $db);
     }
 
+    /**
+     * Validate the person name and generate a URL-safe alias before storage.
+     * Requires at least one of the first or last names and normalises an
+     * existing alias instead of replacing it with a newly generated one.
+     * @return bool Whether the person has a usable name.
+     */
     public function check()
     {
         $firstname = trim((string) ($this->firstname ?? ''));
