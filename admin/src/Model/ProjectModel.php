@@ -59,7 +59,7 @@ final class ProjectModel extends SportsManagementAdminModel
     public function getTable($type = 'Project', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Project') === 0) {
-            return new ProjectTable($this->getDatabase());
+            return new ProjectTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
