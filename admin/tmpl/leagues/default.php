@@ -111,7 +111,19 @@ $renderCountryOptions = static function (array $options, $selected): string {
               <?php if (isset($this->countryPresentation[$countryCode])) : ?>
                 <div class="small mb-1"><?php echo $this->countryPresentation[$countryCode]; ?></div>
               <?php endif; ?>
-              <select class="form-select form-select-sm" name="country<?php echo (int) $item->id; ?>"><option value=""></option><?php echo $renderCountryOptions($this->inlineOptions['countries'] ?? [], $item->country ?? ''); ?></select>
+              <?php
+              // Older Choices.js releases trim option values; keep unusual historical
+              // whitespace-bearing codes in the unenhanced select until explicitly changed.
+              $storedCountry = (string) ($item->country ?? '');
+              $searchableCountry = $storedCountry === trim($storedCountry);
+              ?>
+              <?php if ($searchableCountry) : ?>
+                <joomla-field-fancy-select search-placeholder="<?php echo htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">
+              <?php endif; ?>
+              <select class="form-select form-select-sm" id="league-country-<?php echo (int) $item->id; ?>" name="country<?php echo (int) $item->id; ?>" aria-label="<?php echo htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>" data-max-results="30"><option value=""></option><?php echo $renderCountryOptions($this->inlineOptions['countries'] ?? [], $storedCountry); ?></select>
+              <?php if ($searchableCountry) : ?>
+                </joomla-field-fancy-select>
+              <?php endif; ?>
             </td>
             <td><select class="form-select form-select-sm" name="association<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['associations'], $item->associations); ?></select></td>
             <td><select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>"><option value="0"></option><?php echo $renderOptions($this->inlineOptions['agegroups'], $item->agegroup_id); ?></select></td>
