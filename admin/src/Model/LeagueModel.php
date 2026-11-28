@@ -32,7 +32,7 @@ final class LeagueModel extends SportsManagementAdminModel
     public function getTable($type = 'League', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'League') === 0) {
-            return new LeagueTable($this->getDatabase());
+            return new LeagueTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
