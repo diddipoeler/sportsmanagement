@@ -11,6 +11,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel as AdministratorListModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementModel as SiteModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementListModel as SiteListModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap as AdministratorLegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap as SiteLegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
@@ -84,7 +89,7 @@ final class SportsManagementMVCFactory extends MVCFactory
             $model = parent::createModel($name, $prefix, $config);
         }
 
-        $this->restoreSportsManagementDatabase($model);
+        $this->restoreSportsManagementDatabase($model, $prefix);
 
         return $model;
     }
@@ -498,27 +503,50 @@ final class SportsManagementMVCFactory extends MVCFactory
     }
 
     /**
-     * Supply a model with its SportsManagement database after MVC creation.
+     * Restore the component database after Joomla's MVC factory injects its driver.
      *
-     * Only models implementing Joomla's DatabaseAwareInterface are updated.
-     * If component database selection fails, Joomla's previously injected
-     * database remains in place so the legacy bridge can still render safely.
+     * Native JSM base models already resolve their database in setDatabase().
+     * Legacy administrator models instead retain the exact connection selected
+     * during construction, including the driver used by their query builders.
+     * Other models receive the resolver appropriate to their MVC client.
      *
      * @param mixed $model Model returned by Joomla's factory, if any.
+     * @param string $prefix Normalised MVC client prefix.
      * @return void
      */
-    private function restoreSportsManagementDatabase($model): void
+    private function restoreSportsManagementDatabase($model, string $prefix): void
     {
-        if (!$model instanceof DatabaseAwareInterface) {
+        if (!$model instanceof DatabaseAwareInterface
+            || $model instanceof SportsManagementAdminModel
+            || $model instanceof AdministratorListModel
+            || $model instanceof SiteModel
+            || $model instanceof SiteListModel) {
             return;
         }
 
-        try {
-            $model->setDatabase(
-                SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), 0)
-            );
-        } catch (\Throwable) {
-            // Keep Joomla's injected database connection as fallback.
+        if ($prefix === 'Administrator') {
+            if ($model instanceof \JSMModelAdmin
+                || $model instanceof \JSMModelList
+                || $model instanceof \JSMModelLegacy) {
+                if ($model->jsmdb instanceof DatabaseInterface) {
+                    $model->setDatabase($model->jsmdb);
+                    return;
+                }
+            }
+
+            // Do not swallow malformed administrator selectors.
+            $model->setDatabase(LegacyModelDatabaseHelper::resolve(self::joomlaDatabase()));
+            return;
+        }
+
+        if ($prefix === 'Site') {
+            try {
+                $model->setDatabase(
+                    SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), 0)
+                );
+            } catch (\Throwable) {
+                // Keep Joomla's injected database connection as fallback.
+            }
         }
     }
 }
