@@ -29,7 +29,7 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
     public function getTable($type = 'positioneventtype', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'positioneventtype') === 0) {
-            return new PositioneventtypeTable($this->getDatabase());
+            return new PositioneventtypeTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -178,7 +178,9 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
                     'eventtype_id' => $eventId,
                     'ordering' => (int) $ordering,
                 ];
-                $db->insertObject('#__sportsmanagement_position_eventtype', $record);
+                if (!$db->insertObject('#__sportsmanagement_position_eventtype', $record)) {
+                    throw new \RuntimeException('Position relation insert failed.');
+                }
             }
 
             if ($transactionStarted) {
