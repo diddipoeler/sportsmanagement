@@ -36,8 +36,14 @@ namespace Joomla\CMS\Table {
 }
 namespace Diddipoeler\Component\SportsManagement\Administrator\Helper {
     class SportsManagementDatabaseResolver {
-        /** Preserve the supplied database connection in this isolated test. */
-        public function resolve($selector, $db): object { return $db; }
+        public static ?\Joomla\Database\DatabaseInterface $replacement = null;
+        public static int $calls = 0;
+
+        /** Simulate a resolver that may return a different connection. */
+        public function resolve($selector, $db): object {
+            self::$calls++;
+            return self::$replacement ?? $db;
+        }
     }
 }
 namespace {
@@ -93,6 +99,22 @@ namespace {
     if (count($calls) !== 2 || $calls[0] !== ['smquotestxt', 'sportsmanagementTable', ['dbo' => $db]]
         || $calls[1] !== ['player', 'ExternalTable', ['custom' => 1, 'dbo' => $db]]) {
         throw new \RuntimeException('Legacy fallback did not preserve configuration.');
+    }
+
+    // An already resolved connection must survive table construction unchanged.
+    $resolver = \Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::class;
+    $resolver::$replacement = new class implements \Joomla\Database\DatabaseInterface {};
+    foreach (['ProjectteamTable', 'MatchTable', 'PositioneventtypeTable', 'PositionstatisticTable'] as $name) {
+        $class = $prefix . $name;
+        $before = $resolver::$calls;
+        $resolved = new $class($db, true);
+        if ($resolved->database !== $db || $resolver::$calls !== $before) {
+            throw new \RuntimeException('Resolved connection was replaced: ' . $name);
+        }
+        $legacy = new $class($db);
+        if ($legacy->database !== $resolver::$replacement || $resolver::$calls !== $before + 1) {
+            throw new \RuntimeException('Default resolver contract changed: ' . $name);
+        }
     }
 
     echo "Legacy administrator table resolution: OK\n";
