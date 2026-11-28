@@ -77,6 +77,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
      * Synchronise statistics assigned to the selected playing position.
      * Deletes obsolete links and reorders or inserts current relations
      * within an optional database transaction.
+     * Rejects malformed selections before deleting links; an explicit empty array clears them.
      * @param array $data Selected position statistic IDs.
      * @param int $position_id Parent position identifier.
      * @param bool $manageTransaction Whether to manage the transaction here.
@@ -100,10 +101,35 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         }
 
         $positionId = (int) $position_id;
-        $statisticIds = isset($data['position_statistic']) && is_array($data['position_statistic'])
-            ? $data['position_statistic']
-            : [];
-        $statisticIds = array_values(array_unique(array_filter(array_map('intval', $statisticIds), static fn (int $id): bool => $id > 0)));
+        if (!is_array($data) || !array_key_exists('position_statistic', $data) || !is_array($data['position_statistic'])) {
+            $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+
+        $statisticIds = [];
+        foreach ($data['position_statistic'] as $raw) {
+            if ($raw === '' || $raw === 0 || $raw === '0') {
+                continue;
+            }
+
+            if (is_string($raw) && strlen($raw) <= 64 && preg_match('/^[0-9]+$/D', $raw) === 1) {
+                $raw = ltrim($raw, '0');
+                if ($raw === '') {
+                    continue;
+                }
+            } elseif (!is_int($raw)) {
+                $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                return false;
+            }
+
+            $id = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id === false) {
+                $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                return false;
+            }
+            $statisticIds[$id] = $id;
+        }
+        $statisticIds = array_values($statisticIds);
         $db = $this->getDatabase();
         $transactionStarted = false;
 
@@ -188,13 +214,8 @@ final class PositionstatisticModel extends SportsManagementAdminModel
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        )) || parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
     }
 }
