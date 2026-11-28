@@ -178,6 +178,8 @@ final class ProjectteamModel extends SportsManagementAdminModel
      * Save quick-edit project-team assignments and division points.
      * Preflight all submitted club and team identifiers against persisted
      * project memberships before any write, rejecting unrelated records.
+     * Validates destination project seasons and rolls back all quick-edit
+     * writes when a project-team, club, team or division update fails.
      * @return bool
      */
     public function saveshort(): bool
@@ -215,14 +217,16 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $userId = (int) $identity->id;
         $associationId = $this->projectAssociation($projectId);
         $divisionPoints = is_array($post['division_points'] ?? null) ? $post['division_points'] : [];
-        $result = true;
+        $transactionStarted = false;
 
         // Validate every submitted owner before the first write.
         $owners = [];
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
             foreach ($ids as $id) {
                 $query = $db->createQuery()
-                    ->select([$db->quoteName('st.team_id'), $db->quoteName('t.club_id')])
+                    ->select([$db->quoteName('st.team_id'), $db->quoteName('t.club_id'), $db->quoteName('st.season_id')])
                     ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
                     ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                         . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -237,7 +241,25 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 if (!is_object($owner)) {
                     throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
                 }
-                $owners[$id] = [];
+                $destination = $this->assignmentIds([
+                    $projectId !== $targetProjectId ? $targetProjectId : ($post['new_project_id' . $id] ?? $projectId)
+                ]);
+                if ($destination === null) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+                $destinationId = $destination[0];
+                $query = $db->createQuery()
+                    ->select($db->quoteName('season_id'))
+                    ->from($db->quoteName('#__sportsmanagement_project'))
+                    ->where($db->quoteName('id') . ' = :quickDestinationId')
+                    ->bind(':quickDestinationId', $destinationId, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $destinationSeason = (int) $db->loadResult();
+                if ($destinationSeason <= 0 || $destinationSeason !== (int) ($owner->season_id ?? 0)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+
+                $owners[$id] = ['project_id' => $destinationId];
                 foreach (['team_id', 'club_id'] as $field) {
                     $raw = $post[$field . $id] ?? 0;
                     if (in_array($raw, [0, '0', ''], true)) {
@@ -251,104 +273,96 @@ final class ProjectteamModel extends SportsManagementAdminModel
                     $owners[$id][$field] = $selected[0];
                 }
             }
+
+            foreach ($ids as $id) {
+                $record = (object) [
+                    'id' => $id,
+                    'division_id' => (int) ($post['division_id' . $id] ?? 0),
+                    'start_points' => (string) ($post['start_points' . $id] ?? '0'),
+                    'penalty_points' => (string) ($post['penalty_points' . $id] ?? '0'),
+                    'is_in_score' => (int) ($post['is_in_score' . $id] ?? 0),
+                    'use_finally' => (int) ($post['use_finally' . $id] ?? 0),
+                    'finaltablerank' => (int) ($post['finaltablerank' . $id] ?? 0),
+                    'champion' => (int) ($post['champion' . $id] ?? 0),
+                    'points_finally' => (string) ($post['points_finally' . $id] ?? '0'),
+                    'neg_points_finally' => (string) ($post['neg_points_finally' . $id] ?? '0'),
+                    'matches_finally' => (int) ($post['matches_finally' . $id] ?? 0),
+                    'won_finally' => (int) ($post['won_finally' . $id] ?? 0),
+                    'draws_finally' => (int) ($post['draws_finally' . $id] ?? 0),
+                    'lost_finally' => (int) ($post['lost_finally' . $id] ?? 0),
+                    'homegoals_finally' => (int) ($post['homegoals_finally' . $id] ?? 0),
+                    'guestgoals_finally' => (int) ($post['guestgoals_finally' . $id] ?? 0),
+                    'diffgoals_finally' => (int) ($post['diffgoals_finally' . $id] ?? 0),
+                    'modified' => $date,
+                    'modified_by' => $userId,
+                ];
+
+                $record->project_id = $owners[$id]['project_id'];
+
+                if (!$db->updateObject('#__sportsmanagement_project_team', $record, 'id')) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
+
+                $clubId = $owners[$id]['club_id'];
+
+                if ($clubId > 0) {
+                    $club = (object) [
+                        'id' => $clubId,
+                        'location' => trim((string) ($post['location' . $id] ?? '')),
+                        'name' => trim((string) ($post['clubname' . $id] ?? '')),
+                        'zipcode' => trim((string) ($post['zipcode' . $id] ?? '')),
+                        'address' => trim((string) ($post['address' . $id] ?? '')),
+                        'founded_year' => trim((string) ($post['founded_year' . $id] ?? '')),
+                        'unique_id' => trim((string) ($post['unique_id' . $id] ?? '')),
+                        'modified' => $date,
+                        'modified_by' => $userId,
+                    ];
+
+                    if ($associationId > 0 && !$this->clubHasAssociation($clubId)) {
+                        $club->associations = $associationId;
+                    }
+
+                    if (!$db->updateObject('#__sportsmanagement_club', $club, 'id')) {
+                            throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                        }
+                }
+
+                $teamId = $owners[$id]['team_id'];
+
+                if ($teamId > 0) {
+                    $teamUpdate = (object) [
+                        'id' => $teamId,
+                        'name' => trim((string) ($post['teamname' . $id] ?? '')),
+                        'modified' => $date,
+                        'modified_by' => $userId,
+                    ];
+
+                    if (!$db->updateObject('#__sportsmanagement_team', $teamUpdate, 'id')) {
+                            throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                        }
+                }
+
+                foreach ((array) ($divisionPoints[$id] ?? []) as $divisionId => $values) {
+                    if (!$this->updateDivisionPoints($id, (int) $divisionId, (array) $values)) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
+                }
+            }
+
+            $db->transactionCommit();
+            return true;
         } catch (\Throwable $error) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original quick-edit failure.
+                }
+            }
+
             $this->setError($error->getMessage());
             return false;
         }
-
-        foreach ($ids as $id) {
-            $record = (object) [
-                'id' => $id,
-                'division_id' => (int) ($post['division_id' . $id] ?? 0),
-                'start_points' => (string) ($post['start_points' . $id] ?? '0'),
-                'penalty_points' => (string) ($post['penalty_points' . $id] ?? '0'),
-                'is_in_score' => (int) ($post['is_in_score' . $id] ?? 0),
-                'use_finally' => (int) ($post['use_finally' . $id] ?? 0),
-                'finaltablerank' => (int) ($post['finaltablerank' . $id] ?? 0),
-                'champion' => (int) ($post['champion' . $id] ?? 0),
-                'points_finally' => (string) ($post['points_finally' . $id] ?? '0'),
-                'neg_points_finally' => (string) ($post['neg_points_finally' . $id] ?? '0'),
-                'matches_finally' => (int) ($post['matches_finally' . $id] ?? 0),
-                'won_finally' => (int) ($post['won_finally' . $id] ?? 0),
-                'draws_finally' => (int) ($post['draws_finally' . $id] ?? 0),
-                'lost_finally' => (int) ($post['lost_finally' . $id] ?? 0),
-                'homegoals_finally' => (int) ($post['homegoals_finally' . $id] ?? 0),
-                'guestgoals_finally' => (int) ($post['guestgoals_finally' . $id] ?? 0),
-                'diffgoals_finally' => (int) ($post['diffgoals_finally' . $id] ?? 0),
-                'modified' => $date,
-                'modified_by' => $userId,
-            ];
-
-            $record->project_id = $projectId !== $targetProjectId
-                ? $targetProjectId
-                : (int) ($post['new_project_id' . $id] ?? $projectId);
-
-            try {
-                if (!$db->updateObject('#__sportsmanagement_project_team', $record, 'id')) {
-                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
-                }
-            } catch (\Throwable $e) {
-                $this->setError($e->getMessage());
-                $result = false;
-            }
-
-            $clubId = $owners[$id]['club_id'];
-
-            if ($clubId > 0) {
-                $club = (object) [
-                    'id' => $clubId,
-                    'location' => trim((string) ($post['location' . $id] ?? '')),
-                    'name' => trim((string) ($post['clubname' . $id] ?? '')),
-                    'zipcode' => trim((string) ($post['zipcode' . $id] ?? '')),
-                    'address' => trim((string) ($post['address' . $id] ?? '')),
-                    'founded_year' => trim((string) ($post['founded_year' . $id] ?? '')),
-                    'unique_id' => trim((string) ($post['unique_id' . $id] ?? '')),
-                    'modified' => $date,
-                    'modified_by' => $userId,
-                ];
-
-                if ($associationId > 0 && !$this->clubHasAssociation($clubId)) {
-                    $club->associations = $associationId;
-                }
-
-                try {
-                    if (!$db->updateObject('#__sportsmanagement_club', $club, 'id')) {
-                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
-                    }
-                } catch (\Throwable $e) {
-                    $this->setError($e->getMessage());
-                    $result = false;
-                }
-            }
-
-            $teamId = $owners[$id]['team_id'];
-
-            if ($teamId > 0) {
-                $teamUpdate = (object) [
-                    'id' => $teamId,
-                    'name' => trim((string) ($post['teamname' . $id] ?? '')),
-                    'modified' => $date,
-                    'modified_by' => $userId,
-                ];
-
-                try {
-                    if (!$db->updateObject('#__sportsmanagement_team', $teamUpdate, 'id')) {
-                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
-                    }
-                } catch (\Throwable $e) {
-                    $this->setError($e->getMessage());
-                    $result = false;
-                }
-            }
-
-            foreach ((array) ($divisionPoints[$id] ?? []) as $divisionId => $values) {
-                if (!$this->updateDivisionPoints($id, (int) $divisionId, (array) $values)) {
-                    $result = false;
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
