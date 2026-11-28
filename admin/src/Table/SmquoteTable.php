@@ -15,8 +15,15 @@ use Joomla\Database\DatabaseInterface;
 
 final class SmquoteTable extends SportsManagementTable
 {
-    public function __construct(DatabaseInterface $db)
+    /**
+     * Initialise the quote table using the selected SportsManagement database.
+     * Registers the quote storage table and its primary key, preserving an
+     * already resolved connection when supplied by the calling model.
+     * @param DatabaseInterface $db Active database connection.
+     * @param bool $resolved Whether the connection has already been resolved.
+     */
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_rquote', 'id', $db);
+        parent::__construct('#__sportsmanagement_rquote', 'id', $db, $resolved);
     }
 }
