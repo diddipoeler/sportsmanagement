@@ -18,6 +18,9 @@ final class EventtypelistField extends SportsManagementListField
 {
     protected $type = 'eventtypelist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Retrieve published event types in Joomla's configured ordering.
      *
