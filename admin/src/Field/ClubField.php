@@ -15,6 +15,9 @@ final class ClubField extends SportsManagementListField
 {
     protected $type = 'club';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load club identifiers and names in alphabetical order.
      * Preserves the translated empty choice, numeric identifier suffixes
