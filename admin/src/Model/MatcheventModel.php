@@ -159,7 +159,11 @@ final class MatcheventModel extends SportsManagementAdminModel
     public function getTable($type = 'matchevent', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchevent') === 0) {
-            return new MatcheventTable($this->getDatabase());
+            $table = new MatcheventTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
