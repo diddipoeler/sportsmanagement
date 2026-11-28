@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectsViewDataService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
@@ -52,6 +53,8 @@ final class HtmlView extends BaseHtmlView
     public $search_agegroup = [];
     public $search_association = [];
     public $search_nation = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
     public $season_ids = [];
     public $show_notassign = 0;
     public string $sortDirection = 'ASC';
@@ -100,6 +103,7 @@ final class HtmlView extends BaseHtmlView
         $this->search_agegroup = $service->getAgeGroups();
         $this->search_association = $service->getAssociations();
         $this->search_nation = $service->getCountries();
+        $this->countryPresentation = CountryOptionsHelper::getListPresentation($sportsManagementDatabase);
 
         foreach ($this->items as $row) {
             $row->user_field = $service->getProjectExtraFieldNames((int) $row->id);
