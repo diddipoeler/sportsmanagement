@@ -18,6 +18,9 @@ final class MultilistField extends ListField
 {
     protected $type = 'multilist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Render the native Joomla list with historical comma-separated selections.
      * Temporarily converts saved comma-separated values to individual options,
