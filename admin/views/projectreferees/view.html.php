@@ -12,6 +12,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectrefereesModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -19,6 +21,15 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewprojectreferees extends sportsmanagementView
 {
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
+
+    /**
+     * Initialise project referee positions and country presentation.
+     * Retains the historical season fallback and restores its state even
+     * if the additional referee query fails.
+     * @return void
+     */
     public function init()
     {
         $input = $this->app->getInput();
@@ -56,10 +67,17 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
                 $seasonId = (int) $this->app->getUserState($this->option . '.season_id', 0);
                 $this->app->setUserState($this->option . '.season_id', 0);
                 $this->model->season_id = 0;
-                $this->items = $this->model->getItems2();
-                $this->app->setUserState($this->option . '.season_id', $seasonId);
-                $this->model->season_id = $seasonId;
+                try {
+                    $this->items = $this->model->getItems2();
+                } finally {
+                    $this->app->setUserState($this->option . '.season_id', $seasonId);
+                    $this->model->season_id = $seasonId;
+                }
             }
+        }
+
+        if ($this->model instanceof ProjectrefereesModel) {
+            $this->countryPresentation = CountryOptionsHelper::getListPresentation($this->model->getSportsManagementDatabase());
         }
 
         if (!array_key_exists('search_mode', $this->lists)) {
@@ -67,6 +85,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
         }
     }
 
+    /**
+     * Register project navigation, inline save and referee assignment actions.
+     * Retains the legacy parent toolbar while the assignment workflow is migrated.
+     * @return void
+     */
     protected function addToolbar()
     {
         $this->app->setUserState($this->option . '.persontype', $this->_persontype);
