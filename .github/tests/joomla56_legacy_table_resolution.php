@@ -65,6 +65,11 @@ namespace {
     $db = new class implements \Joomla\Database\DatabaseInterface {};
     $model->jsmdb = $db;
 
+    // Simulate a changed database selection after model initialisation.
+    $resolver = \Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::class;
+    $resolver::$replacement = new class implements \Joomla\Database\DatabaseInterface {};
+    $initialCalls = $resolver::$calls;
+
     foreach ([
         ['', 'PersonTable', '#__sportsmanagement_person'],
         ['player', 'PersonTable', '#__sportsmanagement_person'],
@@ -72,10 +77,13 @@ namespace {
         ['jsmgcalendarimport', 'JsmgcalendarTable', '#__sportsmanagement_gcalendar'],
         ['matchsingle', 'MatchSingleTable', '#__sportsmanagement_match_single'],
         ['teamtrainingdata', 'TeamTrainingDataTable', '#__sportsmanagement_team_trainingdata'],
+        ['teamstaff', 'TeamstaffTable', '#__sportsmanagement_team_staff'],
+        ['jlextcountry', 'JlextcountryTable', '#__sportsmanagement_countries'],
     ] as [$type, $expectedClass, $expectedTable]) {
         $table = $model->getTable($type);
         if (get_class($table) !== $prefix . $expectedClass || $table->database !== $db
-            || $table->table !== $expectedTable || $table->key !== 'id') {
+            || $table->table !== $expectedTable || $table->key !== 'id'
+            || $resolver::$calls !== $initialCalls) {
             throw new \RuntimeException('Incorrect native table resolution: ' . $type);
         }
     }
@@ -102,8 +110,6 @@ namespace {
     }
 
     // An already resolved connection must survive table construction unchanged.
-    $resolver = \Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver::class;
-    $resolver::$replacement = new class implements \Joomla\Database\DatabaseInterface {};
     foreach ([
         'ProjectteamTable', 'MatchTable', 'PositioneventtypeTable', 'PositionstatisticTable',
         'TeamTable', 'TeamTrainingDataTable', 'PersonTable', 'ClubTable', 'LeagueTable',
