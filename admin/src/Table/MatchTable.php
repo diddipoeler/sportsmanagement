@@ -15,11 +15,20 @@ use Joomla\Database\DatabaseInterface;
 
 final class MatchTable extends SportsManagementTable
 {
-    public function __construct(DatabaseInterface $db)
+    /**
+     * Initialise match storage using the supplied database connection.
+     * @param DatabaseInterface $db Active database service.
+     * @param bool $resolved Whether this connection is already resolved.
+     */
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_match', 'id', $db);
+        parent::__construct('#__sportsmanagement_match', 'id', $db, $resolved);
     }
 
+    /**
+     * Normalise optional result-decision values before storing the match.
+     * @return bool Whether the match row passes this validation.
+     */
     public function check(): bool
     {
         if (!is_numeric($this->team1_result_decision ?? null)) {
