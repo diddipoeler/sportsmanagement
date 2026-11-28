@@ -21,10 +21,11 @@ final class RoundTable extends SportsManagementTable
      * Initialise the round table for the selected Joomla database driver.
      *
      * @param DatabaseInterface $db Selected SportsManagement connection.
+     * @param bool $resolved Whether the connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_round', 'id', $db);
+        parent::__construct('#__sportsmanagement_round', 'id', $db, $resolved);
     }
 
     /**
