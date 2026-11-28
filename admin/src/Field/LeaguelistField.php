@@ -36,10 +36,10 @@ final class LeaguelistField extends SportsManagementListField
     {
         $view = $this->administratorApplication()->getInput()->getCmd('view', '');
 
-        $onchange = $this->element['onchange'] ?? '';
+        $onchange = (string) $this->onchange;
 
-        if ($view === 'projects' && (!is_string($onchange) || trim($onchange) === '')) {
-            $this->element['onchange'] = 'this.form.submit();';
+        if ($view === 'projects' && trim($onchange) === '') {
+            $this->onchange = 'this.form.submit();';
         }
 
         return parent::getInput();
