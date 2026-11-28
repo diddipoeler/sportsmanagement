@@ -83,7 +83,7 @@ final class PlayerModel extends SportsManagementAdminModel
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
-            return new PersonTable($this->getDatabase());
+            return new PersonTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
