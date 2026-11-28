@@ -24,7 +24,7 @@ final class DependsqlField extends SportsManagementListField
     protected $layout = 'joomla.form.field.list-fancy-select';
 
     /**
-     * Normalise legacy XML list-field attributes for Joomla, including the multiple-selection flag and automatic form submission for the nation dependency, before delegating field setup.
+     * Normalise legacy XML list-field attributes for Joomla, including the multiple-selection flag and automatic form submission for the nation dependency, before delegating field setup. Explicit XML change handlers take precedence over the default submission callback.
      * @param \SimpleXMLElement $element Field definition.
      * @param mixed $value Current field value.
      * @param string|null $group Optional form group.
@@ -41,7 +41,8 @@ final class DependsqlField extends SportsManagementListField
             $element['multiple'] = in_array(strtolower(trim((string) $element['multiple'])), ['true', '1', 'multiple'], true) ? 'true' : 'false';
         }
 
-        if (trim((string) ($element['depends'] ?? '')) === 'search_nation') {
+        if (trim((string) ($element['depends'] ?? '')) === 'search_nation'
+            && trim((string) ($element['onchange'] ?? '')) === '') {
             $element['onchange'] = 'this.form.submit();';
         }
 
