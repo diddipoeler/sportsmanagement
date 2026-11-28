@@ -17,6 +17,9 @@ final class ProjectroundsField extends SportsManagementListField
 {
     protected $type = 'projectrounds';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load rounds with an optional project filter from the current form.
      * Rejects malformed project selectors instead of broadening the query,
