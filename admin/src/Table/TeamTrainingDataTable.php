@@ -20,9 +20,10 @@ final class TeamTrainingDataTable extends SportsManagementTable
      * Registers the component storage table and its primary key with the shared table base.
      *
      * @param DatabaseInterface $db Active database connection.
+     * @param bool $resolved Whether the caller has already resolved the connection.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_team_trainingdata', 'id', $db);
+        parent::__construct('#__sportsmanagement_team_trainingdata', 'id', $db, $resolved);
     }
 }
