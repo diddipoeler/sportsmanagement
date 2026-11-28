@@ -19,6 +19,9 @@ final class CountryassociationField extends SportsManagementListField
 {
     protected $type = 'countryassociation';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load associations sharing the country of the selected record.
      * Validates the configured table identifier and request ID, binds the ID
