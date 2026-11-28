@@ -80,7 +80,7 @@ $assets->registerAndUseScript(
                             </div>
                         </td>
                         <td><?php echo $item->clubname !== null && $item->clubname !== '' ? $this->escape($item->clubname) : '<span class="text-danger">' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>'; ?></td>
-                        <td><?php echo $this->escape($item->country); ?></td>
+                        <td><?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?></td>
                         <td>
                             <select class="form-select form-select-sm" name="agegroup<?php echo (int) $item->id; ?>" data-jsm-mark-row="<?php echo (int) $i; ?>">
                                 <option value="0"></option>
