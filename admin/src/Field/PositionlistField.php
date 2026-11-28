@@ -17,6 +17,9 @@ final class PositionlistField extends SportsManagementListField
 {
     protected $type = 'positionlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Retrieve published player positions for native administrator forms.
      *
