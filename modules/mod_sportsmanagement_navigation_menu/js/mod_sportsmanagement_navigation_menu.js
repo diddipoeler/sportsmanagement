@@ -61,6 +61,9 @@
             return;
         }
 
+        const items = unwrap(payload);
+        if (payload?.success === false || !Array.isArray(items)) return;
+
         const placeholder = select.options.length ? select.options[0].cloneNode(true) : null;
         const includeSeason = Number(form.elements.include_season?.value ?? 0);
         const fragment = document.createDocumentFragment();
@@ -69,8 +72,8 @@
             fragment.appendChild(placeholder);
         }
 
-        const items = unwrap(payload);
-        (Array.isArray(items) ? items : []).forEach((item) => {
+        items.forEach((item) => {
+            if (!item || !['string', 'number'].includes(typeof item.value) || typeof item.text !== 'string') return;
             const option = document.createElement('option');
             option.value = String(item.value ?? '');
             const text = String(item.text ?? '');
@@ -83,7 +86,19 @@
             fragment.appendChild(option);
         });
 
-        select.replaceChildren(fragment);
+        const choices = select.closest('joomla-field-fancy-select')?.choicesInstance;
+        if (choices && typeof choices.clearStore === 'function' && typeof choices.setChoices === 'function') {
+            const options = Array.from(fragment.children, (option, index) => ({
+                value: option.value,
+                label: option.textContent,
+                selected: index === 0,
+            }));
+            choices.clearStore();
+            choices.setChoices(options, 'value', 'label', true);
+        } else {
+            select.replaceChildren(fragment);
+            select.selectedIndex = select.options.length ? 0 : -1;
+        }
     };
 
     const redirect = async (form) => {
@@ -107,8 +122,10 @@
             return;
         }
 
+        let projectRequestVersion = 0;
         root.querySelectorAll('.jlnav-select').forEach((select) => {
             select.addEventListener('change', async () => {
+                const version = ++projectRequestVersion;
                 hideDependentItems(root);
                 try {
                     const payload = await request('getprojectsoptions', {
@@ -117,7 +134,7 @@
                         o: form.elements.o?.value ?? '',
                         d: form.elements.d?.value ?? '',
                     });
-                    updateProjects(form, payload);
+                    if (version === projectRequestVersion) updateProjects(form, payload);
                 } catch (error) {
                     console.warn('SportsManagement project navigation could not be refreshed.', error);
                 }
