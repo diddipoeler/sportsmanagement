@@ -35,7 +35,11 @@ final class PredictionroundModel extends SportsManagementAdminModel
     public function getTable($type = 'predictionround', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionround') === 0) {
-            return new PredictionroundTable($this->getDatabase());
+            $table = new PredictionroundTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
