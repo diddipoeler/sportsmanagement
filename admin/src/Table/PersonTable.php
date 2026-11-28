@@ -21,10 +21,11 @@ final class PersonTable extends SportsManagementTable
      * Initialise the native person table on the selected database connection.
      * Registers the person storage table and its ID as the primary key.
      * @param DatabaseInterface $db Active SportsManagement database driver.
+     * @param bool $resolved Whether the caller has already resolved the connection.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_person', 'id', $db);
+        parent::__construct('#__sportsmanagement_person', 'id', $db, $resolved);
     }
 
     /**
