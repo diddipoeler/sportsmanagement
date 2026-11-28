@@ -103,8 +103,8 @@ namespace {
         // The native web component enhances the existing select without
         // replacing its submitted name or allowing free-form country codes.
         $searchable = $stored === trim($stored);
-        if (str_contains($markup, '<joomla-field-fancy-select search-placeholder=') !== $searchable
-            || str_contains($markup, '</joomla-field-fancy-select>') !== $searchable
+        if (substr_count($markup, '<joomla-field-fancy-select search-placeholder=') !== ($searchable ? 3 : 2)
+            || substr_count($markup, '</joomla-field-fancy-select>') !== ($searchable ? 3 : 2)
             || str_contains($markup, 'allow-custom')
             || substr_count($markup, 'name="country7"') !== 1
             || !str_contains($markup, 'id="league-country-7"')) {
