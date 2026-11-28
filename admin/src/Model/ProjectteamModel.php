@@ -176,6 +176,8 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     /**
      * Save quick-edit project-team assignments and division points.
+     * Preflight all submitted club and team identifiers against persisted
+     * project memberships before any write, rejecting unrelated records.
      * @return bool
      */
     public function saveshort(): bool
@@ -187,10 +189,20 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $app = $this->administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
-        $ids = $this->normaliseIds($post['cid'] ?? []);
+        $ids = $this->assignmentIds($post['cid'] ?? []);
+        if ($ids === null) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
         $db = $this->getDatabase();
-        $projectId = (int) ($post['pid'] ?? 0);
-        $targetProjectId = (int) ($post['all_project_id'] ?? $projectId);
+        $projects = $this->assignmentIds([$post['pid'] ?? null]);
+        $targets = $this->assignmentIds([$post['all_project_id'] ?? ($projects[0] ?? null)]);
+        if ($projects === null || $targets === null) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+        $projectId = $projects[0];
+        $targetProjectId = $targets[0];
         $date = (new Date('now', new \DateTimeZone('UTC')))->toSql();
         $identity = $app->getIdentity();
 
@@ -204,6 +216,45 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $associationId = $this->projectAssociation($projectId);
         $divisionPoints = is_array($post['division_points'] ?? null) ? $post['division_points'] : [];
         $result = true;
+
+        // Validate every submitted owner before the first write.
+        $owners = [];
+        try {
+            foreach ($ids as $id) {
+                $query = $db->createQuery()
+                    ->select([$db->quoteName('st.team_id'), $db->quoteName('t.club_id')])
+                    ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+                    ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                        . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+                    ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't')
+                        . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+                    ->where($db->quoteName('pt.id') . ' = :quickProjectTeamId')
+                    ->where($db->quoteName('pt.project_id') . ' = :quickProjectId')
+                    ->bind(':quickProjectTeamId', $id, ParameterType::INTEGER)
+                    ->bind(':quickProjectId', $projectId, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $owner = $db->loadObject();
+                if (!is_object($owner)) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+                $owners[$id] = [];
+                foreach (['team_id', 'club_id'] as $field) {
+                    $raw = $post[$field . $id] ?? 0;
+                    if (in_array($raw, [0, '0', ''], true)) {
+                        $owners[$id][$field] = 0;
+                        continue;
+                    }
+                    $selected = $this->assignmentIds([$raw]);
+                    if ($selected === null || $selected[0] !== (int) ($owner->{$field} ?? 0)) {
+                        throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                    }
+                    $owners[$id][$field] = $selected[0];
+                }
+            }
+        } catch (\Throwable $error) {
+            $this->setError($error->getMessage());
+            return false;
+        }
 
         foreach ($ids as $id) {
             $record = (object) [
@@ -241,7 +292,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 $result = false;
             }
 
-            $clubId = (int) ($post['club_id' . $id] ?? 0);
+            $clubId = $owners[$id]['club_id'];
 
             if ($clubId > 0) {
                 $club = (object) [
@@ -270,7 +321,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 }
             }
 
-            $teamId = (int) ($post['team_id' . $id] ?? 0);
+            $teamId = $owners[$id]['team_id'];
 
             if ($teamId > 0) {
                 $teamUpdate = (object) [
