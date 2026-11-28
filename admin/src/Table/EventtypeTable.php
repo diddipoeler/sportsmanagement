@@ -21,10 +21,11 @@ final class EventtypeTable extends SportsManagementTable
      * Registers the storage table and its primary key with the shared table
      * implementation using the injected Joomla database connection.
      * @param DatabaseInterface $db Active SportsManagement database driver.
+     * @param bool $resolved Whether the connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_eventtype', 'id', $db);
+        parent::__construct('#__sportsmanagement_eventtype', 'id', $db, $resolved);
     }
 
     /**
