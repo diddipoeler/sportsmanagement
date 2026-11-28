@@ -19,6 +19,9 @@ final class ProjectdivisionField extends SportsManagementListField
 {
     protected $type = 'Projectdivision';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load divisions belonging to the active project, using request or saved state.
      * Rejects invalid project identifiers before querying and binds the selected
