@@ -1589,27 +1589,43 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 		}
 	}
 
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
-	 *
-	 * @return JTable    A database object
-	 * @since  1.6
-	 */
-	public function getTable($type = '', $prefix = 'sportsmanagementTable', $config = array())
-	{
-		$config['dbo'] = $this->jsmdb;
+    /**
+     * Resolve a native administrator table for a legacy model.
+     *
+     * Maps historical aliases to their native table names, preserves the
+     * resolved SportsManagement database, and keeps the legacy factory only
+     * for third-party prefixes or tables without a native implementation.
+     *
+     * @param string $type Requested table type; defaults to the model name.
+     * @param string $prefix Historical table class prefix.
+     * @param array $config Additional table factory configuration.
+     * @return mixed Native or legacy table, or false if unavailable.
+     */
+    public function getTable($type = '', $prefix = 'sportsmanagementTable', $config = array())
+    {
+        $type = $type === '' ? $this->getName() : $type;
 
-		if (empty($type))
-		{
-			$type = $this->getName();
-		}
+        if (!is_string($type) || strlen($type) > 128 || preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $type) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement table name.');
+        }
 
-		return Table::getInstance($type, $prefix, $config);
-	}
+        if (strcasecmp((string) $prefix, 'sportsmanagementTable') === 0) {
+            $nativeType = match (strtolower($type)) {
+                'player' => 'Person',
+                'jsmgcalendarimport' => 'Jsmgcalendar',
+                default => ucfirst(strtolower($type)),
+            };
+            $nativeClass = 'Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\' . $nativeType . 'Table';
+
+            if (is_subclass_of($nativeClass, Table::class)) {
+                return new $nativeClass($this->jsmdb);
+            }
+        }
+
+        // Retain compatibility for non-database placeholders and external tables.
+        $config['dbo'] = $this->jsmdb;
+        return Table::getInstance($type, $prefix, $config);
+    }
 
 	/**
 	 * Method to get the record form.
