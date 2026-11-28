@@ -54,7 +54,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     public function getTable($type = 'predictionmember', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionmember') === 0) {
-            return new PredictionmemberTable($this->getDatabase());
+            $table = new PredictionmemberTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
