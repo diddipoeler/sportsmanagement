@@ -18,6 +18,9 @@ final class ProjectpositionrefereeField extends SportsManagementListField
 {
     protected $type = 'projectpositionreferee';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load referee positions assigned to the active project.
      * Validates and binds the saved project identifier and limits the query
