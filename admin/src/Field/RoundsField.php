@@ -19,6 +19,9 @@ final class RoundsField extends SportsManagementListField
 {
     protected $type = 'rounds';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Prepare a ten-row multiple-round selector for Joomla administrator forms.
      *
