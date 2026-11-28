@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Players;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayersModel;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Document\HtmlDocument;
@@ -35,6 +34,8 @@ final class HtmlView extends BaseHtmlView
     public array $positionOptions = [];
     public array $agegroupOptions = [];
     public array $countryOptions = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
     public array $persons = [];
     public array $projectTeamOptions = [];
     public $app;
@@ -152,11 +153,8 @@ final class HtmlView extends BaseHtmlView
         );
 
         try {
-            $databaseSelector = $input->getInt(
-                'cfg_which_database',
-                (int) $this->app->getUserState($this->option . '.cfg_which_database', 0)
-            );
-            $db = (new SportsManagementDatabaseResolver())->resolve($databaseSelector);
+            $db = $model->getSportsManagementDatabase();
+            $this->countryPresentation = CountryOptionsHelper::getListPresentation($db);
             $this->countryOptions = array_merge(
                 [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'))],
                 CountryOptionsHelper::getOptions($db)
@@ -165,7 +163,7 @@ final class HtmlView extends BaseHtmlView
             $this->countryOptions = [
                 HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
             ];
-            $this->app->enqueueMessage($e->getMessage(), 'warning');
+            $this->app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
 
         if ($this->document instanceof HtmlDocument) {
