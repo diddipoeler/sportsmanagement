@@ -18,6 +18,9 @@ final class ClubsField extends SportsManagementListField
 {
     protected $type = 'clubs';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Configure a Joomla XML field for ten-row multiple club selection.
      *
