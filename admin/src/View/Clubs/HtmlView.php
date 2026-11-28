@@ -41,6 +41,8 @@ final class HtmlView extends BaseHtmlView
     }
 
     public array $items = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
     public $pagination;
     public $state;
     public array $lists = [];
@@ -79,6 +81,7 @@ final class HtmlView extends BaseHtmlView
         $this->modelclub = $factory->createModel('Club', 'Administrator');
         $this->table = new ClubTable($model->getSportsManagementDatabase());
         $this->lists = $this->buildFilterLists($factory, $model);
+        $this->countryPresentation = CountryOptionsHelper::getListPresentation($model->getSportsManagementDatabase());
 
         $this->addToolbar();
         parent::display($tpl);
