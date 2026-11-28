@@ -30,7 +30,11 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
     public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictiontemplate') === 0) {
-            return new PredictiontemplateTable($this->getDatabase());
+            $table = new PredictiontemplateTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
@@ -114,21 +118,16 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
     /**
      * Check whether the current identity may edit a prediction template.
-     * Delegates to normal Joomla admin permissions if the record-specific
-     * action is not granted or the user has no identity.
+     * Uses component edit permission and rejects unauthenticated identities.
      * @param array $data Selected prediction template row.
      * @param string $key Identifier field name.
      * @return bool Whether Joomla permits the edit.
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        )) || parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
     }
 }
