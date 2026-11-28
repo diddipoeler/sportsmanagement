@@ -21,6 +21,29 @@ use Joomla\Database\ParameterType;
 final class MatchcommentaryModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native commentary table on the model's active database.
+     * Retain Joomla's factory for custom table requests and options.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Matchcommentary') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\MatchcommentaryTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Read chronologically ordered commentary for one validated match.
      *
      * Validates positive decimal match identifiers without lossy PHP casts
