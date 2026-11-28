@@ -400,24 +400,23 @@ $post['copy_jform']['picture']  = $filepath;
 					$data['trikot_away'] = MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
-				if ($post['delete'])
+				if (!empty($post['delete']) || !empty($post['tdids']) || !empty($post['add_trainingData']))
 				{
-					$mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
-					$mdlTeam->DeleteTrainigData($post['delete'][0]);
-				}
-
-				if ($post['add_trainingData'])
-				{
-					$row = Table::getInstance('seasonteam', 'sportsmanagementTable');
-					$row->load((int) $post['jform']['team_id']);
-					$mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
-					$mdlTeam->addNewTrainigData($row->team_id);
-				}
-
-				if ($post['tdids'])
-				{
-					$mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
-					$mdlTeam->UpdateTrainigData($post);
+					// Use the persisted project-team relation, not the submitted season-team ID.
+					$projectTeamId = $this->positiveTrainingId($data['id'] ?? null);
+					$query = $this->jsmdb->createQuery()
+						->select($this->jsmdb->quoteName('st.team_id'))
+						->from($this->jsmdb->quoteName('#__sportsmanagement_project_team', 'pt'))
+						->join('INNER', $this->jsmdb->quoteName('#__sportsmanagement_season_team_id', 'st')
+							. ' ON ' . $this->jsmdb->quoteName('st.id') . ' = ' . $this->jsmdb->quoteName('pt.team_id'))
+						->where($this->jsmdb->quoteName('pt.id') . ' = :projectTeamId')
+						->bind(':projectTeamId', $projectTeamId, \Joomla\Database\ParameterType::INTEGER);
+					$this->jsmdb->setQuery($query);
+					$teamId = $this->positiveTrainingId($this->jsmdb->loadResult());
+					if (!$this->saveLegacyTrainingData($post, $teamId))
+					{
+						return false;
+					}
 				}
 
 				/**
@@ -1065,19 +1064,9 @@ catch (Exception $e)
 					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
-				if ($post['delete'])
+				if (!$this->saveLegacyTrainingData($post, $this->positiveTrainingId($data['id'] ?? null)))
 				{
-					sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
-				}
-
-				if ($post['tdids'])
-				{
-					sportsmanagementModelteam::UpdateTrainigData($post);
-				}
-
-				if ($post['add_trainingData'])
-				{
-					sportsmanagementModelteam::addNewTrainigData($data['id']);
+					return false;
 				}
 				break;
 
@@ -2145,6 +2134,68 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 		return Text::_('JGLOBAL_SAVE_SORT_YES');
 	}
+
+    /**
+     * Validate a persisted team or project-team identifier without coercion.
+     * Accepts positive decimal IDs including zero-padded legacy strings.
+     * @param mixed $value Raw identifier.
+     * @return int Positive identifier or zero on invalid input.
+     */
+    private function positiveTrainingId(mixed $value): int
+    {
+        if (is_string($value) && strlen($value) <= 64 && preg_match('/^[0-9]+$/D', $value) === 1) {
+            $value = ltrim($value, '0');
+        } elseif (!is_int($value)) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Delegate legacy training edits to the native Joomla administrator model.
+     * Requires a persisted owning team and uses the same database connection
+     * as the legacy caller. Propagates rejected operations to the save caller.
+     * @param array $post Submitted training controls.
+     * @param int $teamId Persisted owning team identifier.
+     * @return bool Whether all requested training operations succeeded.
+     */
+    private function saveLegacyTrainingData(array $post, int $teamId): bool
+    {
+        if (empty($post['delete']) && empty($post['tdids']) && empty($post['add_trainingData'])) {
+            return true;
+        }
+
+        if ($teamId <= 0) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+            return false;
+        }
+
+        try {
+            $model = $this->jsmapp->bootComponent('com_sportsmanagement')
+                ->getMVCFactory()->createModel('Team', 'Administrator', ['ignore_request' => true]);
+            if (!$model instanceof \Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel) {
+                throw new \RuntimeException('Native team model unavailable.');
+            }
+            $model->setDatabase($this->jsmdb);
+
+            if (!empty($post['delete']) && (!is_array($post['delete'])
+                || !$model->DeleteTrainigData(reset($post['delete']), $teamId))) {
+                throw new \RuntimeException('Training deletion rejected.');
+            }
+            if (!empty($post['tdids']) && !$model->UpdateTrainigData($post, $teamId)) {
+                throw new \RuntimeException('Training update rejected.');
+            }
+            if (!empty($post['add_trainingData']) && !$model->addNewTrainigData($teamId)) {
+                throw new \RuntimeException('Training creation rejected.');
+            }
+            return true;
+        } catch (\Throwable $error) {
+            $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+            return false;
+        }
+    }
 
 	/**
 	 * Method to get the data that should be injected in the form.
