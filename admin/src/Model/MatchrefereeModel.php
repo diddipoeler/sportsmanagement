@@ -295,7 +295,11 @@ final class MatchrefereeModel extends SportsManagementAdminModel
     public function getTable($type = 'matchreferee', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchreferee') === 0) {
-            return new MatchrefereeTable($this->getDatabase());
+            $table = new MatchrefereeTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
