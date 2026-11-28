@@ -31,12 +31,10 @@ final class AgegrouplistField extends SportsManagementListField
      */
     protected function getInput(): string
     {
-        $onchange = $this->element['onchange'] ?? '';
-        $onchange = is_string($onchange) || $onchange instanceof \Stringable
-            ? (string) $onchange : '';
+        $onchange = (string) $this->onchange;
 
         if (trim($onchange) === '') {
-            $this->element['onchange'] = 'this.form.submit();';
+            $this->onchange = 'this.form.submit();';
         }
 
         return parent::getInput();
