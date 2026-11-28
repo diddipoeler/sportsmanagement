@@ -188,6 +188,7 @@ final class EditprojectteamModel extends AdminModel
     }
 
     /**
+     * Preserve the already selected site database connection for table writes.
      * Resolve the project-team database table through the native Joomla API.
      *
      * Return the namespaced ProjectteamTable for the historical projectteam
@@ -201,7 +202,7 @@ final class EditprojectteamModel extends AdminModel
     public function getTable($type = 'projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'projectteam') === 0) {
-            return new ProjectteamTable($this->getDatabase());
+            return new ProjectteamTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
