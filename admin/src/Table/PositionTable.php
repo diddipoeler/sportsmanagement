@@ -22,10 +22,11 @@ final class PositionTable extends SportsManagementTable
      * Registers the storage table and its primary key with the shared table
      * implementation using the injected Joomla database connection.
      * @param DatabaseInterface $db Active SportsManagement database driver.
+     * @param bool $resolved Whether the supplied connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_position', 'id', $db);
+        parent::__construct('#__sportsmanagement_position', 'id', $db, $resolved);
     }
 
     /**
