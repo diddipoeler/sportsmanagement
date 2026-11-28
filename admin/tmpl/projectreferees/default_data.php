@@ -25,7 +25,7 @@ if ($this->saveOrder && !empty($this->items)) {
 }
 ?>
 <legend>
-    <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $this->project->name . '</i>'); ?>
+    <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . htmlspecialchars((string) ($this->project->name ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</i>'); ?>
 </legend>
 
 <div class="table-responsive" id="editcell">
@@ -97,7 +97,14 @@ if ($this->saveOrder && !empty($this->items)) {
                         </a>
                     <?php endif; ?>
                 </td>
-                <td><?php echo sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 1); ?></td>
+                <td>
+                    <?php echo sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 1); ?>
+                    <?php if (!empty($this->item->country)) : ?>
+                        <?php $countryCode = strtoupper(trim((string) $this->item->country)); ?>
+                        <div class="small text-muted"><?php echo $this->countryPresentation[$countryCode]
+                            ?? htmlspecialchars((string) $this->item->country, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></div>
+                    <?php endif; ?>
+                </td>
                 <td class="center"><?php echo (int) $this->item->person_id; ?></td>
                 <td class="center">
                     <?php
@@ -169,8 +176,10 @@ if ($this->saveOrder && !empty($this->items)) {
                         ?>
                     </div>
                 </td>
-                <td class="order" id="defaultdataorder">
-                    <?php echo $this->loadTemplate('data_order'); ?>
+                <td class="order">
+                    <input type="text" name="order[]" class="form-control form-control-sm text-center"
+                        value="<?php echo (int) $this->item->ordering; ?>"
+                        <?php echo $this->saveOrder && $canChange ? '' : 'disabled'; ?>>
                 </td>
                 <td class="center"><?php echo (int) $this->item->id; ?></td>
             </tr>
