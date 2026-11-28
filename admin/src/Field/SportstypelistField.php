@@ -36,9 +36,7 @@ final class SportstypelistField extends SportsManagementListField
         $app = SportsManagementAdministratorApplicationResolver::resolve();
         $view = $app->getInput()->getCmd('view', '');
 
-        $onchange = $this->element['onchange'] ?? '';
-        $onchange = is_string($onchange) || $onchange instanceof \Stringable
-            ? (string) $onchange : '';
+        $onchange = (string) $this->onchange;
 
         if ($view !== 'league' && trim($onchange) === '') {
             $this->onchange = 'this.form.submit();';
