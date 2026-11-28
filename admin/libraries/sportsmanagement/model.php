@@ -41,6 +41,40 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveH
  */
 class JSMModelAdmin extends AdminModel
 {
+    // Untyped public properties preserve the legacy extension contract.
+    /** Resolved SportsManagement database connection. */
+    public $jsmdb;
+    /** Primary query builder. */
+    public $jsmquery;
+    /** First auxiliary query builder. */
+    public $jsmsubquery1;
+    /** Second auxiliary query builder. */
+    public $jsmsubquery2;
+    /** Third auxiliary query builder. */
+    public $jsmsubquery3;
+    /** Active administrator application. */
+    public $jsmapp;
+    /** Administrator request input. */
+    public $jsmjinput;
+    /** Component option. */
+    public $jsmoption;
+    /** Current view name. */
+    public $jsmview;
+    /** Active Joomla document. */
+    public $jsmdocument;
+    /** Current Joomla identity. */
+    public $jsmuser;
+    /** Current Joomla date. */
+    public $jsmdate;
+    /** Legacy status message. */
+    public $jsmmessage;
+    /** Legacy status message severity. */
+    public $jsmmessagetype;
+    /** Joomla application configuration. */
+    public $joomlaconfig;
+    /** Current project selection. */
+    public $project_id;
+
 
  /** @var    array    An array of tips */
 	static $_tips = array();
@@ -1613,6 +1647,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
             $nativeType = match (strtolower($type)) {
                 'player' => 'Person',
                 'jsmgcalendarimport' => 'Jsmgcalendar',
+                'matchsingle' => 'MatchSingle',
+                'teamtrainingdata' => 'TeamTrainingData',
                 default => ucfirst(strtolower($type)),
             };
             $nativeClass = 'Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\' . $nativeType . 'Table';
@@ -2293,6 +2329,38 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
  */
 class JSMModelList extends ListModel
 {
+    // Untyped public properties preserve the legacy extension contract.
+    /** Active administrator application. */
+    public $jsmapp;
+    /** Administrator request input. */
+    public $jsmjinput;
+    /** Resolved SportsManagement database connection. */
+    public $jsmdb;
+    /** Primary query builder. */
+    public $jsmquery;
+    /** First auxiliary query builder. */
+    public $jsmsubquery1;
+    /** Second auxiliary query builder. */
+    public $jsmsubquery2;
+    /** Third auxiliary query builder. */
+    public $jsmsubquery3;
+    /** Component option. */
+    public $jsmoption;
+    /** Active Joomla document. */
+    public $jsmdocument;
+    /** Current Joomla identity. */
+    public $jsmuser;
+    /** Selected record identifiers. */
+    public $jsmpks;
+    /** Submitted form values. */
+    public $jsmpost;
+    /** Legacy status message. */
+    public $jsmmessage;
+    /** Legacy status message severity. */
+    public $jsmmessagetype;
+    /** Current project selection. */
+    public $project_id;
+
     
    
 
@@ -2380,6 +2448,36 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->ge
  */
 class JSMModelLegacy extends BaseDatabaseModel
 {
+    // Untyped public properties preserve the legacy extension contract.
+    /** Resolved SportsManagement database connection. */
+    public $jsmdb;
+    /** Primary query builder. */
+    public $jsmquery;
+    /** First auxiliary query builder. */
+    public $jsmsubquery1;
+    /** Second auxiliary query builder. */
+    public $jsmsubquery2;
+    /** Third auxiliary query builder. */
+    public $jsmsubquery3;
+    /** Active administrator application. */
+    public $jsmapp;
+    /** Administrator request input. */
+    public $jsmjinput;
+    /** Component option. */
+    public $jsmoption;
+    /** Active Joomla document. */
+    public $jsmdocument;
+    /** Current Joomla identity. */
+    public $jsmuser;
+    /** Selected record identifiers. */
+    public $jsmpks;
+    /** Submitted form values. */
+    public $jsmpost;
+    /** Legacy status message. */
+    public $jsmmessage;
+    /** Legacy status message severity. */
+    public $jsmmessagetype;
+
     
     
 
