@@ -19,6 +19,9 @@ final class ParentdivisionField extends SportsManagementListField
 {
     protected $type = 'parentdivision';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load root divisions belonging to the active project.
      * Validates the saved project identifier and binds it to the native query,
