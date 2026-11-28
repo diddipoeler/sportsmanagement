@@ -20,6 +20,9 @@ final class DependsqlField extends SportsManagementListField
 {
     protected $type = 'dependsql';
 
+    /** Native searchable list, with Choices synchronised after dependency changes. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Normalise legacy XML list-field attributes for Joomla, including the multiple-selection flag and automatic form submission for the nation dependency, before delegating field setup.
      * @param \SimpleXMLElement $element Field definition.
@@ -46,7 +49,7 @@ final class DependsqlField extends SportsManagementListField
     }
 
     /**
-     * Resolve the dependent field configuration and register its client-side update script when both an AJAX task and dependency are configured. Render the standard list input afterwards.
+     * Resolve the dependent field configuration and register its client-side update script when both an AJAX task and dependency are configured. Render the searchable Joomla list input afterwards.
      * @return string Rendered list input.
      */
     protected function getInput(): string
@@ -330,13 +333,38 @@ final class DependsqlField extends SportsManagementListField
                     ? payload.data
                     : Array.isArray(payload?.data?.data)
                         ? payload.data.data
-                        : [];
+                        : null;
+            if (rows === null) return;
 
-            while (target.options.length) target.remove(0);
-
+            // The native select and Joomla Choices must contain the same options.
+            // Keep only selections that remain valid for the new dependency.
+            const previous = new Set(Array.from(target.selectedOptions, option => String(option.value)));
+            const seen = new Set();
+            const options = [];
             for (const row of rows) {
                 if (!row || !['string', 'number'].includes(typeof row.value) || typeof row.text !== 'string') continue;
-                target.add(new Option(row.text, String(row.value)));
+                const value = String(row.value);
+                if (seen.has(value)) continue;
+                seen.add(value);
+                options.push({value, label: row.text, selected: previous.has(value)});
+            }
+            if (rows.length && !options.length) return;
+            if (!target.multiple && options.length && !options.some(option => option.selected)) {
+                const placeholder = options.find(option => option.value === '' || option.value === '0');
+                (placeholder || options[0]).selected = true;
+            }
+
+            const choices = target.closest?.('joomla-field-fancy-select')?.choicesInstance;
+            if (choices && typeof choices.clearStore === 'function' && typeof choices.setChoices === 'function') {
+                // Both Joomla 5 and 6 expose these Choices methods. Clear selected
+                // items too, not just the available choices, to prevent stale IDs.
+                choices.clearStore();
+                choices.setChoices(options, 'value', 'label', true);
+            } else {
+                while (target.options.length) target.remove(0);
+                for (const option of options) {
+                    target.add(new Option(option.label, option.value, false, option.selected));
+                }
             }
 
             if (payload?.messages && window.Joomla?.renderMessages) {
