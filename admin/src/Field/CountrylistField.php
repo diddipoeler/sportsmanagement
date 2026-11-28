@@ -40,8 +40,8 @@ final class CountrylistField extends SportsManagementListField
             'teams',
         ];
 
-        if (in_array($view, $autoSubmitViews, true) && trim((string) ($this->element['onchange'] ?? '')) === '') {
-            $this->element['onchange'] = 'this.form.submit();';
+        if (in_array($view, $autoSubmitViews, true) && trim((string) $this->onchange) === '') {
+            $this->onchange = 'this.form.submit();';
         }
 
         return parent::getInput();
