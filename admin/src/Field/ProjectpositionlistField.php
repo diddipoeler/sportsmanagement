@@ -20,6 +20,9 @@ final class ProjectpositionlistField extends SportsManagementListField
 {
     protected $type = 'projectpositionlist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load project-specific positions using the saved project and person type.
      * Validates both filters, binds them to the native query and retains
