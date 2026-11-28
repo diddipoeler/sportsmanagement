@@ -19,6 +19,9 @@ final class MatchdaylistField extends SportsManagementListField
 {
     protected $type = 'Matchdaylist';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load published matchdays for the project selected by the configured request key.
      * Accepts a single legacy wrapped identifier, rejects malformed IDs and
