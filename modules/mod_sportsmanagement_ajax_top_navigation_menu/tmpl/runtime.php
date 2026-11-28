@@ -13,6 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+/** Escape text and attributes for the navigation markup. */
 $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $moduleId = (int) ($module->id ?? 0);
 $tabsColumn = max(1, min(12, (int) $params->get('col_tabs', 6)));
@@ -20,6 +21,7 @@ $flagColumn = max(1, min(12, (int) $params->get('col_img', 2)));
 $menuColumn = max(1, min(12, (int) $params->get('col_menu', 4)));
 $selectedFederation = (string) ($country_federation ?? '');
 
+/** Resolve federation buckets without altering their stored keys. */
 $bucketKey = static function (array $buckets, string $federation): string {
     if (array_key_exists($federation, $buckets)) {
         return $federation;
@@ -30,12 +32,15 @@ $bucketKey = static function (array $buckets, string $federation): string {
     return array_key_exists($upper, $buckets) ? $upper : $federation;
 };
 
+/** Render a native select inside Joomla's searchable web component. */
 $renderSelect = static function (
     array $options,
     string $name,
     mixed $selected
 ): string {
-    return HTMLHelper::_(
+    return '<joomla-field-fancy-select search-placeholder="'
+        . htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+        . '">' . HTMLHelper::_(
         'select.genericlist',
         $options,
         $name,
@@ -43,9 +48,10 @@ $renderSelect = static function (
         'value',
         'text',
         $selected
-    );
+    ) . '</joomla-field-fancy-select>';
 };
 
+/** Render a navigation link or separator using escaped labels and routes. */
 $renderLinkItem = static function (string $view, string $label) use ($helper, $escape): string {
     if ($view === 'separator') {
         return '<li class="nav-item separator"><span class="nav-link disabled">' . $escape($label) . '</span></li>';
