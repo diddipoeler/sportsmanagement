@@ -30,9 +30,15 @@ abstract class SportsManagementTable extends Table
      * @param string $table Database table name, including the Joomla prefix token.
      * @param string|array $key Primary key column or composite key columns.
      * @param DatabaseInterface $db Joomla database service used as fallback.
+     * @param bool $resolved Whether the caller has already resolved this connection.
      */
-    public function __construct($table, $key, DatabaseInterface $db)
+    public function __construct($table, $key, DatabaseInterface $db, bool $resolved = false)
     {
+        if ($resolved) {
+            parent::__construct($table, $key, $db);
+            return;
+        }
+
         try {
             $sportsManagementDb = (new SportsManagementDatabaseResolver())->resolve(null, $db);
         } catch (Throwable) {
