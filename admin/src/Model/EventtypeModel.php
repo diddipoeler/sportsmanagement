@@ -17,6 +17,29 @@ use Joomla\CMS\Component\ComponentHelper;
 final class EventtypeModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native eventtype table using this model's active database.
+     * Retain Joomla's MVC factory for custom table names and configurations.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Eventtype') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\EventtypeTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Build the native Joomla event-type form with safe media field settings.
      *
      * Retains the configured event icon directory and an optional default
