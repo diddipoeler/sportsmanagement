@@ -29,6 +29,29 @@ use Joomla\Registry\Registry;
  */
 final class PlaygroundModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native playground table on the model's active database connection.
+     * Preserve Joomla's factory for custom table names, prefixes and options.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Playground') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\PlaygroundTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
     public static $playground = null;
     public static int $cfg_which_database = 0;
 
