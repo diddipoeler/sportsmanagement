@@ -18,6 +18,9 @@ final class CountrylistField extends SportsManagementListField
 {
     protected $type = 'countrylist';
 
+    /** Native Joomla Choices-based country selector with keyboard search. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Render the country selector with automatic submission in list filters.
      * Preserves explicitly configured change handlers and only enables the
