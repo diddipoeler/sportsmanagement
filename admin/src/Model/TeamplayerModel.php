@@ -65,7 +65,11 @@ final class TeamplayerModel extends SportsManagementAdminModel
     public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'teamplayer') === 0) {
-            return new TeamplayerTable($this->getDatabase());
+            $table = new TeamplayerTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
         }
 
         return parent::getTable($type, $prefix, $config);
