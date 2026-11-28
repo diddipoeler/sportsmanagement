@@ -22,6 +22,9 @@ $listOrder = (string) $this->state->get('list.ordering', 'pl.lastname');
 $listDirn = (string) $this->state->get('list.direction', 'ASC');
 $columnCount = 11 + ($showRegistration ? 1 : 0) + ($showAgegroup ? 1 : 0);
 $assets = $this->getDocument()->getWebAssetManager();
+Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+$assets->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 $assets->registerAndUseScript(
     'com_sportsmanagement.admin.players',
     'administrator/components/com_sportsmanagement/assets/js/players.js',
@@ -130,7 +133,14 @@ $assets->registerAndUseScript(
                     <?php if (isset($this->countryPresentation[$countryCode])) : ?>
                         <div class="small mb-1"><?php echo $this->countryPresentation[$countryCode]; ?></div>
                     <?php endif; ?>
-                    <?php echo HTMLHelper::_('select.genericlist', $countryOptions, 'country' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', $storedCountry); ?>
+                    <?php $searchableCountry = $storedCountry === trim($storedCountry); ?>
+                    <?php if ($searchableCountry) : ?>
+                        <joomla-field-fancy-select search-placeholder="<?php echo $this->escape(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')); ?>">
+                    <?php endif; ?>
+                    <?php echo HTMLHelper::_('select.genericlist', $countryOptions, 'country' . $id, $selectAttributes('form-select form-select-sm') . ' data-max-results="30" aria-label="' . $this->escape(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY')) . '"', 'value', 'text', $storedCountry); ?>
+                    <?php if ($searchableCountry) : ?>
+                        </joomla-field-fancy-select>
+                    <?php endif; ?>
                 </td>
                 <td><?php echo HTMLHelper::_('select.genericlist', $this->positionOptions, 'position' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', (int) ($item->position_id ?? 0)); ?></td>
                 <td class="text-center"><?php echo HTMLHelper::_('jgrid.published', (int) ($item->published ?? 0), $i, 'players.', $canChange, 'cb'); ?></td>
