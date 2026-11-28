@@ -138,6 +138,7 @@ final class EditclubModel extends AdminModel
     }
 
     /**
+     * Preserve the already selected site database connection for table writes.
      * Resolve the namespaced Joomla club table for frontend edit operations.
      *
      * Map the historical case-insensitive club table name to ClubTable and
@@ -151,7 +152,7 @@ final class EditclubModel extends AdminModel
     public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'club') === 0) {
-            return new ClubTable($this->getDatabase());
+            return new ClubTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
