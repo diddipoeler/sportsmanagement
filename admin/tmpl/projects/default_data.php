@@ -109,7 +109,7 @@ $statusLabels = [
                         (int) $item->league_id
                     ); ?>
                 </td>
-                <td><?php echo htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?></td>
                 <td>
                     <?php echo htmlspecialchars((string) ($item->season ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                     <br />
