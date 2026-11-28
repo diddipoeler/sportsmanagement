@@ -107,6 +107,7 @@ final class EditteamModel extends AdminModel
     }
 
     /**
+     * Preserve the already selected site database connection for table writes.
      * Return the native team database table for the frontend editor.
      *
      * Resolve the case-insensitive legacy team table name to the
@@ -121,7 +122,7 @@ final class EditteamModel extends AdminModel
     public function getTable($type = 'team', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'team') === 0) {
-            return new TeamTable($this->getDatabase());
+            return new TeamTable($this->getDatabase(), true);
         }
 
         return parent::getTable($type, $prefix, $config);
