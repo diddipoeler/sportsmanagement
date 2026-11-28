@@ -145,6 +145,7 @@ namespace {
             ['alpha3' => 'FRA', 'name' => 'France'],
         ];
         public mixed $country = null;
+        public mixed $presentationRows = [];
 
         /**
          * Create a fluent country query and simulate configured failures.
@@ -197,6 +198,8 @@ namespace {
          * @return mixed Flag data fixture, null or a corrupted row type.
          */
         public function loadObject(): mixed { return $this->country; }
+        /** Return the complete country catalogue for the bulk display query. */
+        public function loadObjectList(): mixed { return $this->presentationRows; }
     }
 
     $db = new CountryDatabase();
@@ -409,6 +412,43 @@ namespace {
             || $entry[2] !== 'com_sportsmanagement') {
             throw new \RuntimeException('Failed country queries were not logged privately.');
         }
+    }
+
+    // Bulk list presentation must require only one database query.
+    $db->throw = false;
+    $db->presentationRows = [
+        (object) ['alpha3' => 'DEU', 'alpha2' => 'de', 'name' => 'Germany'],
+        (object) ['alpha3' => 'deu', 'alpha2' => 'de', 'name' => 'Duplicate'],
+        (object) ['alpha3' => 'FRA', 'alpha2' => 'fr', 'name' => 'France'],
+        (object) ['alpha3' => 'TST', 'name' => '<unsafe>', 'picture' => 'javascript:alert(1)'],
+        (object) ['alpha3' => ['bad']],
+        null,
+    ];
+    \Joomla\CMS\Component\ComponentHelper::$css = false;
+    $before = $db->queries;
+    $presentation = $helper::getListPresentation($db);
+    if ($db->queries !== $before + 1
+        || array_keys($presentation) !== ['DEU', 'FRA', 'TST']
+        || !str_contains($presentation['DEU'], '/flags/de.png')
+        || !str_ends_with($presentation['DEU'], ' Germany')
+        || !str_contains($presentation['FRA'], '/flags/fr.png')
+        || $presentation['TST'] !== '&lt;unsafe&gt;') {
+        throw new \RuntimeException('Bulk administrator country presentation failed.');
+    }
+
+    \Joomla\CMS\Component\ComponentHelper::$css = true;
+    $presentation = $helper::getListPresentation($db);
+    if (!str_contains($presentation['DEU'], 'class="fi fi-de"')) {
+        throw new \RuntimeException('Bulk country presentation lost CSS flag mode.');
+    }
+
+    $db->presentationRows = false;
+    if ($helper::getListPresentation($db) !== []) {
+        throw new \RuntimeException('Malformed bulk country catalogue was accepted.');
+    }
+    $db->throw = true;
+    if ($helper::getListPresentation($db) !== []) {
+        throw new \RuntimeException('Bulk country query did not recover from failure.');
     }
 
     echo "Administrator country query and safe flag regressions passed.\n";
