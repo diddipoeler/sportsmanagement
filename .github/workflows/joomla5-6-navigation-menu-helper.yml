@@ -6,6 +6,9 @@ on:
       - joomla5-6
     paths:
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/js/**'
+      - 'modules/mod_sportsmanagement_navigation_menu/tmpl/**'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
@@ -16,6 +19,9 @@ on:
       - master
     paths:
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/js/**'
+      - 'modules/mod_sportsmanagement_navigation_menu/tmpl/**'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
@@ -27,7 +33,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        php: ['8.3', '8.4']
+        php: ['8.3', '8.4', '8.5']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,5 +80,9 @@ jobs:
           php -l .github/tests/joomla56_navigation_database_selector.php
           php .github/tests/joomla56_navigation_database_selector.php
           php .github/scripts/check-php-function-docs.php "$base" "$native" "$route"
+
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_navigation_menu/tmpl/default.php
+          node --check modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js
 
           echo 'Navigation Menu helper contracts OK'
