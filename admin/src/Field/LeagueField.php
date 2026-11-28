@@ -18,6 +18,9 @@ final class LeagueField extends SportsManagementListField
 {
     protected $type = 'League';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Build league options using the administrator's country and association.
      *
