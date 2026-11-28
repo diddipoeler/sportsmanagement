@@ -19,6 +19,9 @@ final class CurrentroundField extends SportsManagementListField
 {
     protected $type = 'Currentround';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * List the current project's rounds for the administrator selector.
      *
