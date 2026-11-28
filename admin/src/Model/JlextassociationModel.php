@@ -27,7 +27,7 @@ final class JlextassociationModel extends SportsManagementAdminModel
     public function getTable($type = 'jlextassociation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextassociation') === 0) {
-            return new JlextassociationTable($this->getDatabase());
+            return $this->createResolvedTable(JlextassociationTable::class);
         }
 
         return parent::getTable($type, $prefix, $config);
