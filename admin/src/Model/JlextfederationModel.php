@@ -27,7 +27,7 @@ final class JlextfederationModel extends SportsManagementAdminModel
     public function getTable($type = 'jlextfederation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextfederation') === 0) {
-            return new JlextfederationTable($this->getDatabase());
+            return $this->createResolvedTable(JlextfederationTable::class);
         }
 
         return parent::getTable($type, $prefix, $config);
