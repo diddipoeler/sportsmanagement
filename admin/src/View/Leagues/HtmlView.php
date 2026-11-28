@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Leagues;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -23,6 +24,8 @@ final class HtmlView extends BaseHtmlView
     public $filterForm;
     public $activeFilters = [];
     public $inlineOptions = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
 
     /**
      * Load league records, filter state and inline selection options.
@@ -37,7 +40,9 @@ final class HtmlView extends BaseHtmlView
         $this->state = $this->get('State');
         $this->filterForm = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters') ?: [];
-        $this->inlineOptions = $this->getModel()->getInlineOptions();
+        $model = $this->getModel();
+        $this->inlineOptions = $model->getInlineOptions();
+        $this->countryPresentation = CountryOptionsHelper::getListPresentation($model->getSportsManagementDatabase());
 
         if ($errors = $this->get('Errors')) {
             throw new \RuntimeException(implode("\n", $errors), 500);
