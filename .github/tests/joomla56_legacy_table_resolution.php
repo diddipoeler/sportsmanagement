@@ -116,6 +116,7 @@ namespace {
         'PredictionresultTable', 'PredictionroundTable', 'PredictiontemplateTable',
         'PositionTable', 'ProjectpositionTable', 'RosterpositionTable', 'TreetomatchTable',
         'JlextassociationTable', 'JlextfederationTable',
+        'TeamstaffTable', 'JsmgcalendarTable', 'JlextcountryTable', 'MatchSingleTable',
     ] as $name) {
         $class = $prefix . $name;
         $before = $resolver::$calls;
