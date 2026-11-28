@@ -48,6 +48,12 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
+        Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+        Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+        $this->getDocument()->getWebAssetManager()
+            ->usePreset('choicesjs')
+            ->useScript('webcomponent.field-fancy-select');
+
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE'), 'list');
         ToolbarHelper::apply('leagues.saveshort');
         ToolbarHelper::addNew('league.add');
