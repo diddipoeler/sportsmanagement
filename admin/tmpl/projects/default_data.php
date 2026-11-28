@@ -11,6 +11,7 @@
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
@@ -20,6 +21,10 @@ $statusLabels = [
     2 => Text::_('JARCHIVED'),
     -2 => Text::_('JTRASHED'),
 ];
+
+Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+$this->getDocument()->getWebAssetManager()->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 ?>
 <div class="table-responsive" id="editcell">
     <table class="table table-striped align-middle" id="projectslist">
@@ -99,7 +104,7 @@ $statusLabels = [
                     <?php endif; ?>
                 </td>
                 <td>
-                    <?php echo HTMLHelper::_(
+                    <joomla-field-fancy-select search-placeholder="<?php echo htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"><?php echo HTMLHelper::_(
                         'select.genericlist',
                         $this->lists['league'],
                         'league' . $id,
@@ -107,7 +112,7 @@ $statusLabels = [
                         'id',
                         'name',
                         (int) $item->league_id
-                    ); ?>
+                    ); ?></joomla-field-fancy-select>
                 </td>
                 <td><?php echo ($this->countryPresentation[strtoupper(trim((string) ($item->country ?? '')))] ?? htmlspecialchars((string) ($item->country ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')); ?></td>
                 <td>
@@ -136,7 +141,7 @@ $statusLabels = [
                     </label>
                 </td>
                 <td>
-                    <?php echo HTMLHelper::_(
+                    <joomla-field-fancy-select search-placeholder="<?php echo htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"><?php echo HTMLHelper::_(
                         'select.genericlist',
                         $this->lists['agegroup'],
                         'agegroup' . $id,
@@ -144,7 +149,7 @@ $statusLabels = [
                         'value',
                         'text',
                         (int) ($item->agegroup_id ?? 0)
-                    ); ?>
+                    ); ?></joomla-field-fancy-select>
                     <label class="small mt-1 d-block">
                         <?php echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD'); ?>
                         <?php echo HTMLHelper::_('select.genericlist', $this->lists['yesno'], 'fast_projektteam' . $id, $disabled . ' class="form-select form-select-sm" onchange="document.getElementById(\'cb' . $index . '\').checked=true"', 'value', 'text', (int) ($item->fast_projektteam ?? 0)); ?>
