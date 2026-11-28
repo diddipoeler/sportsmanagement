@@ -20,9 +20,10 @@ final class PredictiontemplateTable extends SportsManagementTable
      * Registers the database table and its primary key with the shared SportsManagement
      * table implementation using the injected database driver.
      * @param DatabaseInterface $db Active database connection.
+     * @param bool $resolved Whether the supplied connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_prediction_template', 'id', $db);
+        parent::__construct('#__sportsmanagement_prediction_template', 'id', $db, $resolved);
     }
 }
