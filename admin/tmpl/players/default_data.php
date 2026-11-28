@@ -104,7 +104,33 @@ $assets->registerAndUseScript(
                 <?php endif; ?>
                 <td>
                     <?php if (!$showAgegroup) : ?><input type="hidden" name="agegroup<?php echo $id; ?>" value="<?php echo (int) ($item->agegroup_id ?? 0); ?>"><?php endif; ?>
-                    <?php echo HTMLHelper::_('select.genericlist', $this->countryOptions, 'country' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', (string) ($item->country ?? '')); ?>
+                    <?php
+                    $storedCountry = (string) ($item->country ?? '');
+                    $countryCode = strtoupper(trim($storedCountry));
+                    $countryOptions = [];
+                    $matchedCountry = false;
+                    foreach ($this->countryOptions as $option) {
+                        if (!is_object($option) || !is_string($option->value ?? null)) {
+                            continue;
+                        }
+                        if ($storedCountry !== '' && strtoupper(trim($option->value)) === $countryCode) {
+                            if ($matchedCountry) {
+                                continue;
+                            }
+                            $matchedCountry = true;
+                            $option = clone $option;
+                            $option->value = $storedCountry;
+                        }
+                        $countryOptions[] = $option;
+                    }
+                    if (!$matchedCountry && $storedCountry !== '') {
+                        $countryOptions[] = HTMLHelper::_('select.option', $storedCountry, $storedCountry);
+                    }
+                    ?>
+                    <?php if (isset($this->countryPresentation[$countryCode])) : ?>
+                        <div class="small mb-1"><?php echo $this->countryPresentation[$countryCode]; ?></div>
+                    <?php endif; ?>
+                    <?php echo HTMLHelper::_('select.genericlist', $countryOptions, 'country' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', $storedCountry); ?>
                 </td>
                 <td><?php echo HTMLHelper::_('select.genericlist', $this->positionOptions, 'position' . $id, $selectAttributes('form-select form-select-sm'), 'value', 'text', (int) ($item->position_id ?? 0)); ?></td>
                 <td class="text-center"><?php echo HTMLHelper::_('jgrid.published', (int) ($item->published ?? 0), $i, 'players.', $canChange, 'cb'); ?></td>
