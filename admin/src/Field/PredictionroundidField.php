@@ -20,6 +20,9 @@ final class PredictionroundidField extends SportsManagementListField
 {
     protected $type = 'predictionroundid';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     private ?array $roundOptions = null;
 
     /**
