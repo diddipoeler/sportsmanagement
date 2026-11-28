@@ -79,6 +79,7 @@ namespace {
         ['teamtrainingdata', 'TeamTrainingDataTable', '#__sportsmanagement_team_trainingdata'],
         ['teamstaff', 'TeamstaffTable', '#__sportsmanagement_team_staff'],
         ['jlextcountry', 'JlextcountryTable', '#__sportsmanagement_countries'],
+        ['smquote', 'SmquoteTable', '#__sportsmanagement_rquote'],
     ] as [$type, $expectedClass, $expectedTable]) {
         $table = $model->getTable($type);
         if (get_class($table) !== $prefix . $expectedClass || $table->database !== $db
@@ -123,6 +124,7 @@ namespace {
         'PositionTable', 'ProjectpositionTable', 'RosterpositionTable', 'TreetomatchTable',
         'JlextassociationTable', 'JlextfederationTable',
         'TeamstaffTable', 'JsmgcalendarTable', 'JlextcountryTable', 'MatchSingleTable',
+        'SmquoteTable',
     ] as $name) {
         $class = $prefix . $name;
         $before = $resolver::$calls;
