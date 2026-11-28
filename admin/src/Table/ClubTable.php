@@ -16,11 +16,20 @@ use Joomla\Database\DatabaseInterface;
 
 class ClubTable extends SportsManagementTable
 {
-    public function __construct(DatabaseInterface $db)
+    /**
+     * Initialise the native club table with the selected database service.
+     * @param DatabaseInterface $db Active database connection.
+     * @param bool $resolved Whether the caller has already resolved the connection.
+     */
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_club', 'id', $db);
+        parent::__construct('#__sportsmanagement_club', 'id', $db, $resolved);
     }
 
+    /**
+     * Generate the club's URL-safe alias from its name before persistence.
+     * @return bool Whether the record passes table validation.
+     */
     public function check()
     {
         $this->alias = OutputFilter::stringURLSafe((string) $this->name);
