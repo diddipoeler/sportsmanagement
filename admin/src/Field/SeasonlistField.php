@@ -24,7 +24,8 @@ final class SeasonlistField extends SportsManagementListField
     /**
      * Configure season selection for the current administrator view.
      * Enables multiple selection for supported edit forms and preserves
-     * historical submit or season-name callbacks for project workflows.
+     * historical submit or season-name callbacks for project workflows only
+     * when the XML definition has not supplied its own change handler.
      * @param \SimpleXMLElement $element Field definition.
      * @param mixed $value Current field value.
      * @param string|null $group Optional form group.
@@ -44,6 +45,11 @@ final class SeasonlistField extends SportsManagementListField
 
         if (!$result) {
             return false;
+        }
+
+        // Respect explicitly configured callbacks, including dependent fields.
+        if (trim((string) $this->onchange) !== '') {
+            return true;
         }
 
         if (in_array($view, ['clubs', 'projects'], true) && $this->name !== 'filter[copytoseason]') {
