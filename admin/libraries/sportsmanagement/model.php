@@ -1627,7 +1627,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
      * Resolve a native administrator table for a legacy model.
      *
      * Maps historical aliases to their native table names, preserves the
-     * resolved SportsManagement database, and keeps the legacy factory only
+     * resolved SportsManagement database without invoking its resolver again,
+     * and keeps the legacy factory only
      * for third-party prefixes or tables without a native implementation.
      *
      * @param string $type Requested table type; defaults to the model name.
@@ -1654,7 +1655,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
             $nativeClass = 'Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\' . $nativeType . 'Table';
 
             if (is_subclass_of($nativeClass, Table::class)) {
-                return new $nativeClass($this->jsmdb);
+                // The model constructor has already selected the component database.
+                return new $nativeClass($this->jsmdb, true);
             }
         }
 
