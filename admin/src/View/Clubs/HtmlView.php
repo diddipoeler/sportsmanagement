@@ -121,7 +121,15 @@ final class HtmlView extends BaseHtmlView
         $this->search_nation = CountryOptionsHelper::getOptions($model->getSportsManagementDatabase());
         $nationOptions = array_merge($nationOptions, $this->search_nation);
         $lists['nation'] = $nationOptions;
-        $lists['nation2'] = HTMLHelper::_(
+        Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+        Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
+        $this->getDocument()->getWebAssetManager()
+            ->usePreset('choicesjs')
+            ->useScript('webcomponent.field-fancy-select');
+
+        $lists['nation2'] = '<joomla-field-fancy-select search-placeholder="'
+            . htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '">' . HTMLHelper::_(
             'select.genericlist',
             $nationOptions,
             'filter_search_nation',
@@ -129,7 +137,7 @@ final class HtmlView extends BaseHtmlView
             'value',
             'text',
             $this->state->get('filter.search_nation')
-        );
+        ) . '</joomla-field-fancy-select>';
 
         if ($this->state->get('filter.search_nation')) {
             $associationsModel = $factory->createModel('Jlextassociations', 'Administrator');
