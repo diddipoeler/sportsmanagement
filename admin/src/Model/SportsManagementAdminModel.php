@@ -121,6 +121,26 @@ abstract class SportsManagementAdminModel extends AdminModel
     }
 
     /**
+     * Construct a native table whose constructor supports resolved connections.
+     *
+     * Internal callers supply a known component table class. Reuses this model's
+     * exact database driver and propagates Joomla 6's exception mode when present.
+     *
+     * @param class-string<\Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable> $tableClass Native table class.
+     * @return \Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable Initialised native table.
+     */
+    protected function createResolvedTable(string $tableClass): \Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable
+    {
+        $table = new $tableClass($this->getDatabase(), true);
+
+        if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+            $table->setUseExceptions(true);
+        }
+
+        return $table;
+    }
+
+    /**
      * Validate the database preference without Joomla's lossy getInt().
      *
      * Accept zero and one, as well as zero-padded legacy radio-field values.
