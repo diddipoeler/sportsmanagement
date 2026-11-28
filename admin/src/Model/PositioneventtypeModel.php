@@ -207,7 +207,7 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
     }
 
     /**
-     * Check the administrator's permission to edit an event-type relation.
+     * Check component-level Joomla edit permission for event-type relations.
      * @param array $data Selected association data.
      * @param string $key Record identifier key.
      * @return bool Whether editing is allowed.
@@ -216,6 +216,7 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
     {
         $identity = $this->administratorApplication()->getIdentity();
 
-        return $identity !== null && (int) $identity->id > 0 && parent::allowEdit($data, $key);
+        return $identity !== null && (int) $identity->id > 0
+            && $identity->authorise('core.edit', 'com_sportsmanagement');
     }
 }
