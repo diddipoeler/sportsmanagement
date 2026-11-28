@@ -24,6 +24,12 @@ final class HtmlView extends BaseHtmlView
     public $activeFilters = [];
     public $inlineOptions = [];
 
+    /**
+     * Load league records, filter state and inline selection options.
+     * Configure administrator toolbar actions and render the native list layout.
+     * @param string|null $tpl Optional layout template.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
