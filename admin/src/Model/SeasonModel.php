@@ -17,6 +17,29 @@ use Joomla\Database\ParameterType;
 final class SeasonModel extends SportsManagementAdminModel
 {
     /**
+     * Resolve the native season table using this model's active database.
+     * Retain Joomla's MVC factory for custom table names and configurations.
+     * @param string $name Requested table name, or empty for the default.
+     * @param string $prefix Optional table prefix.
+     * @param array $options Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($name = '', $prefix = '', $options = [])
+    {
+        if (is_string($name) && ($name === '' || strcasecmp($name, 'Season') === 0)
+            && in_array($prefix, ['', 'Administrator', 'sportsmanagementTable'], true)
+            && $options === []) {
+            $table = new \Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonTable($this->getDatabase(), true);
+            if (method_exists($this, 'shouldUseExceptions') && $this->shouldUseExceptions()) {
+                $table->setUseExceptions(true);
+            }
+            return $table;
+        }
+
+        return parent::getTable($name, $prefix, $options);
+    }
+
+    /**
      * Save season-to-person assignments and associated project positions.
      * @return mixed
      */
