@@ -24,6 +24,25 @@ use Joomla\Registry\Registry;
 
 final class TeamModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native team table on this model's active database connection.
+     * Other table types continue through Joomla's MVC table factory.
+     * @param string $type Requested table type.
+     * @param string $prefix Table class prefix.
+     * @param array $config Optional factory configuration.
+     * @return mixed Native table or parent factory result.
+     */
+    public function getTable($type = 'Team', $prefix = 'Administrator', $config = [])
+    {
+        if (is_string($type) && strcasecmp($type, 'Team') === 0
+            && in_array(strtolower((string) $prefix), ['administrator', 'sportsmanagementtable'], true)
+            && $config === []) {
+            return new \Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable($this->getDatabase(), true);
+        }
+
+        return parent::getTable($type, $prefix, $config);
+    }
+
     public static $change_training_date = false;
 
     /**
