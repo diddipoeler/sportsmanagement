@@ -18,6 +18,9 @@ final class ProjectsField extends SportsManagementListField
 {
     protected $type = 'projects';
 
+    /** Native Joomla searchable list layout; retains the original option values. */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
     /**
      * Load published project options from the selected component database.
      *
