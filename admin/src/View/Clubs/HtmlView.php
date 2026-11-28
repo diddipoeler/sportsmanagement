@@ -105,7 +105,9 @@ final class HtmlView extends BaseHtmlView
         $seasonsModel = $factory->createModel('Seasons', 'Administrator');
         $this->season = $seasonsModel instanceof SeasonsModel ? $seasonsModel->getSeasons() : [];
         $seasonOptions = array_merge($seasonOptions, $this->season);
-        $lists['seasons'] = HTMLHelper::_(
+        $lists['seasons'] = '<joomla-field-fancy-select search-placeholder="' 
+            . htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '">' . HTMLHelper::_(
             'select.genericlist',
             $seasonOptions,
             'filter_season',
@@ -113,7 +115,7 @@ final class HtmlView extends BaseHtmlView
             'id',
             'name',
             $this->state->get('filter.season')
-        );
+        ) . '</joomla-field-fancy-select>';
 
         $nationOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
@@ -150,7 +152,9 @@ final class HtmlView extends BaseHtmlView
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'), 'value', 'text'),
             ...$this->association,
         ];
-        $lists['association'] = HTMLHelper::_(
+        $lists['association'] = '<joomla-field-fancy-select search-placeholder="' 
+            . htmlspecialchars(Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '">' . HTMLHelper::_(
             'select.genericlist',
             $associationOptions,
             'filter_search_association',
@@ -158,7 +162,7 @@ final class HtmlView extends BaseHtmlView
             'value',
             'text',
             $this->state->get('filter.search_association')
-        );
+        ) . '</joomla-field-fancy-select>';
         $lists['search_mode'] = '';
 
         return $lists;
