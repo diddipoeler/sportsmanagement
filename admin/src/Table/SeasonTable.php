@@ -20,10 +20,11 @@ final class SeasonTable extends SportsManagementTable
      * Initialise the native season table for Joomla's database driver.
      *
      * @param DatabaseInterface $db Selected SportsManagement connection.
+     * @param bool $resolved Whether the connection has already been resolved.
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, bool $resolved = false)
     {
-        parent::__construct('#__sportsmanagement_season', 'id', $db);
+        parent::__construct('#__sportsmanagement_season', 'id', $db, $resolved);
     }
 
     /**
