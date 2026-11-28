@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projectteams
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamsModel;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
@@ -28,6 +29,8 @@ use Joomla\CMS\Uri\Uri;
 final class HtmlView extends BaseHtmlView
 {
     public array $items = [];
+    /** Escaped country names and flags indexed by ISO alpha-3 code. */
+    public array $countryPresentation = [];
     public array $projectteam = [];
     public $pagination;
     public $state;
@@ -169,6 +172,8 @@ final class HtmlView extends BaseHtmlView
             $this->activeFilters = [];
             $this->app->enqueueMessage($e->getMessage(), 'warning');
         }
+
+        $this->countryPresentation = CountryOptionsHelper::getListPresentation($model->getSportsManagementDatabase());
 
         if (!$this->individualProject && !empty($this->project->fast_projektteam)) {
             $this->quickAddTeams = $model->getCountryTeams();
